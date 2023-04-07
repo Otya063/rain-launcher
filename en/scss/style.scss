@@ -1,0 +1,202 @@
+/*=========================================================
+　　　　　Default Settings
+=======================================================*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*[unselectable="on"] {
+    cursor: default;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+a {
+    border: none;
+    outline: none;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    border-style: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #000;
+    font-family: "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+    color: #d1c0a5;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+// title font
+h1 {
+    font-family: "Noto Serif", serif;
+}
+
+// enable users to move the launcher by dragging
+.glove {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+// launcher wrapper
+.wrapper {
+    width: 1124px;
+    height: 600px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: url(/launcher/img/common/background.jpg) center center no-repeat;
+}
+
+/*=========================================================
+　　　　　Window Controls
+=======================================================*/
+.win_ctrls {
+    width: 106px;
+    height: 20px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    z-index: 1000;
+
+    // init win_ctrls
+    div {
+        width: 50px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        background: no-repeat 0px 0px;
+        cursor: pointer;
+
+        // minimize button
+        &.min {
+            left: 0;
+        }
+
+        // close button
+        &.close {
+            right: 0;
+        }
+
+        // when hovering
+        &:hover {
+            background-position: 0px -20px;
+        }
+    }
+}
+
+/*=========================================================
+　　　　　Launcher Header
+=======================================================*/
+// header main
+.launcher_header {
+    width: 525px;
+    height: 72px;
+    position: absolute;
+    left: 0;
+    top: 38px;
+    border-radius: 0 15px 15px 0;
+    background: rgba(0, 0, 0, 0.5);
+
+    // mhfzz logo
+    .mhf_zz_logo {
+        position: absolute;
+        width: 360px;
+        top: -40%;
+        left: -2%;
+    }
+
+    // launcher title
+    .launcher_title {
+        position: absolute;
+        top: 6%;
+        right: 0%;
+        width: 190px;
+        color: #dcdcdc;
+        font-weight: 700;
+        font-size: 1rem;
+        font-style: italic;
+        line-height: 1.3;
+        white-space: nowrap;
+    }
+
+    // user_id & logined server_name
+    #login_id {
+        position: absolute;
+        color: #e5e5e5;
+        font-size: 12px;
+        line-height: 14px;
+        left: 0;
+        right: 5px;
+        top: 75px;
+        text-align: right;
+        z-index: 1000;
+    }
+}
+
+/*=========================================================
+　　　　　Log Out Button
+=======================================================*/
+.btn_logout {
+    cursor: pointer;
+    position: absolute;
+    left: 46.5%;
+    top: 18.6%;
+    color: white;
+}
+
+/*=========================================================
+　　　　　Preferences Button
+=======================================================*/
+.btn_preferences {
+    width: 281px;
+    height: 30px;
+    position: absolute;
+    left: 137px;
+    bottom: 48px;
+    border: gray solid 2px;
+    border-radius: 20px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    transition: all 0.2s;
+
+    .btn_preferences_text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 5%;
+        left: -10%;
+        width: 335px;
+        height: 100%;
+        font-size: 1.2em;
+        white-space: nowrap;
+        cursor: pointer;
+        transform: scale(0.85, 1);
+    }
+
+    &:hover {
+        color: #ebd8ba;
+        background: rgba(46, 45, 45, 0.5);
+    }
+}

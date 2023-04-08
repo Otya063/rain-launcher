@@ -79,13 +79,17 @@ h1 {
     z-index: 1000;
 
     // init win_ctrls
-    div {
+    button {
         width: 50px;
         height: 20px;
         position: absolute;
         top: 0;
-        background: no-repeat 0px 0px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
         cursor: pointer;
+        border: none;
+        font-size: 1.5em;
+        transition: all 0.2s;
 
         // minimize button
         &.min {
@@ -99,7 +103,8 @@ h1 {
 
         // when hovering
         &:hover {
-            background-position: 0px -20px;
+            background: rgba(255, 255, 255, 1);
+            color: black;
         }
     }
 }
@@ -176,7 +181,7 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Preferences Button
+　　　　　Preferences Button (後でログインエリアと統合)
 =======================================================*/
 .btn_preferences {
     width: 25%;
@@ -216,7 +221,7 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Message Logs Area（後でログインエリアと統合）
+　　　　　Message Logs Area (後でログインエリアと統合)
 =======================================================*/
 .msg_logs_area {
     width: 410px;
@@ -225,6 +230,8 @@ h1 {
     position: absolute;
     left: 65px;
     bottom: 90px;
+    border: #a5927b79 0.5px solid;
+    background: rgba(0, 0, 0, 0.5);
 
     .msg_contents {
         display: block;
@@ -232,7 +239,7 @@ h1 {
         height: 86px;
         font-size: 12px;
         line-height: 14px;
-        color: #dcdcdc;
+        color: white;
         overflow: hidden;
         overflow-y: auto;
         position: absolute;

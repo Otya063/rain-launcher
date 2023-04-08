@@ -1189,14 +1189,14 @@
             <div class="glove"></div>
 
             <!-- Window Controls -->
-            <div class="win_ctrls" class="unselectable">
-                <div class="glove"></div>
+            <div class="win_ctrls unselectable">
+                <!-- <div class="glove"></div> -->
 
                 <!-- Minimize Button -->
-                <div class="min selsnd" onClick="addEvent('min_click'); DoMinimizeWindow();"></div>
+                <button class="min selsnd" onClick="addEvent('min_click'); DoMinimizeWindow();">ー</button>
 
                 <!-- Close Button -->
-                <div class="close selsnd" onClick="addEvent('close_click'); DoCloseWindow();"></div>
+                <button class="close selsnd" onClick="addEvent('close_click'); DoCloseWindow();">×</button>
             </div>
 
             <!-- Launcher Header -->

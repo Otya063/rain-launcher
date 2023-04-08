@@ -1185,7 +1185,7 @@ function showMhfMaintenanceDialog() { "use strict"; $("#launcher_login_panel").h
 
 function onAuthError(e, E) {
     "use strict";
-    switchEvtPhase("prepare"), e && addLogMsg(e, E = E || "y"), hideAuthProgress(), unlockAuthEdit(), setTimeout(function () { $(_AT_SEL_LBTN).fadeTo(200, 1, function () { $(_AT_SEL_LBTN).removeClass("disabled"), _AT_IS_ENABLED = !0 }) }, 5e3)
+    switchEvtPhase("prepare"), e && addLogMsg(e, E = E || "y", true), hideAuthProgress(), unlockAuthEdit(), setTimeout(function () { $(_AT_SEL_LBTN).fadeTo(200, 1, function () { $(_AT_SEL_LBTN).removeClass("disabled"), _AT_IS_ENABLED = !0 }) }, 5e3)
 }
 
 function stopLoginPolling() {
@@ -1432,7 +1432,7 @@ function beginAuthProcess(e) {
             switchAuthMode(), _COG_MODE
         ) {
             if ("" === $(_AT_SEL_ID).val() || $(_AT_SEL_ID).val() === $(_AT_SEL_ID).attr("default"))
-                onAuthError(duc("afipl"), "w");
+                onAuthError(duc("afipl"), "r");
             else if (authExec()) {
                 _AT_IS_ENABLED = !1,
                     lockAuthEdit(),
@@ -1639,21 +1639,23 @@ function initAuth() {
     catch (e) { }
 }();
 
-var _SEL_LOG = ".msg_contents";
-var _CACHE_CR1 = "";
-var _CACHE_CR2 = "";
-var _LOG_TOI = null;
-var _LOG_INT = 100;
-var _BTNS_IS_ENABLED = null;
-var _DIALOG_BTN_TOI = null;
-var _CONF_SND_BLOCK = false;
-var _ENTERDOWN_TOI = null;
-var _LAST_KEYDOWN = 0;
+let _SEL_LOG = ".msg_contents",
+    _CACHE_CR1 = "",
+    _CACHE_CR2 = "",
+    _LOG_TOI = null,
+    _LOG_INT = 100,
+    _BTNS_IS_ENABLED = null,
+    _DIALOG_BTN_TOI = null,
+    _CONF_SND_BLOCK = false,
+    _ENTERDOWN_TOI = null,
+    _LAST_KEYDOWN = 0;
 
-function addLogMsg(message, type, isNewParagraph) {
+function addLogMsg(message, type, isFirstMsg) {
     "use strict";
     if (message) {
-        var prefix = "";
+        let prefix = "";
+        let suffix = "</span>";
+
         switch (type) {
             case "g":
                 prefix = '<span class="green">';
@@ -1667,9 +1669,9 @@ function addLogMsg(message, type, isNewParagraph) {
             case "r":
                 prefix = '<span class="red">';
         }
-        var suffix = "</span>";
-        var logMessage = prefix + message + suffix;
-        if (isNewParagraph) {
+        let logMessage = prefix + message + suffix;
+
+        if (isFirstMsg) {
             $(_SEL_LOG + " p").html(_CACHE_CR1 + logMessage + "<br>");
             if (_CACHE_CR2 === "") {
                 $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
@@ -1681,6 +1683,7 @@ function addLogMsg(message, type, isNewParagraph) {
                 logMessage = _CACHE_CR2 + "<br>" + logMessage;
                 _CACHE_CR2 = "";
             }
+            // accumulate elements
             _CACHE_CR1 += logMessage + "<br>";
             $(_SEL_LOG + " p").html(_CACHE_CR1);
             $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
@@ -1886,6 +1889,8 @@ $(function () {
         initAuth(),
         initScrollBar(_SEL_LOG),
         initScrollBar("#launcher_info_detail .article_frame"),
+
+        // initial display of msg log
         startExLog(),
         debugLogMsg("<br>UA > " + String(window.navigator.userAgent), !1)
 });

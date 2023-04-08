@@ -1,7 +1,7 @@
 /* CSS Document*/
 
 /*url(../images/log_bg.png)*/
-#launcher_log_area {
+.msg_logs_area {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaYAAABiAgMAAABmEZ+GAAAAA3NCSVQICAjb4U/gAAAACVBMVEUAAACmk3ymk3wlQ5zLAAAAA3RSTlOZNiC6xvYcAAAATElEQVRoge3aMQEAMAzDsEAopJHYP1LlOxa5ZAIi4Owt9XJSalAoFAqFQqFQKBQKhUKhUCgUCoVCoVAoFAqFQqFQKBQKhUK1qN6K+AF1OWT7yOE0yAAAAABJRU5ErkJggg==);
 }
 

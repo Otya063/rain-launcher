@@ -905,7 +905,7 @@ function showCharSelector() {
     switchEvtPhase("standby"), _CHR_DEF = _CHR_CRR = 0, _CHR_IS_WAIT = !1,
         $("#launcher_login_panel").hide(),
         $("#launcher_update_progress").hide(),
-        $("#launcher_log_area").hide(), $(_CHR_SEL_BOX).hide(),
+        $(".msg_logs_area").hide(), $(_CHR_SEL_BOX).hide(),
         $(".btn_logout").show(),
         $(_CHR_SEL_BOX + " .units").html(""), $(_CHR_SEL_BOX + " .scroll").hide();
 
@@ -1107,7 +1107,7 @@ function progressUpdatePercentage() {
 
 function finishUpdateProcess() {
     "use strict";
-    DoCheckIsEnableSessionId() ? (showCharSelector(), $(".btn_preferences").show()) : ($("#launcher_login_panel").hide(), $("#launcher_update_progress").hide(), $("#launcher_log_area").hide(), showMaintenanceDialog())
+    DoCheckIsEnableSessionId() ? (showCharSelector(), $(".btn_preferences").show()) : ($("#launcher_login_panel").hide(), $("#launcher_update_progress").hide(), $(".msg_logs_area").hide(), showMaintenanceDialog())
 }
 
 function startUpdateProcess() {
@@ -1220,7 +1220,7 @@ function loginPolling() {
                         ), (
                             _STORAGE["pw" + _EXE_MUTEX] = $(_AT_SEL_PW).val(),
                             writeCookie()
-                        ), $("#login_id").text($(_AT_SEL_ID).val() + "@" + $(_AT_SEL_SRV).text()), !isTrEnabled()
+                        ), $(".id_srv_label").text($(_AT_SEL_ID).val() + "@" + $(_AT_SEL_SRV).text()), !isTrEnabled()
                     ))
                     return void showNoTRDialog(); startUpdateProcess();
                 break;
@@ -1327,32 +1327,6 @@ function switchAuthSrv(e) { "use strict"; _AT_COG_MODE = $(e).attr("mode"), _AT_
 
 function hideSrvSelList() { "use strict"; $(_AT_SEL_SBOX).hide(), _AT_SBOX_IS_ENABLED = !1 }
 
-function printSrvMsg(e) {
-    switch (e) {
-        case 'local':
-            addLogMsg("Erupe must be running on this PC!", "y");
-            break;
-        case 'rain':
-            addLogMsg("Rain Discord: /BSYusKW7Ps", "y");
-            break;
-        case 'hv':
-            addLogMsg("Hunsterverse Discord: /YuE42eh", "y");
-            break;
-        case 'arca':
-            addLogMsg("ARCA Discord: /Agjkad7zdU", "y");
-            break;
-        case 'renewal':
-            addLogMsg("Renewal Discord: /u9Jyenppx7", "y");
-            break;
-        case 'ancient':
-            addLogMsg("Ancient Warriors Discord: /csR8RPg", "y");
-            break;
-        case 'custom':
-            addLogMsg("erupe.custom must be set in hosts!", "y");
-            break;
-    }
-}
-
 function initSrvSelList() {
     "use strict";
     var e = "<div>" + DoGetServerListXml() + "</div>",
@@ -1381,7 +1355,6 @@ function initSrvSelList() {
                     switchAuthSrv(this),
                     E = parseInt($(this).attr("idx"), 10),
                     DoSetIniLastServerIndex(String(E)),
-                    printSrvMsg($(this).attr("svid")),
                     hideSrvSelList()
             })) :
             $(_AT_SEL_SBTN).hide(),
@@ -1534,9 +1507,9 @@ function switchAuthMode() {
     "use strict";
     $("#launcher_update_progress").hide(),
         $(_CHR_SEL_BOX).hide(),
-        $("#launcher_log_area").show(),
+        $(".msg_logs_area").show(),
         $("#launcher_login_panel").show(),
-        $("#login_id").text(""),
+        $(".id_srv_label").text(""),
         $(".btn_logout").hide(),
         $(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]), _KEY_ACT_DEF = function (e) {
             if (_IS_MODAL) return !1;
@@ -1665,20 +1638,54 @@ function initAuth() {
     try { window.addEventListener ? window.addEventListener("message", onReceiveMsg, !1) : window.attachEvent ? window.attachEvent("onmessage", onReceiveMsg) : window.onmessage = onReceiveMsg }
     catch (e) { }
 }();
-var _SEL_LOG = "#launcher_log_area .msg", _CACHE_CR1 = "", _CACHE_CR2 = "", _LOG_TOI = null, _LOG_INT = 100, _BTNS_IS_ENABLED = null, _DIALOG_BTN_TOI = null, _CONF_SND_BLOCK = !1, _ENTERDOWN_TOI = null, _LAST_KEYDOWN = 0;
 
-function addLogMsg(e, E, t) {
+var _SEL_LOG = ".msg_contents";
+var _CACHE_CR1 = "";
+var _CACHE_CR2 = "";
+var _LOG_TOI = null;
+var _LOG_INT = 100;
+var _BTNS_IS_ENABLED = null;
+var _DIALOG_BTN_TOI = null;
+var _CONF_SND_BLOCK = false;
+var _ENTERDOWN_TOI = null;
+var _LAST_KEYDOWN = 0;
+
+function addLogMsg(message, type, isNewParagraph) {
     "use strict";
-    if (e) {
-        switch (E) {
-            case "g": e = '<span class="green">' + e + "</span>";
+    if (message) {
+        var prefix = "";
+        switch (type) {
+            case "g":
+                prefix = '<span class="green">';
                 break;
-            case "b": e = '<span class="blue">' + e + "</span>";
+            case "b":
+                prefix = '<span class="blue">';
                 break;
-            case "y": e = '<span class="yellow">' + e + "</span>";
+            case "y":
+                prefix = '<span class="yellow">';
                 break;
-            case "r": e = '<span class="red">' + e + "</span>"
-        }t ? ($(_SEL_LOG + " p").html(_CACHE_CR1 + e + "<br>"), "" === _CACHE_CR2 && $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight), updateScrollBarElm(_SEL_LOG, !0), _CACHE_CR2 = e) : ("" !== _CACHE_CR2 && (e = _CACHE_CR2 + "<br>" + e, _CACHE_CR2 = ""), _CACHE_CR1 += e + "<br>", $(_SEL_LOG + " p").html(_CACHE_CR1), $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight), updateScrollBarElm(_SEL_LOG, !0))
+            case "r":
+                prefix = '<span class="red">';
+        }
+        var suffix = "</span>";
+        var logMessage = prefix + message + suffix;
+        if (isNewParagraph) {
+            $(_SEL_LOG + " p").html(_CACHE_CR1 + logMessage + "<br>");
+            if (_CACHE_CR2 === "") {
+                $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
+            }
+            updateScrollBarElm(_SEL_LOG, true);
+            _CACHE_CR2 = logMessage;
+        } else {
+            if (_CACHE_CR2 !== "") {
+                logMessage = _CACHE_CR2 + "<br>" + logMessage;
+                _CACHE_CR2 = "";
+            }
+            _CACHE_CR1 += logMessage + "<br>";
+            $(_SEL_LOG + " p").html(_CACHE_CR1);
+            $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
+            updateScrollBarElm(_SEL_LOG, true);
+        }
     }
 }
 

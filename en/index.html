@@ -9,61 +9,6 @@
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
         <title>Monster Hunter Frontier Online Launcher</title>
         <style type="text/css">
-            #launcher_logout {
-                cursor: pointer;
-                position: absolute;
-                left: 523px;
-                top: 112px;
-                color: white;
-            }
-            #btn_config {
-                width: 281px;
-                height: 33px;
-                position: absolute;
-                left: 137px;
-                bottom: 48px;
-                cursor: pointer;
-                background: no-repeat 0px 0px;
-                z-index: 1000;
-            }
-            #btn_config:hover {
-                background-position: 0px -33px;
-            }
-            #launcher_log_area {
-                width: 410px;
-                height: 86px;
-                padding: 6px 8px;
-                position: absolute;
-                left: 65px;
-                bottom: 90px;
-                background: no-repeat 0px 0px;
-            }
-            #launcher_log_area .msg {
-                display: block;
-                width: 410px;
-                height: 86px;
-                font-size: 12px;
-                line-height: 14px;
-                color: #dcdcdc;
-                overflow: hidden;
-                overflow-y: auto;
-                position: absolute;
-            }
-            #launcher_log_area .msg p {
-                width: 400px;
-            }
-            #launcher_log_area .msg span.green {
-                color: #86a04c;
-            }
-            #launcher_log_area .msg span.red {
-                color: #eb3535;
-            }
-            #launcher_log_area .msg span.yellow {
-                color: #f4de22;
-            }
-            #launcher_log_area .msg span.blue {
-                color: #34b8fd;
-            }
             #launcher_login_panel {
                 width: 300px;
                 height: 265px;
@@ -1260,32 +1205,37 @@
                 <h1 class="launcher_title">Monster Hunter<br />　Frontier Online<br />　　Rain Launcher</h1>
                 <img class="mhf_zz_logo" src="images/logo/000_z.png" alt="MHF-ZZ-logo" />
 
+                <div class="glove"></div>
+            </header>
+
+            <!-- Log Out Container -->
+            <div class="logout_container">
                 <!-- User ID / Server Name Label -->
-                <p id="login_id">
+                <p class="id_srv_label">
                     <script>
                         if (_MODE_BRANCH) {
                             document.write(String(location.host).split("-").shift() + " rev. " + _lver);
                         }
                     </script>
                 </p>
+                <!-- Log Out Button -->
+                <button class="btn_logout" onclick="DoPlaySound('IDR_WAV_OK'); switchAuthMode();" style="display: none">Log Out</button>
+            </div>
 
-                <div class="glove"></div>
-            </header>
-
-            <!-- Log Out Button -->
-            <div class="btn_logout" onclick="DoPlaySound('IDR_WAV_OK'); switchAuthMode();" style="display: none"><span>×</span></div>
+            <!-- Message Logs Area -->
+            <section class="msg_logs_area unselectable">
+                <div class="msg_contents">
+                    <p></p>
+                </div>
+            </section>
 
             <!-- Preferences Button -->
-            <div class="btn_preferences" class="unselectable">
+            <button class="btn_preferences" class="unselectable">
                 <p class="btn_preferences_text">Preferences High Grade Edition</p>
-            </div>
+            </button>
 
-            <!--ログ-->
-            <div id="launcher_log_area" class="unselectable">
-                <div class="msg"><p></p></div>
-            </div>
-            <!--ログインパネル-->
-            <div id="launcher_login_panel" class="">
+            <!-- Log In Area -->
+            <main id="launcher_login_panel" class="">
                 <div class="btn_login selsnd unselectable"></div>
                 <div class="check_save_id selsnd unselectable"></div>
                 <div class="btn_forgot selsnd unselectable" onClick="openDefBrowser('https://go.dev/play/p/SU85bU7vmUM')"></div>
@@ -1302,7 +1252,8 @@
                     <div class="anim"></div>
                     <p class="unselectable">Authenticating...</p>
                 </div>
-            </div>
+            </main>
+
             <!--メンテor認証不可状態時表示枠-->
             <div id="launcher_auth_maintenance" class="unselectable"></div>
             <!--アップデート-->

@@ -9,144 +9,6 @@
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
         <title>Monster Hunter Frontier Online Launcher</title>
         <style type="text/css">
-            #launcher_login_panel {
-                width: 300px;
-                height: 265px;
-                position: absolute;
-                left: 129px;
-                top: 140px;
-            }
-            #launcher_login_panel .btn_login {
-                position: absolute;
-                left: 0;
-                top: 167px;
-                width: 300px;
-                height: 64px;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-            }
-            #launcher_login_panel .btn_login:hover,
-            #launcher_login_panel .btn_login.hover {
-                background-position: 0px -64px;
-            }
-            #launcher_login_panel .btn_login.disabled:hover {
-                background-position: 0px 0px;
-                cursor: default;
-            }
-            #launcher_login_panel .check_save_id {
-                width: 125px;
-                height: 12px;
-                position: absolute;
-                left: 98px;
-                top: 235px;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-            }
-            #launcher_login_panel .check_save_id:hover,
-            #launcher_login_panel .check_save_id.hover {
-                background-position: 0px -12px;
-            }
-            #launcher_login_panel .btn_forgot {
-                width: 151px;
-                height: 13px;
-                position: absolute;
-                left: 73px;
-                top: 252px;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-            }
-            #launcher_login_panel .btn_forgot:hover,
-            #launcher_login_panel .btn_forgot.hover {
-                background-position: 0px -13px;
-            }
-            #launcher_login_panel .form_area {
-                width: 254px;
-                height: 146px;
-                position: absolute;
-                left: 19px;
-                top: 0;
-                background: no-repeat 0px 0px;
-            }
-            #launcher_login_panel .form_area * {
-                color: #fff;
-                font-family: "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
-                font-size: 12px;
-                outline: none;
-                border: none;
-                background: none;
-            }
-            #launcher_login_panel .form_area input#l_uid {
-                position: absolute;
-                left: 7px;
-                top: 24px;
-                width: 244px;
-            }
-            #launcher_login_panel .form_area input#l_pw {
-                position: absolute;
-                left: 7px;
-                top: 74px;
-                width: 244px;
-            }
-            #launcher_login_panel .form_area #l_srv {
-                position: absolute;
-                left: 8px;
-                top: 125px;
-                width: 244px;
-            }
-            #launcher_login_panel .form_area .sel_btn {
-                position: absolute;
-                left: 4px;
-                top: 119px;
-                width: 248px;
-                height: 24px;
-                background: no-repeat 228px 7px;
-                cursor: pointer;
-            }
-            #launcher_login_panel .form_area .l_srv_box {
-                width: 252px;
-                position: absolute;
-                left: 2px;
-                top: 143px;
-                padding: 3px 0 1px;
-            }
-            #launcher_login_panel .form_area .l_srv_box .box_top {
-                width: 252px;
-                height: 4px;
-                background: no-repeat 0px 0px;
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-            #launcher_login_panel .form_area .l_srv_box .box_mid {
-                width: 252px;
-                max-height: 216px;
-                overflow: hidden;
-                overflow-y: auto;
-                background: repeat-y 0px 0px;
-                position: relative;
-                margin-bottom: 2px;
-            }
-            #launcher_login_panel .form_area .l_srv_box .box_btm {
-                width: 252px;
-                height: 2px;
-                background: no-repeat 0px 0px;
-                position: absolute;
-                left: 0;
-                bottom: 0;
-            }
-            #launcher_login_panel .form_area .l_srv_box .srv {
-                width: 236px;
-                height: 20px;
-                padding: 6px 7px 0;
-                position: relative;
-                background: repeat-x 0px 0px;
-                margin-top: 1px;
-                margin-left: 1px;
-                cursor: pointer;
-            }
-            #launcher_login_panel .form_area .l_srv_box .srv:hover {
-                background-position: 0px -26px;
-            }
             #launcher_login_panel .progress {
                 position: absolute;
                 left: -7px;
@@ -203,38 +65,6 @@
                 position: absolute;
                 left: 0;
                 top: 128px;
-            }
-            body#hangame #launcher_login_panel,
-            body#dmm #launcher_login_panel {
-                top: 131px;
-            }
-            body#hangame #launcher_login_panel .btn_login,
-            body#dmm #launcher_login_panel .btn_login {
-                top: 200px;
-            }
-            body#hangame #launcher_login_panel .form_area,
-            body#dmm #launcher_login_panel .form_area {
-                height: 179px;
-            }
-            body#hangame #launcher_login_panel .form_area #l_srv,
-            body#dmm #launcher_login_panel .form_area #l_srv {
-                top: 158px;
-            }
-            body#hangame #launcher_login_panel .form_area .sel_btn,
-            body#dmm #launcher_login_panel .form_area .sel_btn {
-                top: 152px;
-            }
-            body#hangame #launcher_login_panel .form_area .l_srv_box,
-            body#dmm #launcher_login_panel .form_area .l_srv_box {
-                top: 176px;
-            }
-            body#hangame #launcher_login_panel .form_area form,
-            body#hangame #launcher_login_panel .check_save_id,
-            body#hangame #launcher_login_panel .btn_forgot,
-            body#dmm #launcher_login_panel .form_area form,
-            body#dmm #launcher_login_panel .check_save_id,
-            body#dmm #launcher_login_panel .btn_forgot {
-                display: none;
             }
             #launcher_auth_maintenance {
                 width: 426px;
@@ -869,36 +699,6 @@
                 left: 235px;
                 top: 14px;
             }
-            body#hangame #launcher_footer .btn.cog,
-            body#hangame #launcher_footer .btn.dmm {
-                display: none;
-            }
-            body#hangame #launcher_footer .btn.hangame {
-                width: 70px;
-                height: 26px;
-                background: no-repeat 0px 0px;
-                left: 142px;
-                top: 10px;
-                display: block;
-            }
-            body#hangame #launcher_footer p {
-                left: 226px;
-            }
-            body#dmm #launcher_footer .btn.cog,
-            body#dmm #launcher_footer .btn.hangame {
-                display: none;
-            }
-            body#dmm #launcher_footer .btn.dmm {
-                width: 107px;
-                height: 22px;
-                background: no-repeat 0px 0px;
-                left: 142px;
-                top: 10px;
-                display: block;
-            }
-            body#dmm #launcher_footer p {
-                left: 262px;
-            }
             #launcher_footer .share {
                 position: absolute;
                 right: 36px;
@@ -1117,45 +917,6 @@
                 background: #fff;
                 transition: background-color 0.4s linear 0;
             }
-            .xboxOnly,
-            .ps3Only,
-            .psvOnly,
-            .wiiuOnly {
-                display: none !important;
-            }
-            body#cog .cogHide,
-            body#cog .nhnOnly,
-            body#cog .dmmOnly {
-                display: none !important;
-            }
-            body#hangame .nhnHide,
-            body#hangame .cogOnly,
-            body#hangame .dmmOnly {
-                display: none !important;
-            }
-            body#dmm .dmmHide,
-            body#dmm .cogOnly,
-            body#dmm .nhnOnly {
-                display: none !important;
-            }
-            .spOnly,
-            .iosOnly,
-            .droidOnly {
-                display: none !important;
-            }
-            .consoleOnly,
-            .nfXboxOnly,
-            .nfPs3Only,
-            .nfPsVOnly {
-                display: none !important;
-            }
-            .nintendoOnly,
-            .playstation3Only,
-            .playstation4Only,
-            .playstationVitaOnly {
-                display: none !important;
-            }
-
             #dev {
                 display: block;
                 width: 100%;
@@ -1172,15 +933,13 @@
         <!-- css -->
         <link rel="stylesheet" href="css/img.css?v=191016" />
         <link rel="stylesheet" href="../css/style.css" />
+        <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap" />
         <!-- js -->
         <script type="text/javascript" src="js/jquery.js"></script>
-        <script>
-            var _lver = "z15887";
-        </script>
         <script type="text/javascript" src="js/launcher.js?v=191016"></script>
     </head>
 
@@ -1211,13 +970,7 @@
             <!-- Log Out Container -->
             <div class="logout_container">
                 <!-- User ID / Server Name Label -->
-                <p class="id_srv_label">
-                    <script>
-                        if (_MODE_BRANCH) {
-                            document.write(String(location.host).split("-").shift() + " rev. " + _lver);
-                        }
-                    </script>
-                </p>
+                <p class="id_srv_label"></p>
                 <!-- Log Out Button -->
                 <button class="btn_logout" onclick="DoPlaySound('IDR_WAV_OK'); switchAuthMode();" style="display: none">Log Out</button>
             </div>
@@ -1236,18 +989,20 @@
 
             <!-- Log In Area -->
             <main id="launcher_login_panel" class="">
-                <div class="btn_login selsnd unselectable"></div>
-                <div class="check_save_id selsnd unselectable"></div>
-                <div class="btn_forgot selsnd unselectable" onClick="openDefBrowser('https://go.dev/play/p/SU85bU7vmUM')"></div>
                 <div class="form_area">
-                    <form action="javascript:void(0);">
+                    <form>
                         <input type="text" border="0" align="left" name="l_uid" id="l_uid" default="Enter User ID" value="Enter User ID" accesskey="i" />
                         <input type="password" border="0" align="left" name="l_pw" id="l_pw" default="" value="" accesskey="p" />
                     </form>
-                    <div id="l_srv" class="unselectable unselectable"></div>
+                    <button id="l_srv" class="unselectable unselectable"></button>
                     <div class="sel_btn unselectable"></div>
-                    <div class="l_srv_box unselectable"></div>
+                    <ul class="srv_sel_box unselectable"></ul>
                 </div>
+
+                <div class="btn_login selsnd unselectable"></div>
+                <div class="check_save_id selsnd unselectable"></div>
+                <div class="btn_forgot selsnd unselectable" onClick="openDefBrowser('https://go.dev/play/p/SU85bU7vmUM')"></div>
+
                 <div class="progress unselectable" onClick="return false;" style="display: none">
                     <div class="anim"></div>
                     <p class="unselectable">Authenticating...</p>
@@ -1286,19 +1041,22 @@
                 <div class="article_frame"><div class="article"></div></div>
                 <div class="btn_back selsnd" onClick="hideInfoDetail();"></div>
             </div>
-            <!--メニュー-->
+
+            <!-- Menu -->
             <div id="launcher_menu" class="unselectable">
-                <div class="dmmb btn" onClick="openDefBrowser('http://www.dmm.com/lp/game/mhfg/index001_html/=/navi=none/');"></div>
-                <div class="dmmpt btn" onClick="openDefBrowser('http://www.dmm.com/netgame/-/basket/');"></div>
-                <div class="hangameb btn" onClick="openDefBrowser('http://mhf-z.hange.jp/');"></div>
-                <div class="hancoin btn" onClick="openDefBrowser('http://www.hange.jp/');"></div>
-                <div class="cogb btn" onClick="openDefBrowser('https://web.archive.org/web/20190623215458/http://cog-members.mhf-z.jp/guide/beginner_guide/');"></div>
-                <div class="cogOnly mypage btn" onClick="openDefBrowser('https://github.com/ZeruLight/Erupe');"></div>
-                <div class="nhnOnly mypage btn" onClick="openDefBrowser('http://hangame-members.mhf-z.jp/launcher/mypage.html');"></div>
-                <div class="dmmmypage btn" onClick="openDefBrowser('https://members.mh-frontier.jp/auth/dmm_regist/mypage_dmm.php');"></div>
-                <div class="inquiry btn" onClick="openDefBrowser('https://discord.gg/CFnzbhQ');"></div>
-                <div class="manual btn" onClick="openDefBrowser('https://zerulight.github.io/MHFZManual/');"></div>
+                <!-- Member Site -->
+                <div class="cogb btn" onClick="openMemberSite();"></div>
+
+                <!-- Online Manual -->
+                <div class="manual btn" onClick="openManual();"></div>
+
+                <!-- Inquiry -->
+                <div class="inquiry btn" onClick=""></div>
+
+                <!-- My Page -->
+                <div class="cogOnly mypage btn" onClick=""></div>
             </div>
+
             <!--フッター-->
             <div id="launcher_footer" class="unselectable">
                 <div class="glove"></div>

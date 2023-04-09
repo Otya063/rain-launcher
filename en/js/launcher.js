@@ -79,13 +79,13 @@ function duc(e) {
 } !function () {
     "use strict";
     _EUCS.xhrspr = "<!--###content###-->",
-        _EUCS.dmsrvs = "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Localhost' cog='pre' /></server_groups>",
+        _EUCS.dmsrvs = "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain (Localhost)'/></server_groups>",
         _EUCS.anch = "You can create a new character. <br> Press [Start Game] to create your character.",
         _EUCS.cwpt = "Weapon",
         _EUCS.pcst = "Last Online",
         _EUCS.afac = "You do not have permission to do this.",
         _EUCS.afde = "Character encoding not supported.",
-        _EUCS.afnsrv = "Select a server and press the [Log In] button.",
+        _EUCS.afnsrv = "You need to select a server.",
         _EUCS.afipe = "Wrong ID/Password.",
         _EUCS.af102 = "The server is busy at the moment.<br>Please try again later.",
         _EUCS.af301 = "The ID you have entered is temporarily suspended.",
@@ -188,6 +188,8 @@ function DoGetServerListXml() {
     try {
         return window.external.getServerListXml()
     }
+
+    // display in local environment
     catch (e) {
         return extCatchReturn(duc("dmsrvs"))
     }
@@ -694,6 +696,7 @@ function beginLoadBnr() {
         }
     })
 }
+
 var _INF_URL = "./launcher_list.html", _INF_SEL_LI = "#launcher_info_list", _INF_SEL_US = "#launcher_info_list img, #launcher_info_list a", _INF_SEL_BACK = "#launcher_bnr,#launcher_info_list", _INF_SEL_DETAIL = "#launcher_info_detail", _INF_SEL_FRAME = _INF_SEL_DETAIL + " .article_frame", _INF_SEL_BODY = _INF_SEL_FRAME + " .article", _INF_SEL_DUS = "#launcher_info_detail img, #launcher_info_detail a";
 
 function formattingInfoDetail(e, r) {
@@ -1140,26 +1143,25 @@ function startUpdateProcess() {
             ) : finishUpdateProcess()
 }
 
-var _AT_IS_ENABLED = !0,
+let _AT_IS_ENABLED = !0,
     _AT_ID = "",
     _AT_PW = "",
     _AT_FRAME = null,
     _AT_FRAME_CB = Math.floor(1e3 * Math.random()),
     _AT_TOI = null,
     _AT_STATUS = "AUTH_NULL",
-    _AT_COG_MODE = "c",
     _AT_SEL_ID = "#launcher_login_panel .form_area input#l_uid",
     _AT_SEL_PW = "#launcher_login_panel .form_area input#l_pw",
-    _AT_SEL_SBOX = "#launcher_login_panel .form_area .l_srv_box",
-    _AT_SEL_SUNIT = "#launcher_login_panel .form_area .l_srv_box .srv",
-    _AT_SEL_SRV = "#launcher_login_panel .form_area #l_srv",
+    _AT_SEL_SRV_BOX = "#launcher_login_panel .form_area .srv_sel_box",
+    _AT_SEL_SUNIT = "#launcher_login_panel .form_area .srv_sel_box .srv",
+    _AT_SEL_SRV_AREA = "#launcher_login_panel .form_area #l_srv",
     _AT_SEL_SBTN = "#launcher_login_panel .form_area .sel_btn",
     _AT_SEL_LBTN = "#launcher_login_panel .btn_login",
     _AT_SEL_ICHK = "#launcher_login_panel .check_save_id",
     _AT_SEL_PFGT = "#launcher_login_panel .btn_forgot",
     _AT_SBOX_TOI = null,
-    _AT_SBOX_SEL_ENABLED = !0,
-    _AT_SBOX_IS_ENABLED = !1,
+    _AT_SBOX_SEL_ENABLED = true,
+    _AT_SBOX_IS_ENABLED = false,
     _AT_ANIM_TOI = null,
     _AT_IS_AUTOLC = !1,
     _AT_MODE = "",
@@ -1168,7 +1170,7 @@ var _AT_IS_ENABLED = !0,
     _AT_BB_TOI = null,
     _AT_SVID,
     _AT_SVID_DEF = "1000",
-    _AT_IS_NO_SRV;
+    _AT_IS_UNSELECTED_SRV = false;
 
 function onReceiveMsg(evt) {
     "use strict";
@@ -1220,7 +1222,7 @@ function loginPolling() {
                         ), (
                             _STORAGE["pw" + _EXE_MUTEX] = $(_AT_SEL_PW).val(),
                             writeCookie()
-                        ), $(".id_srv_label").text($(_AT_SEL_ID).val() + "@" + $(_AT_SEL_SRV).text()), !isTrEnabled()
+                        ), $(".id_srv_label").text($(_AT_SEL_ID).val() + "@" + $(_AT_SEL_SRV_AREA).text()), !isTrEnabled()
                     ))
                     return void showNoTRDialog(); startUpdateProcess();
                 break;
@@ -1241,7 +1243,7 @@ function loginPolling() {
                         break;
                     case "SIGN_EALERT":
                         if ("1018" === _AT_SVID) onAuthError(duc("SIGN_EALERT_COOP"));
-                        else { var t = $(_AT_SEL_SRV).text(); 0 <= t.indexOf("④") ? onAuthError(duc("SIGN_EALERT_COOP")) : 0 <= t.toUpperCase().indexOf("XBOX") ? onAuthError(duc("SIGN_EALERT_COOP")) : onAuthError(duc(E), "r") }
+                        else { var t = $(_AT_SEL_SRV_AREA).text(); 0 <= t.indexOf("④") ? onAuthError(duc("SIGN_EALERT_COOP")) : 0 <= t.toUpperCase().indexOf("XBOX") ? onAuthError(duc("SIGN_EALERT_COOP")) : onAuthError(duc(E), "r") }
                         break;
                     case "SIGN_ESUSPEND":
                     case "SIGN_EELIMINATE":
@@ -1323,47 +1325,89 @@ function lockAuthEdit() { "use strict"; _AT_SBOX_SEL_ENABLED = !1, $(_AT_SEL_ID)
 
 function unlockAuthEdit() { "use strict"; _AT_SBOX_SEL_ENABLED = !0, $(_AT_SEL_ID).attr("disabled", !1), $(_AT_SEL_PW).attr("disabled", !1), $(".btn_preferences").show() }
 
-function switchAuthSrv(e) { "use strict"; _AT_COG_MODE = $(e).attr("mode"), _AT_SVID = $(e).attr("svid"), _AT_IS_NO_SRV = "true" === $(e).attr("block"), $(_AT_SEL_SRV).text($(e).text()) }
+function switchAuthSrv(e) { "use strict"; _AT_SVID = $(e).attr("svid"), _AT_IS_UNSELECTED_SRV = $(e).attr("block") === "true", $(_AT_SEL_SRV_AREA).text($(e).text()) }
 
-function hideSrvSelList() { "use strict"; $(_AT_SEL_SBOX).hide(), _AT_SBOX_IS_ENABLED = !1 }
+function hideSrvSelList() { "use strict"; $(_AT_SEL_SRV_BOX).hide(), _AT_SBOX_IS_ENABLED = !1 }
 
 function initSrvSelList() {
     "use strict";
-    var e = "<div>" + DoGetServerListXml() + "</div>",
-        E = DoGetIniLastServerIndex();
-    E = parseInt(E, 10),
-        $(_AT_SEL_SBOX).children().remove(),
-        $(_AT_SEL_SBOX).append($('<div class="box_top"></div><div class="box_mid"></div><div class="box_btm"></div>')),
-        $(e).find("group").each(function (e, E) {
-            var t = $(E).attr("svid") ?
-                $(E).attr("svid") : _AT_SVID_DEF, r = "" === $(E).attr("ip");
-            $(_AT_SEL_SBOX + " .box_mid").append($("<div" + (r ? ' block="true"' : "") + ' class="srv" idx="' + e + '" svid="' + t + '" mode="' + ("pre" === $(E).attr("cog") ? "p" : "c") + '">' + $(E).attr("nam") + "</div>"))
-        }),
-        (E < 0 || E > $(_AT_SEL_SUNIT).length) && (E = 0),
-        switchAuthSrv($(_AT_SEL_SUNIT)[E]),
-        DoSetIniLastServerIndex(String(E)),
-        $(_AT_SEL_SBOX).hide(), 1 < $(_AT_SEL_SUNIT).length ? (_AT_FOCUS_ELMS.push(_AT_SEL_SBTN),
-            $(_AT_SEL_SBTN).mousedown(function () {
-                _AT_SBOX_SEL_ENABLED && (DoPlaySound("IDR_WAV_OK"),
-                    _AT_SBOX_IS_ENABLED ? hideSrvSelList() : ($(_AT_SEL_SBOX).show(), DoBeginDrag(!1), forceFocus(_AT_SEL_SBOX + " .box_mid"), _AT_SBOX_IS_ENABLED = !0))
-            }),
-            $(_AT_SEL_SUNIT).mouseover(function () {
-                DoPlaySound("IDR_WAV_SEL")
-            }),
-            $(_AT_SEL_SUNIT).mousedown(function () {
-                DoPlaySound("IDR_WAV_OK"), _AT_SBOX_TOI && (clearTimeout(_AT_SBOX_TOI), _AT_SBOX_TOI = null),
-                    switchAuthSrv(this),
-                    E = parseInt($(this).attr("idx"), 10),
-                    DoSetIniLastServerIndex(String(E)),
-                    hideSrvSelList()
-            })) :
-            $(_AT_SEL_SBTN).hide(),
-        $(document).click(function () {
-            hideSrvSelList()
-        }),
-        $(_AT_SEL_SBOX + " .box_mid," + _AT_SEL_SBTN).click(function (e) {
-            e.stopPropagation()
-        })
+
+    // get server list xml data and wrap it in a div element
+    var serverList = "<div>" + DoGetServerListXml() + "</div>";
+
+    // get the index of the last selected server from INI settings and convert it to an integer
+    // in local environment, lastSelectedIndex = 0;
+    var lastSelectedIndex = DoGetIniLastServerIndex();
+    lastSelectedIndex = parseInt(lastSelectedIndex, 10);
+
+    // remove all children of the server selection list
+    $(_AT_SEL_SRV_BOX).children().remove();
+
+    // loop through each group in the server list xml data and add a server element to the server selection list for each one
+    $(serverList).find("group").each(function (index, srvItem) {
+        var svid = $(srvItem).attr("svid") ? $(srvItem).attr("svid") : _AT_SVID_DEF;
+        var isBlocked = $(srvItem).attr("ip") === "";
+        var name = $(srvItem).attr("nam");
+
+        // create and append the server element to the server selection list
+        $(_AT_SEL_SRV_BOX).append($("<li" + (isBlocked ? ' block="true"' : "") + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + "</li>"))
+    });
+
+    // if the last selected index is out of bounds, set it to 0
+    if (lastSelectedIndex < 0 || lastSelectedIndex > $(_AT_SEL_SUNIT).length) {
+        lastSelectedIndex = 0;
+    }
+
+    // select the server at the last selected index and update the ini setting for the last selected index
+    switchAuthSrv($(_AT_SEL_SUNIT)[lastSelectedIndex]);
+    DoSetIniLastServerIndex(String(lastSelectedIndex));
+
+    // hide the server selection list
+    $(_AT_SEL_SRV_BOX).hide();
+
+    // if there's more than one server, enable server selection
+    if (1 < $(_AT_SEL_SUNIT).length) {
+
+        // add the server selection button to the focus elements and bind the mousedown event to it
+        _AT_FOCUS_ELMS.push(_AT_SEL_SBTN);
+        $(_AT_SEL_SBTN).mousedown(function () {
+            if (_AT_SBOX_SEL_ENABLED) {
+                DoPlaySound("IDR_WAV_OK");
+                if (_AT_SBOX_IS_ENABLED) {
+                    hideSrvSelList();
+                } else {
+                    $(_AT_SEL_SRV_BOX).show();
+                    DoBeginDrag(!1);
+                    forceFocus(_AT_SEL_SRV_BOX);
+                    _AT_SBOX_IS_ENABLED = !0;
+                }
+            }
+        });
+
+        // the mouseover event to each server element to play a sound when hovering
+        $(_AT_SEL_SUNIT).mouseover(function () {
+            DoPlaySound("IDR_WAV_SEL");
+        });
+
+        // the mousedown event to each server element to select it as the active server, and hide the server selection list
+        $(_AT_SEL_SUNIT).mousedown(function () {
+            DoPlaySound("IDR_WAV_OK");
+            _AT_SBOX_TOI && (clearTimeout(_AT_SBOX_TOI), _AT_SBOX_TOI = null);
+            switchAuthSrv(this);
+            var index = parseInt($(this).attr("idx"), 10);
+            DoSetIniLastServerIndex(String(index));
+            hideSrvSelList();
+        });
+    } else {
+
+        // if there's only one server, hide the server selection button
+        $(_AT_SEL_SBTN).hide();
+    }
+
+    // the click event to the server selection box and button to stop clicks from propagating to the document
+    $(_AT_SEL_SRV_BOX + _AT_SEL_SBTN).mousedown(function (e) {
+        e.stopPropagation();
+    })
 }
 
 function chechIdInputState() {
@@ -1539,7 +1583,7 @@ function switchAuthMode() {
 
 function initAuth() {
     "use strict";
-    if (_COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ID), _AT_FOCUS_ELMS.push(_AT_SEL_PW)), initSrvSelList(), _AT_FOCUS_ELMS.push(_AT_SEL_LBTN), _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)), $(_AT_SEL_LBTN).click(function () { _AT_IS_NO_SRV ? onAuthError(duc("afnsrv")) : (addEvent("login_click"), beginAuthProcess()) }), _AT_IS_AUTOLC = isAutoLogin(), _COG_MODE) {
+    if (_COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ID), _AT_FOCUS_ELMS.push(_AT_SEL_PW)), initSrvSelList(), _AT_FOCUS_ELMS.push(_AT_SEL_LBTN), _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)), $(_AT_SEL_LBTN).click(function () { _AT_IS_UNSELECTED_SRV ? onAuthError(duc("afnsrv"), "r") : (addEvent("login_click"), beginAuthProcess()) }), _AT_IS_AUTOLC = isAutoLogin(), _COG_MODE) {
         readCookie();
         var e = "";
         "" === (e = DoGetUserId()) && _MODE_BRANCH && (e = DoDebugGetIniUserId()),
@@ -1837,17 +1881,35 @@ $(function () {
     $("p:not(.selectable),img,li,td,th,.unselectable,.btn,.modal").attr("unselectable", "on"),
         $("p:not(.selectable),img,li,td,th,.unselectable,.btn,.modal").attr("onSelectStart", "return false;"),
 
-        // when clicking preferences button
-        $(".btn_preferences").click(function () {
-            _CONF_SND_BLOCK = !0, clearBnrSwitchTimer(), stopExLog(), addEvent("config_click"), DoOpenMhlConfig()
+        // play sound when hovering lougout button
+        $(".btn_logout").mouseover(function () {
+            DoPlaySound("IDR_WAV_SEL");
         }),
+
+        // play sound when clicking lougout button
+        $(".btn_logout").click(function () {
+            DoPlaySound("IDR_WAV_SEL");
+        }),
+
+        // play sound when hovering preferences button
+        $(".btn_preferences_text").mouseover(function () {
+            _CONF_SND_BLOCK ? (_CONF_SND_BLOCK = !1,
+                startBnrSwitchTimer(),
+                startExLog()) : DoPlaySound("IDR_WAV_SEL")
+        }),
+
+        // play sound when clicking preferences button
+        $(".btn_preferences").click(function () {
+            _CONF_SND_BLOCK = !0,
+                clearBnrSwitchTimer(),
+                stopExLog(),
+                addEvent("config_click"),
+                DoOpenMhlConfig();
+        }),
+
         // prevents the event from bubbling up 
         $(".btn_preferences").mouseover(function (e) {
             e.stopPropagation();
-        }),
-        // when hovering preferences button
-        $(".btn_preferences_text").mouseover(function () {
-            _CONF_SND_BLOCK ? (_CONF_SND_BLOCK = !1, startBnrSwitchTimer(), startExLog()) : DoPlaySound("IDR_WAV_SEL")
         }),
 
         $("#launcher_menu a,.selsnd,.btn").mouseover(function () { DoPlaySound("IDR_WAV_SEL"), DoBeginDrag(!1) }),

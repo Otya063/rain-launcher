@@ -27,6 +27,15 @@ img {
     border-style: none;
 }
 
+label,
+input,
+button {
+    color: white;
+    outline: none;
+    border: none;
+    background: none;
+}
+
 html,
 body {
     width: 100%;
@@ -122,6 +131,7 @@ h1 {
     top: 38px;
     border-radius: 0 15px 15px 0;
     background: rgba(0, 0, 0, 0.5);
+    user-select: none;
 
     // mhfzz logo
     .mhf_zz_logo {
@@ -183,149 +193,22 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Preferences Button (後でログインエリアと統合)
-=======================================================*/
-.btn_preferences {
-    width: 25%;
-    height: 6%;
-    position: absolute;
-    left: 137px;
-    bottom: 48px;
-    border: gray solid 2px;
-    border-radius: 20px;
-    cursor: pointer;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    transition: all 0.2s;
-
-    // gear icon
-    &::before {
-        content: "";
-        position: absolute;
-        width: 2.4em;
-        height: 2.4em;
-        top: 0;
-        left: 1.5%;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-settings' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='%23d1c0a5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z'%3E%3C/path%3E%3Cpath d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0'%3E%3C/path%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-        transition: all 0.2s;
-    }
-
-    // arrow icon
-    &::after {
-        content: "";
-        position: absolute;
-        margin: auto;
-        top: 0;
-        bottom: 0;
-        right: 8%;
-        width: 6px;
-        height: 6px;
-        border-top: 3px solid #d1c0a5;
-        border-right: 3px solid #d1c0a5;
-        transition: all 0.2s;
-        transform: rotate(45deg);
-    }
-
-    // "Preferences High Grade Edition" text
-    .btn_preferences_text {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        top: 0%;
-        left: -10%;
-        width: 335px;
-        height: 100%;
-        color: #d1c0a5;
-        font-size: 1.3em;
-        white-space: nowrap;
-        cursor: pointer;
-        transform: scale(0.85, 1);
-    }
-
-    // when hovering preferences button
-    &:hover {
-        // gear icon
-        &::before {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-settings' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='%23484343' fill='%23fae7c9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z'%3E%3C/path%3E%3Cpath d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0'%3E%3C/path%3E%3C/svg%3E");
-            transform: scale(1.1, 1.1);
-        }
-
-        // arrow icon
-        &::after {
-            right: 5%;
-        }
-
-        // text
-        color: #fae7c9;
-        background: rgba(72, 67, 67, 0.8);
-    }
-}
-
-/*=========================================================
-　　　　　Message Logs Area (後でログインエリアと統合)
-=======================================================*/
-.msg_logs_area {
-    width: 410px;
-    height: 86px;
-    padding: 6px 8px;
-    position: absolute;
-    left: 65px;
-    bottom: 90px;
-    border: #a5927b79 0.5px solid;
-    background: rgba(0, 0, 0, 0.5);
-
-    .msg_contents {
-        display: block;
-        width: 410px;
-        height: 86px;
-        font-size: 12px;
-        line-height: 14px;
-        color: white;
-        overflow: hidden;
-        overflow-y: auto;
-        position: absolute;
-
-        p {
-            width: 400px;
-        }
-
-        span.green {
-            color: greenyellow;
-        }
-
-        span.red {
-            color: red;
-        }
-
-        span.yellow {
-            color: yellow;
-        }
-
-        span.blue {
-            color: skyblue;
-        }
-    }
-}
-
-/*=========================================================
 　　　　　Log In Area
 =======================================================*/
 #launcher_login_panel {
-    width: 300px;
-    height: 265px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
     position: absolute;
-    left: 129px;
-    top: 140px;
+    width: 40%;
+    height: 65%;
+    left: 5%;
+    top: 27%;
 
     // login button
     .btn_login {
-        position: absolute;
-        left: 0;
-        top: 167px;
         width: 300px;
         height: 64px;
         cursor: pointer;
@@ -347,9 +230,6 @@ h1 {
     .check_save_id {
         width: 125px;
         height: 12px;
-        position: absolute;
-        left: 98px;
-        top: 235px;
         cursor: pointer;
 
         &:hover {
@@ -361,9 +241,6 @@ h1 {
     .btn_forgot {
         width: 151px;
         height: 13px;
-        position: absolute;
-        left: 73px;
-        top: 252px;
         cursor: pointer;
 
         &:hover {
@@ -371,49 +248,62 @@ h1 {
         }
     }
 
-    // input section
-    .form_area {
-        width: 254px;
-        height: 146px;
-        position: absolute;
-        left: 19px;
-        top: 0;
+    // authentication section
+    .auth_section {
+        width: 100%;
+        height: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
 
-        * {
-            color: white;
-            outline: none;
-            border: none;
-            background: none;
-        }
+        // each group of user_id and password
+        .auth_group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
 
-        // user_id input
-        #l_uid {
-            position: absolute;
-            left: 7px;
-            top: 24px;
-            width: 244px;
-        }
+            // label area
+            label {
+                padding-bottom: 2%;
+            }
 
-        // password input
-        #l_pw {
-            position: absolute;
-            left: 7px;
-            top: 74px;
-            width: 244px;
+            // input area
+            input {
+                height: 40px;
+                background: #00000099;
+                padding-left: 5%;
+                font-size: 1.4rem;
+
+                &:-ms-input-placeholder {
+                    color: #7f8095;
+                }
+
+                // disable clear button on IE
+                &::-ms-clear {
+                    display: none;
+                }
+            }
         }
+    }
+
+    /* Server Group Section
+====================================================*/
+    .server_selector_group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         // server selection
         #l_srv {
-            position: absolute;
-            left: 8px;
-            top: 125px;
-            width: 244px;
             font-size: 1.2rem;
             text-align: left;
+            color: white;
         }
 
         .sel_btn {
-            position: absolute;
+            //position: absolute;
             left: 4px;
             top: 119px;
             width: 248px;
@@ -423,6 +313,7 @@ h1 {
             cursor: pointer;
         }
 
+        // sever list box
         .srv_sel_box {
             position: absolute;
             top: 143px;
@@ -437,6 +328,7 @@ h1 {
             background: rgba(0, 0, 0, 0.8);
             z-index: 100;
 
+            // each sever item
             .srv {
                 width: 236px;
                 height: 20px;
@@ -446,12 +338,139 @@ h1 {
                 margin-top: 1px;
                 margin-left: 1px;
                 cursor: pointer;
-    
+
                 &:hover {
                     background-position: 0px -26px;
                 }
             }
         }
+    }
 
+    /* Message Logs Section
+====================================================*/
+    .msg_logs_area {
+        width: 410px;
+        height: 86px;
+        padding: 6px 8px;
+        //position: absolute;
+        left: 65px;
+        bottom: 90px;
+        border: #a5927b79 0.5px solid;
+        background: rgba(0, 0, 0, 0.5);
+
+        // message contents
+        .msg_contents {
+            display: block;
+            width: 410px;
+            height: 86px;
+            font-size: 12px;
+            line-height: 14px;
+            color: white;
+            overflow: hidden;
+            overflow-y: auto;
+            position: absolute;
+
+            // text initial setting
+            p {
+                width: 400px;
+            }
+
+            // green color
+            span.green {
+                color: greenyellow;
+            }
+
+            // red color
+            span.red {
+                color: red;
+            }
+
+            // yellow color
+            span.yellow {
+                color: yellow;
+            }
+
+            // blue color
+            span.blue {
+                color: skyblue;
+            }
+        }
+    }
+
+    /* Preferences Button
+====================================================*/
+    .btn_preferences {
+        width: 65%;
+        height: 8.5%;
+        position: relative;
+        border: gray solid 2px;
+        border-radius: 20px;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        transition: all 0.2s;
+
+        // gear icon
+        &::before {
+            content: "";
+            position: absolute;
+            width: 2.4em;
+            height: 2.4em;
+            top: 0;
+            left: 1.5%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-settings' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='%23d1c0a5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z'%3E%3C/path%3E%3Cpath d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            transition: all 0.2s;
+            transform: rotateZ(540deg);
+        }
+
+        // arrow icon
+        &::after {
+            content: "";
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            right: 8%;
+            width: 6px;
+            height: 6px;
+            border-top: 3px solid #d1c0a5;
+            border-right: 3px solid #d1c0a5;
+            transition: all 0.2s;
+            transform: rotate(45deg);
+        }
+
+        // "Preferences High Grade Edition" text
+        .btn_preferences_text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            color: #d1c0a5;
+            font-size: 1.3em;
+            white-space: nowrap;
+            cursor: pointer;
+            transform: scale(0.85, 1);
+        }
+
+        // when hovering preferences button
+        &:hover {
+            // gear icon
+            &::before {
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-settings' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='%23484343' fill='%23fae7c9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z'%3E%3C/path%3E%3Cpath d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0'%3E%3C/path%3E%3C/svg%3E");
+                transform: scale(1.1, 1.1);
+            }
+
+            // arrow icon
+            &::after {
+                right: 5%;
+            }
+
+            // text
+            color: #fae7c9;
+            background: rgba(72, 67, 67, 0.8);
+        }
     }
 }

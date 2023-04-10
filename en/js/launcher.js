@@ -85,14 +85,14 @@ function duc(e) {
         _EUCS.pcst = "Last Online",
         _EUCS.afac = "You do not have permission to do this.",
         _EUCS.afde = "Character encoding not supported.",
-        _EUCS.afnsrv = "You need to select a server.",
+        _EUCS.nosrvsel = "No server is currently selected. Please select one from the list.",
         _EUCS.afipe = "Wrong ID/Password.",
         _EUCS.af102 = "The server is busy at the moment.<br>Please try again later.",
         _EUCS.af301 = "The ID you have entered is temporarily suspended.",
         _EUCS.af304 = "Authentication has been temporarily halted due to entering multiple incorrect passwords.<br>Please wait an hour and log in again.",
         _EUCS.aferr = "Unknown error occurred.",
         _EUCS.af321 = "The security card data is different.",
-        _EUCS.afipl = "After entering your ID and Password,<br>select a server and press the [Log In] button.",
+        _EUCS.noidpass = "First, please enter your User ID and Password.",
         _EUCS.uflm0 = "The server is currently under maintenance and cannot be joined.<br>Please try again later.",
         _EUCS.dmb0 = "Register now",
         _EUCS.dmb1 = "Refresh",
@@ -1150,12 +1150,12 @@ let _AT_IS_ENABLED = !0,
     _AT_FRAME_CB = Math.floor(1e3 * Math.random()),
     _AT_TOI = null,
     _AT_STATUS = "AUTH_NULL",
-    _AT_SEL_ID = "#launcher_login_panel .form_area input#l_uid",
-    _AT_SEL_PW = "#launcher_login_panel .form_area input#l_pw",
-    _AT_SEL_SRV_BOX = "#launcher_login_panel .form_area .srv_sel_box",
-    _AT_SEL_SUNIT = "#launcher_login_panel .form_area .srv_sel_box .srv",
-    _AT_SEL_SRV_AREA = "#launcher_login_panel .form_area #l_srv",
-    _AT_SEL_SBTN = "#launcher_login_panel .form_area .sel_btn",
+    _AT_SEL_ID = "#launcher_login_panel .auth_section .auth_group .auth_userid",
+    _AT_SEL_PW = "#launcher_login_panel .auth_section .auth_group .auth_password",
+    _AT_SEL_SRV_AREA = "#launcher_login_panel .server_selector_group #l_srv",
+    _AT_SEL_SRV_BOX = "#launcher_login_panel .server_selector_group .srv_sel_box",
+    _AT_SEL_SUNIT = "#launcher_login_panel .server_selector_group .srv_sel_box .srv",
+    _AT_SEL_SBTN = "#launcher_login_panel .server_selector_group .sel_btn",
     _AT_SEL_LBTN = "#launcher_login_panel .btn_login",
     _AT_SEL_ICHK = "#launcher_login_panel .check_save_id",
     _AT_SEL_PFGT = "#launcher_login_panel .btn_forgot",
@@ -1333,7 +1333,7 @@ function initSrvSelList() {
     "use strict";
 
     // get server list xml data and wrap it in a div element
-    var serverList = "<div>" + DoGetServerListXml() + "</div>";
+    const serverList = "<div>" + DoGetServerListXml() + "</div>";
 
     // get the index of the last selected server from INI settings and convert it to an integer
     // in local environment, lastSelectedIndex = 0;
@@ -1410,13 +1410,6 @@ function initSrvSelList() {
     })
 }
 
-function chechIdInputState() {
-    "use strict"; "" ===
-        $(_AT_SEL_ID).val()
-        ? ($(_AT_SEL_ID).val($(_AT_SEL_ID).attr("default")), $(_AT_SEL_ID).css("color", "#7f8095"))
-        : $(_AT_SEL_ID).css("color", "#fff")
-}
-
 function showAuthProgress() {
     "use strict";
     var e = 0;
@@ -1475,8 +1468,8 @@ function beginAuthProcess(e) {
             switchEvtPhase("auth"),
             switchAuthMode(), _COG_MODE
         ) {
-            if ("" === $(_AT_SEL_ID).val() || $(_AT_SEL_ID).val() === $(_AT_SEL_ID).attr("default"))
-                onAuthError(duc("afipl"), "r");
+            if ("" === $(_AT_SEL_ID).val())
+                onAuthError(duc("noidpass"), "r")
             else if (authExec()) {
                 _AT_IS_ENABLED = !1,
                     lockAuthEdit(),
@@ -1564,10 +1557,6 @@ function switchAuthMode() {
                         switch (_AT_FOCUS_ELMS[E]) {
                             case _AT_SEL_SBTN: _AT_SBOX_IS_ENABLED || $(_AT_SEL_SBTN).mousedown();
                                 break;
-                            case _AT_SEL_ID: removeAuthHover(), E++, E = _AT_FOCUS_ELMS.length <= E ? 0 : E, $(_AT_FOCUS_ELMS[E]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[E]);
-                                break;
-                            case _AT_SEL_PW: "" !== $(_AT_SEL_PW).val() && $(_AT_SEL_LBTN).click();
-                                break;
                             default: $(_AT_FOCUS_ELMS[E]).click()
                         }t = !1;
                     break;
@@ -1583,19 +1572,16 @@ function switchAuthMode() {
 
 function initAuth() {
     "use strict";
-    if (_COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ID), _AT_FOCUS_ELMS.push(_AT_SEL_PW)), initSrvSelList(), _AT_FOCUS_ELMS.push(_AT_SEL_LBTN), _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)), $(_AT_SEL_LBTN).click(function () { _AT_IS_UNSELECTED_SRV ? onAuthError(duc("afnsrv"), "r") : (addEvent("login_click"), beginAuthProcess()) }), _AT_IS_AUTOLC = isAutoLogin(), _COG_MODE) {
+    if (_COG_MODE && initSrvSelList(), _AT_FOCUS_ELMS.push(_AT_SEL_LBTN), _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)), $(_AT_SEL_LBTN).click(function () { _AT_IS_UNSELECTED_SRV ? (onAuthError(duc("nosrvsel"), "r"), DoPlaySound("IDR_WAV_OK")) : (addEvent("login_click"), beginAuthProcess()) }), _AT_IS_AUTOLC = isAutoLogin(), _COG_MODE) {
         readCookie();
         var e = "";
         "" === (e = DoGetUserId()) && _MODE_BRANCH && (e = DoDebugGetIniUserId()),
             "" === e && _STORAGE["cogid" + _EXE_MUTEX] && (e = _STORAGE["cogid" + _EXE_MUTEX]),
             $(_AT_SEL_ID).val(e),
-            chechIdInputState(),
-            $(_AT_SEL_ID).blur(function () { chechIdInputState() }),
             $(_AT_SEL_ID).focus(function () {
-                DoPlaySound("IDR_WAV_OK"),
-                    $(_AT_SEL_ID).val() === $(_AT_SEL_ID).attr("default") && ($(_AT_SEL_ID).val(""), $(_AT_SEL_ID).css("color", "#fff")),
-                    setAuthHover(_AT_SEL_ID)
+                DoPlaySound("IDR_WAV_OK");
             });
+
         var E = "";
         if (
             "" === (E = DoGetPassword()) && _MODE_BRANCH && (E = DoDebugGetIniPassword()),
@@ -1741,10 +1727,51 @@ function clearLog() { "use strict"; _CACHE_CR1 = "", $(_SEL_LOG + " p").html("")
 function debugLogMsg(e, E) { "use strict"; _MODE_BRANCH && addLogMsg("DEBUG:" + e, "r", !1 !== E || E) }
 
 function getExLog() {
-    "use strict"; stopExLog();
-    var e = DoExtractLog();
-    if (e)
-        for (var E, t = (e = (e = (e = (e = (e = (e = (e = e.split("&").join("&amp;")).split('"').join("&quot;")).split("<").join("&lt;")).split(">").join("&gt;")).replace(/[\n\r]/g, "<br>")).replace(/[\r]/g, "<br>")).replace(/[\n]/g, "<br>")).split("<br>"), r = !1, a = 0; a < t.length; a++)t[a] && (r = !(E = "w"), -1 !== t[a].indexOf("再度お試しください") && (E = "y"), -1 !== t[a].indexOf("失敗") && (E = "y"), -1 !== t[a].indexOf("できませんでした") && (E = "y"), 0 === t[a].indexOf("Winsock Ver.") && (E = "g"), 0 === t[a].indexOf("DEBUG:") && (E = "r"), 0 === t[a].indexOf("PRM[") && (E = "r"), 0 === t[a].indexOf("UG:") && (E = "r"), 0 === t[a].indexOf("Cache-Control:") && (E = "r"), 0 === t[a].indexOf("Connection:") && (E = "r"), 0 === t[a].indexOf("User-Agent:") && (E = "r"), 0 === t[a].indexOf("Host:") && (E = "r"), 0 === t[a].indexOf("]") && (E = "r"), -1 !== t[a].indexOf("(DEBUG)") && (E = "r"), 0 === t[a].indexOf("AUTH_SUCCESS") && (E = "b"), 0 === t[a].indexOf("[") && (-1 !== t[a].indexOf("%]") ? (r = !0, E = "y") : E = "r"), addLogMsg(t[a], E, r)); startExLog()
+    // at the first startup, "Launcher Ver: 1.0," "After entering ~," and "select a server ~" are assigned to messages[i], respectively
+    "use strict";
+
+    // stop logging before starting
+    stopExLog();
+
+    // extract logs and sanitize them for display
+    const extractedLog = DoExtractLog();
+    if (extractedLog) {
+        // split logs into individual messages
+        const messages = extractedLog.split("&").join("&amp;").split('"').join("&quot;").split("<").join("&lt;").split(">").join("&gt;").replace(/[\n\r]/g, "<br>").replace(/[\r]/g, "<br>").replace(/[\n]/g, "<br>").split("<br>");
+
+        // process each message and determine its type
+        let isFirstMsg = false;
+        for (var i = 0; i < messages.length; i++) {
+            let type = "";
+            const message = messages[i];
+
+            // determine message type based on its contents
+            if (message.indexOf("再度お試しください") !== -1 || message.indexOf("失敗") !== -1 || message.indexOf("できませんでした") !== -1) {
+                type = "y"; // yellow
+            } else if (message.indexOf("Launcher Ver") === 0) {
+                type = "g"; // green
+                isFirstMsg = true;
+            } else if (message.indexOf("DEBUG:") === 0 || message.indexOf("PRM[") === 0 || message.indexOf("UG:") === 0 || message.indexOf("Cache-Control:") === 0 || message.indexOf("Connection:") === 0 || message.indexOf("User-Agent:") === 0 || message.indexOf("Host:") === 0 || message.indexOf("]") === 0 || message.indexOf("(DEBUG)") !== -1) {
+                type = "r"; // red
+            } else if (message.indexOf("AUTH_SUCCESS") === 0) {
+                type = "b"; // blue
+            } else if (message.indexOf("[") === 0) {
+                if (message.indexOf("%]") !== -1) {
+                    type = "y"; // yellow
+                    isFirstMsg = true;
+                } else {
+                    type = "r"; // red
+                }
+            }
+
+            // add message to log
+            addLogMsg(message, type, isFirstMsg);
+            isFirstMsg = false;
+        }
+    }
+
+    // start logging again
+    startExLog();
 }
 
 function stopExLog() {
@@ -1881,14 +1908,14 @@ $(function () {
     $("p:not(.selectable),img,li,td,th,.unselectable,.btn,.modal").attr("unselectable", "on"),
         $("p:not(.selectable),img,li,td,th,.unselectable,.btn,.modal").attr("onSelectStart", "return false;"),
 
-        // play sound when hovering lougout button
+        // play a sound when hovering lougout button
         $(".btn_logout").mouseover(function () {
             DoPlaySound("IDR_WAV_SEL");
         }),
 
-        // play sound when clicking lougout button
+        // play a sound when clicking lougout button
         $(".btn_logout").click(function () {
-            DoPlaySound("IDR_WAV_SEL");
+            DoPlaySound("IDR_WAV_OK");
         }),
 
         // play sound when hovering preferences button
@@ -1898,7 +1925,7 @@ $(function () {
                 startExLog()) : DoPlaySound("IDR_WAV_SEL")
         }),
 
-        // play sound when clicking preferences button
+        // play a sound when clicking preferences button
         $(".btn_preferences").click(function () {
             _CONF_SND_BLOCK = !0,
                 clearBnrSwitchTimer(),

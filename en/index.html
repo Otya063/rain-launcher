@@ -972,32 +972,29 @@
                 <!-- User ID / Server Name Label -->
                 <p class="id_srv_label"></p>
                 <!-- Log Out Button -->
-                <button class="btn_logout" onclick="DoPlaySound('IDR_WAV_OK'); switchAuthMode();" style="display: none">Log Out</button>
+                <button class="btn_logout" onclick="switchAuthMode();" style="display: none">Log Out</button>
             </div>
-
-            <!-- Message Logs Area -->
-            <section class="msg_logs_area unselectable">
-                <div class="msg_contents">
-                    <p></p>
-                </div>
-            </section>
-
-            <!-- Preferences Button -->
-            <button class="btn_preferences" class="unselectable">
-                <p class="btn_preferences_text">Preferences High Grade Edition</p>
-            </button>
 
             <!-- Log In Area -->
             <main id="launcher_login_panel" class="">
-                <div class="form_area">
-                    <form>
-                        <input type="text" border="0" align="left" name="l_uid" id="l_uid" default="Enter User ID" value="Enter User ID" accesskey="i" />
-                        <input type="password" border="0" align="left" name="l_pw" id="l_pw" default="" value="" accesskey="p" />
-                    </form>
-                    <button id="l_srv" class="unselectable unselectable"></button>
+                <form class="auth_section">
+                    <div class="auth_group">
+                        <label for="user_id">User ID</label>
+                        <input type="text" class="auth_userid" name="user_id" placeholder="User ID" autocomplete="off" autocapitalize="off" aria-label="UserID" aria-invalid="false" />
+                    </div>
+                    <div class="auth_group">
+                        <label for="password">Password</label>
+                        <input type="password" class="auth_password" name="password" placeholder="Password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" />
+                    </div>
+                </form>
+
+                <!-- Server Group Section -->
+                <section class="server_selector_group">
+                    <label for="server_sel">Server Selection</label>
+                    <button id="l_srv" class="unselectable unselectable" name="server_sel"></button>
                     <div class="sel_btn unselectable"></div>
                     <ul class="srv_sel_box unselectable"></ul>
-                </div>
+                </section>
 
                 <div class="btn_login selsnd unselectable"></div>
                 <div class="check_save_id selsnd unselectable"></div>
@@ -1007,6 +1004,18 @@
                     <div class="anim"></div>
                     <p class="unselectable">Authenticating...</p>
                 </div>
+
+                <!-- Message Logs Section -->
+                <section class="msg_logs_area unselectable">
+                    <div class="msg_contents">
+                        <p></p>
+                    </div>
+                </section>
+
+                <!-- Preferences Button -->
+                <button class="btn_preferences" class="unselectable">
+                    <p class="btn_preferences_text">Preferences High Grade Edition</p>
+                </button>
             </main>
 
             <!--メンテor認証不可状態時表示枠-->

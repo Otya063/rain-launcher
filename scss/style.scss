@@ -1,3 +1,5 @@
+@use './global/' as *;
+
 /*=========================================================
 　　　　　Default Settings
 =======================================================*/
@@ -6,7 +8,7 @@
     padding: 0;
 }
 
-*[unselectable="on"] {
+*[unselectable='on'] {
     cursor: default;
     user-select: none;
     -moz-user-select: none;
@@ -28,8 +30,7 @@ img {
 }
 
 label,
-input,
-button {
+input {
     color: white;
     outline: none;
     border: none;
@@ -46,15 +47,22 @@ body {
 
 body {
     background: #000;
-    font-family: "Roboto", "Open Sans", sans-serif;
+    font-family: $font_en;
     color: #d1c0a5;
     font-size: 14px;
     line-height: 16px;
+
+    &:lang(ja) {
+        font-family: $font_ja;
+    }
 }
 
-// title font
 h1 {
-    font-family: "Noto Serif", serif;
+    font-family: $font_title_en;
+
+    &:lang(ja) {
+        font-family: $font_title_ja;
+    }
 }
 
 // enable users to move the launcher by dragging
@@ -203,9 +211,9 @@ h1 {
     flex-wrap: nowrap;
     position: absolute;
     width: 40%;
-    height: 65%;
+    height: 67%;
     left: 5%;
-    top: 27%;
+    top: 25%;
 
     // login button
     .btn_login {
@@ -294,56 +302,109 @@ h1 {
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: 3% 0;
 
-        // server selection
-        #l_srv {
-            font-size: 1.2rem;
-            text-align: left;
-            color: white;
+        label {
+            padding-bottom: 2%;
         }
 
-        .sel_btn {
-            //position: absolute;
-            left: 4px;
-            top: 119px;
-            width: 248px;
-            height: 24px;
-            background-repeat: no-repeat;
-            background-position: 228px 7px;
-            cursor: pointer;
-        }
+        li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
-        // sever list box
-        .srv_sel_box {
-            position: absolute;
-            top: 143px;
-            width: 97%;
-            max-height: 216px;
-            overflow: hidden;
-            overflow-y: auto;
-            position: relative;
-            margin: 0 auto;
-            border: 1px white solid;
-            border-top: none;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-
-            // each sever item
-            .srv {
-                width: 236px;
-                height: 20px;
-                padding: 6px 7px 0;
+            // server selection
+            #l_srv {
                 position: relative;
-                font-size: 1.2rem;
-                margin-top: 1px;
-                margin-left: 1px;
+                background: rgba(0, 0, 0, 0.8);
+                font-size: 1.5rem;
+                white-space: nowrap;
+                padding: 2% 0;
+                padding-left: 16%;
+                width: 250px;
+                height: 40px;
+                color: #fff;
                 cursor: pointer;
+                border: 1px white solid;
+                transition: border 0.3s ease-in-out;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    display: inline-block;
+                    width: 38px;
+                    height: 38px;
+                    top: -4%;
+                    left: -1px;
+                    @include server_icon;
+                    transition: border 0.3s ease-in-out;
+                }
 
                 &:hover {
-                    background-position: 0px -26px;
+                    border: 1px rgb(255, 123, 47) solid;
+
+                    &::before {
+                        border: 1px rgb(255, 123, 47) solid;
+                    }
+                }
+            }
+
+            // sever list box
+            .srv_sel_box {
+                position: absolute;
+                top: 35.4%;
+                left: 30.9%;
+                width: 46.5%;
+                max-height: 216px;
+                overflow: hidden;
+                overflow-y: auto;
+                border: 1px white solid;
+                border-top: none;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 100;
+
+                &::-webkit-scrollbar {
+                    width: 16px;
+                    height: 20px;
+                }
+                &::-webkit-scrollbar-track {
+                    background-color: rgba(120, 170, 210, 0.3);
+                    border-radius: 100px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background: #78aad2;
+                    border-radius: 100px;
+                    width: 130px;
+                }
+
+                // each sever item
+                .srv {
+                    display: block;
+                    height: 20px;
+                    padding: 7% 0;
+                    white-space: nowrap;
+                    font-size: 1.4rem;
+                    cursor: pointer;
+                    text-align: center;
+                    line-height: 20px;
+                    transition: all 0.3s;
+
+                    &:hover {
+                        color: orange;
+                        background: rgba(255, 255, 255, 0.2);
+                    }
                 }
             }
         }
+    }
+
+    /* コメント
+====================================================*/
+    .auth_alternative {
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
     }
 
     /* Message Logs Section
@@ -352,9 +413,6 @@ h1 {
         width: 410px;
         height: 86px;
         padding: 6px 8px;
-        //position: absolute;
-        left: 65px;
-        bottom: 90px;
         border: #a5927b79 0.5px solid;
         background: rgba(0, 0, 0, 0.5);
 
@@ -412,7 +470,7 @@ h1 {
 
         // gear icon
         &::before {
-            content: "";
+            content: '';
             position: absolute;
             width: 2.4em;
             height: 2.4em;
@@ -428,7 +486,7 @@ h1 {
 
         // arrow icon
         &::after {
-            content: "";
+            content: '';
             position: absolute;
             margin: auto;
             top: 0;

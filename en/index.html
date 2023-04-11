@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -558,7 +558,7 @@
                 margin: 10px 0 10px;
                 padding-top: 9px;
                 background-color: #fef5e6;
-                font-family: "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+                font-family: 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
                 font-size: 14px;
                 line-height: 18px;
                 color: #333333;
@@ -897,7 +897,7 @@
                 opacity: 0.4;
                 -moz-opacity: 0.4;
                 filter: alpha(opacity=40);
-                -ms-filter: "alpha(opacity=40)";
+                -ms-filter: 'alpha(opacity=40)';
             }
             .scroll_bar_box_body {
                 width: 6px;
@@ -910,7 +910,7 @@
                 opacity: 0.8;
                 -moz-opacity: 0.8;
                 filter: alpha(opacity=80);
-                -ms-filter: "alpha(opacity=80)";
+                -ms-filter: 'alpha(opacity=80)';
             }
             .scroll_bar_box_body:hover,
             .scroll_bar_box_body.active {
@@ -989,16 +989,22 @@
                 </form>
 
                 <!-- Server Group Section -->
-                <section class="server_selector_group">
+                <ul class="server_selector_group">
                     <label for="server_sel">Server Selection</label>
-                    <button id="l_srv" class="unselectable unselectable" name="server_sel"></button>
-                    <div class="sel_btn unselectable"></div>
-                    <ul class="srv_sel_box unselectable"></ul>
-                </section>
+                    <li>
+                        <button id="l_srv" class="unselectable unselectable" name="server_sel"></button>
+                        <!-- <div class="sel_btn unselectable"></div> -->
+                        <ul class="srv_sel_box unselectable"></ul>
+                    </li>
+                </ul>
 
                 <div class="btn_login selsnd unselectable"></div>
-                <div class="check_save_id selsnd unselectable"></div>
-                <div class="btn_forgot selsnd unselectable" onClick="openDefBrowser('https://go.dev/play/p/SU85bU7vmUM')"></div>
+
+                <!-- Log In Alternative Area（後でpタグへ変更） -->
+                <div class="auth_alternative">
+                    <div class="check_save_id selsnd unselectable"></div>
+                    <div class="btn_forgot selsnd unselectable" onClick="openDefBrowser('https://go.dev/play/p/SU85bU7vmUM')"></div>
+                </div>
 
                 <div class="progress unselectable" onClick="return false;" style="display: none">
                     <div class="anim"></div>
@@ -1091,13 +1097,6 @@
 
             <div id="launcher_game_start_wait"></div>
         </div>
-        <script type="text/javascript">
-            (function () {
-                if (location.host != "") {
-                    document.getElementsByTagName("body")[0].id = location.host.indexOf("dmm") != -1 ? "dmm" : location.host.indexOf("hangame") != -1 ? "hangame" : "cog";
-                }
-            })();
-        </script>
 
         <div id="preload" style="width: 1px; height: 1px; overflow: hidden; position: fixed; left: -100px; top: -100px">
             <img src="./images/dialog/bg.jpg" alt="ダイアログ用背景" />

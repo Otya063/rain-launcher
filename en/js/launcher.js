@@ -79,7 +79,7 @@ function duc(e) {
 } !function () {
     "use strict";
     _EUCS.xhrspr = "<!--###content###-->",
-        _EUCS.dmsrvs = "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain (Localhost)'/></server_groups>",
+        _EUCS.dmsrvs = "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain (Localhost)'/><group idx='2' nam='Rain (Localhost)'/><group idx='3' nam='Rain (Localhost)'/><group idx='4' nam='Rain (Localhost)'/><group idx='5' nam='Rain (Localhost)'/></server_groups>",
         _EUCS.anch = "You can create a new character. <br> Press [Start Game] to create your character.",
         _EUCS.cwpt = "Weapon",
         _EUCS.pcst = "Last Online",
@@ -92,7 +92,7 @@ function duc(e) {
         _EUCS.af304 = "Authentication has been temporarily halted due to entering multiple incorrect passwords.<br>Please wait an hour and log in again.",
         _EUCS.aferr = "Unknown error occurred.",
         _EUCS.af321 = "The security card data is different.",
-        _EUCS.noidpass = "First, please enter your User ID and Password.",
+        _EUCS.noidpass = "First, please enter both your User ID and Password.",
         _EUCS.uflm0 = "The server is currently under maintenance and cannot be joined.<br>Please try again later.",
         _EUCS.dmb0 = "Register now",
         _EUCS.dmb1 = "Refresh",
@@ -1155,7 +1155,6 @@ let _AT_IS_ENABLED = !0,
     _AT_SEL_SRV_AREA = "#launcher_login_panel .server_selector_group #l_srv",
     _AT_SEL_SRV_BOX = "#launcher_login_panel .server_selector_group .srv_sel_box",
     _AT_SEL_SUNIT = "#launcher_login_panel .server_selector_group .srv_sel_box .srv",
-    _AT_SEL_SBTN = "#launcher_login_panel .server_selector_group .sel_btn",
     _AT_SEL_LBTN = "#launcher_login_panel .btn_login",
     _AT_SEL_ICHK = "#launcher_login_panel .check_save_id",
     _AT_SEL_PFGT = "#launcher_login_panel .btn_forgot",
@@ -1369,8 +1368,8 @@ function initSrvSelList() {
     if (1 < $(_AT_SEL_SUNIT).length) {
 
         // add the server selection button to the focus elements and bind the mousedown event to it
-        _AT_FOCUS_ELMS.push(_AT_SEL_SBTN);
-        $(_AT_SEL_SBTN).mousedown(function () {
+        _AT_FOCUS_ELMS.push(_AT_SEL_SRV_AREA);
+        $(_AT_SEL_SRV_AREA).mousedown(function () {
             if (_AT_SBOX_SEL_ENABLED) {
                 DoPlaySound("IDR_WAV_OK");
                 if (_AT_SBOX_IS_ENABLED) {
@@ -1401,11 +1400,11 @@ function initSrvSelList() {
     } else {
 
         // if there's only one server, hide the server selection button
-        $(_AT_SEL_SBTN).hide();
+        //$(_AT_SEL_SRV_AREA).hide();
     }
 
     // the click event to the server selection box and button to stop clicks from propagating to the document
-    $(_AT_SEL_SRV_BOX + _AT_SEL_SBTN).mousedown(function (e) {
+    $(_AT_SEL_SRV_BOX + _AT_SEL_SRV_AREA).mousedown(function (e) {
         e.stopPropagation();
     })
 }
@@ -1464,14 +1463,15 @@ function beginAuthProcess(e) {
     if ($(".btn_preferences").hide(),
         e && (_AT_IS_ENABLED = !0, clearLog()), _AT_IS_ENABLED)
         if (
-            DoPlaySound("IDR_WAV_PRE_LOGIN"),
             switchEvtPhase("auth"),
             switchAuthMode(), _COG_MODE
         ) {
             if ("" === $(_AT_SEL_ID).val())
-                onAuthError(duc("noidpass"), "r")
+                DoPlaySound("IDR_WAV_OK"),
+                    onAuthError(duc("noidpass"), "r")
             else if (authExec()) {
-                _AT_IS_ENABLED = !1,
+                DoPlaySound("IDR_WAV_PRE_LOGIN"),
+                    _AT_IS_ENABLED = !1,
                     lockAuthEdit(),
                     showAuthProgress(),
                     clearBBTO();
@@ -1525,6 +1525,7 @@ function setAuthHover(e) {
     for (var E = 0; E < _AT_FOCUS_ELMS.length; E++)e === _AT_FOCUS_ELMS[E] ? (_AT_FOCUS_IDX = E, $(_AT_FOCUS_ELMS[E]).addClass("hover")) : $(_AT_FOCUS_ELMS[E]).removeClass("hover")
 }
 
+// 後に削除予定
 function forceFocus(e) {
     console.log('forceFocus:\ne=' + e);
     "use strict";
@@ -1548,14 +1549,14 @@ function switchAuthMode() {
         $("#launcher_login_panel").show(),
         $(".id_srv_label").text(""),
         $(".btn_logout").hide(),
-        $(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]), _KEY_ACT_DEF = function (e) {
+        $(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]).addClass("hover"), /* forceFocus(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]), */ _KEY_ACT_DEF = function (e) {
             if (_IS_MODAL) return !1;
             var E = _AT_FOCUS_IDX, t = !0;
             switch (e.which) {
                 case 13:
                     if (_AT_IS_ENABLED)
                         switch (_AT_FOCUS_ELMS[E]) {
-                            case _AT_SEL_SBTN: _AT_SBOX_IS_ENABLED || $(_AT_SEL_SBTN).mousedown();
+                            case _AT_SEL_SRV_AREA: _AT_SBOX_IS_ENABLED || $(_AT_SEL_SRV_AREA).mousedown();
                                 break;
                             default: $(_AT_FOCUS_ELMS[E]).click()
                         }t = !1;
@@ -1563,7 +1564,7 @@ function switchAuthMode() {
                 case 9:
                     if (removeAuthHover(), _AT_IS_ENABLED) {
                         if (e.shiftKey ? E = --E < 0 ? _AT_FOCUS_ELMS.length - 1 : E : (E++, E = _AT_FOCUS_ELMS.length <= E ? 0 : E), $(_AT_FOCUS_ELMS[E]).hasClass("disabled"))
-                            return _AT_FOCUS_IDX = E, _KEY_ACT_DEF(e); $(_AT_FOCUS_ELMS[E]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[E]), _AT_FOCUS_ELMS[E] === _AT_SEL_SBTN ? $(_AT_SEL_SBTN).mousedown() : hideSrvSelList()
+                            return _AT_FOCUS_IDX = E, _KEY_ACT_DEF(e); $(_AT_FOCUS_ELMS[E]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[E]), _AT_FOCUS_ELMS[E] === _AT_SEL_SRV_AREA ? $(_AT_SEL_SRV_AREA).mousedown() : hideSrvSelList()
                     } t = !1
             }
             return _AT_FOCUS_IDX = E, t
@@ -1572,7 +1573,7 @@ function switchAuthMode() {
 
 function initAuth() {
     "use strict";
-    if (_COG_MODE && initSrvSelList(), _AT_FOCUS_ELMS.push(_AT_SEL_LBTN), _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)), $(_AT_SEL_LBTN).click(function () { _AT_IS_UNSELECTED_SRV ? (onAuthError(duc("nosrvsel"), "r"), DoPlaySound("IDR_WAV_OK")) : (addEvent("login_click"), beginAuthProcess()) }), _AT_IS_AUTOLC = isAutoLogin(), _COG_MODE) {
+    if (_COG_MODE && initSrvSelList(), _AT_FOCUS_ELMS.push(_AT_SEL_LBTN), _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)), $(_AT_SEL_LBTN).click(function () { _AT_IS_UNSELECTED_SRV ? (DoPlaySound("IDR_WAV_OK"), onAuthError(duc("nosrvsel"), "r")) : (addEvent("login_click"), beginAuthProcess()) }), _AT_IS_AUTOLC = isAutoLogin(), _COG_MODE) {
         readCookie();
         var e = "";
         "" === (e = DoGetUserId()) && _MODE_BRANCH && (e = DoDebugGetIniUserId()),
@@ -1680,7 +1681,7 @@ let _SEL_LOG = ".msg_contents",
     _ENTERDOWN_TOI = null,
     _LAST_KEYDOWN = 0;
 
-function addLogMsg(message, type, isFirstMsg) {
+function addLogMsg(message, type, isOnlyOneMsg) {
     "use strict";
     if (message) {
         let prefix = "";
@@ -1701,7 +1702,7 @@ function addLogMsg(message, type, isFirstMsg) {
         }
         let logMessage = prefix + message + suffix;
 
-        if (isFirstMsg) {
+        if (isOnlyOneMsg) {
             $(_SEL_LOG + " p").html(_CACHE_CR1 + logMessage + "<br>");
             if (_CACHE_CR2 === "") {
                 $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
@@ -1740,34 +1741,29 @@ function getExLog() {
         const messages = extractedLog.split("&").join("&amp;").split('"').join("&quot;").split("<").join("&lt;").split(">").join("&gt;").replace(/[\n\r]/g, "<br>").replace(/[\r]/g, "<br>").replace(/[\n]/g, "<br>").split("<br>");
 
         // process each message and determine its type
-        let isFirstMsg = false;
-        for (var i = 0; i < messages.length; i++) {
+        let isOnlyOneMsg = false;
+        messages.forEach(function (message) {
             let type = "";
-            const message = messages[i];
 
             // determine message type based on its contents
-            if (message.indexOf("再度お試しください") !== -1 || message.indexOf("失敗") !== -1 || message.indexOf("できませんでした") !== -1) {
+            if (/再度お試しください|失敗|できませんでした/.test(message)) {
                 type = "y"; // yellow
-            } else if (message.indexOf("Launcher Ver") === 0) {
+            } else if (/^Launcher Ver/.test(message)) {
                 type = "g"; // green
-                isFirstMsg = true;
-            } else if (message.indexOf("DEBUG:") === 0 || message.indexOf("PRM[") === 0 || message.indexOf("UG:") === 0 || message.indexOf("Cache-Control:") === 0 || message.indexOf("Connection:") === 0 || message.indexOf("User-Agent:") === 0 || message.indexOf("Host:") === 0 || message.indexOf("]") === 0 || message.indexOf("(DEBUG)") !== -1) {
+                isOnlyOneMsg = true;
+            } else if (/^DEBUG:|PRM\[|UG:|Cache-Control:|Connection:|User-Agent:|Host:|^\]|\(DEBUG\)/.test(message)) {
                 type = "r"; // red
-            } else if (message.indexOf("AUTH_SUCCESS") === 0) {
+            } else if (/^AUTH_SUCCESS/.test(message)) {
                 type = "b"; // blue
-            } else if (message.indexOf("[") === 0) {
-                if (message.indexOf("%]") !== -1) {
-                    type = "y"; // yellow
-                    isFirstMsg = true;
-                } else {
-                    type = "r"; // red
-                }
+            } else if (/^\[.*%\]/.test(message)) {
+                type = "y"; // yellow
+                isOnlyOneMsg = true;
             }
 
             // add message to log
-            addLogMsg(message, type, isFirstMsg);
-            isFirstMsg = false;
-        }
+            addLogMsg(message, type, isOnlyOneMsg);
+            isOnlyOneMsg = false;
+        });
     }
 
     // start logging again

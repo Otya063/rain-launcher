@@ -20,31 +20,22 @@ function CustomScroll(e) {
     this.element = e,
         this.setScrollPx(18),
         this.init()
-} !function () {
+}
+
+CustomScroll.prototype.clear = function (e) {
     "use strict";
-
-    var e, E, t, r, a, _; ___ga_uaid && (e = window, E = document, t = "script", r = "ga", e.GoogleAnalyticsObject = r, e.ga = e.ga ||
-        function () { (e.ga.q = e.ga.q || []).push(arguments) }, e.ga.l = 1 * new Date,
-        a = E.createElement(t),
-        _ = E.getElementsByTagName(t)[0], a.async = 1, a.src = "http://www.google-analytics.com/analytics.js",
-        _.parentNode.insertBefore(a, _), ga("create",
-            ___ga_uaid, "auto", { allowLinker: !0 }), ga("require", "linkid", "linkid.js"), ga("require", "displayfeatures"), ga("require", "linker"), ga("send", "pageview"))
-}(),
-
-    CustomScroll.prototype.clear = function (e) {
-        "use strict";
-        this.element.off("mousewheel"),
-            this.element.off("scroll"),
-            this.element.off("keydown"),
-            this.sbox && (this.sbar && (this.sbar.off("mousedown"),
-                this.sbar.remove(),
-                this.sbar = null),
-                this.sbase && (this.sbase.off("mouseup"),
-                    this.sbase.remove(),
-                    this.sbase = null),
-                this.sbox.remove(),
-                this.sbox = null), e || this.scrollV(0)
-    },
+    this.element.off("mousewheel"),
+        this.element.off("scroll"),
+        this.element.off("keydown"),
+        this.sbox && (this.sbar && (this.sbar.off("mousedown"),
+            this.sbar.remove(),
+            this.sbar = null),
+            this.sbase && (this.sbase.off("mouseup"),
+                this.sbase.remove(),
+                this.sbase = null),
+            this.sbox.remove(),
+            this.sbox = null), e || this.scrollV(0)
+},
 
     CustomScroll.prototype.setScrollPx = function (e) { "use strict"; this.speed = -1 * e },
 
@@ -79,7 +70,7 @@ function duc(e) {
 } !function () {
     "use strict";
     _EUCS.xhrspr = "<!--###content###-->",
-        _EUCS.dmsrvs = "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain (Localhost)'/><group idx='2' nam='Rain (Localhost)'/><group idx='3' nam='Rain (Localhost)'/><group idx='4' nam='Rain (Localhost)'/><group idx='5' nam='Rain (Localhost)'/></server_groups>",
+        _EUCS.dmsrvs = "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/><group idx='4' nam='Rain4'/><group idx='5' nam='Rain5'/></server_groups>",
         _EUCS.anch = "You can create a new character. <br> Press [Start Game] to create your character.",
         _EUCS.cwpt = "Weapon",
         _EUCS.pcst = "Last Online",
@@ -485,6 +476,7 @@ function resetKeyActDefMode() {
     }
 }
 
+// create scroll bar
 function initScrollBar(e) {
     "use strict";
     var E = $(e);
@@ -1150,17 +1142,17 @@ let _AT_IS_ENABLED = !0,
     _AT_FRAME_CB = Math.floor(1e3 * Math.random()),
     _AT_TOI = null,
     _AT_STATUS = "AUTH_NULL",
-    _AT_SEL_ID = "#launcher_login_panel .auth_section .auth_group .auth_userid",
-    _AT_SEL_PW = "#launcher_login_panel .auth_section .auth_group .auth_password",
-    _AT_SEL_SRV_AREA = "#launcher_login_panel .server_selector_group #l_srv",
-    _AT_SEL_SRV_BOX = "#launcher_login_panel .server_selector_group .srv_sel_box",
-    _AT_SEL_SUNIT = "#launcher_login_panel .server_selector_group .srv_sel_box .srv",
+    _AT_SEL_ID = ".auth_userid",
+    _AT_SEL_PW = ".auth_password",
+    _AT_SRV_SEL_BTN = ".srv_sel_btn",
+    _AT_SRV_LIST_BOX = ".srv_sel_box",
+    _AT_SRV_LIST_ITEM = ".srv_sel_box .srv",
     _AT_SEL_LBTN = "#launcher_login_panel .btn_login",
     _AT_SEL_ICHK = "#launcher_login_panel .check_save_id",
     _AT_SEL_PFGT = "#launcher_login_panel .btn_forgot",
     _AT_SBOX_TOI = null,
-    _AT_SBOX_SEL_ENABLED = true,
-    _AT_SBOX_IS_ENABLED = false,
+    _AT_SBOX_SEL_ENABLED = false,
+    _AT_SBOX_IS_OPENED = false,
     _AT_ANIM_TOI = null,
     _AT_IS_AUTOLC = !1,
     _AT_MODE = "",
@@ -1169,7 +1161,7 @@ let _AT_IS_ENABLED = !0,
     _AT_BB_TOI = null,
     _AT_SVID,
     _AT_SVID_DEF = "1000",
-    _AT_IS_UNSELECTED_SRV = false;
+    _AT_IS_UNSELECTED_SRV = true;
 
 function onReceiveMsg(evt) {
     "use strict";
@@ -1221,7 +1213,7 @@ function loginPolling() {
                         ), (
                             _STORAGE["pw" + _EXE_MUTEX] = $(_AT_SEL_PW).val(),
                             writeCookie()
-                        ), $(".id_srv_label").text($(_AT_SEL_ID).val() + "@" + $(_AT_SEL_SRV_AREA).text()), !isTrEnabled()
+                        ), $(".id_srv_label").text($(_AT_SEL_ID).val() + "@" + $(_AT_SRV_SEL_BTN).text()), !isTrEnabled()
                     ))
                     return void showNoTRDialog(); startUpdateProcess();
                 break;
@@ -1242,7 +1234,7 @@ function loginPolling() {
                         break;
                     case "SIGN_EALERT":
                         if ("1018" === _AT_SVID) onAuthError(duc("SIGN_EALERT_COOP"));
-                        else { var t = $(_AT_SEL_SRV_AREA).text(); 0 <= t.indexOf("④") ? onAuthError(duc("SIGN_EALERT_COOP")) : 0 <= t.toUpperCase().indexOf("XBOX") ? onAuthError(duc("SIGN_EALERT_COOP")) : onAuthError(duc(E), "r") }
+                        else { var t = $(_AT_SRV_SEL_BTN).text(); 0 <= t.indexOf("④") ? onAuthError(duc("SIGN_EALERT_COOP")) : 0 <= t.toUpperCase().indexOf("XBOX") ? onAuthError(duc("SIGN_EALERT_COOP")) : onAuthError(duc(E), "r") }
                         break;
                     case "SIGN_ESUSPEND":
                     case "SIGN_EELIMINATE":
@@ -1320,91 +1312,102 @@ function filteShortLifeAuthKeyResponse(e) {
     }
 }
 
+function selectServerItem(target_elm) {
+    $(".selected_srv").removeClass("selected_srv"),
+        $(target_elm).toggleClass("selected_srv")
+}
+
 function lockAuthEdit() { "use strict"; _AT_SBOX_SEL_ENABLED = !1, $(_AT_SEL_ID).attr("disabled", !0), $(_AT_SEL_PW).attr("disabled", !0) }
 
 function unlockAuthEdit() { "use strict"; _AT_SBOX_SEL_ENABLED = !0, $(_AT_SEL_ID).attr("disabled", !1), $(_AT_SEL_PW).attr("disabled", !1), $(".btn_preferences").show() }
 
-function switchAuthSrv(e) { "use strict"; _AT_SVID = $(e).attr("svid"), _AT_IS_UNSELECTED_SRV = $(e).attr("block") === "true", $(_AT_SEL_SRV_AREA).text($(e).text()) }
+function switchAuthSrv(e) { "use strict"; _AT_SVID = $(e).attr("svid"), $(_AT_SRV_SEL_BTN).text($(e).text()) }
 
-function hideSrvSelList() { "use strict"; $(_AT_SEL_SRV_BOX).hide(), _AT_SBOX_IS_ENABLED = !1 }
+function hideSrvSelList() { "use strict"; $(_AT_SRV_LIST_BOX).hide(), _AT_SBOX_IS_OPENED = false }
 
 function initSrvSelList() {
     "use strict";
+
+    // check from local storage whether users have selected a server before
+    _AT_IS_UNSELECTED_SRV = localStorage.getItem("NeverSelectedSrv") !== "false";
 
     // get server list xml data and wrap it in a div element
     const serverList = "<div>" + DoGetServerListXml() + "</div>";
 
     // get the index of the last selected server from INI settings and convert it to an integer
     // in local environment, lastSelectedIndex = 0;
-    var lastSelectedIndex = DoGetIniLastServerIndex();
+    let lastSelectedIndex = DoGetIniLastServerIndex();
     lastSelectedIndex = parseInt(lastSelectedIndex, 10);
 
     // remove all children of the server selection list
-    $(_AT_SEL_SRV_BOX).children().remove();
+    $(_AT_SRV_LIST_BOX).children().remove();
 
     // loop through each group in the server list xml data and add a server element to the server selection list for each one
     $(serverList).find("group").each(function (index, srvItem) {
-        var svid = $(srvItem).attr("svid") ? $(srvItem).attr("svid") : _AT_SVID_DEF;
-        var isBlocked = $(srvItem).attr("ip") === "";
-        var name = $(srvItem).attr("nam");
+        const svid = $(srvItem).attr("svid") ? $(srvItem).attr("svid") : _AT_SVID_DEF;
+        const isBlocked = $(srvItem).attr("ip") === "";
+        const name = $(srvItem).attr("nam");
 
         // create and append the server element to the server selection list
-        $(_AT_SEL_SRV_BOX).append($("<li" + (isBlocked ? ' block="true"' : "") + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + "</li>"))
+        $(_AT_SRV_LIST_BOX).append($("<li" + (isBlocked ? ' block="true"' : "") + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + "</li>"))
     });
 
-    // if the last selected index is out of bounds, set it to 0
-    if (lastSelectedIndex < 0 || lastSelectedIndex > $(_AT_SEL_SUNIT).length) {
-        lastSelectedIndex = 0;
-    }
+    // if the last selected index is out of bounds, set true to the variable for initializing
+    (lastSelectedIndex < 0 || lastSelectedIndex > $(_AT_SRV_LIST_ITEM).length) && (_AT_IS_UNSELECTED_SRV = true);
 
-    // select the server at the last selected index and update the ini setting for the last selected index
-    switchAuthSrv($(_AT_SEL_SUNIT)[lastSelectedIndex]);
-    DoSetIniLastServerIndex(String(lastSelectedIndex));
+    // if user have previously selected a server, set auth server and assign class to the target server
+    _AT_IS_UNSELECTED_SRV
+        ? $(_AT_SRV_SEL_BTN).text("Select Your Server")
+        : (
+            switchAuthSrv($(_AT_SRV_LIST_ITEM)[lastSelectedIndex]),
+            $(".srv").eq(lastSelectedIndex).addClass("selected_srv")
+        );
 
     // hide the server selection list
-    $(_AT_SEL_SRV_BOX).hide();
+    $(_AT_SRV_LIST_BOX).hide();
 
-    // if there's more than one server, enable server selection
-    if (1 < $(_AT_SEL_SUNIT).length) {
+    $(_AT_SRV_SEL_BTN).mouseover(function () {
+        _AT_SBOX_SEL_ENABLED && DoPlaySound("IDR_WAV_SEL");
+    })
 
-        // add the server selection button to the focus elements and bind the mousedown event to it
-        _AT_FOCUS_ELMS.push(_AT_SEL_SRV_AREA);
-        $(_AT_SEL_SRV_AREA).mousedown(function () {
-            if (_AT_SBOX_SEL_ENABLED) {
-                DoPlaySound("IDR_WAV_OK");
-                if (_AT_SBOX_IS_ENABLED) {
-                    hideSrvSelList();
-                } else {
-                    $(_AT_SEL_SRV_BOX).show();
-                    DoBeginDrag(!1);
-                    forceFocus(_AT_SEL_SRV_BOX);
-                    _AT_SBOX_IS_ENABLED = !0;
-                }
-            }
-        });
-
-        // the mouseover event to each server element to play a sound when hovering
-        $(_AT_SEL_SUNIT).mouseover(function () {
-            DoPlaySound("IDR_WAV_SEL");
-        });
-
-        // the mousedown event to each server element to select it as the active server, and hide the server selection list
-        $(_AT_SEL_SUNIT).mousedown(function () {
+    // add the server selection button to the focus elements and bind the mousedown event to it
+    //_AT_FOCUS_ELMS.push(_AT_SRV_SEL_BTN);
+    $(_AT_SRV_SEL_BTN).mousedown(function () {
+        if (_AT_SBOX_SEL_ENABLED) {
             DoPlaySound("IDR_WAV_OK");
-            _AT_SBOX_TOI && (clearTimeout(_AT_SBOX_TOI), _AT_SBOX_TOI = null);
-            switchAuthSrv(this);
-            var index = parseInt($(this).attr("idx"), 10);
-            DoSetIniLastServerIndex(String(index));
-            hideSrvSelList();
-        });
-    } else {
 
-        // if there's only one server, hide the server selection button
-        //$(_AT_SEL_SRV_AREA).hide();
-    }
+            if (_AT_SBOX_IS_OPENED) {
+                hideSrvSelList();
+                $(this).removeClass("open_svr_list");
+            } else {
+                $(this).addClass("open_svr_list");
+                $(_AT_SRV_LIST_BOX).show();
+                DoBeginDrag(!1);
+                forceFocus(_AT_SRV_LIST_BOX);
+                _AT_SBOX_IS_OPENED = true;
+            }
+        }
+    });
+
+    // the mouseover event to each server element to play a sound when hovering
+    $(_AT_SRV_LIST_ITEM).mouseover(function () {
+        DoPlaySound("IDR_WAV_SEL");
+    });
+
+    // the mousedown event to each server element to select it as the active server, and hide the server selection list
+    $(_AT_SRV_LIST_ITEM).mousedown(function () {
+        DoPlaySound("IDR_WAV_OK");
+        _AT_SBOX_TOI && (clearTimeout(_AT_SBOX_TOI), _AT_SBOX_TOI = null);
+        switchAuthSrv($(this));
+        const index = parseInt($(this).attr("idx"), 10);
+        DoSetIniLastServerIndex(String(index));
+        selectServerItem($(this));
+        _AT_IS_UNSELECTED_SRV && (localStorage.setItem("NeverSelectedSrv", "false"), _AT_IS_UNSELECTED_SRV = false);
+        hideSrvSelList();
+    });
 
     // the click event to the server selection box and button to stop clicks from propagating to the document
-    $(_AT_SEL_SRV_BOX + _AT_SEL_SRV_AREA).mousedown(function (e) {
+    $(_AT_SRV_LIST_BOX + _AT_SRV_SEL_BTN).mousedown(function (e) {
         e.stopPropagation();
     })
 }
@@ -1556,7 +1559,7 @@ function switchAuthMode() {
                 case 13:
                     if (_AT_IS_ENABLED)
                         switch (_AT_FOCUS_ELMS[E]) {
-                            case _AT_SEL_SRV_AREA: _AT_SBOX_IS_ENABLED || $(_AT_SEL_SRV_AREA).mousedown();
+                            case _AT_SRV_SEL_BTN: _AT_SBOX_IS_OPENED || $(_AT_SRV_SEL_BTN).mousedown();
                                 break;
                             default: $(_AT_FOCUS_ELMS[E]).click()
                         }t = !1;
@@ -1564,7 +1567,7 @@ function switchAuthMode() {
                 case 9:
                     if (removeAuthHover(), _AT_IS_ENABLED) {
                         if (e.shiftKey ? E = --E < 0 ? _AT_FOCUS_ELMS.length - 1 : E : (E++, E = _AT_FOCUS_ELMS.length <= E ? 0 : E), $(_AT_FOCUS_ELMS[E]).hasClass("disabled"))
-                            return _AT_FOCUS_IDX = E, _KEY_ACT_DEF(e); $(_AT_FOCUS_ELMS[E]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[E]), _AT_FOCUS_ELMS[E] === _AT_SEL_SRV_AREA ? $(_AT_SEL_SRV_AREA).mousedown() : hideSrvSelList()
+                            return _AT_FOCUS_IDX = E, _KEY_ACT_DEF(e); $(_AT_FOCUS_ELMS[E]).addClass("hover"), forceFocus(_AT_FOCUS_ELMS[E]), _AT_FOCUS_ELMS[E] === _AT_SRV_SEL_BTN ? $(_AT_SRV_SEL_BTN).mousedown() : hideSrvSelList()
                     } t = !1
             }
             return _AT_FOCUS_IDX = E, t
@@ -1973,7 +1976,8 @@ $(function () {
         }),
         initAuth(),
         initScrollBar(_SEL_LOG),
-        initScrollBar("#launcher_info_detail .article_frame"),
+        $(".srv_sel_box").mCustomScrollbar();
+    initScrollBar("#launcher_info_detail .article_frame"),
 
         // initial display of msg log
         startExLog(),

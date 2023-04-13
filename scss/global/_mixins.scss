@@ -1,5 +1,6 @@
 /* SVG Images
 ====================================================*/
+
 // Server Icon
 @mixin server_icon() {
     background: #757575
@@ -10,7 +11,5 @@
 
 // Down Arrow Icon
 @mixin down_arrow_icon() {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-chevron-down' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='white' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M6 9l6 6l6 -6'%3E%3C/path%3E%3C/svg%3E")
-        center no-repeat;
+    background: url('/launcher/img/common/down_arrow.png') center / 14px no-repeat;
 }
-

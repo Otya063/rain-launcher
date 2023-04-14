@@ -931,28 +931,30 @@
             }
         </style>
         <!-- css -->
-        <link rel="stylesheet" href="css/img.css?v=191016" />
-        <link rel="stylesheet" href="../css/style.css" />
-        <link rel="stylesheet" href="../css/jquery.mCustomScrollbar.min.css" />
+        <link rel="stylesheet" href="/launcher/css/img.css" />
+        <link rel="stylesheet" href="/launcher/css/style.css" />
+        <link rel="stylesheet" href="/launcher/css/jquery.mCustomScrollbar.min.css" />
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap" />
         <!-- js -->
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/launcher.js?v=191016"></script>
-        <script type="text/javascript" src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" src="/launcher/js/jquery.js"></script>
+        <script type="text/javascript" src="/launcher/js/launcher.js"></script>
+        <script type="text/javascript" src="/launcher/js/jquery.mCustomScrollbar.concat.min.js"></script>
     </head>
 
     <body>
         <div class="wrapper">
-            <div class="grab_test"></div>
+            <div class="overlay">
+                <p class="overlay_text">Launcher Window Movable</p>
+            </div>
 
             <!-- Window Controls -->
-            <div class="win_ctrls unselectable">
+            <div class="win_ctrls">
                 <!-- Grab Area -->
-                <button class="grab glove selsnd" onClick="addEvent('grab_click');">Grab</button>
+                <button class="move selsnd"></button>
 
                 <!-- Minimize Button -->
                 <button class="min selsnd" onClick="addEvent('min_click'); DoMinimizeWindow();">ー</button>
@@ -965,9 +967,7 @@
             <header class="launcher_header">
                 <!-- Launcher Title / Logo -->
                 <h1 class="launcher_title">Monster Hunter<br />　Frontier Online<br />　　Rain Launcher</h1>
-                <img class="mhf_zz_logo" src="images/logo/000_z.png" alt="MHF-ZZ-logo" />
-
-                <!-- <div class="glove"></div> -->
+                <img class="mhf_zz_logo" src="/launcher/img/logo/000_z.png" alt="MHF-ZZ-logo" />
             </header>
 
             <!-- Log Out Container -->
@@ -983,11 +983,17 @@
                 <form class="auth_section">
                     <div class="auth_group">
                         <label for="user_id">User ID</label>
-                        <input type="text" class="auth_userid" name="user_id" placeholder="User ID" autocomplete="off" autocapitalize="off" aria-label="UserID" aria-invalid="false" />
+                        <div class="auth_userid">
+                            <span class="user_icon"></span>
+                            <input class="userid_input" type="text" name="user_id" placeholder="User ID" autocomplete="off" autocapitalize="off" aria-label="UserID" aria-invalid="false" />
+                        </div>
                     </div>
                     <div class="auth_group">
                         <label for="password">Password</label>
-                        <input type="password" class="auth_password" name="password" placeholder="Password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" />
+                        <div class="auth_password">
+                            <span class="password_icon"></span>
+                            <input class="password_input" type="password" name="password" placeholder="Password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" />
+                        </div>
                     </div>
                 </form>
 
@@ -995,41 +1001,41 @@
                 <ul class="server_selector_group">
                     <label for="server_sel">Server Selection</label>
                     <li>
-                        <button class="srv_sel_btn unselectable unselectable" name="server_sel"></button>
-                        <ul class="srv_sel_box unselectable"></ul>
+                        <button class="srv_sel_btn" name="server_sel"></button>
+                        <ul class="srv_sel_box"></ul>
                     </li>
                 </ul>
 
-                <div class="btn_login selsnd unselectable"></div>
+                <div class="btn_login selsnd"></div>
 
                 <!-- Log In Alternative Area（後でpタグへ変更） -->
                 <div class="auth_alternative">
-                    <div class="check_save_id selsnd unselectable"></div>
-                    <div class="btn_forgot selsnd unselectable" onClick="openDefBrowser('https://go.dev/play/p/SU85bU7vmUM')"></div>
+                    <div class="check_save_id selsnd"></div>
+                    <div class="btn_forgot selsnd"></div>
                 </div>
 
-                <div class="progress unselectable" onClick="return false;" style="display: none">
+                <div class="progress" onClick="return false;" style="display: none">
                     <div class="anim"></div>
-                    <p class="unselectable">Authenticating...</p>
+                    <p class="">Authenticating...</p>
                 </div>
 
                 <!-- Message Logs Section -->
-                <section class="msg_logs_area unselectable">
+                <section class="msg_logs_area">
                     <div class="msg_contents">
                         <p></p>
                     </div>
                 </section>
 
                 <!-- Preferences Button -->
-                <button class="btn_preferences" class="unselectable">
-                    <p class="btn_preferences_text">Preferences High Grade Edition</p>
+                <button class="btn_preferences">
+                    <p class="btn_preferences_text">In-Game Preferences</p>
                 </button>
             </main>
 
             <!--メンテor認証不可状態時表示枠-->
-            <div id="launcher_auth_maintenance" class="unselectable"></div>
+            <div id="launcher_auth_maintenance"></div>
             <!--アップデート-->
-            <div id="launcher_update_progress" class="unselectable" style="display: none">
+            <div id="launcher_update_progress" style="display: none">
                 <div class="bar_area">
                     <div class="file_progress"></div>
                     <div class="total_progress"></div>
@@ -1038,8 +1044,7 @@
                 <div class="msg"></div>
             </div>
             <!--キャラクター選択-->
-            <div id="launcher_character_select" class="unselectable">
-                <div class="glove"></div>
+            <div id="launcher_character_select">
                 <div class="units"></div>
                 <div class="scroll up selsnd"></div>
                 <div class="scroll down selsnd"></div>
@@ -1047,20 +1052,28 @@
                 <div class="btn_del"></div>
                 <div class="btn_start selsnd"></div>
             </div>
-            <!--バナー-->
-            <div id="launcher_bnr" class="unselectable" style="display: none">
-                <div class="bnr"></div>
-                <div class="dots"><ul></ul></div>
+
+            <!-- Banner -->
+            <div id="launcher_bnr">
+                <div class="bnr">
+                    <ul>
+                        <li>
+                            <div class="dot" onClick="DoPlaySound('IDR_WAV_OK')"><img src="/launcher/img/bnr/0705_3.jpg" /></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dots"></div>
             </div>
+
             <!--お知らせ-->
-            <div id="launcher_info_list" class="unselectable" style="display: none"></div>
+            <div id="launcher_info_list" style="display: none"></div>
             <div id="launcher_info_detail" style="display: none" class="">
                 <div class="article_frame"><div class="article"></div></div>
                 <div class="btn_back selsnd" onClick="hideInfoDetail();"></div>
             </div>
 
             <!-- Menu -->
-            <div id="launcher_menu" class="unselectable">
+            <div id="launcher_menu">
                 <!-- Member Site -->
                 <div class="cogb btn" onClick="openMemberSite();"></div>
 
@@ -1075,8 +1088,7 @@
             </div>
 
             <!--フッター-->
-            <div id="launcher_footer" class="unselectable">
-                <div class="glove"></div>
+            <div id="launcher_footer">
                 <div class="capcom btn" onClick="return false"></div>
                 <div class="cog btn" onClick="return false"></div>
                 <div class="hangame btn" onClick="return false"></div>
@@ -1101,22 +1113,22 @@
         </div>
 
         <div id="preload" style="width: 1px; height: 1px; overflow: hidden; position: fixed; left: -100px; top: -100px">
-            <img src="./images/dialog/bg.jpg" alt="ダイアログ用背景" />
-            <img src="./images/char/unit_bg.png" alt="キャラ作成用背景" />
-            <img src="./images/char/unit_bg_bow.png" alt="弓用背景" />
-            <img src="./images/char/unit_bg_hbowgun.png" alt="ヘビィボウガン用背景" />
-            <img src="./images/char/unit_bg_lbowgun.png" alt="ライトボウガン用背景" />
-            <img src="./images/char/unit_bg_slashaxe.png" alt="スラッシュアックスＦ用背景" />
-            <img src="./images/char/unit_bg_senryukon.png" alt="穿龍棍用背景" />
-            <img src="./images/char/unit_bg_gunlance.png" alt="ガンランス用背景" />
-            <img src="./images/char/unit_bg_lance.png" alt="ランス用背景" />
-            <img src="./images/char/unit_bg_horn.png" alt="狩猟笛用背景" />
-            <img src="./images/char/unit_bg_hammer.png" alt="ハンマー用背景" />
-            <img src="./images/char/unit_bg_longsword.png" alt="太刀用背景" />
-            <img src="./images/char/unit_bg_largesword.png" alt="大剣用背景" />
-            <img src="./images/char/unit_bg_twinsword.png" alt="双剣用背景" />
-            <img src="./images/char/unit_bg_onehandsword.png" alt="片手剣用背景" />
-            <img src="./images/char/unit_bg_magnetspike.png" alt="マグネットスパイク用" />
+            <img src="/launcher/img/dialog/bg.jpg" alt="ダイアログ用背景" />
+            <img src="/launcher/img/char/unit_bg.png" alt="キャラ作成用背景" />
+            <img src="/launcher/img/char/unit_bg_bow.png" alt="弓用背景" />
+            <img src="/launcher/img/char/unit_bg_hbowgun.png" alt="ヘビィボウガン用背景" />
+            <img src="/launcher/img/char/unit_bg_lbowgun.png" alt="ライトボウガン用背景" />
+            <img src="/launcher/img/char/unit_bg_slashaxe.png" alt="スラッシュアックスＦ用背景" />
+            <img src="/launcher/img/char/unit_bg_senryukon.png" alt="穿龍棍用背景" />
+            <img src="/launcher/img/char/unit_bg_gunlance.png" alt="ガンランス用背景" />
+            <img src="/launcher/img/char/unit_bg_lance.png" alt="ランス用背景" />
+            <img src="/launcher/img/char/unit_bg_horn.png" alt="狩猟笛用背景" />
+            <img src="/launcher/img/char/unit_bg_hammer.png" alt="ハンマー用背景" />
+            <img src="/launcher/img/char/unit_bg_longsword.png" alt="太刀用背景" />
+            <img src="/launcher/img/char/unit_bg_largesword.png" alt="大剣用背景" />
+            <img src="/launcher/img/char/unit_bg_twinsword.png" alt="双剣用背景" />
+            <img src="/launcher/img/char/unit_bg_onehandsword.png" alt="片手剣用背景" />
+            <img src="/launcher/img/char/unit_bg_magnetspike.png" alt="マグネットスパイク用" />
         </div>
     </body>
 </html>

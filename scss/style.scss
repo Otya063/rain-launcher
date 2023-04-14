@@ -8,14 +8,6 @@
     padding: 0;
 }
 
-*[unselectable='on'] {
-    cursor: default;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-}
-
 a {
     border: none;
     outline: none;
@@ -65,18 +57,9 @@ h1 {
     }
 }
 
-// enable users to move the launcher by dragging
-/* .glove {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    user-select: none;
-} */
-
-.grab_test {
-    position: fixed;
+// overlay for moving the launcher window
+.overlay {
+    position: relative;
     left: 0;
     top: 0;
     width: 100%;
@@ -84,6 +67,18 @@ h1 {
     background: rgba(0, 0, 0, 0.4);
     display: none;
     z-index: 999;
+
+    .overlay_text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: $font_title_en;
+        color: white;
+        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+        transform: translate(-50%, -50%);
+    }
 }
 
 // launcher wrapper
@@ -121,11 +116,15 @@ h1 {
         transition: all 0.2s;
 
         // grab icon
-        &.grab {
-            font-size: 1.6rem;
-            font-weight: 700;
-            font-style: italic;
+        &.move {
+            @include move_icon;
             z-index: 999;
+            cursor: move;
+
+            // when hovering
+            &:hover {
+                @include move_icon(white, black);
+            }
         }
 
         // when hovering each button
@@ -202,6 +201,7 @@ h1 {
         transition: all 0.3s;
         cursor: pointer;
 
+        // when hovering
         &:hover {
             background: rgba(255, 255, 255, 1);
             color: black;
@@ -230,6 +230,7 @@ h1 {
         height: 64px;
         cursor: pointer;
 
+        // when hovering
         &:hover {
             background-position: 0px -64px;
         }
@@ -249,6 +250,7 @@ h1 {
         height: 12px;
         cursor: pointer;
 
+        // when hovering
         &:hover {
             background-position: 0px -12px;
         }
@@ -260,6 +262,7 @@ h1 {
         height: 13px;
         cursor: pointer;
 
+        // when hovering
         &:hover {
             background-position: 0px -13px;
         }
@@ -288,11 +291,13 @@ h1 {
 
             // input area
             input {
+                width: 150px;
                 height: 40px;
                 background: #00000099;
                 padding-left: 5%;
                 font-size: 1.4rem;
 
+                // input placeholder
                 &:-ms-input-placeholder {
                     color: #7f8095;
                 }
@@ -300,6 +305,30 @@ h1 {
                 // disable clear button on IE
                 &::-ms-clear {
                     display: none;
+                }
+            }
+
+            // icon and input group (without label)
+            .auth_userid,
+            .auth_password {
+                width: 220px;
+                display: flex;
+                justify-content: center;
+
+                span {
+                    width: 40px;
+                    height: 40px;
+                    border-right: gray 1px solid;
+
+                    // user_id
+                    &.user_icon {
+                        @include user_icon;
+                    }
+
+                    // password
+                    &.password_icon {
+                        @include password_icon;
+                    }
                 }
             }
         }
@@ -313,6 +342,7 @@ h1 {
         align-items: center;
         padding: 3% 0;
 
+        // label area
         label {
             padding-bottom: 2%;
         }
@@ -332,6 +362,7 @@ h1 {
             border: 1px white solid;
             transition: border 0.3s ease-in-out;
 
+            // server icon
             &::before {
                 content: '';
                 position: absolute;
@@ -343,6 +374,7 @@ h1 {
                 transition: border 0.3s ease-in-out;
             }
 
+            // arrow icon on closing server list box
             &::after {
                 content: '';
                 position: absolute;
@@ -356,12 +388,14 @@ h1 {
                 transition: all 0.3s;
             }
 
+            // arrow icon on opening server list box
             &.opened_svr_list {
                 &::after {
                     transform: rotate(-180deg);
                 }
             }
 
+            // border color when hovering
             &:hover {
                 border: 1px rgb(255, 123, 47) solid;
 
@@ -397,10 +431,12 @@ h1 {
                 line-height: 20px;
                 transition: all 0.3s;
 
+                // selected server name color
                 &.selected_srv {
                     color: orange;
                 }
 
+                // server name color when hovering
                 &:hover {
                     color: orange;
                     background: rgba(255, 255, 255, 0.2);
@@ -469,7 +505,7 @@ h1 {
     /* Preferences Button
 ====================================================*/
     .btn_preferences {
-        width: 65%;
+        width: 60%;
         height: 8.5%;
         position: relative;
         border: gray solid 2px;
@@ -486,7 +522,7 @@ h1 {
             width: 2.4em;
             height: 2.4em;
             top: 0;
-            left: 1.5%;
+            left: 7%;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-settings' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='%23d1c0a5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z'%3E%3C/path%3E%3Cpath d='M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-size: contain;
@@ -499,10 +535,8 @@ h1 {
         &::after {
             content: '';
             position: absolute;
-            margin: auto;
-            top: 0;
-            bottom: 0;
-            right: 8%;
+            bottom: 32%;
+            right: 13%;
             width: 6px;
             height: 6px;
             border-top: 3px solid #d1c0a5;
@@ -512,7 +546,7 @@ h1 {
             z-index: -1;
         }
 
-        // "Preferences High Grade Edition" text
+        // content text
         .btn_preferences_text {
             display: flex;
             position: absolute;
@@ -521,7 +555,7 @@ h1 {
             left: -9%;
             align-items: center;
             justify-content: center;
-            width: 340px;
+            width: 315px;
             color: #d1c0a5;
             font-size: 1.3em;
             white-space: nowrap;
@@ -529,7 +563,7 @@ h1 {
             transform: scale(0.85, 1);
         }
 
-        // when hovering preferences button
+        // when hovering
         &:hover {
             // gear icon
             &::before {
@@ -539,10 +573,10 @@ h1 {
 
             // arrow icon
             &::after {
-                right: 5%;
+                right: 9%;
             }
 
-            // text
+            // content text
             color: #fae7c9;
             background: rgba(72, 67, 67, 0.8);
         }

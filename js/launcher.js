@@ -15,172 +15,28 @@ function trackEvent(e, E, t, r) {
     } catch (e) {}
 }
 
-function CustomScroll(e) {
-    'use strict';
-    (this.element = e), this.setScrollPx(18), this.init();
+function scrollBarHandler(selector) {
+    this.$el = $(selector);
+    this.$el.is(':hidden') ? this.appendScrollBar() : this.dynamicScrollBar();
 }
 
-(CustomScroll.prototype.clear = function (e) {
-    'use strict';
-    this.element.off('mousewheel'),
-        this.element.off('scroll'),
-        this.element.off('keydown'),
-        this.sbox &&
-            (this.sbar && (this.sbar.off('mousedown'), this.sbar.remove(), (this.sbar = null)),
-            this.sbase && (this.sbase.off('mouseup'), this.sbase.remove(), (this.sbase = null)),
-            this.sbox.remove(),
-            (this.sbox = null)),
-        e || this.scrollV(0);
-}),
-    (CustomScroll.prototype.setScrollPx = function (e) {
-        'use strict';
-        this.speed = -1 * e;
-    }),
-    (CustomScroll.prototype.hide = function (e) {
-        'use strict';
-        this.sbox && ((e = e || 100), this.sbox.fadeOut(e));
-    }),
-    (CustomScroll.prototype.show = function (e) {
-        'use strict';
-        this.sbox && ((e = e || 200), this.sbox.fadeIn(e));
-    }),
-    (CustomScroll.prototype.updateElement = function (e) {
-        'use strict';
-        if (((this.height = this.element.innerHeight()), (this.maxScroll = this.getMaxScroll()), e || this.scrollV(0), 0 < this.maxScroll))
-            if (this.sbox) {
-                if (((this.slaneHei = this.height - 4), this.sbox)) {
-                    this.sbox.css('height', this.slaneHei + 2 + 'px');
-                    var E = $(this.element.offsetParent()[0]).offset(),
-                        t = this.element.offset();
-                    this.sbox.css('left', t.left - E.left + this.element.innerWidth() - 11 + 'px'), this.sbox.css('top', t.top - E.top + 1 + 'px');
-                }
-                this.sbar &&
-                    ((this.sbarHei = Math.max(20, this.slaneHei * (this.height / (this.height + this.maxScroll)))),
-                    (this.sbarMaxY = this.slaneHei - this.sbarHei - 2),
-                    this.setScrollPx(Math.max(18, Math.min(30, this.sbarMaxY / 10))),
-                    this.sbar.css('height', this.sbarHei + 'px'));
-            } else this.initScrollBar();
-        else
-            this.sbox &&
-                (this.sbar && (this.sbar.off('mousedown'), this.sbar.remove(), (this.sbar = null)),
-                this.sbase && (this.sbase.off('mouseup'), this.sbase.remove(), (this.sbase = null)),
-                this.sbox.remove(),
-                (this.sbox = null));
-        this.onScroll();
-    }),
-    (CustomScroll.prototype.initScrollBar = function () {
-        'use strict';
-        var a = this;
-        (this.slaneHei = this.height - 4), (this.sbox = $('<div class="scroll_bar_box"></div>')), this.sbox.css('height', this.slaneHei + 2 + 'px');
-        var e = $(this.element.offsetParent()[0]).offset(),
-            E = this.element.offset();
-        this.sbox.css('left', E.left - e.left + this.element.innerWidth() - 11 + 'px'),
-            this.sbox.css('top', E.top - e.top + 1 + 'px'),
-            this.sbox.attr('unselectable', 'on'),
-            this.sbox.attr('onSelectStart', 'return false;'),
-            (this.sbase = $('<div class="scroll_bar_box_base"></div>')),
-            this.sbase.attr('unselectable', 'on'),
-            this.sbase.attr('onSelectStart', 'return false;'),
-            this.sbox.append(this.sbase),
-            (this.sbar = $('<div class="scroll_bar_box_body"></div>')),
-            (this.sbarHei = Math.max(20, this.slaneHei * (this.height / (this.height + this.maxScroll)))),
-            (this.sbarMaxY = this.slaneHei - this.sbarHei - 2),
-            this.setScrollPx(Math.max(18, Math.min(30, this.sbarMaxY / 10))),
-            this.sbar.css('height', this.sbarHei + 'px'),
-            this.sbar.attr('unselectable', 'on'),
-            this.sbar.attr('onSelectStart', 'return false;'),
-            this.sbox.append(this.sbar),
-            this.onScroll(),
-            this.sbox.insertAfter(this.element),
-            this.sbar.on('mousedown', function (e) {
-                return (
-                    (a.startMY = e.clientY),
-                    (a.startBY = a.sbarTop),
-                    $(document).on('mousemove', function (e) {
-                        var E = Math.max(0, Math.min(a.sbarMaxY, a.startBY - (a.startMY - e.clientY))) / a.sbarMaxY;
-                        a.scrollV(a.maxScroll * E);
-                    }),
-                    a.sbar.addClass('active'),
-                    !1
-                );
-            }),
-            this.sbase.on('mouseup', function (e) {
-                var E,
-                    t = e.offsetY;
-                t < a.sbarTop ? (E = Math.max(0, Math.min(a.sbarMaxY, a.sbarTop - a.sbarHei))) : a.sbarTop + a.sbarHei < t && (E = Math.max(0, Math.min(a.sbarMaxY, a.sbarTop + a.sbarHei)));
-                var r = E / a.sbarMaxY;
-                a.scrollV(a.maxScroll * r);
-            }),
-            $(document).mouseup(function () {
-                $(document).off('mousemove');
-                try {
-                    a.sbar.removeClass('active');
-                } catch (e) {}
-                return !0;
-            });
-    }),
-    (CustomScroll.prototype.init = function (e) {
-        'use strict';
-        (this.height = this.element.innerHeight()), (this.maxScroll = this.getMaxScroll()), this.clear(e);
-        var a = this;
-        this.element.on('scroll', function () {
-            a.onScroll();
-        }),
-            this.element.on('mousewheel', function (e, E, t, r) {
-                (r /= Math.abs(r)), a.scrollAddV(r * a.speed), a.onScroll();
-            }),
-            this.element.attr('tabindex', '-1'),
-            this.element.css('outline', 0),
-            this.element.on('keydown', function (e) {
-                var E,
-                    t = !1;
-                switch (e.which) {
-                    case 36:
-                        a.scrollV(0), a.onScroll();
-                        break;
-                    case 35:
-                        a.scrollV(a.maxScroll), a.onScroll();
-                        break;
-                    case 38:
-                        a.scrollAddV(1 * a.speed * 0.5), a.onScroll();
-                        break;
-                    case 40:
-                        a.scrollAddV(-1 * a.speed * 0.5), a.onScroll();
-                        break;
-                    case 33:
-                        (E = Math.max(0, Math.min(a.sbarMaxY, a.sbarTop - a.sbarHei)) / a.sbarMaxY), a.scrollV(a.maxScroll * E), a.onScroll();
-                        break;
-                    case 34:
-                        (E = Math.max(0, Math.min(a.sbarMaxY, a.sbarTop + a.sbarHei)) / a.sbarMaxY), a.scrollV(a.maxScroll * E), a.onScroll();
-                        break;
-                    default:
-                        t = !0;
-                }
-                return t;
-            }),
-            0 < this.maxScroll && this.initScrollBar(),
-            e && a.onScroll();
-    }),
-    (CustomScroll.prototype.onScroll = function () {
-        'use strict';
-        if (this.sbox) {
-            var e = this.scrollV();
-            (this.sbarTop = this.sbarMaxY * (e / this.maxScroll) + 2), this.sbar.css('top', this.sbarTop + 'px');
-        }
-    }),
-    (CustomScroll.prototype.getMaxScroll = function () {
-        'use strict';
-        return this.element.get(0).scrollHeight - this.element.get(0).offsetHeight;
-    }),
-    (CustomScroll.prototype.scrollAddV = function (e) {
-        'use strict';
-        return this.scrollV(this.scrollV() + e);
-    }),
-    (CustomScroll.prototype.scrollV = function (e) {
-        'use strict';
-        return isNaN(e) || ((e = Math.max(0, Math.min(e, this.maxScroll))), this.element.scrollTop(e)), this.element.scrollTop();
+scrollBarHandler.prototype.dynamicScrollBar = function () {
+    this.$el.get(0).scrollHeight > this.$el.get(0).clientHeight && this.appendScrollBar();
+};
+
+scrollBarHandler.prototype.appendScrollBar = function () {
+    this.$el.mCustomScrollbar({
+        scrollInertia: 0,
+        mouseWheelPixels: 20,
+        autoHideScrollbar: false,
+        advanced: {
+            updateOnContentResize: true,
+            autoScrollOnFocus: true,
+        },
     });
-var _EUCS = {};
+};
+
+let _EUCS = {};
 
 function duc(e) {
     'use strict';
@@ -193,7 +49,7 @@ function duc(e) {
             "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/><group idx='4' nam='Rain4'/><group idx='5' nam='Rain5'/></server_groups>"),
         (_EUCS.anch = 'You can create a new character. <br> Press [Start Game] to create your character.'),
         (_EUCS.cwpt = 'Weapon'),
-        (_EUCS.pcst = 'Last Online'),
+        (_EUCS.pcst = 'Last Login'),
         (_EUCS.afac = 'You do not have permission to do this.'),
         (_EUCS.afde = 'Character encoding not supported.'),
         (_EUCS.nosrvsel = 'No server is currently selected. Please select one from the list.'),
@@ -261,17 +117,17 @@ function duc(e) {
 
 let _EXT_MODE = 'launcher',
     _MODE_BRANCH = !1,
-    _AT_GRAB_MODE_ENABLED = false;
+    _AT_MOVE_MODE_ENABLED = false;
 
-function grabingHandler() {
-    $('.grab')
+function launcherMovingHandler() {
+    $('.move')
         .hover(function () {
             // when the mouse button is hovering and pressed within the area
-            _AT_GRAB_MODE_ENABLED !== true && $('.grab_test').fadeIn(200), (_AT_GRAB_MODE_ENABLED = true), DoBeginDrag(true);
+            _AT_MOVE_MODE_ENABLED !== true && $('.overlay').fadeIn(200), (_AT_MOVE_MODE_ENABLED = true), DoBeginDrag(true);
         })
         .mouseout(function () {
             // when the mouse button is released within the area
-            _AT_GRAB_MODE_ENABLED !== false && $('.grab_test').fadeOut(200), (_AT_GRAB_MODE_ENABLED = false);
+            _AT_MOVE_MODE_ENABLED !== false && $('.overlay').fadeOut(200), (_AT_MOVE_MODE_ENABLED = false), DoBeginDrag(false);
         });
 }
 
@@ -623,33 +479,6 @@ function resetKeyActDefMode() {
     };
 }
 
-// create scroll bar
-function initScrollBar(e) {
-    'use strict';
-    var E = $(e);
-    E.css('overflow', 'hidden'), (_CS_ELMS[e] = new CustomScroll(E));
-}
-
-function updateScrollBar(e, E) {
-    'use strict';
-    _CS_ELMS[e] ? _CS_ELMS[e].init(E) : initScrollBar(e);
-}
-
-function updateScrollBarElm(e, E) {
-    'use strict';
-    _CS_ELMS[e] && _CS_ELMS[e].updateElement(E);
-}
-
-function hideScrollBar(e, E) {
-    'use strict';
-    _CS_ELMS[e] && _CS_ELMS[e].hide(E);
-}
-
-function showScrollBar(e, E) {
-    'use strict';
-    _CS_ELMS[e] && _CS_ELMS[e].show(E);
-}
-
 function openDefBrowser(e) {
     'use strict';
     DoPlaySound('IDR_WAV_OK'), trackPageView(e, ''), DoOpenBrowser(e);
@@ -779,7 +608,8 @@ resetKeyActDefMode(),
             (_MODE_BRANCH = !0), (e = -1 !== r.indexOf('stage') ? 'stage-' : 'debug-'), (E = 'net');
         }
     })();
-var _BNR_INT = 5e3,
+
+/* var _BNR_INT = 5e3,
     _BNR_CRR = 0,
     _BNR_TOI = null;
 
@@ -874,7 +704,7 @@ function beginLoadBnr() {
                     $('#launcher_bnr').show());
             },
         });
-}
+} */
 
 var _INF_URL = './launcher_list.html',
     _INF_SEL_LI = '#launcher_info_list',
@@ -933,11 +763,7 @@ function formattingInfoDetail(e, r) {
         $(_INF_SEL_BACK).css('visibility', 'hidden'),
         $(_INF_SEL_DETAIL).show(),
         $($(_INF_SEL_FRAME)[0]).scrollTop(0),
-        $(_INF_SEL_BODY).css('visibility', 'visible'),
-        hideScrollBar(_INF_SEL_LI),
-        $(_INF_SEL_DUS).attr('unselectable', 'on'),
-        $(_INF_SEL_DUS).attr('onSelectStart', 'return false;'),
-        updateScrollBar(_INF_SEL_FRAME);
+        $(_INF_SEL_BODY).css('visibility', 'visible');
 }
 
 function hideInfoDetail() {
@@ -990,11 +816,7 @@ function beginLoadInfo() {
                         : $(E).attr('href', 'javascript:openDefBrowser("' + getAbsPath(t, _INF_URL) + '");'),
                         $(E).attr('onclick', "DoPlaySound('IDR_WAV_OK');");
                 }),
-                initScrollBar(_INF_SEL_LI),
-                $(_INF_SEL_LI).show(),
-                updateScrollBar(_INF_SEL_LI),
-                $(_INF_SEL_US).attr('unselectable', 'on'),
-                $(_INF_SEL_US).attr('onSelectStart', 'return false;'));
+                $(_INF_SEL_LI).show());
         },
     });
 }
@@ -1528,8 +1350,8 @@ let _AT_IS_ENABLED = !0,
     _AT_FRAME_CB = Math.floor(1e3 * Math.random()),
     _AT_TOI = null,
     _AT_STATUS = 'AUTH_NULL',
-    _AT_SEL_ID = '.auth_userid',
-    _AT_SEL_PW = '.auth_password',
+    _AT_SEL_ID = '.userid_input',
+    _AT_SEL_PW = '.password_input',
     _AT_SRV_SEL_BTN = '.srv_sel_btn',
     _AT_SRV_LIST_BOX = '.srv_sel_box',
     _AT_SRV_LIST_ITEM = '.srv_sel_box .srv',
@@ -1754,6 +1576,7 @@ function showSrvSelList(serverBtn) {
     'use strict';
     // disable the button
     $(serverBtn).prop('disabled', true);
+
     $(_AT_SRV_LIST_BOX).slideDown(300, function () {
         // re-enable the button after the animation is complete
         $(serverBtn).prop('disabled', false);
@@ -1765,6 +1588,7 @@ function showSrvSelList(serverBtn) {
 function hideSrvSelList(serverBtn) {
     'use strict';
     // disable the button
+
     $(serverBtn).prop('disabled', true);
     $(_AT_SRV_LIST_BOX).slideUp(300, function () {
         // re-enable the button after the animation is complete
@@ -1995,6 +1819,8 @@ function initAuth() {
     'use strict';
     if (
         (_COG_MODE && initSrvSelList(),
+        // enable scroll bar on server selector box
+        new scrollBarHandler('.srv_sel_box'),
         _AT_FOCUS_ELMS.push(_AT_SEL_LBTN),
         _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)),
         $(_AT_SEL_LBTN).click(function () {
@@ -2167,11 +1993,8 @@ function addLogMsg(message, type, isOnlyOneMsg) {
 
         if (isOnlyOneMsg) {
             $(_SEL_LOG + ' p').html(_CACHE_CR1 + logMessage + '<br>');
-            if (_CACHE_CR2 === '') {
-                $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
-            }
-            updateScrollBarElm(_SEL_LOG, true);
             _CACHE_CR2 = logMessage;
+            new scrollBarHandler('.msg_contents');
         } else {
             if (_CACHE_CR2 !== '') {
                 logMessage = _CACHE_CR2 + '<br>' + logMessage;
@@ -2180,15 +2003,14 @@ function addLogMsg(message, type, isOnlyOneMsg) {
             // accumulate elements
             _CACHE_CR1 += logMessage + '<br>';
             $(_SEL_LOG + ' p').html(_CACHE_CR1);
-            $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight);
-            updateScrollBarElm(_SEL_LOG, true);
+            new scrollBarHandler('.msg_contents');
         }
     }
 }
 
 function clearLog() {
     'use strict';
-    (_CACHE_CR1 = ''), $(_SEL_LOG + ' p').html(''), $(_SEL_LOG).scrollTop($(_SEL_LOG).get(0).scrollHeight), updateScrollBar(_SEL_LOG);
+    (_CACHE_CR1 = ''), $(_SEL_LOG + ' p').html('');
 }
 
 function debugLogMsg(e, E) {
@@ -2197,7 +2019,6 @@ function debugLogMsg(e, E) {
 }
 
 function getExLog() {
-    // at the first startup, "Launcher Ver: 1.0," "After entering ~," and "select a server ~" are assigned to messages[i], respectively
     'use strict';
 
     // stop logging before starting
@@ -2284,7 +2105,6 @@ function showModalDialog(e, E, t) {
     resetModalDialogBtnWaitTimer(),
         (_IS_MODAL = !0),
         (_KEY_ACT_MODAL = function () {}),
-        DoBeginDrag(!(kuModalAction = function () {})),
         (t = t || {}),
         $('#launcher_modal .dialog p').html(e),
         $('#launcher_modal .dialog p').removeClass(),
@@ -2302,8 +2122,6 @@ function showModalDialog(e, E, t) {
                   '' !== _ && (_ = ' ' + _),
                   a.attr('onclick', 'if (_BTNS_IS_ENABLED) {return false;} else {' + _ + ' ' + E[r].cmd + '}'))
                 : (a.attr('onMouseOver', 'DoPlaySound("IDR_WAV_SEL");'), a.attr('onclick', _ + ' ' + E[r].cmd)),
-            a.attr('unselectable', 'on'),
-            a.attr('onSelectStart', 'return false;'),
             E[r].fcs && a.addClass('hover'),
             a.text(E[r].label);
         var s = $('<li></li>');
@@ -2570,14 +2388,11 @@ $(function () {
     $('html').keydown(function (e) {
         return !!_KEY_ACT_MODAL(e) || (!1 !== _KEY_ACT_MODAL(e) && _KEY_ACT_DEF(e));
     });
-    (!_IE_STATE.isIE || 8 <= _IE_STATE.version) && (beginLoadBnr(), beginLoadInfo()),
+    (!_IE_STATE.isIE || 8 <= _IE_STATE.version) && (/* beginLoadBnr(), */ beginLoadInfo()),
         $('a').bind('focus', function () {
             this.blur && this.blur();
         }),
         overrideAnker();
-
-    $('p:not(.selectable),img,li,td,th,.unselectable,.btn,.modal').attr('unselectable', 'on');
-    $('p:not(.selectable),img,li,td,th,.unselectable,.btn,.modal').attr('onSelectStart', 'return false;');
 
     // play a sound when hovering logout button
     $('.btn_logout').mouseover(function () {
@@ -2591,36 +2406,18 @@ $(function () {
 
     // play sound when hovering preferences button
     $('.btn_preferences_text').mouseover(function (e) {
-        _CONF_SND_BLOCK ? ((_CONF_SND_BLOCK = !1), startBnrSwitchTimer(), startExLog()) : DoPlaySound('IDR_WAV_SEL');
+        _CONF_SND_BLOCK ? ((_CONF_SND_BLOCK = !1), /* startBnrSwitchTimer(), */ startExLog()) : DoPlaySound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking preferences button
     $('.btn_preferences').click(function () {
-        (_CONF_SND_BLOCK = !0), clearBnrSwitchTimer(), stopExLog(), addEvent('config_click'), DoOpenMhlConfig();
+        (_CONF_SND_BLOCK = !0), /* clearBnrSwitchTimer(), */ stopExLog(), addEvent('config_click'), DoOpenMhlConfig();
     });
 
     $('#launcher_menu a,.selsnd,.btn').mouseover(function () {
-        DoPlaySound('IDR_WAV_SEL'), DoBeginDrag(!1);
+        DoPlaySound('IDR_WAV_SEL');
     });
-    $('.unselectable').mouseover(function () {
-        DoBeginDrag(!1);
-    });
-    $('.glove,.draggable').hover(
-        function () {
-            return DoBeginDrag(!0), !1;
-        }
-        /* function () {
-            DoBeginDrag(!1);
-        } */
-    );
-    $('.glove,.draggable').attr('unselectable', 'on');
-    $('.glove,.draggable').attr('onSelectStart', 'DoBeginDrag(true); return false;');
-    /*     $('.glove,.draggable').mousedown(function () {
-        DoBeginDrag(!0);
-    });
-    $('.glove,.draggable').mouseup(function () {
-        DoBeginDrag(!0);
-    }); */
+
     $(_CHR_SEL_UP).click(function () {
         DoPlaySound('IDR_WAV_OK'), scrollCharUni(-1);
     });
@@ -2641,9 +2438,6 @@ $(function () {
         gameStart();
     });
     initAuth();
-    initScrollBar(_SEL_LOG);
-    $('.srv_sel_box').mCustomScrollbar();
-    initScrollBar('#launcher_info_detail .article_frame');
 
     // initial display of msg log
     startExLog();
@@ -2658,5 +2452,8 @@ $(function () {
     });
 
     // load grabing function
-    grabingHandler();
+    launcherMovingHandler();
+
+    // by default, launcher window can't be moved
+    DoBeginDrag(false);
 });

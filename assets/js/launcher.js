@@ -1,5 +1,3 @@
-var ___ga_uaid = '';
-
 var updateDisabled = true;
 
 function trackPageView(e, E) {
@@ -10,9 +8,6 @@ function trackPageView(e, E) {
 function trackEvent(e, E, t, r) {
     var m = '<br>EVENT > e=' + e + ':E=' + E + ':t=' + t + ':r=' + r;
     console.log(m);
-    try {
-        debugLogMsg(m, !1);
-    } catch (e) {}
 }
 
 function scrollBarHandler(selector) {
@@ -36,133 +31,115 @@ scrollBarHandler.prototype.appendScrollBar = function () {
     });
 };
 
-let _EUCS = {};
+const textData = {
+    xhrspr: '<!--###content###-->',
+    dmsrvs: "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/><group idx='4' nam='Rain4'/><group idx='5' nam='Rain5'/></server_groups>",
+    anch: 'You can create a new character. <br> Press [Start Game] to create your character.',
+    cwpt: 'Weapon',
+    pcst: 'Last Login',
+    afac: 'You do not have permission to do this.',
+    afde: 'Character encoding not supported.',
+    nosrvsel: 'No server is currently selected. Please select one from the list.',
+    afipe: 'Wrong ID/Password.',
+    af102: 'The server is busy at the moment.<br>Please try again later.',
+    af301: 'The ID you have entered is temporarily suspended.',
+    af304: 'Authentication has been temporarily halted due to entering multiple incorrect passwords.<br>Please wait an hour and log in again.',
+    aferr: 'Unknown error occurred.',
+    af321: 'The security card data is different.',
+    noidpass: 'First, please enter both your User ID and Password.',
+    uflm0: 'The server is currently under maintenance and cannot be joined.<br>Please try again later.',
+    dmb0: 'Register now',
+    dmb1: 'Refresh',
+    dmb2: 'Delete',
+    dmb3: 'Cancel',
+    dmb4: 'Close',
+    dmb5: 'Yes',
+    dmb6: 'No',
+    dmb7: 'Add now',
+    dmb8: 'Ignore',
+    dmb9: 'Ignore',
+    dmt0: 'Trial course registration is required.<br>Register for a trial course below.<br>(You can register for free .',
+    dmt1: 'Once you have registered for the trial course,<br>please wait a moment and then press the [Refresh] button below.',
+    dmca0: 'Would you like to add a new character?<br>Press [Add now] below.',
+    dmca1: 'A new character slot will be requested momentarily,<br>please wait a few seconds and then press<br>the [Refresh] button below.',
+    dmcd0: 'The selected character will be deleted<br>',
+    dmcd1: "<span class='uid'> (ID:",
+    dmcd2: "  </span><br><div class='sp'></div>",
+    dmcd3: "<span class='attention'>Deleted characters will not revert to [Ready to Hunt] status,<br>but will be completely deleted.</span> Proceed?",
+    dmcd4: "<span class='notes'>[Warning]<br>You will lose the ability to add characters once an additional character has been deleted.<br>You will need to purchase a new<br>add character license to make one.</span>",
+    dmcd4_2:
+        "<span class='notes'>You're about to remove the last character.<br>If you delete all the characters, you will be provided<br>with one character under your basic contract guarantee!</span>",
+    dmcd5: '<br>',
+    dmcd6: '  </span> will be deleted.<br>',
+    dmcd7: "<span class='attention'>Enter the ID of the selected character then click the <br> [Delete] button.</span><br><div class='sp'></div>",
+    dmcd8: "<form action='javascript:void(0 ;'><input type='text' border='0' align='left' name='del_uid' id='del_uid'></form>",
+    dmcd9: "The character could not be deleted.<br><div class='sp'></div><span class='attention'>The selected character ID and entered ID do not match.</span>",
+    dmcd10: ' <br>is being deleted. <br> Please wait.',
+    dmcd11: 'This character cannot be deleted. <br> Please try again later.',
+    dmcd12: 'This character cannot be deleted. <br> A period of 7 days from the last deletion<br>must pass in order to delete all characters.',
+    dmcd13: "<span class='attention'>One character is guaranteed and provided<br>under the terms of the basic contract</span> <br> All characters have been deleted. <br> You will be provided with one character<br>under your basic contract guarantee!</span><br><span class='notes'>※ A period of 7 days from today is required<br>in order to delete this character.</span>",
+    dmcd14: 'Character deleted.',
+    dmhl0: 'The Hunter Life Course has expired. <br> Please purchase the Hunter Life course<br>by clicking [Buy now]. <br> (Browser will open ',
+    dmhl1: 'Once you have purchased the Hunter Life Course, <br> please wait a moment and then <br> press the [Refresh] button below.',
+    dmgs0: 'Selected character <br>',
+    dmgs1: ' </span><br><br>Log in and start the game <br> with the selected character?',
+    SIGN_EFAILED: 'Failed to connect to authentication server.',
+    SIGN_EILLEGAL: 'Authentication cancelled due to wrong input.',
+    SIGN_EALERT: 'A processing error has occured with the authentication server.',
+    SIGN_EALERT_COOP: 'The entered ID has not completed COG integration, <br> or a server was selected that you cannot log in to with this ID.',
+    SIGN_EABORT: 'Internal process at the authentication server has crashed.',
+    SIGN_ERESPONSE: 'Process terminated due to abnormal authentication response.',
+    SIGN_EDATABASE: 'Failed to access database.',
+    SIGN_ESUSPEND: 'This account has been temporarily suspended..',
+    SIGN_EELIMINATE: 'This account has been permanently suspended.',
+    SIGN_ECLOSE_EX: 'Login failed due to too much traffic.',
+    SIGN_EIPADDR: 'You cannot connect to the game server from your region.',
+    SIGN_EOTHER: 'Failed to authenticate ID.',
+    SIGN_EAPP: 'Authentication failed with an unexpected error in the client.',
+    SIGN_EPASS: 'Wrong ID/Password.',
+    SRV_MNT: "<span class='attention'>Unable to log in due to maintenance being performed.</span>",
+};
 
-function duc(e) {
-    'use strict';
-    return decodeURIComponent(_EUCS[e]);
+function textOutput(textType) {
+    try {
+        return decodeURIComponent(textData[textType]);
+    } catch (e) {
+        return 'Text Data Not Found.';
+    }
 }
-!(function () {
-    'use strict';
-    (_EUCS.xhrspr = '<!--###content###-->'),
-        (_EUCS.dmsrvs =
-            "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/><group idx='4' nam='Rain4'/><group idx='5' nam='Rain5'/></server_groups>"),
-        (_EUCS.anch = 'You can create a new character. <br> Press [Start Game] to create your character.'),
-        (_EUCS.cwpt = 'Weapon'),
-        (_EUCS.pcst = 'Last Login'),
-        (_EUCS.afac = 'You do not have permission to do this.'),
-        (_EUCS.afde = 'Character encoding not supported.'),
-        (_EUCS.nosrvsel = 'No server is currently selected. Please select one from the list.'),
-        (_EUCS.afipe = 'Wrong ID/Password.'),
-        (_EUCS.af102 = 'The server is busy at the moment.<br>Please try again later.'),
-        (_EUCS.af301 = 'The ID you have entered is temporarily suspended.'),
-        (_EUCS.af304 = 'Authentication has been temporarily halted due to entering multiple incorrect passwords.<br>Please wait an hour and log in again.'),
-        (_EUCS.aferr = 'Unknown error occurred.'),
-        (_EUCS.af321 = 'The security card data is different.'),
-        (_EUCS.noidpass = 'First, please enter both your User ID and Password.'),
-        (_EUCS.uflm0 = 'The server is currently under maintenance and cannot be joined.<br>Please try again later.'),
-        (_EUCS.dmb0 = 'Register now'),
-        (_EUCS.dmb1 = 'Refresh'),
-        (_EUCS.dmb2 = 'Delete'),
-        (_EUCS.dmb3 = 'Cancel'),
-        (_EUCS.dmb4 = 'Close'),
-        (_EUCS.dmb5 = 'Yes'),
-        (_EUCS.dmb6 = 'No'),
-        (_EUCS.dmb7 = 'Add now'),
-        (_EUCS.dmb8 = 'Ignore'),
-        (_EUCS.dmb9 = 'Ignore'),
-        (_EUCS.dmt0 = 'Trial course registration is required.<br>Register for a trial course below.<br>(You can register for free).'),
-        (_EUCS.dmt1 = 'Once you have registered for the trial course,<br>please wait a moment and then press the [Refresh] button below.'),
-        (_EUCS.dmca0 = 'Would you like to add a new character?<br>Press [Add now] below.'),
-        (_EUCS.dmca1 = 'A new character slot will be requested momentarily,<br>please wait a few seconds and then press<br>the [Refresh] button below.'),
-        (_EUCS.dmcd0 = 'The selected character will be deleted<br>'),
-        (_EUCS.dmcd1 = "<span class='uid'> (ID:"),
-        (_EUCS.dmcd2 = ") </span><br><div class='sp'></div>"),
-        (_EUCS.dmcd3 = "<span class='attention'>Deleted characters will not revert to [Ready to Hunt] status,<br>but will be completely deleted.</span> Proceed?"),
-        (_EUCS.dmcd4 =
-            "<span class='notes'>[Warning]<br>You will lose the ability to add characters once an additional character has been deleted.<br>You will need to purchase a new<br>add character license to make one.</span>"),
-        (_EUCS.dmcd4_2 =
-            "<span class='notes'>You're about to remove the last character.<br>If you delete all the characters, you will be provided<br>with one character under your basic contract guarantee!</span>"),
-        (_EUCS.dmcd5 = '<br>'),
-        (_EUCS.dmcd6 = ') </span> will be deleted.<br>'),
-        (_EUCS.dmcd7 = "<span class='attention'>Enter the ID of the selected character then click the <br> [Delete] button.</span><br><div class='sp'></div>"),
-        (_EUCS.dmcd8 = "<form action='javascript:void(0);'><input type='text' border='0' align='left' name='del_uid' id='del_uid'></form>"),
-        (_EUCS.dmcd9 = "The character could not be deleted.<br><div class='sp'></div><span class='attention'>The selected character ID and entered ID do not match.</span>"),
-        (_EUCS.dmcd10 = ')<br>is being deleted. <br> Please wait.'),
-        (_EUCS.dmcd11 = 'This character cannot be deleted. <br> Please try again later.'),
-        (_EUCS.dmcd12 = 'This character cannot be deleted. <br> A period of 7 days from the last deletion<br>must pass in order to delete all characters.'),
-        (_EUCS.dmcd13 =
-            "<span class='attention'>One character is guaranteed and provided<br>under the terms of the basic contract</span> <br> All characters have been deleted. <br> You will be provided with one character<br>under your basic contract guarantee!</span><br><span class='notes'>※ A period of 7 days from today is required<br>in order to delete this character.</span>"),
-        (_EUCS.dmcd14 = 'Character deleted.'),
-        (_EUCS.dmhl0 = 'The Hunter Life Course has expired. <br> Please purchase the Hunter Life course<br>by clicking [Buy now]. <br> (Browser will open)'),
-        (_EUCS.dmhl1 = 'Once you have purchased the Hunter Life Course, <br> please wait a moment and then <br> press the [Refresh] button below.'),
-        (_EUCS.dmgs0 = 'Selected character <br>'),
-        (_EUCS.dmgs1 = ')</span><br><br>Log in and start the game <br> with the selected character?'),
-        (_EUCS.SIGN_EFAILED = 'Failed to connect to authentication server.'),
-        (_EUCS.SIGN_EILLEGAL = 'Authentication cancelled due to wrong input.'),
-        (_EUCS.SIGN_EALERT = 'A processing error has occured with the authentication server.'),
-        (_EUCS.SIGN_EALERT_COOP = 'The entered ID has not completed COG integration, <br> or a server was selected that you cannot log in to with this ID.'),
-        (_EUCS.SIGN_EABORT = 'Internal process at the authentication server has crashed.'),
-        (_EUCS.SIGN_ERESPONSE = 'Process terminated due to abnormal authentication response.'),
-        (_EUCS.SIGN_EDATABASE = 'Failed to access database.'),
-        (_EUCS.SIGN_ESUSPEND = 'This account has been temporarily suspended..'),
-        (_EUCS.SIGN_EELIMINATE = 'This account has been permanently suspended.'),
-        (_EUCS.SIGN_ECLOSE_EX = 'Login failed due to too much traffic.'),
-        (_EUCS.SIGN_EIPADDR = 'You cannot connect to the game server from your region.'),
-        (_EUCS.SIGN_EOTHER = 'Failed to authenticate ID.'),
-        (_EUCS.SIGN_EAPP = 'Authentication failed with an unexpected error in the client.'),
-        (_EUCS.SIGN_EPASS = 'Wrong ID/Password.'),
-        (_EUCS.SRV_MNT = "<span class='attention'>Unable to log in due to maintenance being performed.</span>");
-})();
 
-let _EXT_MODE = 'launcher',
-    _MODE_BRANCH = !1,
-    _AT_MOVE_MODE_ENABLED = false;
+let MODE_BRANCH = true,
+    AT_MOVE_MODE_ENABLED = false;
 
 function launcherMovingHandler() {
     $('.move')
         .hover(function () {
             // when the mouse button is hovering and pressed within the area
-            _AT_MOVE_MODE_ENABLED !== true && $('.overlay').fadeIn(200), (_AT_MOVE_MODE_ENABLED = true), DoBeginDrag(true);
+            AT_MOVE_MODE_ENABLED !== true && $('.overlay').fadeIn(200), (AT_MOVE_MODE_ENABLED = true), DoBeginDrag(true);
         })
         .mouseout(function () {
             // when the mouse button is released within the area
-            _AT_MOVE_MODE_ENABLED !== false && $('.overlay').fadeOut(200), (_AT_MOVE_MODE_ENABLED = false), DoBeginDrag(false);
+            AT_MOVE_MODE_ENABLED !== false && $('.overlay').fadeOut(200), (AT_MOVE_MODE_ENABLED = false), DoBeginDrag(false);
         });
-}
-
-function extPreTry() {
-    'use strict';
-    _EXT_MODE = 'launcher';
-}
-
-function extCatchE() {
-    'use strict';
-    _EXT_MODE = '';
-}
-
-function extCatchReturn(e) {
-    'use strict';
-    return extCatchE(), e;
 }
 
 function DoGetMhfBootMode() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getMhfBootMode();
     } catch (e) {
-        return extCatchReturn('_MHF_NORMAL');
+        return '_MHF_NORMAL';
     }
 }
 
 function DoGetIniLastServerIndex() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getIniLastServerIndex();
     } catch (e) {
-        return extCatchReturn(0);
+        return 0;
     }
 }
 
@@ -173,64 +150,57 @@ function DoSetIniLastServerIndex(e) {
     } catch (e) {}
 }
 
-function DoGetServerListXml() {
+function DoGetServerList() {
     'use strict';
-    extPreTry();
     try {
-        return window.external.getServerListXml();
+        return window.external.getServerList();
     } catch (e) {
-        // display in local environment
-        return extCatchReturn(duc('dmsrvs'));
+        return textOutput('dmsrvs');
     }
 }
 
 function DoGetMhfMutexNumber() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getMhfMutexNumber();
     } catch (e) {
-        return extCatchReturn(0);
+        return 0;
     }
 }
 
 function DoMinimizeWindow() {
     'use strict';
+
     DoPlaySound('IDR_WAV_OK');
-    try {
-        window.external.minimizeWindow();
-    } catch (e) {}
+    window.external.minimizeWindow();
 }
 
 function DoCloseWindow() {
     'use strict';
+
     DoPlaySound('IDR_WAV_OK');
-    try {
-        window.external.closeWindow();
-    } catch (e) {}
+    window.external.closeWindow();
 }
 
 function DoOpenMhlConfig() {
     'use strict';
+
     DoPlaySound('IDR_WAV_OK');
-    try {
-        window.external.openMhlConfig();
-    } catch (e) {}
+    window.external.openMhlConfig();
 }
 
 function DoRestartMhf() {
     'use strict';
+
     DoPlaySound('IDR_WAV_OK');
-    try {
-        window.external.restartMhf();
-    } catch (e) {}
+    window.external.restartMhf();
 }
 
 function DoOpenBrowser(e) {
     'use strict';
-    try {
-        window.external.openBrowser(e);
-    } catch (e) {}
+
+    window.external.openBrowser(e);
 }
 
 function DoBeginDrag(e) {
@@ -242,21 +212,21 @@ function DoBeginDrag(e) {
 
 function DoGetUserId() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getUserId() || '';
     } catch (e) {
-        return extCatchReturn('');
+        return '';
     }
 }
 
 function DoGetPassword() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getPassword() || '';
     } catch (e) {
-        return extCatchReturn('');
+        return '';
     }
 }
 
@@ -283,55 +253,51 @@ function DoLoginDmm() {
 
 function DoGetLastAuthResult() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getLastAuthResult();
     } catch (e) {
-        return extCatchReturn('NULL');
+        return 'NULL';
     }
 }
 
 function DoGetSignResult() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getSignResult();
     } catch (e) {
-        return extCatchReturn('SIGN_EFAILED');
+        return 'SIGN_EFAILED';
     }
 }
 
 function DoStartUpdate() {
     'use strict';
-    extPreTry();
+
     try {
-        if (updateDisabled) {
-            return false;
-        } else {
-            return window.external.startUpdate();
-        }
+        return updateDisabled ? false : window.external.startUpdate();
     } catch (e) {
-        return extCatchReturn(!0);
+        return true;
     }
 }
 
 function DoGetUpdatePercentageTotal() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getUpdatePercentageTotal();
     } catch (e) {
-        return extCatchReturn(0);
+        return 0;
     }
 }
 
 function DoGetUpdatePercentageFile() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getUpdatePercentageFile();
     } catch (e) {
-        return extCatchReturn(0);
+        return 0;
     }
 }
 
@@ -346,21 +312,21 @@ function DoGetUpdateStatus() {
 
 function DoGetAccountRights() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getAccountRights();
     } catch (e) {
-        return extCatchReturn('');
+        return '';
     }
 }
 
 function DoGetLauncherReturnCode() {
     'use strict';
-    extPreTry();
+
     try {
         return String(window.external.getLauncherReturnCode());
     } catch (e) {
-        return extCatchReturn('NULL');
+        return 'NULL';
     }
 }
 
@@ -382,21 +348,21 @@ function DoCheckIsEnableSessionId() {
 
 function DoGetCharacterInfo() {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.getCharacterInfo();
     } catch (e) {
-        return extCatchReturn('');
+        return '';
     }
 }
 
 function DoDeleteCharacter(e) {
     'use strict';
-    extPreTry();
+
     try {
         return window.external.deleteCharacter(e);
     } catch (e) {
-        return extCatchReturn(!0);
+        return true;
     }
 }
 
@@ -423,54 +389,34 @@ function DoExtractLog(e) {
     }
 }
 
-function DoDebugGetIniUserId() {
-    'use strict';
-    if (!_MODE_BRANCH) return '';
-    try {
-        return window.external.debugGetIniUserId() || '';
-    } catch (e) {
-        return '';
-    }
-}
-
-function DoDebugGetIniPassword() {
-    'use strict';
-    if (!_MODE_BRANCH) return '';
-    try {
-        return window.external.debugGetIniPassword() || '';
-    } catch (e) {
-        return '';
-    }
-}
-
-var _EXE_MUTEX = 0,
-    _EVT_PHASE = 'prepare',
-    _STORAGE = {},
-    _TRG_STORAGE_KEY = {},
-    _HOSTS = {},
-    _COG_MODE = !0,
-    _NHN_MODE = !0,
-    _IE_STATE = {},
-    _CS_ELMS = {},
-    _ABS_DOC = null,
-    _IS_MODAL = !1;
+var EXE_MUTEX = 0,
+    EVT_PHASE = 'prepare',
+    STORAGE = {},
+    TRG_STORAGE_KEY = {},
+    HOSTS = {},
+    COG_MODE = !0,
+    NHN_MODE = !0,
+    IE_STATE = {},
+    CS_ELMS = {},
+    ABS_DOC = null,
+    IS_MODAL = !1;
 
 function switchEvtPhase(e) {
     'use strict';
-    _EVT_PHASE = e;
+    EVT_PHASE = e;
 }
 
 function addEvent(e) {
     'use strict';
-    trackEvent('launcher', _EVT_PHASE, e);
+    trackEvent('launcher', EVT_PHASE, e);
 }
 
 var _KEY_ACT_MODAL = function () {},
-    _KEY_ACT_DEF;
+    KEY_ACT_DEF;
 
 function resetKeyActDefMode() {
     'use strict';
-    _KEY_ACT_DEF = function (e) {
+    KEY_ACT_DEF = function (e) {
         switch (e.which) {
             case 9:
                 return !1;
@@ -487,11 +433,11 @@ function openDefBrowser(e) {
 function getAbsPath(e, E) {
     'use strict';
     var t = (E = E || location.href).split('/');
-    if ((t.pop(), (E = t.join('/') + '/'), !_ABS_DOC)) {
+    if ((t.pop(), (E = t.join('/') + '/'), !ABS_DOC)) {
         var r = $('<iframe style="display:none;"></iframe>');
-        $(document.body).prepend(r), (_ABS_DOC = r[0].contentWindow.document);
+        $(document.body).prepend(r), (ABS_DOC = r[0].contentWindow.document);
     }
-    return _ABS_DOC.open(), _ABS_DOC.write('<head><base href="' + E + '" /></head><body><a href="' + e + '"></a></body>'), _ABS_DOC.close(), _ABS_DOC.getElementsByTagName('a')[0].href;
+    return ABS_DOC.open(), ABS_DOC.write('<head><base href="' + E + '" /></head><body><a href="' + e + '"></a></body>'), ABS_DOC.close(), ABS_DOC.getElementsByTagName('a')[0].href;
 }
 
 function overrideAnker(e, E) {
@@ -554,7 +500,7 @@ function isHlEnabled() {
 function readCookie() {
     'use strict';
     var e = '';
-    _STORAGE = {};
+    STORAGE = {};
     try {
         e = document.cookie;
     } catch (e) {}
@@ -563,16 +509,16 @@ function readCookie() {
         for (var E = 0; E < e.length; E++) {
             var t = e[E].split('='),
                 r = t[0].split(' ').join('');
-            _TRG_STORAGE_KEY[r] = r && (_STORAGE[r] = decodeURIComponent(t[1]));
+            TRG_STORAGE_KEY[r] = r && (STORAGE[r] = decodeURIComponent(t[1]));
         }
     }
-    _STORAGE['cogid' + _EXE_MUTEX] || (_STORAGE['cogid' + _EXE_MUTEX] = ''), _STORAGE['pw' + _EXE_MUTEX] || (_STORAGE['pw' + _EXE_MUTEX] = '');
+    STORAGE['cogid' + EXE_MUTEX] || (STORAGE['cogid' + EXE_MUTEX] = ''), STORAGE['pw' + EXE_MUTEX] || (STORAGE['pw' + EXE_MUTEX] = '');
 }
 
 function writeCookie() {
     'use strict';
     var e = [];
-    for (var E in _STORAGE) _STORAGE.hasOwnProperty(E) && e.push(E + '=' + _STORAGE[E]);
+    for (var E in STORAGE) STORAGE.hasOwnProperty(E) && e.push(E + '=' + STORAGE[E]);
     if (e.length) {
         var t = new Date();
         t.setDate(t.getDate() + 365);
@@ -584,15 +530,15 @@ function writeCookie() {
 
 function delCoockie(e) {
     'use strict';
-    if (_STORAGE[e])
+    if (STORAGE[e])
         try {
-            document.cookie = e + '=' + _STORAGE[e] + '; expires=' + new Date(0).toGMTString();
+            document.cookie = e + '=' + STORAGE[e] + '; expires=' + new Date(0).toGMTString();
         } catch (e) {}
 }
 resetKeyActDefMode(),
     (function () {
         'use strict';
-        getIEVer(), (_EXE_MUTEX = DoGetMhfMutexNumber()), ((_TRG_STORAGE_KEY = {})['cogid' + _EXE_MUTEX] = !0);
+        getIEVer(), (EXE_MUTEX = DoGetMhfMutexNumber()), ((TRG_STORAGE_KEY = {})['cogid' + EXE_MUTEX] = !0);
     })(),
     (function () {
         'use strict';
@@ -601,119 +547,22 @@ resetKeyActDefMode(),
             t,
             r = location.host;
 
-        if (((_COG_MODE = -1 !== r.indexOf('')), (_NHN_MODE = -1 !== r.indexOf('hangame-')), (t = _COG_MODE ? 'cog-' : _NHN_MODE ? 'hangame-' : 'dmm-'), modeCheck(r, 'mhf-z.jp')))
-            (_MODE_BRANCH = !1), (e = ''), (E = 'jp');
+        if (((COG_MODE = -1 !== r.indexOf('')), (NHN_MODE = -1 !== r.indexOf('hangame-')), (t = COG_MODE ? 'cog-' : NHN_MODE ? 'hangame-' : 'dmm-'), modeCheck(r, 'mhf-z.jp')))
+            (MODE_BRANCH = !1), (e = ''), (E = 'jp');
         else {
             if (!modeCheck(r, 'mhf-z.net')) return;
-            (_MODE_BRANCH = !0), (e = -1 !== r.indexOf('stage') ? 'stage-' : 'debug-'), (E = 'net');
+            (MODE_BRANCH = !0), (e = -1 !== r.indexOf('stage') ? 'stage-' : 'debug-'), (E = 'net');
         }
     })();
 
-/* var _BNR_INT = 5e3,
-    _BNR_CRR = 0,
-    _BNR_TOI = null;
-
-function startBnrSwitchTimer() {
-    'use strict';
-    clearBnrSwitchTimer(),
-        (_BNR_TOI = setTimeout(function () {
-            _BNR_CRR++, $('#launcher_bnr .dots ul li').length <= _BNR_CRR && (_BNR_CRR = 0), switchBnr(_BNR_CRR);
-        }, _BNR_INT));
-}
-
-function clearBnrSwitchTimer() {
-    'use strict';
-    if (_BNR_TOI) {
-        try {
-            clearTimeout(_BNR_TOI);
-        } catch (e) {}
-        _BNR_TOI = null;
-    }
-}
-
-function getBnrElm(e) {
-    'use strict';
-    return $('#launcher_bnr .dots ul li .dot')[e];
-}
-
-function switchBnr(e) {
-    'use strict';
-    clearBnrSwitchTimer(), (_BNR_CRR = e), $('#launcher_bnr .dots ul li .dot').removeClass('crr');
-    var E = getBnrElm(e);
-    $(E).addClass('crr'), $('#launcher_bnr .bnr').html(''), $('#launcher_bnr .bnr').append($($(E).find('img')[0]).clone());
-    try {
-        $('#launcher_bnr .bnr img').removeAttr('onerror');
-    } catch (e) {}
-    $('#launcher_bnr .bnr img').hide(),
-        $('#launcher_bnr .bnr').append($('<div class="frame" onClick=return false"DoPlaySound(\'IDR_WAV_OK\');(\'' + $(E).attr('href') + '\');" onMouseOver="DoPlaySound(\'IDR_WAV_SEL\');"></div>')),
-        $('#launcher_bnr .bnr img').fadeIn(),
-        startBnrSwitchTimer();
-}
-
-function retryBnrImgLoad(e) {
-    'use strict';
-    var E = parseInt($(e).attr('cnt') || '0', 10);
-    E++, $(e).attr('cnt', String(E));
-    var t = String(e.src).split('?').shift();
-    setTimeout(function () {
-        e.src = t + '?c=' + E;
-    }, _BNR_INT);
-}
-
-function beginLoadBnr() {
-    'use strict';
-    var s = './bnr/launcher.html';
-    $('#launcher_bnr .bnr').hover(
-        function () {
-            clearBnrSwitchTimer(), $(this).find('img').fadeTo(300, 0.9);
-        },
-        function () {
-            $(this).find('img').fadeTo(200, 1), startBnrSwitchTimer();
-        }
-    ),
-        $.ajax({
-            type: 'GET',
-            url: s,
-            dataType: 'text',
-            cache: !1,
-            success: function (e) {
-                var E = e.split(duc('xhrspr'));
-                3 === E.length &&
-                    ($('#launcher_bnr .dots ul').html(''),
-                    (E = (E = (E = (E = E[1].split('src="/').join('src_root="/')).split('src="').join('srcpre="')).split('srcpre="img/').join('srcpre="/sp_contents/banner/img/'))
-                        .split('src_root="/')
-                        .join('src="/')),
-                    (E = $('<ul>' + E + '</ul>')).find('li').each(function (e, E) {
-                        var t = $('#launcher_bnr .dots ul li').length;
-
-                        if (5 <= t) return !1;
-                        var r = $(E).find('a');
-                        if (_COG_MODE) {
-                            if (r.hasClass('cogHide') || r.hasClass('nhnOnly') || r.hasClass('dmmOnly')) return !0;
-                        } else if (_NHN_MODE) {
-                            if (r.hasClass('nhnHide') || r.hasClass('cogOnly') || r.hasClass('dmmOnly')) return !0;
-                        } else if (r.hasClass('dmmHide') || r.hasClass('cogOnly') || r.hasClass('nhnOnly')) return !0;
-                        var a = getAbsPath(r.attr('href'), s),
-                            _ = getAbsPath($(r.find('img')[0]).attr('srcpre'), s);
-                        $('#launcher_bnr .dots ul').append(
-                            $('<li><div class="dot" onClick="DoPlaySound(\'IDR_WAV_OK\'); switchBnr(' + t + ');" href="' + a + '"><img src="' + _ + '" onerror="retryBnrImgLoad(this);"/></div></li>')
-                        );
-                    }),
-                    (E = null),
-                    switchBnr(0),
-                    $('#launcher_bnr').show());
-            },
-        });
-} */
-
-var _INF_URL = './launcher_list.html',
-    _INF_SEL_LI = '#launcher_info_list',
-    _INF_SEL_US = '#launcher_info_list img, #launcher_info_list a',
-    _INF_SEL_BACK = '#launcher_bnr,#launcher_info_list',
-    _INF_SEL_DETAIL = '#launcher_info_detail',
-    _INF_SEL_FRAME = _INF_SEL_DETAIL + ' .article_frame',
-    _INF_SEL_BODY = _INF_SEL_FRAME + ' .article',
-    _INF_SEL_DUS = '#launcher_info_detail img, #launcher_info_detail a';
+var INF_URL = '/launcher/en/launcher_list.html',
+    INF_SEL_LI = '#launcher_info_list',
+    INF_SEL_US = '#launcher_info_list img, #launcher_info_list a',
+    INF_SEL_BACK = '#launcher_bnr,#launcher_info_list',
+    INF_SEL_DETAIL = '#launcher_info_detail',
+    INF_SEL_FRAME = INF_SEL_DETAIL + ' .article_frame',
+    INF_SEL_BODY = INF_SEL_FRAME + ' .article',
+    INF_SEL_DUS = '#launcher_info_detail img, #launcher_info_detail a';
 
 function formattingInfoDetail(e, r) {
     'use strict';
@@ -732,8 +581,8 @@ function formattingInfoDetail(e, r) {
         (e[1] = e[1].split('src="').join('srcpre="'));
 
     var t = '<div class="article_category' + E + '"></div>' + e[1] + '<div style="width:100%; height:20px;"></div>';
-    $(_INF_SEL_BODY).html(t),
-        $(_INF_SEL_BODY + ' a').each(function (e, E) {
+    $(INF_SEL_BODY).html(t),
+        $(INF_SEL_BODY + ' a').each(function (e, E) {
             $(E).removeAttr('target');
 
             var t = String($(E).attr('href'));
@@ -743,44 +592,36 @@ function formattingInfoDetail(e, r) {
                 ? $(E).attr('href', 'javascript:scrollToInfoDetail("' + t.substr(1) + '");')
                 : $(E).attr('href', 'javascript:openDefBrowser("' + getAbsPath(t, r) + '");');
         }),
-        $(_INF_SEL_BODY + ' img').each(function (e, E) {
+        $(INF_SEL_BODY + ' img').each(function (e, E) {
             $(E).attr('src', getAbsPath($(E).attr('srcpre'), r)), $(E).removeAttr('srcpre');
         }),
         $(
-            [
-                _INF_SEL_BODY + ' script',
-                _INF_SEL_BODY + ' iframe',
-                _INF_SEL_BODY + ' video',
-                _INF_SEL_BODY + ' audio',
-                _INF_SEL_BODY + ' source',
-                _INF_SEL_BODY + ' video',
-                _INF_SEL_BODY + ' input',
-            ].join(',')
+            [INF_SEL_BODY + ' script', INF_SEL_BODY + ' iframe', INF_SEL_BODY + ' video', INF_SEL_BODY + ' audio', INF_SEL_BODY + ' source', INF_SEL_BODY + ' video', INF_SEL_BODY + ' input'].join(',')
         ).each(function (e, E) {
             $(E).attr('src', getAbsPath($(E).attr('srcpre'), r)), $(E).removeAttr('srcpre');
         }),
-        $(_INF_SEL_BODY).css('visibility', 'hidden'),
-        $(_INF_SEL_BACK).css('visibility', 'hidden'),
-        $(_INF_SEL_DETAIL).show(),
-        $($(_INF_SEL_FRAME)[0]).scrollTop(0),
-        $(_INF_SEL_BODY).css('visibility', 'visible');
+        $(INF_SEL_BODY).css('visibility', 'hidden'),
+        $(INF_SEL_BACK).css('visibility', 'hidden'),
+        $(INF_SEL_DETAIL).show(),
+        $($(INF_SEL_FRAME)[0]).scrollTop(0),
+        $(INF_SEL_BODY).css('visibility', 'visible');
 }
 
-function hideInfoDetail() {
+/* function hideInfoDetail() {
     'use strict';
-    DoPlaySound('IDR_WAV_OK'), $(_INF_SEL_DETAIL).hide(), $(_INF_SEL_BODY).html(''), $(_INF_SEL_BACK).css('visibility', 'visible'), showScrollBar(_INF_SEL_LI);
-}
+    DoPlaySound('IDR_WAV_OK'), $(INF_SEL_DETAIL).hide(), $(INF_SEL_BODY).html(''), $(INF_SEL_BACK).css('visibility', 'visible'), scrollBarHandler(INF_SEL_LI);
+} */
 
 function scrollToInfoDetail(e) {
     'use strict';
     var E = 0;
-    'contents_top' !== e && ((E = ($(_INF_SEL_BODY + ' a[name="' + e + '"]') || $(_INF_SEL_BODY + ' #' + e + ']')).offset().top), (E -= $(_INF_SEL_BODY).offset().top));
-    $(_INF_SEL_FRAME).animate({ scrollTop: E });
+    'contents_top' !== e && ((E = ($(INF_SEL_BODY + ' a[name="' + e + '"]') || $(INF_SEL_BODY + ' #' + e + ']')).offset().top), (E -= $(INF_SEL_BODY).offset().top));
+    $(INF_SEL_FRAME).animate({ scrollTop: E });
 }
 
 function loadtoInnerElement(t) {
     'use strict';
-    _IE_STATE.isIE && _IE_STATE.version < 8
+    IE_STATE.isIE && IE_STATE.version < 8
         ? openDefBrowser(t)
         : $.ajax({
               type: 'GET',
@@ -791,7 +632,7 @@ function loadtoInnerElement(t) {
                   openDefBrowser(t);
               },
               success: function (e) {
-                  var E = e.split(duc('xhrspr'));
+                  var E = e.split(textOutput('xhrspr'));
                   3 === E.length ? (trackPageView(t, ''), formattingInfoDetail(E, t)) : openDefBrowser(t);
               },
           });
@@ -801,44 +642,34 @@ function beginLoadInfo() {
     'use strict';
     $.ajax({
         type: 'GET',
-        url: _INF_URL,
+        url: INF_URL,
         dataType: 'text',
         cache: !1,
         success: function (e) {
-            var E = e.split(duc('xhrspr'));
-            3 === E.length &&
-                ($(_INF_SEL_LI).html(E[1]),
-                $(_INF_SEL_LI + ' a').each(function (e, E) {
-                    $(E).removeAttr('target');
-                    var t = String($(E).attr('href'));
-                    2 === t.split('/sp/news/').length
-                        ? $(E).attr('href', 'javascript:loadtoInnerElement("' + getAbsPath(t, _INF_URL) + '");')
-                        : $(E).attr('href', 'javascript:openDefBrowser("' + getAbsPath(t, _INF_URL) + '");'),
-                        $(E).attr('onclick', "DoPlaySound('IDR_WAV_OK');");
-                }),
-                $(_INF_SEL_LI).show());
+            $(INF_SEL_LI).html(e);
+            new scrollBarHandler(INF_SEL_LI);
         },
     });
 }
 
-var _CHR_CRR = 0,
-    _CHR_DEF = 0,
-    _CHR_UNIT_Y = [0, 18, 60, 102, 120],
-    _CHR_UNIT_I = Math.floor(0.5 * _CHR_UNIT_Y.length),
-    _CHR_SCR = !1,
-    _CHR_UID = null,
-    _CHR_HR = null,
-    _CHR_DEL_TOI = null,
-    _CHR_DEL_STATE = 'NULL',
-    _CHR_DEL_NAME = '',
-    _CHR_DEL_UID = null,
-    _CHR_SEL_BOX = '#launcher_character_select',
-    _CHR_SEL_UNIT = _CHR_SEL_BOX + ' .unit',
-    _CHR_SEL_UP = _CHR_SEL_BOX + ' .scroll.up',
-    _CHR_SEL_DOWN = _CHR_SEL_BOX + ' .scroll.down',
-    _CHR_SEL_ADD = _CHR_SEL_BOX + ' .btn_add',
-    _CHR_SEL_DEL = _CHR_SEL_BOX + ' .btn_del',
-    _CHR_IS_WAIT = !1;
+var CHR_CRR = 0,
+    CHR_DEF = 0,
+    CHR_UNIT_Y = [0, 18, 60, 102, 120],
+    CHR_UNIT_I = Math.floor(0.5 * CHR_UNIT_Y.length),
+    CHR_SCR = !1,
+    CHR_UID = null,
+    CHR_HR = null,
+    CHR_DEL_TOI = null,
+    CHR_DEL_STATE = 'NULL',
+    CHR_DEL_NAME = '',
+    CHR_DEL_UID = null,
+    CHR_SEL_BOX = '#launcher_character_select',
+    CHR_SEL_UNIT = CHR_SEL_BOX + ' .unit',
+    CHR_SEL_UP = CHR_SEL_BOX + ' .scroll.up',
+    CHR_SEL_DOWN = CHR_SEL_BOX + ' .scroll.down',
+    CHR_SEL_ADD = CHR_SEL_BOX + ' .btn_add',
+    CHR_SEL_DEL = CHR_SEL_BOX + ' .btn_del',
+    CHR_IS_WAIT = !1;
 
 function convWpType(e) {
     'use strict';
@@ -894,13 +725,13 @@ function createCharUnit(e, E, t, r, a, _, s, n) {
     E = E.split('狩人申請可能').join('Ready to Hunt');
     var o = $('<div class="unit" uid="' + t + '" name="' + E + '" hr="' + r + '" to="0"></div>');
     if ((o.append($('<div class="num n' + e + '"></div>')), o.append($('<div class="sign"></div>')), o.append($('<p class="name">' + entityRef(E) + '</p>')), 0 === r))
-        o.addClass('new'), o.append($('<p class="new">' + duc('anch') + '</p>'));
+        o.addClass('new'), o.append($('<p class="new">' + textOutput('anch') + '</p>'));
     else {
         var i = convWpType(_);
         o.addClass(i),
             o.append($('<div class="icon' + ('' !== i ? ' ' + i : '') + '"></div>')),
-            o.append($('<p class="wp">' + duc('cwpt') + '<br>' + translateWeapon(_) + '</p>')),
-            o.append($('<p class="data">HR' + r + (0 < a ? '　GR' + a : '') + '　' + ('M' === s ? '♂' : '♀') + '<br>ID:' + t + '<br>' + duc('pcst') + ':' + convLastDateStr(n) + '</p>'));
+            o.append($('<p class="wp">' + textOutput('cwpt') + '<br>' + translateWeapon(_) + '</p>')),
+            o.append($('<p class="data">HR' + r + (0 < a ? '　GR' + a : '') + '　' + ('M' === s ? '♂' : '♀') + '<br>ID:' + t + '<br>' + textOutput('pcst') + ':' + convLastDateStr(n) + '</p>'));
     }
     return (
         o.append($('<div class="cover"></div>')),
@@ -917,7 +748,7 @@ function addStamp() {}
 
 function getCrrChar() {
     'use strict';
-    return $($(_CHR_SEL_UNIT)[_CHR_CRR]);
+    return $($(CHR_SEL_UNIT)[CHR_CRR]);
 }
 
 function convTop2Z(e) {
@@ -928,25 +759,25 @@ function convTop2Z(e) {
 
 function scrollCharUni(e, r) {
     'use strict';
-    if (!_CHR_SCR) {
-        _CHR_SCR = !0;
+    if (!CHR_SCR) {
+        CHR_SCR = !0;
         var a = 'easeOutBounce' !== (r = r || 'easeOutBounce') ? 1 : 400;
-        _CHR_CRR += e;
-        var E = $(_CHR_SEL_UNIT).length;
-        (_CHR_CRR = Math.max(0, Math.min(_CHR_CRR, E - 1))),
+        CHR_CRR += e;
+        var E = $(CHR_SEL_UNIT).length;
+        (CHR_CRR = Math.max(0, Math.min(CHR_CRR, E - 1))),
             'easeOutBounce' === r && (updateScrollBtnState(), updateCharCtrlBtnState()),
-            $(_CHR_SEL_UNIT).each(function (E, t) {
+            $(CHR_SEL_UNIT).each(function (E, t) {
                 $(t).stop();
-                var e = E - _CHR_CRR + _CHR_UNIT_I;
+                var e = E - CHR_CRR + CHR_UNIT_I;
                 e < 0
-                    ? ($(t).css('top', _CHR_UNIT_Y[0] + 'px'),
+                    ? ($(t).css('top', CHR_UNIT_Y[0] + 'px'),
                       $(t).css('display', 'none'),
                       $(t).css('z-index', '0'),
                       $(t).removeClass('crr'),
                       $($(t).children('.cover')[0]).stop().fadeTo(100, 1),
                       removeStampe(t))
-                    : _CHR_UNIT_Y.length <= e
-                    ? ($(t).css('top', _CHR_UNIT_Y[_CHR_UNIT_Y.length - 1] + 'px'),
+                    : CHR_UNIT_Y.length <= e
+                    ? ($(t).css('top', CHR_UNIT_Y[CHR_UNIT_Y.length - 1] + 'px'),
                       $(t).css('display', 'none'),
                       $(t).css('z-index', '0'),
                       $(t).removeClass('crr'),
@@ -955,22 +786,22 @@ function scrollCharUni(e, r) {
                     : ($(t).css('display', 'block'),
                       $($(t).children('.cover')[0])
                           .stop()
-                          .fadeTo(a, Math.min(0.85, 0.65 * Math.abs(e - _CHR_UNIT_I))),
+                          .fadeTo(a, Math.min(0.85, 0.65 * Math.abs(e - CHR_UNIT_I))),
                       $(t).animate(
-                          { top: _CHR_UNIT_Y[e] },
+                          { top: CHR_UNIT_Y[e] },
                           {
                               duration: a,
                               easing: r,
                               progress: function () {
                                   var e = convTop2Z(t);
                                   $(this).css('z-index', e),
-                                      60 < e ? E === _CHR_CRR && ($($(t).children('.cover')[0]).stop().fadeTo(100, 0), $(t).addClass('crr'), addStamp(t)) : ($(t).removeClass('crr'), removeStampe(t));
+                                      60 < e ? E === CHR_CRR && ($($(t).children('.cover')[0]).stop().fadeTo(100, 0), $(t).addClass('crr'), addStamp(t)) : ($(t).removeClass('crr'), removeStampe(t));
                               },
                               complete: function () {
-                                  (_CHR_SCR = !1),
-                                      E === _CHR_CRR &&
+                                  (CHR_SCR = !1),
+                                      E === CHR_CRR &&
                                           'easeOutBounce' !== r &&
-                                          (_CHR_CRR !== _CHR_DEF ? scrollCharUni(1, 'swing') : (addStamp(t), updateScrollBtnState(), updateCharCtrlBtnState(), $(_CHR_SEL_BOX).show()));
+                                          (CHR_CRR !== CHR_DEF ? scrollCharUni(1, 'swing') : (addStamp(t), updateScrollBtnState(), updateCharCtrlBtnState(), $(CHR_SEL_BOX).show()));
                               },
                           }
                       ));
@@ -980,41 +811,41 @@ function scrollCharUni(e, r) {
 
 function updateScrollBtnState() {
     'use strict';
-    var e = $(_CHR_SEL_UNIT).length;
+    var e = $(CHR_SEL_UNIT).length;
     1 < e
-        ? (0 !== _CHR_CRR ? $(_CHR_SEL_UP).removeClass('disabled') : $(_CHR_SEL_UP).addClass('disabled'),
-          _CHR_CRR !== e - 1 ? $(_CHR_SEL_DOWN).removeClass('disabled') : $(_CHR_SEL_DOWN).addClass('disabled'),
-          $(_CHR_SEL_BOX + ' .scroll').show())
-        : $(_CHR_SEL_BOX + ' .scroll').hide(),
+        ? (0 !== CHR_CRR ? $(CHR_SEL_UP).removeClass('disabled') : $(CHR_SEL_UP).addClass('disabled'),
+          CHR_CRR !== e - 1 ? $(CHR_SEL_DOWN).removeClass('disabled') : $(CHR_SEL_DOWN).addClass('disabled'),
+          $(CHR_SEL_BOX + ' .scroll').show())
+        : $(CHR_SEL_BOX + ' .scroll').hide(),
         kdCharSelMode();
 }
 
 function updateCharCtrlBtnState() {
     'use strict';
-    $(_CHR_SEL_UNIT).length < 11
-        ? ($(_CHR_SEL_ADD).removeClass('disabled'), $(_CHR_SEL_ADD).fadeTo(100, 1), $(_CHR_SEL_ADD).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
-        : ($(_CHR_SEL_ADD).attr('onMouseOver', ''), $(_CHR_SEL_ADD).removeAttr('onMouseOver'), $(_CHR_SEL_ADD).addClass('disabled'), $(_CHR_SEL_ADD).fadeTo(200, 0.4)),
+    $(CHR_SEL_UNIT).length < 11
+        ? ($(CHR_SEL_ADD).removeClass('disabled'), $(CHR_SEL_ADD).fadeTo(100, 1), $(CHR_SEL_ADD).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+        : ($(CHR_SEL_ADD).attr('onMouseOver', ''), $(CHR_SEL_ADD).removeAttr('onMouseOver'), $(CHR_SEL_ADD).addClass('disabled'), $(CHR_SEL_ADD).fadeTo(200, 0.4)),
         '0' !== getCrrChar().attr('hr')
-            ? ($(_CHR_SEL_DEL).removeClass('disabled'), $(_CHR_SEL_DEL).fadeTo(100, 1), $(_CHR_SEL_DEL).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
-            : ($(_CHR_SEL_DEL).attr('onMouseOver', ''), $(_CHR_SEL_DEL).removeAttr('onMouseOver'), $(_CHR_SEL_DEL).addClass('disabled'), $(_CHR_SEL_DEL).fadeTo(200, 0.4));
+            ? ($(CHR_SEL_DEL).removeClass('disabled'), $(CHR_SEL_DEL).fadeTo(100, 1), $(CHR_SEL_DEL).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+            : ($(CHR_SEL_DEL).attr('onMouseOver', ''), $(CHR_SEL_DEL).removeAttr('onMouseOver'), $(CHR_SEL_DEL).addClass('disabled'), $(CHR_SEL_DEL).fadeTo(200, 0.4));
 }
 
 function kdCharSelMode() {
     'use strict';
-    _KEY_ACT_DEF = function (e) {
-        if (_IS_MODAL) return !1;
+    KEY_ACT_DEF = function (e) {
+        if (IS_MODAL) return !1;
         var E = !0;
         switch (e.which) {
             case 38:
             case 33:
-                _CHR_SCR || !$(_CHR_SEL_UP).is(':visible') || $(_CHR_SEL_UP).hasClass('disabled') || $(_CHR_SEL_UP).click(), (E = !1);
+                CHR_SCR || !$(CHR_SEL_UP).is(':visible') || $(CHR_SEL_UP).hasClass('disabled') || $(CHR_SEL_UP).click(), (E = !1);
                 break;
             case 40:
             case 34:
-                _CHR_SCR || !$(_CHR_SEL_DOWN).is(':visible') || $(_CHR_SEL_DOWN).hasClass('disabled') || $(_CHR_SEL_DOWN).click(), (E = !1);
+                CHR_SCR || !$(CHR_SEL_DOWN).is(':visible') || $(CHR_SEL_DOWN).hasClass('disabled') || $(CHR_SEL_DOWN).click(), (E = !1);
                 break;
             case 13:
-                _CHR_IS_WAIT || ((_CHR_IS_WAIT = !0), $(_CHR_SEL_BOX + ' .btn_start').click()), (E = !1);
+                CHR_IS_WAIT || ((CHR_IS_WAIT = !0), $(CHR_SEL_BOX + ' .btn_start').click()), (E = !1);
                 break;
             case 9:
                 E = !1;
@@ -1060,23 +891,23 @@ function translateWeapon(e) {
 function showCharSelector() {
     'use strict';
     switchEvtPhase('standby'),
-        (_CHR_DEF = _CHR_CRR = 0),
-        (_CHR_IS_WAIT = !1),
+        (CHR_DEF = CHR_CRR = 0),
+        (CHR_IS_WAIT = !1),
         $('#launcher_login_panel').hide(),
         $('#launcher_update_progress').hide(),
         $('.msg_logs_area').hide(),
-        $(_CHR_SEL_BOX).hide(),
+        $(CHR_SEL_BOX).hide(),
         $('.btn_logout').show(),
-        $(_CHR_SEL_BOX + ' .units').html(''),
-        $(_CHR_SEL_BOX + ' .scroll').hide();
+        $(CHR_SEL_BOX + ' .units').html(''),
+        $(CHR_SEL_BOX + ' .scroll').hide();
 
     var e = DoGetCharacterInfo();
     (e = (e = e.split("'").join('"')).split('&apos;').join("'")), (e = $('<div>' + e + '</div>'));
 
     var t = $(e.find('CharacterInfo')[0]).attr('defaultUid');
     e.find('Character').each(function (e, E) {
-        $(E).attr('uid') === t && (_CHR_DEF = e),
-            $(_CHR_SEL_BOX + ' .units').append(
+        $(E).attr('uid') === t && (CHR_DEF = e),
+            $(CHR_SEL_BOX + ' .units').append(
                 createCharUnit(
                     e + 1,
                     $(E).attr('name'),
@@ -1089,31 +920,31 @@ function showCharSelector() {
                 )
             );
     }),
-        $(_CHR_SEL_UNIT).each(function (e, E) {
+        $(CHR_SEL_UNIT).each(function (e, E) {
             $(E).removeClass('crr'), $(E).css('display', 'none'), $(E).css('z-index', '0');
-            var t = e - _CHR_CRR + _CHR_UNIT_I;
+            var t = e - CHR_CRR + CHR_UNIT_I;
             t < 0
-                ? $(E).css('top', _CHR_UNIT_Y[0] + 'px')
-                : _CHR_UNIT_Y.length <= t
-                ? $(E).css('top', _CHR_UNIT_Y[_CHR_UNIT_Y.length - 1] + 'px')
-                : ($(E).css('top', _CHR_UNIT_Y[t] + 'px'),
+                ? $(E).css('top', CHR_UNIT_Y[0] + 'px')
+                : CHR_UNIT_Y.length <= t
+                ? $(E).css('top', CHR_UNIT_Y[CHR_UNIT_Y.length - 1] + 'px')
+                : ($(E).css('top', CHR_UNIT_Y[t] + 'px'),
                   $(E).css('display', 'block'),
                   $(E).css('z-index', convTop2Z(E)),
-                  t === _CHR_UNIT_I
+                  t === CHR_UNIT_I
                       ? ($(E).addClass('crr'), $($(E).children('.cover')[0]).stop().fadeTo(0, 1), addStamp(E))
                       : $($(E).children('.cover')[0])
                             .stop()
-                            .fadeTo(0, Math.min(0.75, 0.45 * Math.abs(t - _CHR_UNIT_I))));
+                            .fadeTo(0, Math.min(0.75, 0.45 * Math.abs(t - CHR_UNIT_I))));
         }),
-        _CHR_CRR !== _CHR_DEF ? scrollCharUni(1, 'swing') : (updateScrollBtnState(), updateCharCtrlBtnState(), $(_CHR_SEL_BOX).show());
+        CHR_CRR !== CHR_DEF ? scrollCharUni(1, 'swing') : (updateScrollBtnState(), updateCharCtrlBtnState(), $(CHR_SEL_BOX).show());
 }
 
 function charDelPolling() {
     'use strict';
     stopCharDelPolling();
     var e = DoGetLastAuthResult();
-    if (e !== _CHR_DEL_STATE)
-        switch ((_CHR_DEL_STATE = e)) {
+    if (e !== CHR_DEL_STATE)
+        switch ((CHR_DEL_STATE = e)) {
             case 'AUTH_NULL':
             case 'AUTH_PROGRESS':
             case 'AUTH_SUCCESS':
@@ -1123,45 +954,45 @@ function charDelPolling() {
             case 'DEL_PROGRESS':
                 break;
             case 'DEL_SUCCESS':
-                return 1 < $(_CHR_SEL_UNIT).length ? showCompleteDelCharDialog() : showAddGuaranteeCharDialog(), showCharSelector(), void (_CHR_DEL_UID = null);
+                return 1 < $(CHR_SEL_UNIT).length ? showCompleteDelCharDialog() : showAddGuaranteeCharDialog(), showCharSelector(), void (CHR_DEL_UID = null);
             case 'DEL_ERROR_NET':
             case 'DEL_ERROR_IVL':
             case 'DEL_ERROR_MNC':
-                return void showFailDelCharDialog($(_CHR_SEL_UNIT).length);
+                return void showFailDelCharDialog($(CHR_SEL_UNIT).length);
         }
-    _CHR_DEL_TOI = setTimeout(function () {
+    CHR_DEL_TOI = setTimeout(function () {
         charDelPolling();
     }, 1e3);
 }
 
 function stopCharDelPolling() {
     'use strict';
-    if (_CHR_DEL_TOI) {
+    if (CHR_DEL_TOI) {
         try {
-            clearTimeout(_CHR_DEL_TOI);
+            clearTimeout(CHR_DEL_TOI);
         } catch (e) {}
-        _CHR_DEL_TOI = null;
+        CHR_DEL_TOI = null;
     }
 }
 
 function charDelReset() {
     'use strict';
-    (_CHR_DEL_UID = null), hideModalDialog();
+    (CHR_DEL_UID = null), hideModalDialog();
 }
 
 function charDelete() {
     'use strict';
     stopCharDelPolling(),
-        (_CHR_DEL_STATE = 'NULL'),
-        DoDeleteCharacter(_CHR_DEL_UID),
-        (_CHR_DEL_TOI = setTimeout(function () {
+        (CHR_DEL_STATE = 'NULL'),
+        DoDeleteCharacter(CHR_DEL_UID),
+        (CHR_DEL_TOI = setTimeout(function () {
             charDelPolling();
         }, 1e3));
 }
 
 function waitGameStart() {
     'use strict';
-    DoSelectCharacter(_CHR_UID, _CHR_UID),
+    DoSelectCharacter(CHR_UID, CHR_UID),
         DoPlaySound('IDR_WAV_LOGIN'),
         $('#launcher_game_start_wait').show(),
         hideModalDialog(),
@@ -1172,53 +1003,53 @@ function waitGameStart() {
 
 function checkHasHL() {
     'use strict';
-    100 <= _CHR_HR ? (isHlEnabled() ? waitGameStart() : (DoPlaySound('IDR_WAV_OK'), showGetHLDialog())) : waitGameStart();
+    100 <= CHR_HR ? (isHlEnabled() ? waitGameStart() : (DoPlaySound('IDR_WAV_OK'), showGetHLDialog())) : waitGameStart();
 }
 
 function gameStartCalcel() {
     'use strict';
-    (_CHR_IS_WAIT = !1), hideModalDialog();
+    (CHR_IS_WAIT = !1), hideModalDialog();
 }
 
 function gameStart() {
     'use strict';
     DoPlaySound('IDR_WAV_OK');
     var e = getCrrChar();
-    (_CHR_UID = e.attr('uid')), (_CHR_HR = parseInt(e.attr('hr'), 10)), showGameStartDialog(e.attr('name'), e.attr('uid'));
+    (CHR_UID = e.attr('uid')), (CHR_HR = parseInt(e.attr('hr'), 10)), showGameStartDialog(e.attr('name'), e.attr('uid'));
 }
 
 function checkDelID() {
     'use strict';
-    _CHR_DEL_UID === $('#del_uid').val() ? showWaitDelCharDialog(_CHR_DEL_NAME, _CHR_DEL_UID) : showWaitDelCharIdErrorDialog();
+    CHR_DEL_UID === $('#del_uid').val() ? showWaitDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID) : showWaitDelCharIdErrorDialog();
 }
-var _UPD_ANIM_SEQ = { loop: [] };
-_UPD_ANIM_SEQ.loop.push({ c: 'f0', delay: 100 }),
-    _UPD_ANIM_SEQ.loop.push({ c: 'f1', delay: 300 }),
-    _UPD_ANIM_SEQ.loop.push({ c: 'f2', delay: 100 }),
-    _UPD_ANIM_SEQ.loop.push({ c: 'f3', delay: 300 }),
-    (_UPD_ANIM_SEQ.fini = []),
-    _UPD_ANIM_SEQ.fini.push({ c: 'f4', delay: 100 }),
-    _UPD_ANIM_SEQ.fini.push({ c: 'f5', delay: 50 }),
-    _UPD_ANIM_SEQ.fini.push({ c: 'f6', delay: 50 }),
-    _UPD_ANIM_SEQ.fini.push({ c: 'f7', delay: 2e3 });
+var UPD_ANIM_SEQ = { loop: [] };
+UPD_ANIM_SEQ.loop.push({ c: 'f0', delay: 100 }),
+    UPD_ANIM_SEQ.loop.push({ c: 'f1', delay: 300 }),
+    UPD_ANIM_SEQ.loop.push({ c: 'f2', delay: 100 }),
+    UPD_ANIM_SEQ.loop.push({ c: 'f3', delay: 300 }),
+    (UPD_ANIM_SEQ.fini = []),
+    UPD_ANIM_SEQ.fini.push({ c: 'f4', delay: 100 }),
+    UPD_ANIM_SEQ.fini.push({ c: 'f5', delay: 50 }),
+    UPD_ANIM_SEQ.fini.push({ c: 'f6', delay: 50 }),
+    UPD_ANIM_SEQ.fini.push({ c: 'f7', delay: 2e3 });
 
-var _UPD_POLLING = !0,
-    _UPD_PRE = 'f0',
-    _UPD_FRM_LOOP = 0,
-    _UPD_FRM_FINI = 0,
-    _UPD_TOTAL = 0,
-    _UPD_BAR_WID = 302,
-    _UPD_BAR_PER = 0.01 * _UPD_BAR_WID,
-    _EXIT_WAIT = 3e3,
-    _UPD_ANIM_TOI = null;
+var UPD_POLLING = !0,
+    UPD_PRE = 'f0',
+    UPD_FRM_LOOP = 0,
+    UPD_FRM_FINI = 0,
+    UPD_TOTAL = 0,
+    UPD_BAR_WID = 302,
+    UPD_BAR_PER = 0.01 * UPD_BAR_WID,
+    EXIT_WAIT = 3e3,
+    UPD_ANIM_TOI = null;
 
 function clearAnimSq() {
     'use strict';
-    if (_UPD_ANIM_TOI) {
+    if (UPD_ANIM_TOI) {
         try {
-            clearTimeout(_UPD_ANIM_TOI);
+            clearTimeout(UPD_ANIM_TOI);
         } catch (e) {}
-        _UPD_ANIM_TOI = null;
+        UPD_ANIM_TOI = null;
     }
 }
 
@@ -1226,16 +1057,16 @@ function updateProgressAnimation() {
     'use strict';
     clearAnimSq();
     var e = $('#launcher_update_progress .anim'),
-        E = _UPD_ANIM_SEQ.loop[_UPD_FRM_LOOP];
-    e.removeClass(_UPD_PRE),
-        (_UPD_PRE = E.c),
+        E = UPD_ANIM_SEQ.loop[UPD_FRM_LOOP];
+    e.removeClass(UPD_PRE),
+        (UPD_PRE = E.c),
         e.addClass(E.c),
-        (_UPD_ANIM_TOI = setTimeout(function () {
-            _UPD_FRM_LOOP++,
-                _UPD_POLLING
-                    ? (_UPD_ANIM_SEQ.loop.length <= _UPD_FRM_LOOP && (_UPD_FRM_LOOP = 0), updateProgressAnimation())
-                    : _UPD_ANIM_SEQ.loop.length <= _UPD_FRM_LOOP
-                    ? ((_UPD_FRM_FINI = 0), updateProgressAnimationFinish())
+        (UPD_ANIM_TOI = setTimeout(function () {
+            UPD_FRM_LOOP++,
+                UPD_POLLING
+                    ? (UPD_ANIM_SEQ.loop.length <= UPD_FRM_LOOP && (UPD_FRM_LOOP = 0), updateProgressAnimation())
+                    : UPD_ANIM_SEQ.loop.length <= UPD_FRM_LOOP
+                    ? ((UPD_FRM_FINI = 0), updateProgressAnimationFinish())
                     : updateProgressAnimation();
         }, E.delay));
 }
@@ -1244,14 +1075,14 @@ function updateProgressAnimationFinish() {
     'use strict';
     clearAnimSq();
     var e = $('#launcher_update_progress .anim'),
-        E = _UPD_ANIM_SEQ.fini[_UPD_FRM_FINI];
-    e.removeClass(_UPD_PRE),
-        (_UPD_PRE = E.c),
+        E = UPD_ANIM_SEQ.fini[UPD_FRM_FINI];
+    e.removeClass(UPD_PRE),
+        (UPD_PRE = E.c),
         e.addClass(E.c),
-        (_UPD_ANIM_TOI = setTimeout(function () {
-            _UPD_FRM_FINI++,
-                _UPD_ANIM_SEQ.fini.length > _UPD_FRM_FINI
-                    ? (_UPD_ANIM_SEQ.fini.length === _UPD_FRM_FINI + 1 && DoPlaySound('IDR_NIKU'), updateProgressAnimationFinish())
+        (UPD_ANIM_TOI = setTimeout(function () {
+            UPD_FRM_FINI++,
+                UPD_ANIM_SEQ.fini.length > UPD_FRM_FINI
+                    ? (UPD_ANIM_SEQ.fini.length === UPD_FRM_FINI + 1 && DoPlaySound('IDR_NIKU'), updateProgressAnimationFinish())
                     : (clearAnimSq(), finishUpdateProcess());
         }, E.delay));
 }
@@ -1262,11 +1093,11 @@ function switchUpdateAfterState() {
         case 'UM_UPDATE_OK':
             switch (DoGetLauncherReturnCode()) {
                 case 'NORMAL':
-                    return void (_UPD_POLLING = !1);
+                    return void (UPD_POLLING = !1);
                 case 'SELFUP':
                     return void setTimeout(function () {
                         DoExitLauncher();
-                    }, _EXIT_WAIT);
+                    }, EXIT_WAIT);
                 case 'ERR':
                     return void switchAuthMode();
             }
@@ -1281,31 +1112,31 @@ function switchUpdateAfterState() {
 
 function progressUpdatePercentage() {
     'use strict';
-    var e = Math.ceil(DoGetUpdatePercentageTotal() * _UPD_BAR_PER);
+    var e = Math.ceil(DoGetUpdatePercentageTotal() * UPD_BAR_PER);
     if (0 === e)
         switch (DoGetUpdateStatus()) {
             case 'UM_UPDATE_OK':
                 switch (DoGetLauncherReturnCode()) {
                     case 'NORMAL':
-                        return void (_UPD_POLLING = !1);
+                        return void (UPD_POLLING = !1);
                     case 'SELFUP':
                         return void setTimeout(function () {
                             DoExitLauncher();
-                        }, _EXIT_WAIT);
+                        }, EXIT_WAIT);
                 }
                 break;
             case 'UM_UPDATE_NG':
                 return void switchAuthMode();
         }
-    _UPD_TOTAL < e
-        ? ((_UPD_TOTAL = e),
-          $('#launcher_update_progress .bar_area .file_progress').width(_UPD_TOTAL === _UPD_BAR_WID ? 0 : _UPD_BAR_WID),
+    UPD_TOTAL < e
+        ? ((UPD_TOTAL = e),
+          $('#launcher_update_progress .bar_area .file_progress').width(UPD_TOTAL === UPD_BAR_WID ? 0 : UPD_BAR_WID),
           $('#launcher_update_progress .bar_area .total_progress')
               .stop()
-              .animate({ width: _UPD_TOTAL }, 150, function () {
+              .animate({ width: UPD_TOTAL }, 150, function () {
                   switchUpdateAfterState();
               }))
-        : ($('#launcher_update_progress .bar_area .file_progress').width(Math.ceil(DoGetUpdatePercentageFile() * _UPD_BAR_PER)), switchUpdateAfterState());
+        : ($('#launcher_update_progress .bar_area .file_progress').width(Math.ceil(DoGetUpdatePercentageFile() * UPD_BAR_PER)), switchUpdateAfterState());
 }
 
 function finishUpdateProcess() {
@@ -1319,7 +1150,7 @@ function startUpdateProcess() {
     'use strict';
     $('.btn_preferences').hide(),
         switchEvtPhase('update'),
-        (_KEY_ACT_DEF = function (e) {
+        (KEY_ACT_DEF = function (e) {
             switch (e.which) {
                 case 9:
                     return !1;
@@ -1331,45 +1162,45 @@ function startUpdateProcess() {
     $('#launcher_update_progress .bar_area .total_progress').width(0);
     $('#launcher_login_panel').hide();
 
-    _UPD_POLLING
+    UPD_POLLING
         ? DoStartUpdate()
-            ? ((_UPD_FRM_LOOP = 0),
+            ? ((UPD_FRM_LOOP = 0),
               updateProgressAnimation(),
               $('#launcher_update_progress').show(),
               setTimeout(function () {
                   progressUpdatePercentage();
               }, 50))
-            : (updateDisabled ? finishUpdateProcess() : $('#launcher_login_panel').show(), onAuthError(duc('uflm0')))
+            : (updateDisabled ? finishUpdateProcess() : $('#launcher_login_panel').show(), onAuthError(textOutput('uflm0')))
         : finishUpdateProcess();
 }
 
-let _AT_IS_ENABLED = !0,
-    _AT_ID = '',
-    _AT_PW = '',
-    _AT_FRAME = null,
-    _AT_FRAME_CB = Math.floor(1e3 * Math.random()),
-    _AT_TOI = null,
-    _AT_STATUS = 'AUTH_NULL',
-    _AT_SEL_ID = '.userid_input',
-    _AT_SEL_PW = '.password_input',
-    _AT_SRV_SEL_BTN = '.srv_sel_btn',
-    _AT_SRV_LIST_BOX = '.srv_sel_box',
-    _AT_SRV_LIST_ITEM = '.srv_sel_box .srv',
-    _AT_SEL_LBTN = '#launcher_login_panel .btn_login',
-    _AT_SEL_ICHK = '#launcher_login_panel .check_save_id',
-    _AT_SEL_PFGT = '#launcher_login_panel .btn_forgot',
-    _AT_SBOX_TOI = null,
-    _AT_SBOX_SEL_ENABLED = false,
-    _AT_SBOX_IS_OPENED = false,
-    _AT_ANIM_TOI = null,
-    _AT_IS_AUTOLC = !1,
-    _AT_MODE = '',
-    _AT_FOCUS_ELMS = [],
-    _AT_FOCUS_IDX = 0,
-    _AT_BB_TOI = null,
-    _AT_SVID,
-    _AT_SVID_DEF = '1000',
-    _AT_IS_UNSELECTED_SRV = true;
+let AT_IS_ENABLED = !0,
+    AT_ID = '',
+    AT_PW = '',
+    AT_FRAME = null,
+    AT_FRAME_CB = Math.floor(1e3 * Math.random()),
+    AT_TOI = null,
+    AT_STATUS = 'AUTH_NULL',
+    AT_SEL_ID = '.userid_input',
+    AT_SEL_PW = '.password_input',
+    AT_SRV_SEL_BTN = '.srv_sel_btn',
+    AT_SRV_LIST_BOX = '.srv_sel_box',
+    AT_SRV_LIST_ITEM = '.srv_sel_box .srv',
+    AT_SEL_LBTN = '#launcher_login_panel .btn_login',
+    AT_SEL_ICHK = '#launcher_login_panel .check_save_id',
+    AT_SEL_PFGT = '#launcher_login_panel .btn_forgot',
+    AT_SBOX_TOI = null,
+    AT_SBOX_SEL_ENABLED = false,
+    AT_SBOX_IS_OPENED = false,
+    AT_ANIM_TOI = null,
+    AT_IS_AUTOLC = !1,
+    AT_MODE = '',
+    AT_FOCUS_ELMS = [],
+    AT_FOCUS_IDX = 0,
+    AT_BB_TOI = null,
+    AT_SVID,
+    AT_SVID_DEF = '1000',
+    AT_IS_UNSELECTED_SRV = true;
 
 function onReceiveMsg(evt) {
     'use strict';
@@ -1377,7 +1208,7 @@ function onReceiveMsg(evt) {
     if (modeCheck(evt.origin, 'capcom-onlinegames.jp'))
         switch ((eval('res = ' + evt.data), String(res.action))) {
             case 'standby':
-                parent.cslak.postMessage('{id:"' + _AT_ID + '", pw:"' + _AT_PW + '", svid:"' + (_AT_SVID || _AT_SVID_DEF) + '", lifetime:"60", action:"login"}', evt.origin);
+                parent.cslak.postMessage('{id:"' + AT_ID + '", pw:"' + AT_PW + '", svid:"' + (AT_SVID || AT_SVID_DEF) + '", lifetime:"60", action:"login"}', evt.origin);
                 break;
             default:
                 filteShortLifeAuthKeyResponse(res);
@@ -1396,27 +1227,27 @@ function onAuthError(e, E) {
         hideAuthProgress(),
         unlockAuthEdit(),
         setTimeout(function () {
-            $(_AT_SEL_LBTN).fadeTo(200, 1, function () {
-                $(_AT_SEL_LBTN).removeClass('disabled'), (_AT_IS_ENABLED = !0);
+            $(AT_SEL_LBTN).fadeTo(200, 1, function () {
+                $(AT_SEL_LBTN).removeClass('disabled'), (AT_IS_ENABLED = !0);
             });
         }, 5e3);
 }
 
 function stopLoginPolling() {
     'use strict';
-    if (_AT_TOI) {
+    if (AT_TOI) {
         try {
-            clearInterval(_AT_TOI);
+            clearInterval(AT_TOI);
         } catch (e) {}
-        _AT_TOI = null;
+        AT_TOI = null;
     }
 }
 
 function loginPolling() {
     'use strict';
     var e = DoGetLastAuthResult();
-    if (e !== _AT_STATUS)
-        switch ((_AT_STATUS = e)) {
+    if (e !== AT_STATUS)
+        switch ((AT_STATUS = e)) {
             case 'AUTH_NULL':
             case 'AUTH_PROGRESS':
             case 'DELETE_PROGRESS':
@@ -1429,17 +1260,17 @@ function loginPolling() {
                 if (
                     (stopLoginPolling(),
                     hideAuthProgress(),
-                    _COG_MODE &&
-                        ($(_AT_SEL_ICHK).hasClass('checked') && ((_STORAGE['cogid' + _EXE_MUTEX] = $(_AT_SEL_ID).val()), writeCookie()),
-                        ((_STORAGE['pw' + _EXE_MUTEX] = $(_AT_SEL_PW).val()), writeCookie()),
-                        $('.id_srv_label').text($(_AT_SEL_ID).val() + '@' + $(_AT_SRV_SEL_BTN).text()),
+                    COG_MODE &&
+                        ($(AT_SEL_ICHK).hasClass('checked') && ((STORAGE['cogid' + EXE_MUTEX] = $(AT_SEL_ID).val()), writeCookie()),
+                        ((STORAGE['pw' + EXE_MUTEX] = $(AT_SEL_PW).val()), writeCookie()),
+                        $('.id_srv_label').text($(AT_SEL_ID).val() + '@' + $(AT_SRV_SEL_BTN).text()),
                         !isTrEnabled()))
                 )
                     return void showNoTRDialog();
                 startUpdateProcess();
                 break;
             case 'AUTH_ERROR_NET':
-                stopLoginPolling(), onAuthError(duc('SIGN_EFAILED'), 'r');
+                stopLoginPolling(), onAuthError(textOutput('SIGN_EFAILED'), 'r');
                 break;
             case 'AUTH_ERROR_ACC':
             case 'AUTH_ERROR_PWD':
@@ -1452,20 +1283,24 @@ function loginPolling() {
                     case 'SIGN_EABORT':
                     case 'SIGN_ERESPONSE':
                     case 'SIGN_EDATABASE':
-                        onAuthError(duc(E), 'r');
+                        onAuthError(textOutput(E), 'r');
                         break;
                     case 'SIGN_EALERT':
-                        if ('1018' === _AT_SVID) onAuthError(duc('SIGN_EALERT_COOP'));
+                        if ('1018' === AT_SVID) onAuthError(textOutput('SIGN_EALERT_COOP'));
                         else {
-                            var t = $(_AT_SRV_SEL_BTN).text();
-                            0 <= t.indexOf('④') ? onAuthError(duc('SIGN_EALERT_COOP')) : 0 <= t.toUpperCase().indexOf('XBOX') ? onAuthError(duc('SIGN_EALERT_COOP')) : onAuthError(duc(E), 'r');
+                            var t = $(AT_SRV_SEL_BTN).text();
+                            0 <= t.indexOf('④')
+                                ? onAuthError(textOutput('SIGN_EALERT_COOP'))
+                                : 0 <= t.toUpperCase().indexOf('XBOX')
+                                ? onAuthError(textOutput('SIGN_EALERT_COOP'))
+                                : onAuthError(textOutput(E), 'r');
                         }
                         break;
                     case 'SIGN_ESUSPEND':
                     case 'SIGN_EELIMINATE':
                     case 'SIGN_ECLOSE_EX':
                     case 'SIGN_EIPADDR':
-                        onAuthError(duc(E));
+                        onAuthError(textOutput(E));
                         break;
                     case 'SIGN_ECLOSE':
                     case 'SIGN_ENOTREADY':
@@ -1473,31 +1308,31 @@ function loginPolling() {
                         onAuthError(), showMhfMaintenanceDialog();
                         break;
                     case 'SIGN_ERIGHT':
-                        isTrEnabled() ? onAuthError(duc('SIGN_EOTHER')) : (onAuthError(), showNoTRDialog());
+                        isTrEnabled() ? onAuthError(textOutput('SIGN_EOTHER')) : (onAuthError(), showNoTRDialog());
                         break;
                     case 'SIGN_EPASS':
-                        onAuthError(duc(E));
+                        onAuthError(textOutput(E));
                         break;
                     default:
-                        onAuthError(duc('SIGN_EOTHER'));
+                        onAuthError(textOutput('SIGN_EOTHER'));
                 }
                 break;
             default:
-                stopLoginPolling(), onAuthError(duc('aferr') + ' [' + _AT_STATUS + ']');
+                stopLoginPolling(), onAuthError(textOutput('aferr') + ' [' + AT_STATUS + ']');
         }
 }
 
 function createShortLifeAuthKeyDone(e) {
     'use strict';
-    !(_AT_STATUS = 'AUTH_NULL') === DoLoginCog($(_AT_SEL_ID).val(), $(_AT_SEL_PW).val(), $(_AT_SEL_PW).val())
-        ? onAuthError(duc('SIGN_EAPP'), 'r')
-        : (_AT_TOI = setInterval(function () {
+    !(AT_STATUS = 'AUTH_NULL') === DoLoginCog($(AT_SEL_ID).val(), $(AT_SEL_PW).val(), $(AT_SEL_PW).val())
+        ? onAuthError(textOutput('SIGN_EAPP'), 'r')
+        : (AT_TOI = setInterval(function () {
               loginPolling();
           }, 1e3));
 }
 
 function createShortLifeAuthKey(e, E) {
-    //"use strict"; "" !== _EXT_MODE ? (_AT_ID = e, _AT_PW = E, _AT_FRAME ? (_AT_FRAME.attr("src", ""), _AT_FRAME.attr("src", _HOSTS[_AT_COG_MODE] + "./bnr/launcher.html?q=" + _AT_FRAME_CB)) : ((_AT_FRAME = $('<iframe id="cslak" name="cslak" width="1" height="1" style="overflow:hidden; position:fixed; left:-500px; top:-700px; visibility:hidden;"></iframe>')).attr("src", _HOSTS[_AT_COG_MODE] + "./bnr/launcher.html?q=" + _AT_FRAME_CB), $(document.body).append(_AT_FRAME)), _AT_FRAME_CB++) :
+    //"use strict"; "" !== _EXT_MODE ? (AT_ID = e, AT_PW = E, AT_FRAME ? (AT_FRAME.attr("src", ""), AT_FRAME.attr("src", _HOSTS[AT_COG_MODE] + "./bnr/launcher.html?q=" + AT_FRAME_CB)) : ((AT_FRAME = $('<iframe id="cslak" name="cslak" width="1" height="1" style="overflow:hidden; position:fixed; left:-500px; top:-700px; visibility:hidden;"></iframe>')).attr("src", _HOSTS[AT_COG_MODE] + "./bnr/launcher.html?q=" + AT_FRAME_CB), $(document.body).append(AT_FRAME)), AT_FRAME_CB++) :
     filteShortLifeAuthKeyResponse({ code: '000' });
 }
 
@@ -1517,39 +1352,39 @@ function filteShortLifeAuthKeyResponse(e) {
         case '220':
         case '221':
         case '227':
-            onAuthError(duc('afac') + ' [' + e.code + ']', 'r');
+            onAuthError(textOutput('afac') + ' [' + e.code + ']', 'r');
             break;
         case '200':
-            onAuthError(duc('afde'));
+            onAuthError(textOutput('afde'));
             break;
         case '201':
         case '300':
         case '302':
         case '320':
-            onAuthError(duc('afipe'));
+            onAuthError(textOutput('afipe'));
             break;
         case '102':
-            onAuthError(duc('af102'));
+            onAuthError(textOutput('af102'));
             break;
         case '301':
-            onAuthError(duc('af301'));
+            onAuthError(textOutput('af301'));
             break;
         case '304':
-            onAuthError(duc('af304'), 'r');
+            onAuthError(textOutput('af304'), 'r');
             break;
         case '235':
         case '309':
         case '360':
-            onAuthError(duc('aferr') + '（' + e.code + '）');
+            onAuthError(textOutput('aferr') + '（' + e.code + '）');
             break;
         case '321':
-            onAuthError(duc('af321'));
+            onAuthError(textOutput('af321'));
             break;
         case '9000':
             onAuthError(), showCogMaintenanceDialog();
             break;
         default:
-            e.code ? onAuthError(duc('aferr') + '（' + e.code + '）') : onAuthError(duc('aferr'));
+            e.code ? onAuthError(textOutput('aferr') + '（' + e.code + '）') : onAuthError(textOutput('aferr'));
     }
 }
 
@@ -1559,53 +1394,53 @@ function selectServerItem(target_elm) {
 
 function lockAuthEdit() {
     'use strict';
-    (_AT_SBOX_SEL_ENABLED = !1), $(_AT_SEL_ID).attr('disabled', !0), $(_AT_SEL_PW).attr('disabled', !0);
+    (AT_SBOX_SEL_ENABLED = !1), $(AT_SEL_ID).attr('disabled', !0), $(AT_SEL_PW).attr('disabled', !0);
 }
 
 function unlockAuthEdit() {
     'use strict';
-    (_AT_SBOX_SEL_ENABLED = !0), $(_AT_SEL_ID).attr('disabled', !1), $(_AT_SEL_PW).attr('disabled', !1), $('.btn_preferences').show();
+    (AT_SBOX_SEL_ENABLED = !0), $(AT_SEL_ID).attr('disabled', !1), $(AT_SEL_PW).attr('disabled', !1), $('.btn_preferences').show();
 }
 
 function switchAuthSrv(e) {
     'use strict';
-    (_AT_SVID = $(e).attr('svid')), $(_AT_SRV_SEL_BTN).text($(e).text());
+    (AT_SVID = $(e).attr('svid')), $(AT_SRV_SEL_BTN).text($(e).text());
 }
 
-function showSrvSelList(serverBtn) {
+function showSrvSelList() {
     'use strict';
     // disable the button
-    $(serverBtn).prop('disabled', true);
+    $(AT_SRV_SEL_BTN).prop('disabled', true);
 
-    $(_AT_SRV_LIST_BOX).slideDown(300, function () {
+    $(AT_SRV_LIST_BOX).slideDown(300, function () {
         // re-enable the button after the animation is complete
-        $(serverBtn).prop('disabled', false);
+        $(AT_SRV_SEL_BTN).prop('disabled', false);
     }),
-        $(serverBtn).addClass('opened_svr_list'),
-        (_AT_SBOX_IS_OPENED = true);
+        $(AT_SRV_SEL_BTN).addClass('opened_svr_list'),
+        (AT_SBOX_IS_OPENED = true);
 }
 
-function hideSrvSelList(serverBtn) {
+function hideSrvSelList() {
     'use strict';
     // disable the button
+    $(AT_SRV_SEL_BTN).prop('disabled', true);
 
-    $(serverBtn).prop('disabled', true);
-    $(_AT_SRV_LIST_BOX).slideUp(300, function () {
+    $(AT_SRV_LIST_BOX).slideUp(300, function () {
         // re-enable the button after the animation is complete
-        $(serverBtn).prop('disabled', false);
+        $(AT_SRV_SEL_BTN).prop('disabled', false);
     }),
-        $(serverBtn).removeClass('opened_svr_list'),
-        (_AT_SBOX_IS_OPENED = false);
+        $(AT_SRV_SEL_BTN).removeClass('opened_svr_list'),
+        (AT_SBOX_IS_OPENED = false);
 }
 
 function initSrvSelList() {
     'use strict';
 
     // check from local storage whether users have selected a server before
-    _AT_IS_UNSELECTED_SRV = localStorage.getItem('NeverSelectedSrv') !== 'false';
+    AT_IS_UNSELECTED_SRV = localStorage.getItem('NeverSelectedSrv') !== 'false';
 
     // get server list xml data and wrap it in a div element
-    const serverList = '<div>' + DoGetServerListXml() + '</div>';
+    const serverList = DoGetServerList();
 
     // get the index of the last selected server from INI settings and convert it to an integer
     // in local environment, lastSelectedIndex = 0;
@@ -1613,58 +1448,58 @@ function initSrvSelList() {
     lastSelectedIndex = parseInt(lastSelectedIndex, 10);
 
     // remove all children of the server selection list
-    $(_AT_SRV_LIST_BOX).children().remove();
+    $(AT_SRV_LIST_BOX).children().remove();
 
     // loop through each group in the server list xml data and add a server element to the server selection list for each one
     $(serverList)
         .find('group')
         .each(function (index, srvItem) {
-            const svid = $(srvItem).attr('svid') ? $(srvItem).attr('svid') : _AT_SVID_DEF;
+            const svid = $(srvItem).attr('svid') ? $(srvItem).attr('svid') : AT_SVID_DEF;
             const isBlocked = $(srvItem).attr('ip') === '';
             const name = $(srvItem).attr('nam');
 
             // create and append the server element to the server selection list
-            $(_AT_SRV_LIST_BOX).append($('<li' + (isBlocked ? ' block="true"' : '') + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + '</li>'));
+            $(AT_SRV_LIST_BOX).append($('<li' + (isBlocked ? ' block="true"' : '') + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + '</li>'));
         });
 
     // if the last selected index is out of bounds, set true to the variable for initializing
-    (lastSelectedIndex < 0 || lastSelectedIndex > $(_AT_SRV_LIST_ITEM).length) && (_AT_IS_UNSELECTED_SRV = true);
+    (lastSelectedIndex < 0 || lastSelectedIndex > $(AT_SRV_LIST_ITEM).length) && (AT_IS_UNSELECTED_SRV = true);
 
     // if user have previously selected a server, set auth server and assign class to the target server
-    _AT_IS_UNSELECTED_SRV ? $(_AT_SRV_SEL_BTN).text('Select Your Server') : (switchAuthSrv($(_AT_SRV_LIST_ITEM)[lastSelectedIndex]), $('.srv').eq(lastSelectedIndex).addClass('selected_srv'));
+    AT_IS_UNSELECTED_SRV ? $(AT_SRV_SEL_BTN).text('Select Your Server') : (switchAuthSrv($(AT_SRV_LIST_ITEM)[lastSelectedIndex]), $('.srv').eq(lastSelectedIndex).addClass('selected_srv'));
 
     // hide the server selection list
-    $(_AT_SRV_LIST_BOX).hide();
+    $(AT_SRV_LIST_BOX).hide();
 
     // the mouseover event to sever select button to play a sound when hovering
-    $(_AT_SRV_SEL_BTN).mouseover(function () {
+    $(AT_SRV_SEL_BTN).mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
     });
 
     // add the server selection button to the focus elements and bind the mousedown event to it
-    $(_AT_SRV_SEL_BTN).mousedown(function (e) {
-        _AT_SBOX_SEL_ENABLED && (DoPlaySound('IDR_WAV_OK'), _AT_SBOX_IS_OPENED ? hideSrvSelList(e.target) : showSrvSelList(e.target));
+    $(AT_SRV_SEL_BTN).mousedown(function () {
+        AT_SBOX_SEL_ENABLED && (DoPlaySound('IDR_WAV_OK'), AT_SBOX_IS_OPENED ? hideSrvSelList() : showSrvSelList());
     });
 
     // the mouseover event to each server element to play a sound when hovering
-    $(_AT_SRV_LIST_ITEM).mouseover(function () {
+    $(AT_SRV_LIST_ITEM).mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
     });
 
     // the mousedown event to each server element to select it as the active server, and hide the server selection list
-    $(_AT_SRV_LIST_ITEM).mousedown(function () {
+    $(AT_SRV_LIST_ITEM).mousedown(function () {
         DoPlaySound('IDR_WAV_OK');
-        _AT_SBOX_TOI && (clearTimeout(_AT_SBOX_TOI), (_AT_SBOX_TOI = null));
+        AT_SBOX_TOI && (clearTimeout(AT_SBOX_TOI), (AT_SBOX_TOI = null));
         switchAuthSrv($(this));
         const index = parseInt($(this).attr('idx'), 10);
         DoSetIniLastServerIndex(String(index));
         selectServerItem($(this));
-        _AT_IS_UNSELECTED_SRV && (localStorage.setItem('NeverSelectedSrv', 'false'), (_AT_IS_UNSELECTED_SRV = false));
+        AT_IS_UNSELECTED_SRV && (localStorage.setItem('NeverSelectedSrv', 'false'), (AT_IS_UNSELECTED_SRV = false));
         hideSrvSelList();
     });
 
     // the click event to the server selection box and button to stop clicks from propagating to the document
-    $(_AT_SRV_LIST_BOX + _AT_SRV_SEL_BTN).mousedown(function (e) {
+    $(AT_SRV_LIST_BOX + AT_SRV_SEL_BTN).mousedown(function (e) {
         e.stopPropagation();
     });
 }
@@ -1672,7 +1507,7 @@ function initSrvSelList() {
 function showAuthProgress() {
     'use strict';
     var e = 0;
-    (_AT_ANIM_TOI = setInterval(function () {
+    (AT_ANIM_TOI = setInterval(function () {
         $('#launcher_login_panel .progress .anim').removeClass('f' + e), (e = 11 <= e ? 0 : e + 1), $('#launcher_login_panel .progress .anim').addClass('f' + e);
     }, 100)),
         $('#launcher_login_panel .progress').fadeIn(200);
@@ -1683,7 +1518,7 @@ function hideAuthProgress() {
     $('#launcher_login_panel .progress')
         .stop()
         .fadeOut(200, function () {
-            _AT_ANIM_TOI && (clearInterval(_AT_ANIM_TOI), (_AT_ANIM_TOI = null));
+            AT_ANIM_TOI && (clearInterval(AT_ANIM_TOI), (AT_ANIM_TOI = null));
         });
 }
 
@@ -1694,17 +1529,17 @@ function showBackboneTimeoutDialog() {
 
 function clearBBTO() {
     'use strict';
-    if (_AT_BB_TOI) {
+    if (AT_BB_TOI) {
         try {
-            clearTimeout(_AT_BB_TOI);
+            clearTimeout(AT_BB_TOI);
         } catch (e) {}
-        _AT_BB_TOI = null;
+        AT_BB_TOI = null;
     }
 }
 
 function onBackboneTimeout() {
     'use strict';
-    addEvent('backbone_timeout'), clearBBTO(), onAuthError(), showBackboneTimeoutDialog();
+    clearBBTO(), onAuthError(), showBackboneTimeoutDialog();
 }
 
 function authExec() {
@@ -1714,21 +1549,21 @@ function authExec() {
 
 function beginAuthProcess(e) {
     'use strict';
-    if (($('.btn_preferences').hide(), e && ((_AT_IS_ENABLED = !0), clearLog()), _AT_IS_ENABLED))
-        if ((switchEvtPhase('auth'), switchAuthMode(), _COG_MODE)) {
-            if ('' === $(_AT_SEL_ID).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(duc('noidpass'), 'r');
+    if (($('.btn_preferences').hide(), e && ((AT_IS_ENABLED = !0), clearLog()), AT_IS_ENABLED))
+        if ((switchEvtPhase('auth'), switchAuthMode(), COG_MODE)) {
+            if ('' === $(AT_SEL_ID).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noidpass'), 'r');
             else if (authExec()) {
-                DoPlaySound('IDR_WAV_PRE_LOGIN'), (_AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), clearBBTO();
+                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), clearBBTO();
                 var E = setTimeout(function () {
                     onBackboneTimeout();
                 }, 6e4);
-                (_AT_BB_TOI = E), $(_AT_SEL_LBTN).addClass('disabled'), $(_AT_SEL_LBTN).fadeTo(200, 0.6), createShortLifeAuthKey($(_AT_SEL_ID).val(), $(_AT_SEL_PW).val());
+                (AT_BB_TOI = E), $(AT_SEL_LBTN).addClass('disabled'), $(AT_SEL_LBTN).fadeTo(200, 0.6), createShortLifeAuthKey($(AT_SEL_ID).val(), $(AT_SEL_PW).val());
             }
         } else
-            _NHN_MODE
-                ? ((_AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (_AT_STATUS = 'AUTH_NULL'), DoLoginHangame())
-                : ((_AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (_AT_STATUS = 'AUTH_NULL'), DoLoginDmm()),
-                (_AT_TOI = setInterval(function () {
+            NHN_MODE
+                ? ((AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (AT_STATUS = 'AUTH_NULL'), DoLoginHangame())
+                : ((AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (AT_STATUS = 'AUTH_NULL'), DoLoginDmm()),
+                (AT_TOI = setInterval(function () {
                     loginPolling();
                 }, 1e3));
 }
@@ -1736,7 +1571,7 @@ function beginAuthProcess(e) {
 function isAutoLogin() {
     'use strict';
     var e = !1;
-    switch ((_AT_MODE = DoGetMhfBootMode())) {
+    switch ((AT_MODE = DoGetMhfBootMode())) {
         case '_MHF_SELFUP':
         case '_MHF_DMM_SELF_UPDATE':
         case '_MHF_AUTOLC':
@@ -1748,106 +1583,87 @@ function isAutoLogin() {
 
 function removeAuthHover(e) {
     'use strict';
-    for (var E = 0; E < _AT_FOCUS_ELMS.length; E++) $(_AT_FOCUS_ELMS[E]).removeClass('hover');
-    e && (_AT_FOCUS_IDX = -1);
+    for (var E = 0; E < AT_FOCUS_ELMS.length; E++) $(AT_FOCUS_ELMS[E]).removeClass('hover');
+    e && (AT_FOCUS_IDX = -1);
 }
 
 function setAuthHover(e) {
     'use strict';
-    for (var E = 0; E < _AT_FOCUS_ELMS.length; E++) e === _AT_FOCUS_ELMS[E] ? ((_AT_FOCUS_IDX = E), $(_AT_FOCUS_ELMS[E]).addClass('hover')) : $(_AT_FOCUS_ELMS[E]).removeClass('hover');
-}
-
-// 後に削除予定
-function forceFocus(e) {
-    console.log('forceFocus:\ne=' + e);
-    ('use strict');
-    if ($(e).is(':visible')) {
-        switch (e) {
-            case _AT_SEL_LBTN:
-            case _AT_SEL_ICHK:
-            case _AT_SEL_PFGT:
-                DoPlaySound('IDR_WAV_SEL');
-        }
-        try {
-            $(e).focus();
-        } catch (e) {}
-    }
+    for (var E = 0; E < AT_FOCUS_ELMS.length; E++) e === AT_FOCUS_ELMS[E] ? ((AT_FOCUS_IDX = E), $(AT_FOCUS_ELMS[E]).addClass('hover')) : $(AT_FOCUS_ELMS[E]).removeClass('hover');
 }
 
 function switchAuthMode() {
     'use strict';
     $('#launcher_update_progress').hide(),
-        $(_CHR_SEL_BOX).hide(),
+        $(CHR_SEL_BOX).hide(),
         $('.msg_logs_area').show(),
         $('#launcher_login_panel').show(),
         $('.id_srv_label').text(''),
         $('.btn_logout').hide(),
-        $(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]).addClass('hover'),
-        /* forceFocus(_AT_FOCUS_ELMS[_AT_FOCUS_IDX]), */ (_KEY_ACT_DEF = function (e) {
-            if (_IS_MODAL) return !1;
-            var E = _AT_FOCUS_IDX,
+        $(AT_FOCUS_ELMS[AT_FOCUS_IDX]).addClass('hover'),
+        (KEY_ACT_DEF = function (e) {
+            if (IS_MODAL) return !1;
+            var E = AT_FOCUS_IDX,
                 t = !0;
             switch (e.which) {
                 case 13:
-                    if (_AT_IS_ENABLED)
-                        switch (_AT_FOCUS_ELMS[E]) {
-                            case _AT_SRV_SEL_BTN:
-                                _AT_SBOX_IS_OPENED || $(_AT_SRV_SEL_BTN).mousedown();
+                    if (AT_IS_ENABLED)
+                        switch (AT_FOCUS_ELMS[E]) {
+                            case AT_SRV_SEL_BTN:
+                                AT_SBOX_IS_OPENED || $(AT_SRV_SEL_BTN).mousedown();
                                 break;
                             default:
-                                $(_AT_FOCUS_ELMS[E]).click();
+                                $(AT_FOCUS_ELMS[E]).click();
                         }
                     t = !1;
                     break;
                 case 9:
-                    if ((removeAuthHover(), _AT_IS_ENABLED)) {
-                        if ((e.shiftKey ? (E = --E < 0 ? _AT_FOCUS_ELMS.length - 1 : E) : (E++, (E = _AT_FOCUS_ELMS.length <= E ? 0 : E)), $(_AT_FOCUS_ELMS[E]).hasClass('disabled')))
-                            return (_AT_FOCUS_IDX = E), _KEY_ACT_DEF(e);
-                        $(_AT_FOCUS_ELMS[E]).addClass('hover'), forceFocus(_AT_FOCUS_ELMS[E]); /* , _AT_FOCUS_ELMS[E] === _AT_SRV_SEL_BTN ? $(_AT_SRV_SEL_BTN).mousedown() : hideSrvSelList() */
+                    if ((removeAuthHover(), AT_IS_ENABLED)) {
+                        if ((e.shiftKey ? (E = --E < 0 ? AT_FOCUS_ELMS.length - 1 : E) : (E++, (E = AT_FOCUS_ELMS.length <= E ? 0 : E)), $(AT_FOCUS_ELMS[E]).hasClass('disabled')))
+                            return (AT_FOCUS_IDX = E), KEY_ACT_DEF(e);
+                        $(AT_FOCUS_ELMS[E]).addClass('hover');
                     }
                     t = !1;
             }
-            return (_AT_FOCUS_IDX = E), t;
+            return (AT_FOCUS_IDX = E), t;
         }),
         unlockAuthEdit(),
-        $(_AT_SEL_LBTN).fadeTo(1, 1),
-        $(_AT_SEL_LBTN).removeClass('disabled'),
-        (_AT_IS_ENABLED = !0);
+        $(AT_SEL_LBTN).fadeTo(1, 1),
+        $(AT_SEL_LBTN).removeClass('disabled'),
+        (AT_IS_ENABLED = !0);
 }
 
 function initAuth() {
     'use strict';
     if (
-        (_COG_MODE && initSrvSelList(),
+        (COG_MODE && initSrvSelList(),
         // enable scroll bar on server selector box
         new scrollBarHandler('.srv_sel_box'),
-        _AT_FOCUS_ELMS.push(_AT_SEL_LBTN),
-        _COG_MODE && (_AT_FOCUS_ELMS.push(_AT_SEL_ICHK), _AT_FOCUS_ELMS.push(_AT_SEL_PFGT)),
-        $(_AT_SEL_LBTN).click(function () {
-            _AT_IS_UNSELECTED_SRV ? (DoPlaySound('IDR_WAV_OK'), onAuthError(duc('nosrvsel'), 'r')) : (addEvent('login_click'), beginAuthProcess());
+        AT_FOCUS_ELMS.push(AT_SEL_LBTN),
+        COG_MODE && (AT_FOCUS_ELMS.push(AT_SEL_ICHK), AT_FOCUS_ELMS.push(AT_SEL_PFGT)),
+        $(AT_SEL_LBTN).click(function () {
+            AT_IS_UNSELECTED_SRV ? (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('nosrvsel'), 'r')) : beginAuthProcess();
         }),
-        (_AT_IS_AUTOLC = isAutoLogin()),
-        _COG_MODE)
+        (AT_IS_AUTOLC = isAutoLogin()),
+        COG_MODE)
     ) {
         readCookie();
         var e = '';
-        '' === (e = DoGetUserId()) && _MODE_BRANCH && (e = DoDebugGetIniUserId()),
-            '' === e && _STORAGE['cogid' + _EXE_MUTEX] && (e = _STORAGE['cogid' + _EXE_MUTEX]),
-            $(_AT_SEL_ID).val(e),
-            $(_AT_SEL_ID).focus(function () {
+        '' === e && STORAGE['cogid' + EXE_MUTEX] && (e = STORAGE['cogid' + EXE_MUTEX]),
+            $(AT_SEL_ID).val(e),
+            $(AT_SEL_ID).focus(function () {
                 DoPlaySound('IDR_WAV_OK');
             });
 
         var E = '';
         if (
-            ('' === (E = DoGetPassword()) && _MODE_BRANCH && (E = DoDebugGetIniPassword()),
-            '' === E && _STORAGE['pw' + _EXE_MUTEX] && (E = _STORAGE['pw' + _EXE_MUTEX]),
-            (E = '' !== E ? E : $(_AT_SEL_PW).attr('default')),
-            $(_AT_SEL_PW).val(E),
-            $(_AT_SEL_PW).focus(function () {
-                DoPlaySound('IDR_WAV_OK'), setAuthHover(_AT_SEL_PW);
+            ('' === E && STORAGE['pw' + EXE_MUTEX] && (E = STORAGE['pw' + EXE_MUTEX]),
+            (E = '' !== E ? E : $(AT_SEL_PW).attr('default')),
+            $(AT_SEL_PW).val(E),
+            $(AT_SEL_PW).focus(function () {
+                DoPlaySound('IDR_WAV_OK'), setAuthHover(AT_SEL_PW);
             }),
-            $(_AT_SEL_ID + ',' + _AT_SEL_PW).keydown(function (e) {
+            $(AT_SEL_ID + ',' + AT_SEL_PW).keydown(function (e) {
                 switch (e.which) {
                     case 117:
                         return !1;
@@ -1917,39 +1733,36 @@ function initAuth() {
                         DoPlaySound('IDR_WAV_SEL');
                 }
             }),
-            '' !== e && '' === E && forceFocus(_AT_SEL_PW),
-            $(_AT_SEL_ICHK).click(function () {
-                $(_AT_SEL_ICHK).toggleClass('checked'),
-                    DoPlaySound('IDR_WAV_OK'),
-                    $(_AT_SEL_ICHK).hasClass('checked') ? addEvent('save_id') : (addEvent('delete_id'), delCoockie('cogid' + _EXE_MUTEX), delCoockie('pw' + _EXE_MUTEX));
+            $(AT_SEL_ICHK).click(function () {
+                $(AT_SEL_ICHK).toggleClass('checked'), DoPlaySound('IDR_WAV_OK'), !$(AT_SEL_ICHK).hasClass('checked') && (delCoockie('cogid' + EXE_MUTEX), delCoockie('pw' + EXE_MUTEX));
             }),
-            $(_AT_SEL_ICHK).hover(
+            $(AT_SEL_ICHK).hover(
                 function () {
-                    setAuthHover(_AT_SEL_ICHK);
+                    setAuthHover(AT_SEL_ICHK);
                 },
                 function () {
                     removeAuthHover();
                 }
             ),
-            $(_AT_SEL_PFGT).hover(
+            $(AT_SEL_PFGT).hover(
                 function () {
-                    setAuthHover(_AT_SEL_PFGT);
+                    setAuthHover(AT_SEL_PFGT);
                 },
                 function () {
                     removeAuthHover();
                 }
             ),
-            _STORAGE['cogid' + _EXE_MUTEX] && !_AT_IS_AUTOLC && $(_AT_SEL_ICHK).addClass('checked'),
-            _AT_IS_AUTOLC && '' !== e && '' !== E)
+            STORAGE['cogid' + EXE_MUTEX] && !AT_IS_AUTOLC && $(AT_SEL_ICHK).addClass('checked'),
+            AT_IS_AUTOLC && '' !== e && '' !== E)
         )
-            '_MHF_AUTOLC' === _AT_MODE && addEvent('login_autolc'), $(_AT_SEL_ICHK).toggleClass('checked'), beginAuthProcess();
+            '_MHF_AUTOLC' === AT_MODE && $(AT_SEL_ICHK).toggleClass('checked'), beginAuthProcess();
         else if ('' !== e && '' !== E)
-            for (var t = 0; t < _AT_FOCUS_ELMS.length; t++)
-                if (_AT_FOCUS_ELMS[t] === _AT_SEL_LBTN) {
-                    _AT_FOCUS_IDX = t;
+            for (var t = 0; t < AT_FOCUS_ELMS.length; t++)
+                if (AT_FOCUS_ELMS[t] === AT_SEL_LBTN) {
+                    AT_FOCUS_IDX = t;
                     break;
                 }
-    } else _AT_IS_AUTOLC && beginAuthProcess();
+    } else AT_IS_AUTOLC && beginAuthProcess();
     switchAuthMode();
 }
 !(function () {
@@ -1959,16 +1772,16 @@ function initAuth() {
     } catch (e) {}
 })();
 
-let _SEL_LOG = '.msg_contents',
-    _CACHE_CR1 = '',
-    _CACHE_CR2 = '',
-    _LOG_TOI = null,
-    _LOG_INT = 100,
-    _BTNS_IS_ENABLED = null,
-    _DIALOG_BTN_TOI = null,
-    _CONF_SND_BLOCK = false,
-    _ENTERDOWN_TOI = null,
-    _LAST_KEYDOWN = 0;
+let SEL_LOG = '.msg_contents',
+    CACHE_CR1 = '',
+    CACHE_CR2 = '',
+    LOG_TOI = null,
+    LOG_INT = 100,
+    BTNS_IS_ENABLED = null,
+    DIALOG_BTN_TOI = null,
+    CONF_SND_BLOCK = false,
+    ENTERDOWN_TOI = null,
+    LAST_KEYDOWN = 0;
 
 function addLogMsg(message, type, isOnlyOneMsg) {
     'use strict';
@@ -1992,17 +1805,17 @@ function addLogMsg(message, type, isOnlyOneMsg) {
         let logMessage = prefix + message + suffix;
 
         if (isOnlyOneMsg) {
-            $(_SEL_LOG + ' p').html(_CACHE_CR1 + logMessage + '<br>');
-            _CACHE_CR2 = logMessage;
+            $(SEL_LOG + ' p').html(CACHE_CR1 + logMessage + '<br>');
+            CACHE_CR2 = logMessage;
             new scrollBarHandler('.msg_contents');
         } else {
-            if (_CACHE_CR2 !== '') {
-                logMessage = _CACHE_CR2 + '<br>' + logMessage;
-                _CACHE_CR2 = '';
+            if (CACHE_CR2 !== '') {
+                logMessage = CACHE_CR2 + '<br>' + logMessage;
+                CACHE_CR2 = '';
             }
             // accumulate elements
-            _CACHE_CR1 += logMessage + '<br>';
-            $(_SEL_LOG + ' p').html(_CACHE_CR1);
+            CACHE_CR1 += logMessage + '<br>';
+            $(SEL_LOG + ' p').html(CACHE_CR1);
             new scrollBarHandler('.msg_contents');
         }
     }
@@ -2010,12 +1823,7 @@ function addLogMsg(message, type, isOnlyOneMsg) {
 
 function clearLog() {
     'use strict';
-    (_CACHE_CR1 = ''), $(_SEL_LOG + ' p').html('');
-}
-
-function debugLogMsg(e, E) {
-    'use strict';
-    _MODE_BRANCH && addLogMsg('DEBUG:' + e, 'r', !1 !== E || E);
+    (CACHE_CR1 = ''), $(SEL_LOG + ' p').html('');
 }
 
 function getExLog() {
@@ -2053,8 +1861,6 @@ function getExLog() {
             } else if (/^Launcher Ver/.test(message)) {
                 type = 'g'; // green
                 isOnlyOneMsg = true;
-            } else if (/^DEBUG:|PRM\[|UG:|Cache-Control:|Connection:|User-Agent:|Host:|^\]|\(DEBUG\)/.test(message)) {
-                type = 'r'; // red
             } else if (/^AUTH_SUCCESS/.test(message)) {
                 type = 'b'; // blue
             } else if (/^\[.*%\]/.test(message)) {
@@ -2074,28 +1880,28 @@ function getExLog() {
 
 function stopExLog() {
     'use strict';
-    if (_LOG_TOI) {
+    if (LOG_TOI) {
         try {
-            clearTimeout(_LOG_TOI);
+            clearTimeout(LOG_TOI);
         } catch (e) {}
-        _LOG_TOI = null;
+        LOG_TOI = null;
     }
 }
 
 function startExLog() {
     'use strict';
-    _LOG_TOI = setTimeout(function () {
+    LOG_TOI = setTimeout(function () {
         getExLog();
-    }, _LOG_INT);
+    }, LOG_INT);
 }
 
 function resetModalDialogBtnWaitTimer() {
     'use strict';
-    if (_DIALOG_BTN_TOI) {
+    if (DIALOG_BTN_TOI) {
         try {
-            clearTimeout(_DIALOG_BTN_TOI);
+            clearTimeout(DIALOG_BTN_TOI);
         } catch (e) {}
-        _DIALOG_BTN_TOI = null;
+        DIALOG_BTN_TOI = null;
     }
 }
 var kuModalAction = function () {};
@@ -2103,14 +1909,14 @@ var kuModalAction = function () {};
 function showModalDialog(e, E, t) {
     'use strict';
     resetModalDialogBtnWaitTimer(),
-        (_IS_MODAL = !0),
+        (IS_MODAL = !0),
         (_KEY_ACT_MODAL = function () {}),
         (t = t || {}),
         $('#launcher_modal .dialog p').html(e),
         $('#launcher_modal .dialog p').removeClass(),
         t.elmClass && $('#launcher_modal .dialog p').addClass(t.elmClass),
         $('#launcher_modal .dialog .btns').html('<ul></ul>'),
-        (_BTNS_IS_ENABLED = t.wait);
+        (BTNS_IS_ENABLED = t.wait);
     for (var r = 0; r < E.length; r++) {
         var a = $('<div></div>');
         a.addClass('md_btn');
@@ -2138,26 +1944,26 @@ function showModalDialog(e, E, t) {
         $('#launcher_modal .dialog .btns .wait').fadeTo(10, 0.4),
         $('#launcher_modal').show(),
         t.wait &&
-            (_DIALOG_BTN_TOI = setTimeout(function () {
+            (DIALOG_BTN_TOI = setTimeout(function () {
                 $('#launcher_modal .dialog .btns .wait').fadeTo(200, 1, function () {
-                    (_BTNS_IS_ENABLED = !1), $('#launcher_modal .dialog .btns .wait').removeClass('wait');
+                    (BTNS_IS_ENABLED = !1), $('#launcher_modal .dialog .btns .wait').removeClass('wait');
                 });
             }, t.wait));
 }
 
 function hideModalDialog() {
     'use strict';
-    (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), resetModalDialogBtnWaitTimer(), (_IS_MODAL = !1);
+    (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), resetModalDialogBtnWaitTimer(), (IS_MODAL = !1);
 }
 
 function showNoTRDialog() {
     'use strict';
-    showModalDialog(duc('dmt0'), [
+    showModalDialog(textOutput('dmt0'), [
         {
-            label: duc('dmb0'),
+            label: textOutput('dmb0'),
             cmd:
                 'openDefBrowser("' +
-                (_COG_MODE ? 'http://www.capcom-onlinegames.jp/pc/right?m=6&service=mhf&right=free' : 'http://members.mh-frontier.jp/auth/dmm_regist/regist.php') +
+                (COG_MODE ? 'http://www.capcom-onlinegames.jp/pc/right?m=6&service=mhf&right=free' : 'http://members.mh-frontier.jp/auth/dmm_regist/regist.php') +
                 '"); showWaitTRDialog();',
         },
     ]);
@@ -2165,37 +1971,37 @@ function showNoTRDialog() {
 
 function showWaitTRDialog() {
     'use strict';
-    showModalDialog(duc('dmt1'), [{ label: duc('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
+    showModalDialog(textOutput('dmt1'), [{ label: textOutput('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
 }
 
 function showMaintenanceDialog() {
     'use strict';
-    showModalDialog(duc('SRV_MNT'), [{ label: duc('dmb4'), cmd: "addEvent('close_click_maintenance'); DoCloseWindow();" }]);
+    showModalDialog(textOutput('SRV_MNT'), [{ label: textOutput('dmb4'), cmd: 'DoCloseWindow();' }]);
 }
 
 function showAddCharDialog() {
     'use strict';
     var e = 'http://';
-    (e += _COG_MODE ? 'cog' : _NHN_MODE ? 'hangame' : 'dmm'),
+    (e += COG_MODE ? 'cog' : NHN_MODE ? 'hangame' : 'dmm'),
         (e += '-members.mhf-z.jp/sp/payment/charadd.html'),
-        showModalDialog(duc('dmca0'), [
-            { label: duc('dmb7'), cmd: 'DoLoginCog("' + $(_AT_SEL_ID).val() + '+' + '", "' + $(_AT_SEL_PW).val() + '","' + $(_AT_SEL_PW).val() + '"); showWaitCharAddDialog();' },
-            { label: duc('dmb8'), cmd: 'hideModalDialog();' },
+        showModalDialog(textOutput('dmca0'), [
+            { label: textOutput('dmb7'), cmd: 'DoLoginCog("' + $(AT_SEL_ID).val() + '+' + '", "' + $(AT_SEL_PW).val() + '","' + $(AT_SEL_PW).val() + '"); showWaitCharAddDialog();' },
+            { label: textOutput('dmb8'), cmd: 'hideModalDialog();' },
         ]);
 }
 
 function showWaitCharAddDialog() {
     'use strict';
-    showModalDialog(duc('dmca1'), [{ label: duc('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
+    showModalDialog(textOutput('dmca1'), [{ label: textOutput('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
 }
 
 function showDelCharDialog(e, E) {
     'use strict';
     showModalDialog(
-        duc('dmcd0') + e + duc('dmcd1') + E + duc('dmcd2') + duc('dmcd3'),
+        textOutput('dmcd0') + e + textOutput('dmcd1') + E + textOutput('dmcd2') + textOutput('dmcd3'),
         [
-            { label: duc('dmb2'), cmd: 'showDelCharDialog2("' + e + '", "' + E + '");', isWait: !0 },
-            { label: duc('dmb3'), cmd: 'charDelReset();' },
+            { label: textOutput('dmb2'), cmd: 'showDelCharDialog2("' + e + '", "' + E + '");', isWait: !0 },
+            { label: textOutput('dmb3'), cmd: 'charDelReset();' },
         ],
         { elmClass: 'alert', wait: 3e3 }
     );
@@ -2204,10 +2010,10 @@ function showDelCharDialog(e, E) {
 function showDelCharDialog2(e, E) {
     'use strict';
     showModalDialog(
-        duc('dmcd0') + e + duc('dmcd1') + E + duc('dmcd2') + (1 < $(_CHR_SEL_UNIT).length ? duc('dmcd4') : duc('dmcd4_2')),
+        textOutput('dmcd0') + e + textOutput('dmcd1') + E + textOutput('dmcd2') + (1 < $(CHR_SEL_UNIT).length ? textOutput('dmcd4') : textOutput('dmcd4_2')),
         [
-            { label: duc('dmb2'), cmd: 'showDelCharDialog3("' + e + '", "' + E + '");', isWait: !0 },
-            { label: duc('dmb3'), cmd: 'charDelReset();' },
+            { label: textOutput('dmb2'), cmd: 'showDelCharDialog3("' + e + '", "' + E + '");', isWait: !0 },
+            { label: textOutput('dmb3'), cmd: 'charDelReset();' },
         ],
         { elmClass: 'alert', wait: 2e3 }
     );
@@ -2216,10 +2022,10 @@ function showDelCharDialog2(e, E) {
 function showDelCharDialog3(e, E) {
     'use strict';
     showModalDialog(
-        duc('dmcd5') + e + duc('dmcd1') + E + duc('dmcd6') + duc('dmcd7') + duc('dmcd8'),
+        textOutput('dmcd5') + e + textOutput('dmcd1') + E + textOutput('dmcd6') + textOutput('dmcd7') + textOutput('dmcd8'),
         [
-            { label: duc('dmb2'), cmd: 'checkDelID();', isWait: !0 },
-            { label: duc('dmb3'), cmd: 'charDelReset();' },
+            { label: textOutput('dmb2'), cmd: 'checkDelID();', isWait: !0 },
+            { label: textOutput('dmb3'), cmd: 'charDelReset();' },
         ],
         { elmClass: 'alert', wait: 1e3 }
     ),
@@ -2239,71 +2045,71 @@ function showDelCharDialog3(e, E) {
 
 function showWaitDelCharIdErrorDialog() {
     'use strict';
-    showModalDialog(duc('dmcd9'), [{ label: duc('dmb4'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput('dmcd9'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }]);
 }
 
 function showWaitDelCharDialog(e, E) {
     'use strict';
-    showModalDialog(e + ' (ID:' + E + duc('dmcd10'), []), charDelete();
+    showModalDialog(e + ' (ID:' + E + textOutput('dmcd10'), []), charDelete();
 }
 
 function showFailDelCharDialog(e) {
     'use strict';
-    showModalDialog(duc(1 < e ? 'dmcd11' : 'dmcd12'), [{ label: duc('dmb4'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput(1 < e ? 'dmcd11' : 'dmcd12'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }]);
 }
 
 function showAddGuaranteeCharDialog() {
     'use strict';
-    showModalDialog(duc('dmcd13'), [{ label: duc('dmb4'), cmd: 'charDelReset();' }], { elmClass: 'alert' });
+    showModalDialog(textOutput('dmcd13'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }], { elmClass: 'alert' });
 }
 
 function showCompleteDelCharDialog() {
     'use strict';
-    showModalDialog(duc('dmcd14'), [{ label: duc('dmb4'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput('dmcd14'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }]);
 }
 
 function showGetHLDialog() {
     'use strict';
-    var e = _COG_MODE
+    var e = COG_MODE
         ? 'http://www.capcom-onlinegames.jp/pc/right?m=5&service=mhf&templateName=hunterlife'
-        : _NHN_MODE
+        : NHN_MODE
         ? 'http://hangame-members.mhf-z.jp/sp/payment/basic.html#basic_price'
         : 'http://dmm-members.mhf-z.jp/sp/payment/basic.html#basic_price';
-    showModalDialog(duc('dmhl0'), [
-        { label: duc('dmb7'), cmd: 'openDefBrowser("' + e + '"); showWaitCharAddDialog();' },
-        { label: duc('dmb9'), cmd: 'waitGameStart();', snd: 'IDR_SILENCE' },
+    showModalDialog(textOutput('dmhl0'), [
+        { label: textOutput('dmb7'), cmd: 'openDefBrowser("' + e + '"); showWaitCharAddDialog();' },
+        { label: textOutput('dmb9'), cmd: 'waitGameStart();', snd: 'IDR_SILENCE' },
     ]);
 }
 
 function showWaitHLDialog() {
     'use strict';
-    showModalDialog(duc('dmhl1'), [{ label: duc('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
+    showModalDialog(textOutput('dmhl1'), [{ label: textOutput('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
 }
 
 function clearEnterDownTimeout() {
     'use strict';
-    if (_ENTERDOWN_TOI) {
+    if (ENTERDOWN_TOI) {
         try {
-            clearTimeout(_ENTERDOWN_TOI);
+            clearTimeout(ENTERDOWN_TOI);
         } catch (e) {}
-        _ENTERDOWN_TOI = null;
+        ENTERDOWN_TOI = null;
     }
 }
 
 function showGameStartDialog(e, E) {
     'use strict';
     showModalDialog(
-        duc('dmgs0') + e + duc('dmcd1') + E + duc('dmgs1'),
+        textOutput('dmgs0') + e + textOutput('dmcd1') + E + textOutput('dmgs1'),
         [
             {
-                label: duc('dmb5'),
+                label: textOutput('dmb5'),
                 cmd: 'checkHasHL();',
                 snd: 'IDR_SILENCE',
                 fcs: !0,
                 key: 'y',
             },
             {
-                label: duc('dmb6'),
+                label: textOutput('dmb6'),
                 cmd: 'gameStartCalcel();',
                 key: 'n',
             },
@@ -2312,14 +2118,14 @@ function showGameStartDialog(e, E) {
             elmClass: 'alert',
         }
     ),
-        (_LAST_KEYDOWN = 0),
-        (_ENTERDOWN_TOI = null),
+        (LAST_KEYDOWN = 0),
+        (ENTERDOWN_TOI = null),
         (_KEY_ACT_MODAL = function (e) {
             var E,
                 t,
                 r = new Date().getTime();
-            if (r - _LAST_KEYDOWN < 100) return !0;
-            switch (((_LAST_KEYDOWN = r), e.which)) {
+            if (r - LAST_KEYDOWN < 100) return !0;
+            switch (((LAST_KEYDOWN = r), e.which)) {
                 case 13:
                     return (
                         (E = '#launcher_modal .dialog .btns ul li div.md_btn'),
@@ -2329,7 +2135,7 @@ function showGameStartDialog(e, E) {
                                 return -1;
                             })()) &&
                             (clearEnterDownTimeout(),
-                            (_ENTERDOWN_TOI = setTimeout(function () {
+                            (ENTERDOWN_TOI = setTimeout(function () {
                                 $($(E)[t]).click();
                             }, 100))),
                         !1
@@ -2362,17 +2168,17 @@ function showGameStartDialog(e, E) {
 
 function openMemberSite() {
     'use strict';
-    openDefBrowser('http://' + (_COG_MODE ? 'cog-members.mhf-z.jp/' : _NHN_MODE ? 'members-mhf-z.hange.jp/' : 'dmm-members.mhf-z.jp/'));
+    openDefBrowser('http://' + (COG_MODE ? 'cog-members.mhf-z.jp/' : NHN_MODE ? 'members-mhf-z.hange.jp/' : 'dmm-members.mhf-z.jp/'));
 }
 
 function openInquiry() {
     'use strict';
-    openDefBrowser('http://' + (_COG_MODE ? 'cog' : _NHN_MODE ? 'hangame' : 'dmm') + '-members.mhf-z.jp/sp/inquiry/');
+    openDefBrowser('http://' + (COG_MODE ? 'cog' : NHN_MODE ? 'hangame' : 'dmm') + '-members.mhf-z.jp/sp/inquiry/');
 }
 
 function openManual() {
     'use strict';
-    openDefBrowser('http://' + (_COG_MODE ? 'cog' : _NHN_MODE ? 'hangame' : 'dmm') + '-members.mhf-z.jp/sp/manual/');
+    openDefBrowser('http://' + (COG_MODE ? 'cog' : NHN_MODE ? 'hangame' : 'dmm') + '-members.mhf-z.jp/sp/manual/');
 }
 
 function doEval() {
@@ -2385,10 +2191,27 @@ function doEval() {
 
 $(function () {
     'use strict';
-    $('html').keydown(function (e) {
-        return !!_KEY_ACT_MODAL(e) || (!1 !== _KEY_ACT_MODAL(e) && _KEY_ACT_DEF(e));
+
+    // rotate banner
+    $('.launcher_bnr').slick({
+        fade: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        speed: 1000,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: false,
+        pauseOnHover: true,
+        pauseOnDotsHover: false,
+        draggable: false,
     });
-    (!_IE_STATE.isIE || 8 <= _IE_STATE.version) && (/* beginLoadBnr(), */ beginLoadInfo()),
+
+    $('html').keydown(function (e) {
+        return !!_KEY_ACT_MODAL(e) || (!1 !== _KEY_ACT_MODAL(e) && KEY_ACT_DEF(e));
+    });
+    (!IE_STATE.isIE || 8 <= IE_STATE.version) && beginLoadInfo(),
         $('a').bind('focus', function () {
             this.blur && this.blur();
         }),
@@ -2405,43 +2228,42 @@ $(function () {
     });
 
     // play sound when hovering preferences button
-    $('.btn_preferences_text').mouseover(function (e) {
-        _CONF_SND_BLOCK ? ((_CONF_SND_BLOCK = !1), /* startBnrSwitchTimer(), */ startExLog()) : DoPlaySound('IDR_WAV_SEL');
+    $('.btn_preferences_text').mouseover(function () {
+        CONF_SND_BLOCK ? ((CONF_SND_BLOCK = false), startExLog()) : DoPlaySound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking preferences button
     $('.btn_preferences').click(function () {
-        (_CONF_SND_BLOCK = !0), /* clearBnrSwitchTimer(), */ stopExLog(), addEvent('config_click'), DoOpenMhlConfig();
+        (CONF_SND_BLOCK = true), stopExLog(), DoOpenMhlConfig();
     });
 
     $('#launcher_menu a,.selsnd,.btn').mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
     });
 
-    $(_CHR_SEL_UP).click(function () {
+    $(CHR_SEL_UP).click(function () {
         DoPlaySound('IDR_WAV_OK'), scrollCharUni(-1);
     });
-    $(_CHR_SEL_DOWN).click(function () {
+    $(CHR_SEL_DOWN).click(function () {
         DoPlaySound('IDR_WAV_OK'), scrollCharUni(1);
     });
-    $(_CHR_SEL_DEL).click(function () {
-        if (!$(this).hasClass('disabled') && !_CHR_DEL_UID) {
-            DoPlaySound('IDR_WAV_OK'), addEvent('del_click');
+    $(CHR_SEL_DEL).click(function () {
+        if (!$(this).hasClass('disabled') && !CHR_DEL_UID) {
+            DoPlaySound('IDR_WAV_OK');
             var e = getCrrChar();
-            (_CHR_DEL_NAME = e.attr('name')), (_CHR_DEL_UID = e.attr('uid')), showDelCharDialog(_CHR_DEL_NAME, _CHR_DEL_UID);
+            (CHR_DEL_NAME = e.attr('name')), (CHR_DEL_UID = e.attr('uid')), showDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID);
         }
     });
-    $(_CHR_SEL_ADD).click(function () {
-        $(this).hasClass('disabled') || (DoPlaySound('IDR_WAV_OK'), addEvent('add_click'), showAddCharDialog());
+    $(CHR_SEL_ADD).click(function () {
+        $(this).hasClass('disabled') || (DoPlaySound('IDR_WAV_OK'), showAddCharDialog());
     });
-    $(_CHR_SEL_BOX + ' .btn_start').click(function () {
+    $(CHR_SEL_BOX + ' .btn_start').click(function () {
         gameStart();
     });
     initAuth();
 
     // initial display of msg log
     startExLog();
-    debugLogMsg('<br>UA > ' + String(window.navigator.userAgent), !1);
 
     // prevent user from selecting all texts in the launcher
     $(document).on('selectstart', function (e) {

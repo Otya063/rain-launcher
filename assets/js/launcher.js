@@ -108,8 +108,7 @@ function textOutput(textType) {
     }
 }
 
-let MODE_BRANCH = true,
-    AT_MOVE_MODE_ENABLED = false;
+let AT_MOVE_MODE_ENABLED = false;
 
 function launcherMovingHandler() {
     $('.move')
@@ -156,16 +155,6 @@ function DoGetServerList() {
         return window.external.getServerList();
     } catch (e) {
         return textOutput('dmsrvs');
-    }
-}
-
-function DoGetMhfMutexNumber() {
-    'use strict';
-
-    try {
-        return window.external.getMhfMutexNumber();
-    } catch (e) {
-        return 0;
     }
 }
 
@@ -394,7 +383,7 @@ var EXE_MUTEX = 0,
     STORAGE = {},
     TRG_STORAGE_KEY = {},
     HOSTS = {},
-    COG_MODE = !0,
+    COG_MODE = true,
     NHN_MODE = !0,
     IE_STATE = {},
     CS_ELMS = {},
@@ -437,23 +426,6 @@ function overrideAnker(selector) {
             const originalURL = $(this).attr('href');
             $(this).attr('href', "javascript:openDefBrowser('" + originalURL + "');");
         });
-}
-
-function getIEVer() {
-    'use strict';
-    var e = { isIE: !1, version: 0 },
-        E = window.navigator.userAgent.toLowerCase();
-    if (E.match(/(msie|MSIE)/) || E.match(/(T|t)rident/)) {
-        e.isIE = !0;
-        var t = E.match(/((msie|MSIE)\s|rv:)([\d\.]+)/)[3];
-        e.version = parseInt(t, 10);
-    }
-    trackEvent('launcher', 'ie', e.version);
-}
-
-function modeCheck(e, E) {
-    'use strict';
-    return e.indexOf(E) + E.length === e.length;
 }
 
 function isTrEnabled() {
@@ -522,25 +494,7 @@ function delCoockie(e) {
             document.cookie = e + '=' + STORAGE[e] + '; expires=' + new Date(0).toGMTString();
         } catch (e) {}
 }
-resetKeyActDefMode(),
-    (function () {
-        'use strict';
-        getIEVer(), (EXE_MUTEX = DoGetMhfMutexNumber()), ((TRG_STORAGE_KEY = {})['cogid' + EXE_MUTEX] = !0);
-    })(),
-    (function () {
-        'use strict';
-        var e,
-            E,
-            t,
-            r = location.host;
-
-        if (((COG_MODE = -1 !== r.indexOf('')), (NHN_MODE = -1 !== r.indexOf('hangame-')), (t = COG_MODE ? 'cog-' : NHN_MODE ? 'hangame-' : 'dmm-'), modeCheck(r, 'mhf-z.jp')))
-            (MODE_BRANCH = !1), (e = ''), (E = 'jp');
-        else {
-            if (!modeCheck(r, 'mhf-z.net')) return;
-            (MODE_BRANCH = !0), (e = -1 !== r.indexOf('stage') ? 'stage-' : 'debug-'), (E = 'net');
-        }
-    })();
+resetKeyActDefMode();
 
 let INF_URL = '/launcher/en/launcher_list.html',
     INF_SEL_LI = '.launcher_info_list',
@@ -1111,19 +1065,6 @@ let AT_IS_ENABLED = !0,
     AT_SVID_DEF = '1000',
     AT_IS_UNSELECTED_SRV = true;
 
-function onReceiveMsg(evt) {
-    'use strict';
-    var res;
-    if (modeCheck(evt.origin, 'capcom-onlinegames.jp'))
-        switch ((eval('res = ' + evt.data), String(res.action))) {
-            case 'standby':
-                parent.cslak.postMessage('{id:"' + AT_ID + '", pw:"' + AT_PW + '", svid:"' + (AT_SVID || AT_SVID_DEF) + '", lifetime:"60", action:"login"}', evt.origin);
-                break;
-            default:
-                filteShortLifeAuthKeyResponse(res);
-        }
-}
-
 function showMhfMaintenanceDialog() {
     'use strict';
     $('#launcher_login_panel').hide(), $('#launcher_auth_maintenance').addClass('mhf'), resetKeyActDefMode(), $('#launcher_auth_maintenance').show();
@@ -1171,7 +1112,6 @@ function loginPolling() {
                     hideAuthProgress(),
                     COG_MODE &&
                         ($(AT_SEL_ICHK).hasClass('checked') && ((STORAGE['cogid' + EXE_MUTEX] = $(AT_SEL_ID).val()), writeCookie()),
-                        ((STORAGE['pw' + EXE_MUTEX] = $(AT_SEL_PW).val()), writeCookie()),
                         $('.id_srv_label').text($(AT_SEL_ID).val() + '@' + $(AT_SRV_SEL_BTN).text()),
                         !isTrEnabled()))
                 )
@@ -1231,7 +1171,7 @@ function loginPolling() {
         }
 }
 
-function createShortLifeAuthKeyDone(e) {
+function createShortLifeAuthKeyDone() {
     'use strict';
     !(AT_STATUS = 'AUTH_NULL') === DoLoginCog($(AT_SEL_ID).val(), $(AT_SEL_PW).val(), $(AT_SEL_PW).val())
         ? onAuthError(textOutput('SIGN_EAPP'), 'r')
@@ -1240,75 +1180,25 @@ function createShortLifeAuthKeyDone(e) {
           }, 1e3));
 }
 
-function createShortLifeAuthKey(e, E) {
-    //"use strict"; "" !== _EXT_MODE ? (AT_ID = e, AT_PW = E, AT_FRAME ? (AT_FRAME.attr("src", ""), AT_FRAME.attr("src", _HOSTS[AT_COG_MODE] + "./bnr/launcher.html?q=" + AT_FRAME_CB)) : ((AT_FRAME = $('<iframe id="cslak" name="cslak" width="1" height="1" style="overflow:hidden; position:fixed; left:-500px; top:-700px; visibility:hidden;"></iframe>')).attr("src", _HOSTS[AT_COG_MODE] + "./bnr/launcher.html?q=" + AT_FRAME_CB), $(document.body).append(AT_FRAME)), AT_FRAME_CB++) :
-    filteShortLifeAuthKeyResponse({ code: '000' });
-}
-
 function showCogMaintenanceDialog() {
     'use strict';
     $('#launcher_login_panel').hide(), resetKeyActDefMode(), $('#launcher_auth_maintenance').show();
 }
 
-function filteShortLifeAuthKeyResponse(e) {
-    'use strict';
-    switch ((e.code && clearBBTO(), '000' !== String(e.code) && addEvent('code_' + String(e.code)), String(e.code))) {
-        case '000':
-            createShortLifeAuthKeyDone(e.skey);
-            break;
-        case '777':
-        case '202':
-        case '220':
-        case '221':
-        case '227':
-            onAuthError(textOutput('afac') + ' [' + e.code + ']', 'r');
-            break;
-        case '200':
-            onAuthError(textOutput('afde'));
-            break;
-        case '201':
-        case '300':
-        case '302':
-        case '320':
-            onAuthError(textOutput('afipe'));
-            break;
-        case '102':
-            onAuthError(textOutput('af102'));
-            break;
-        case '301':
-            onAuthError(textOutput('af301'));
-            break;
-        case '304':
-            onAuthError(textOutput('af304'), 'r');
-            break;
-        case '235':
-        case '309':
-        case '360':
-            onAuthError(textOutput('aferr') + '（' + e.code + '）');
-            break;
-        case '321':
-            onAuthError(textOutput('af321'));
-            break;
-        case '9000':
-            onAuthError(), showCogMaintenanceDialog();
-            break;
-        default:
-            e.code ? onAuthError(textOutput('aferr') + '（' + e.code + '）') : onAuthError(textOutput('aferr'));
-    }
-}
-
 function selectServerItem(target_elm) {
+    'use strict';
+
     $('.selected_srv').removeClass('selected_srv'), $(target_elm).toggleClass('selected_srv');
 }
 
 function lockAuthEdit() {
     'use strict';
-    (AT_SBOX_SEL_ENABLED = !1), $(AT_SEL_ID).attr('disabled', !0), $(AT_SEL_PW).attr('disabled', !0);
+    (AT_SBOX_SEL_ENABLED = false), $(AT_SEL_ID).attr('disabled', true), $(AT_SEL_PW).attr('disabled', true);
 }
 
 function unlockAuthEdit() {
     'use strict';
-    (AT_SBOX_SEL_ENABLED = !0), $(AT_SEL_ID).attr('disabled', !1), $(AT_SEL_PW).attr('disabled', !1), $('.btn_preferences').show();
+    (AT_SBOX_SEL_ENABLED = true), $(AT_SEL_ID).attr('disabled', false), $(AT_SEL_PW).attr('disabled', false), $('.btn_preferences').show();
 }
 
 function switchAuthSrv(e) {
@@ -1466,7 +1356,7 @@ function beginAuthProcess(e) {
                 var E = setTimeout(function () {
                     onBackboneTimeout();
                 }, 6e4);
-                (AT_BB_TOI = E), $(AT_SEL_LBTN).addClass('disabled'), $(AT_SEL_LBTN).fadeTo(200, 0.6), createShortLifeAuthKey($(AT_SEL_ID).val(), $(AT_SEL_PW).val());
+                (AT_BB_TOI = E), $(AT_SEL_LBTN).addClass('disabled'), $(AT_SEL_LBTN).fadeTo(200, 0.6), createShortLifeAuthKeyDone();
             }
         } else
             NHN_MODE
@@ -1643,7 +1533,7 @@ function initAuth() {
                 }
             }),
             $(AT_SEL_ICHK).click(function () {
-                $(AT_SEL_ICHK).toggleClass('checked'), DoPlaySound('IDR_WAV_OK'), !$(AT_SEL_ICHK).hasClass('checked') && (delCoockie('cogid' + EXE_MUTEX), delCoockie('pw' + EXE_MUTEX));
+                $(AT_SEL_ICHK).toggleClass('checked'), DoPlaySound('IDR_WAV_OK'), !$(AT_SEL_ICHK).hasClass('checked') && delCoockie('cogid' + EXE_MUTEX) /* , delCoockie('pw' + EXE_MUTEX) */;
             }),
             $(AT_SEL_ICHK).hover(
                 function () {
@@ -1674,12 +1564,6 @@ function initAuth() {
     } else AT_IS_AUTOLC && beginAuthProcess();
     switchAuthMode();
 }
-!(function () {
-    'use strict';
-    try {
-        window.addEventListener ? window.addEventListener('message', onReceiveMsg, !1) : window.attachEvent ? window.attachEvent('onmessage', onReceiveMsg) : (window.onmessage = onReceiveMsg);
-    } catch (e) {}
-})();
 
 let SEL_LOG = '.msg_contents',
     CACHE_CR1 = '',

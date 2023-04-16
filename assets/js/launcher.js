@@ -430,26 +430,13 @@ function openDefBrowser(e) {
     DoPlaySound('IDR_WAV_OK'), trackPageView(e, ''), DoOpenBrowser(e);
 }
 
-function getAbsPath(e, E) {
-    'use strict';
-    var t = (E = E || location.href).split('/');
-    if ((t.pop(), (E = t.join('/') + '/'), !ABS_DOC)) {
-        var r = $('<iframe style="display:none;"></iframe>');
-        $(document.body).prepend(r), (ABS_DOC = r[0].contentWindow.document);
-    }
-    return ABS_DOC.open(), ABS_DOC.write('<head><base href="' + E + '" /></head><body><a href="' + e + '"></a></body>'), ABS_DOC.close(), ABS_DOC.getElementsByTagName('a')[0].href;
-}
-
-function overrideAnker(e, E) {
-    'use strict';
-    for (var t = (e = e || $('#launcher_body')).find('a'), r = 0; r < t.length; r++)
-        '_blank' === $(t[r]).attr('target')
-            ? $(t[r]).attr('href', 'javascript:openDefBrowser("' + getAbsPath($(t[r]).attr('href'), E) + '");')
-            : (2 === String($(t[r]).attr('href')).split('/sp/news/').length
-                  ? $(t[r]).attr('href', 'javascript:loadtoInnerElement("' + getAbsPath($(t[r]).attr('href'), E) + '");')
-                  : 2 !== String($(t[r]).attr('href')).split('openDefBrowser').length && $(t[r]).attr('href', 'javascript:openDefBrowser("' + getAbsPath($(t[r]).attr('href'), E) + '");'),
-              $(t[r]).attr('onclick', "DoPlaySound('IDR_WAV_OK');")),
-            $(t[r]).removeAttr('target');
+function overrideAnker(selector) {
+    $(selector)
+        .find('a')
+        .each(function () {
+            const originalURL = $(this).attr('href');
+            $(this).attr('href', "javascript:openDefBrowser('" + originalURL + "');");
+        });
 }
 
 function getIEVer() {
@@ -555,88 +542,9 @@ resetKeyActDefMode(),
         }
     })();
 
-var INF_URL = '/launcher/en/launcher_list.html',
-    INF_SEL_LI = '#launcher_info_list',
-    INF_SEL_US = '#launcher_info_list img, #launcher_info_list a',
-    INF_SEL_BACK = '#launcher_bnr,#launcher_info_list',
-    INF_SEL_DETAIL = '#launcher_info_detail',
-    INF_SEL_FRAME = INF_SEL_DETAIL + ' .article_frame',
-    INF_SEL_BODY = INF_SEL_FRAME + ' .article',
-    INF_SEL_DUS = '#launcher_info_detail img, #launcher_info_detail a';
-
-function formattingInfoDetail(e, r) {
-    'use strict';
-    var E = '';
-    -1 !== e[0].indexOf('showLocalNaviInformation("bug_t")')
-        ? (E = ' bug_trouble')
-        : -1 !== e[0].indexOf('showLocalNaviInformation("info")')
-        ? (E = ' info')
-        : -1 !== e[0].indexOf('showLocalNaviInformation("g_event")')
-        ? (E = ' game_event')
-        : -1 !== e[0].indexOf('showLocalNaviInformation("campaign")')
-        ? (E = ' campaign')
-        : -1 !== e[0].indexOf('showLocalNaviInformation("system")')
-        ? (E = ' system')
-        : -1 !== e[0].indexOf('showLocalNaviInformation("o_news")') && (E = ' other_news'),
-        (e[1] = e[1].split('src="').join('srcpre="'));
-
-    var t = '<div class="article_category' + E + '"></div>' + e[1] + '<div style="width:100%; height:20px;"></div>';
-    $(INF_SEL_BODY).html(t),
-        $(INF_SEL_BODY + ' a').each(function (e, E) {
-            $(E).removeAttr('target');
-
-            var t = String($(E).attr('href'));
-            2 === t.split('/sp/news/').length
-                ? $(E).attr('href', 'javascript:loadtoInnerElement("' + getAbsPath(t, r) + '");')
-                : 0 === t.indexOf('#')
-                ? $(E).attr('href', 'javascript:scrollToInfoDetail("' + t.substr(1) + '");')
-                : $(E).attr('href', 'javascript:openDefBrowser("' + getAbsPath(t, r) + '");');
-        }),
-        $(INF_SEL_BODY + ' img').each(function (e, E) {
-            $(E).attr('src', getAbsPath($(E).attr('srcpre'), r)), $(E).removeAttr('srcpre');
-        }),
-        $(
-            [INF_SEL_BODY + ' script', INF_SEL_BODY + ' iframe', INF_SEL_BODY + ' video', INF_SEL_BODY + ' audio', INF_SEL_BODY + ' source', INF_SEL_BODY + ' video', INF_SEL_BODY + ' input'].join(',')
-        ).each(function (e, E) {
-            $(E).attr('src', getAbsPath($(E).attr('srcpre'), r)), $(E).removeAttr('srcpre');
-        }),
-        $(INF_SEL_BODY).css('visibility', 'hidden'),
-        $(INF_SEL_BACK).css('visibility', 'hidden'),
-        $(INF_SEL_DETAIL).show(),
-        $($(INF_SEL_FRAME)[0]).scrollTop(0),
-        $(INF_SEL_BODY).css('visibility', 'visible');
-}
-
-/* function hideInfoDetail() {
-    'use strict';
-    DoPlaySound('IDR_WAV_OK'), $(INF_SEL_DETAIL).hide(), $(INF_SEL_BODY).html(''), $(INF_SEL_BACK).css('visibility', 'visible'), scrollBarHandler(INF_SEL_LI);
-} */
-
-function scrollToInfoDetail(e) {
-    'use strict';
-    var E = 0;
-    'contents_top' !== e && ((E = ($(INF_SEL_BODY + ' a[name="' + e + '"]') || $(INF_SEL_BODY + ' #' + e + ']')).offset().top), (E -= $(INF_SEL_BODY).offset().top));
-    $(INF_SEL_FRAME).animate({ scrollTop: E });
-}
-
-function loadtoInnerElement(t) {
-    'use strict';
-    IE_STATE.isIE && IE_STATE.version < 8
-        ? openDefBrowser(t)
-        : $.ajax({
-              type: 'GET',
-              url: t,
-              dataType: 'text',
-              cache: !1,
-              error: function () {
-                  openDefBrowser(t);
-              },
-              success: function (e) {
-                  var E = e.split(textOutput('xhrspr'));
-                  3 === E.length ? (trackPageView(t, ''), formattingInfoDetail(E, t)) : openDefBrowser(t);
-              },
-          });
-}
+let INF_URL = '/launcher/en/launcher_list.html',
+    INF_SEL_LI = '.launcher_info_list',
+    INF_SEL_US = '.launcher_info_list img, .launcher_info_list a';
 
 function beginLoadInfo() {
     'use strict';
@@ -644,9 +552,10 @@ function beginLoadInfo() {
         type: 'GET',
         url: INF_URL,
         dataType: 'text',
-        cache: !1,
+        cache: false,
         success: function (e) {
             $(INF_SEL_LI).html(e);
+            overrideAnker(INF_SEL_LI);
             new scrollBarHandler(INF_SEL_LI);
         },
     });
@@ -1551,7 +1460,7 @@ function beginAuthProcess(e) {
     'use strict';
     if (($('.btn_preferences').hide(), e && ((AT_IS_ENABLED = !0), clearLog()), AT_IS_ENABLED))
         if ((switchEvtPhase('auth'), switchAuthMode(), COG_MODE)) {
-            if ('' === $(AT_SEL_ID).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noidpass'), 'r');
+            if ('' === $(AT_SEL_ID).val() || '' === $(AT_SEL_PW).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noidpass'), 'r');
             else if (authExec()) {
                 DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), clearBBTO();
                 var E = setTimeout(function () {
@@ -2192,30 +2101,13 @@ function doEval() {
 $(function () {
     'use strict';
 
-    // rotate banner
-    $('.launcher_bnr').slick({
-        fade: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        speed: 1000,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        arrows: false,
-        pauseOnHover: true,
-        pauseOnDotsHover: false,
-        draggable: false,
-    });
-
     $('html').keydown(function (e) {
         return !!_KEY_ACT_MODAL(e) || (!1 !== _KEY_ACT_MODAL(e) && KEY_ACT_DEF(e));
     });
     (!IE_STATE.isIE || 8 <= IE_STATE.version) && beginLoadInfo(),
         $('a').bind('focus', function () {
             this.blur && this.blur();
-        }),
-        overrideAnker();
+        });
 
     // play a sound when hovering logout button
     $('.btn_logout').mouseover(function () {
@@ -2275,6 +2167,22 @@ $(function () {
 
     // load grabing function
     launcherMovingHandler();
+
+    // rotate banner
+    $('.launcher_bnr').slick({
+        fade: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        speed: 800,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        arrows: false,
+        pauseOnHover: true,
+        pauseOnDotsHover: false,
+        draggable: false,
+    });
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);

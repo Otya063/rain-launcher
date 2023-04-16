@@ -13,6 +13,10 @@ a {
     outline: none;
 }
 
+li {
+    list-style-type: none;
+}
+
 ul {
     list-style: none;
 }
@@ -57,14 +61,6 @@ h1 {
     }
 }
 
-.mCSB_scrollTools {
-    margin: 6px 0;
-}
-
-.mCSB_container {
-    margin-right: 15px !important;
-}
-
 // overlay for moving the launcher window
 .overlay {
     position: relative;
@@ -98,6 +94,52 @@ h1 {
     left: 0;
     top: 0;
     @include launcher_bg;
+}
+
+/* Scrollbar
+====================================================*/
+// scroll area
+.mCSB_scrollTools {
+    margin: 6px 0;
+}
+
+// scroll contents area
+.mCSB_container {
+    margin-right: 15px !important;
+}
+
+// scroll rail area
+.mCSB_draggerRail {
+    width: 4px !important;
+    background-color: #4a4a4adb !important;
+}
+
+/* Slick
+====================================================*/
+.slick-dots {
+    width: 28% !important;
+    height: 80%;
+    top: 10%;
+    right: -10%;
+    bottom: 0 !important;
+    transform: rotate(90deg);
+
+    li {
+        margin: 0 3px !important;
+
+        // normal dots
+        button:before {
+            font-size: 1.2rem !important;
+            color: gray !important;
+            opacity: 0.5 !important;
+        }
+
+        // active dots
+        &.slick-active button:before {
+            opacity: 1 !important;
+            color: black !important;
+        }
+    }
 }
 
 /*=========================================================
@@ -480,7 +522,6 @@ h1 {
             line-height: 14px;
             color: white;
             overflow: hidden;
-            overflow-y: auto;
             position: absolute;
 
             // text initial setting
@@ -610,16 +651,108 @@ h1 {
     right: 4%;
     top: 5%;
 
+    // banner img
     .bnr img {
         border-radius: 20px;
         cursor: pointer;
     }
+}
 
-    .slick-next {
-        right: -30px;
+/*=========================================================
+　　　　　Launcher Information
+=======================================================*/
+.launcher_info_list {
+    width: 535px;
+    height: 288px;
+    position: absolute;
+    right: 38px;
+    top: 163px;
+    overflow: hidden;
+
+    .important_info,
+    .normal_info {
+        margin-bottom: 5px;
     }
 
-    .slick-prev {
-        left: -30px;
+    .head {
+        width: 513px;
+        height: 23px;
+        position: relative;
+
+        .lbl {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 513px;
+            height: 23px;
+        }
+
+        a {
+            position: absolute;
+            right: 10px;
+            top: 6px;
+            display: block;
+            width: 35px;
+            height: 13px;
+            background: no-repeat 0px 0px;
+
+            &:hover {
+                background-position: 0px -13px;
+            }
+        }
+    }
+
+    .important_info {
+        .body a,
+        .date {
+            color: #f4c833;
+        }
+
+        a {
+            &:hover {
+                color: #f8dd81;
+            }
+        }
+    }
+
+    ul.article {
+        margin-left: 18px;
+        width: 517px;
+        position: relative;
+
+        li {
+            width: 517px;
+            position: relative;
+            overflow: hidden;
+            padding: 5px 0;
+
+            div {
+                position: relative;
+                float: left;
+            }
+
+            .date {
+                width: 110px;
+            }
+
+            .body {
+                width: 340px;
+
+                a {
+                    color: #d1c0a5;
+                    text-decoration: none;
+
+                    &:hover {
+                        color: #efddc2;
+                    }
+                }
+            }
+
+            .icon {
+                width: 30px;
+                height: 14px;
+                background: no-repeat center center;
+            }
+        }
     }
 }

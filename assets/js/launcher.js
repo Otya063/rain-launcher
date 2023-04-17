@@ -32,47 +32,36 @@ scrollBarHandler.prototype.appendScrollBar = function () {
 };
 
 const textData = {
-    xhrspr: '<!--###content###-->',
-    dmsrvs: "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/><group idx='4' nam='Rain4'/><group idx='5' nam='Rain5'/></server_groups>",
-    anch: 'You can create a new character. <br> Press [Start Game] to create your character.',
-    cwpt: 'Weapon',
-    pcst: 'Last Login',
-    afac: 'You do not have permission to do this.',
-    afde: 'Character encoding not supported.',
-    nosrvsel: 'No server is currently selected. Please select one from the list.',
-    afipe: 'Wrong ID/Password.',
-    af102: 'The server is busy at the moment.<br>Please try again later.',
-    af301: 'The ID you have entered is temporarily suspended.',
-    af304: 'Authentication has been temporarily halted due to entering multiple incorrect passwords.<br>Please wait an hour and log in again.',
-    aferr: 'Unknown error occurred.',
-    af321: 'The security card data is different.',
-    noidpass: 'First, please enter both your User ID and Password.',
-    uflm0: 'The server is currently under maintenance and cannot be joined.<br>Please try again later.',
-    dmb0: 'Register now',
-    dmb1: 'Refresh',
-    dmb2: 'Delete',
-    dmb3: 'Cancel',
-    dmb4: 'Close',
-    dmb5: 'Yes',
-    dmb6: 'No',
-    dmb7: 'Add now',
-    dmb8: 'Ignore',
-    dmb9: 'Ignore',
-    dmt0: 'Trial course registration is required.<br>Register for a trial course below.<br>(You can register for free .',
-    dmt1: 'Once you have registered for the trial course,<br>please wait a moment and then press the [Refresh] button below.',
-    dmca0: 'Would you like to add a new character?<br>Press [Add now] below.',
-    dmca1: 'A new character slot will be requested momentarily,<br>please wait a few seconds and then press<br>the [Refresh] button below.',
-    dmcd0: 'The selected character will be deleted<br>',
-    dmcd1: "<span class='uid'> (ID:",
-    dmcd2: "  </span><br><div class='sp'></div>",
-    dmcd3: "<span class='attention'>Deleted characters will not revert to [Ready to Hunt] status,<br>but will be completely deleted.</span> Proceed?",
-    dmcd4: "<span class='notes'>[Warning]<br>You will lose the ability to add characters once an additional character has been deleted.<br>You will need to purchase a new<br>add character license to make one.</span>",
-    dmcd4_2:
+    defaultSrv:
+        "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/><group idx='4' nam='Rain4'/><group idx='5' nam='Rain5'/></server_groups>",
+    readyNewChara: 'You can create a new character. <br> Press [Start Game] to create your character.',
+    Weapon: 'Weapon',
+    LastLogin: 'Last Login',
+    noSrvSelected: 'No server is currently selected. Please select one from the list.',
+    unknownError: 'Unknown error occurred.',
+    noUseridPass: 'First, please enter both your User ID and Password.',
+    serverMaint: 'The server is currently under maintenance and cannot be joined.<br>Please try again later.',
+    Refresh: 'Refresh',
+    Delete: 'Delete',
+    Cancel: 'Cancel',
+    Close: 'Close',
+    Yes: 'Yes',
+    No: 'No',
+    AddNow: 'Add now',
+    Ignore: 'Ignore',
+    createChara: 'Would you like to add a new character?<br>Press [Add now] below.',
+    createCharaDone: 'A new character slot will be requested momentarily,<br>please wait a few seconds and then press<br>the [Refresh] button below.',
+    delCharFirstLine: 'The selected character will be deleted<br>',
+    delCharId: "<span class='uid'> (ID:",
+    delCharSpace: "  </span><br><div class='sp'></div>",
+    delCharWarn: "<span class='attention'>Deleted characters will not revert to [Ready to Hunt] status,<br>but will be completely deleted.</span> Proceed?",
+    delNormalChar:
+        "<span class='notes'>[Warning]<br>You will lose the ability to add characters once an additional character has been deleted.<br>You will need to purchase a new<br>add character license to make one.</span>",
+    delLastChar:
         "<span class='notes'>You're about to remove the last character.<br>If you delete all the characters, you will be provided<br>with one character under your basic contract guarantee!</span>",
-    dmcd5: '<br>',
-    dmcd6: '  </span> will be deleted.<br>',
-    dmcd7: "<span class='attention'>Enter the ID of the selected character then click the <br> [Delete] button.</span><br><div class='sp'></div>",
-    dmcd8: "<form action='javascript:void(0 ;'><input type='text' border='0' align='left' name='del_uid' id='del_uid'></form>",
+    delCharFinalConf: "<span class='attention'>Enter the ID of the selected character then click the <br> [Delete] button.</span><br><div class='sp'></div>",
+    delCharIdInput:
+        "<form action='javascript:void(0);'><input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'></form>",
     dmcd9: "The character could not be deleted.<br><div class='sp'></div><span class='attention'>The selected character ID and entered ID do not match.</span>",
     dmcd10: ' <br>is being deleted. <br> Please wait.',
     dmcd11: 'This character cannot be deleted. <br> Please try again later.',
@@ -101,11 +90,7 @@ const textData = {
 };
 
 function textOutput(textType) {
-    try {
-        return decodeURIComponent(textData[textType]);
-    } catch (e) {
-        return 'Text Data Not Found.';
-    }
+    return decodeURIComponent(textData[textType]);
 }
 
 let AT_MOVE_MODE_ENABLED = false;
@@ -154,7 +139,7 @@ function DoGetServerList() {
     try {
         return window.external.getServerList();
     } catch (e) {
-        return textOutput('dmsrvs');
+        return textOutput('defaultSrv');
     }
 }
 
@@ -189,7 +174,7 @@ function DoRestartMhf() {
 function DoOpenBrowser(e) {
     'use strict';
 
-    window.external.openBrowser(e);
+    DoPlaySound('IDR_WAV_OK'), window.external.openBrowser(e);
 }
 
 function DoBeginDrag(e) {
@@ -388,7 +373,7 @@ var EXE_MUTEX = 0,
     IE_STATE = {},
     CS_ELMS = {},
     ABS_DOC = null,
-    IS_MODAL = !1;
+    IS_MODAL = true; // need to change this to true to open a dialog
 
 function switchEvtPhase(e) {
     'use strict';
@@ -414,21 +399,21 @@ function resetKeyActDefMode() {
     };
 }
 
-function openDefBrowser(e) {
+/* function openDefBrowser(e) {
     'use strict';
     DoPlaySound('IDR_WAV_OK'), trackPageView(e, ''), DoOpenBrowser(e);
-}
+} */
 
 function overrideAnker(selector) {
     $(selector)
         .find('a')
         .each(function () {
             const originalURL = $(this).attr('href');
-            $(this).attr('href', "javascript:openDefBrowser('" + originalURL + "');");
+            $(this).attr('href', "javascript:DoOpenBrowser('" + originalURL + "');");
         });
 }
 
-function isTrEnabled() {
+/* function isTrEnabled() {
     'use strict';
     var e = DoGetAccountRights();
     e = e.toLowerCase();
@@ -440,7 +425,7 @@ function isTrEnabled() {
         }),
         t
     );
-}
+} */
 
 function isHlEnabled() {
     'use strict';
@@ -588,13 +573,13 @@ function createCharUnit(e, E, t, r, a, _, s, n) {
     E = E.split('狩人申請可能').join('Ready to Hunt');
     var o = $('<div class="unit" uid="' + t + '" name="' + E + '" hr="' + r + '" to="0"></div>');
     if ((o.append($('<div class="num n' + e + '"></div>')), o.append($('<div class="sign"></div>')), o.append($('<p class="name">' + entityRef(E) + '</p>')), 0 === r))
-        o.addClass('new'), o.append($('<p class="new">' + textOutput('anch') + '</p>'));
+        o.addClass('new'), o.append($('<p class="new">' + textOutput('readyNewChara') + '</p>'));
     else {
         var i = convWpType(_);
         o.addClass(i),
             o.append($('<div class="icon' + ('' !== i ? ' ' + i : '') + '"></div>')),
-            o.append($('<p class="wp">' + textOutput('cwpt') + '<br>' + translateWeapon(_) + '</p>')),
-            o.append($('<p class="data">HR' + r + (0 < a ? '　GR' + a : '') + '　' + ('M' === s ? '♂' : '♀') + '<br>ID:' + t + '<br>' + textOutput('pcst') + ':' + convLastDateStr(n) + '</p>'));
+            o.append($('<p class="wp">' + textOutput('Weapon') + '<br>' + translateWeapon(_) + '</p>')),
+            o.append($('<p class="data">HR' + r + (0 < a ? '　GR' + a : '') + '　' + ('M' === s ? '♂' : '♀') + '<br>ID:' + t + '<br>' + textOutput('LastLogin') + ':' + convLastDateStr(n) + '</p>'));
     }
     return (
         o.append($('<div class="cover"></div>')),
@@ -853,7 +838,7 @@ function charDelete() {
         }, 1e3));
 }
 
-function waitGameStart() {
+function initializing() {
     'use strict';
     DoSelectCharacter(CHR_UID, CHR_UID),
         DoPlaySound('IDR_WAV_LOGIN'),
@@ -866,7 +851,7 @@ function waitGameStart() {
 
 function checkHasHL() {
     'use strict';
-    100 <= CHR_HR ? (isHlEnabled() ? waitGameStart() : (DoPlaySound('IDR_WAV_OK'), showGetHLDialog())) : waitGameStart();
+    100 <= CHR_HR ? (isHlEnabled() ? initializing() : (DoPlaySound('IDR_WAV_OK'), showGetHLDialog())) : initializing();
 }
 
 function gameStartCalcel() {
@@ -883,8 +868,9 @@ function gameStart() {
 
 function checkDelID() {
     'use strict';
-    CHR_DEL_UID === $('#del_uid').val() ? showWaitDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID) : showWaitDelCharIdErrorDialog();
+    CHR_DEL_UID === $('.del_uid').val() ? showWaitDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID) : showWaitDelCharIdErrorDialog();
 }
+
 var UPD_ANIM_SEQ = { loop: [] };
 UPD_ANIM_SEQ.loop.push({ c: 'f0', delay: 100 }),
     UPD_ANIM_SEQ.loop.push({ c: 'f1', delay: 300 }),
@@ -1033,30 +1019,30 @@ function startUpdateProcess() {
               setTimeout(function () {
                   progressUpdatePercentage();
               }, 50))
-            : (updateDisabled ? finishUpdateProcess() : $('#launcher_login_panel').show(), onAuthError(textOutput('uflm0')))
+            : (updateDisabled ? finishUpdateProcess() : $('#launcher_login_panel').show(), onAuthError(textOutput('serverMaint')))
         : finishUpdateProcess();
 }
 
-let AT_IS_ENABLED = !0,
+let AT_IS_ENABLED = true,
     AT_ID = '',
     AT_PW = '',
     AT_FRAME = null,
     AT_FRAME_CB = Math.floor(1e3 * Math.random()),
     AT_TOI = null,
     AT_STATUS = 'AUTH_NULL',
-    AT_SEL_ID = '.userid_input',
-    AT_SEL_PW = '.password_input',
-    AT_SRV_SEL_BTN = '.srv_sel_btn',
-    AT_SRV_LIST_BOX = '.srv_sel_box',
-    AT_SRV_LIST_ITEM = '.srv_sel_box .srv',
-    AT_SEL_LBTN = '#launcher_login_panel .btn_login',
-    AT_SEL_ICHK = '#launcher_login_panel .check_save_id',
-    AT_SEL_PFGT = '#launcher_login_panel .btn_forgot',
+    inputUserId = '.userid_input',
+    inputPassword = '.password_input',
+    serverSelBtn = '.srv_sel_btn',
+    serverListBox = '.srv_sel_box',
+    srvListEachItem = '.srv_sel_box .srv',
+    loginBtn = '.btn_login',
+    saveUserIdCheck = '.check_save_id',
+    credsForgot = '.btn_forgot',
     AT_SBOX_TOI = null,
     AT_SBOX_SEL_ENABLED = false,
     AT_SBOX_IS_OPENED = false,
     AT_ANIM_TOI = null,
-    AT_IS_AUTOLC = !1,
+    AT_IS_AUTOLC = false,
     AT_MODE = '',
     AT_FOCUS_ELMS = [],
     AT_FOCUS_IDX = 0,
@@ -1077,8 +1063,8 @@ function onAuthError(e, E) {
         hideAuthProgress(),
         unlockAuthEdit(),
         setTimeout(function () {
-            $(AT_SEL_LBTN).fadeTo(200, 1, function () {
-                $(AT_SEL_LBTN).removeClass('disabled'), (AT_IS_ENABLED = !0);
+            $(loginBtn).fadeTo(200, 1, function () {
+                $(loginBtn).removeClass('disabled'), (AT_IS_ENABLED = !0);
             });
         }, 5e3);
 }
@@ -1111,11 +1097,11 @@ function loginPolling() {
                     (stopLoginPolling(),
                     hideAuthProgress(),
                     COG_MODE &&
-                        ($(AT_SEL_ICHK).hasClass('checked') && ((STORAGE['cogid' + EXE_MUTEX] = $(AT_SEL_ID).val()), writeCookie()),
-                        $('.id_srv_label').text($(AT_SEL_ID).val() + '@' + $(AT_SRV_SEL_BTN).text()),
-                        !isTrEnabled()))
-                )
-                    return void showNoTRDialog();
+                        ($(saveUserIdCheck).hasClass('checked') && ((STORAGE['cogid' + EXE_MUTEX] = $(inputUserId).val()), writeCookie()),
+                        $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text()))) /* ,
+                        !isTrEnabled() */ /* 
+                    return void showNoTRDialog() */
+                );
                 startUpdateProcess();
                 break;
             case 'AUTH_ERROR_NET':
@@ -1137,7 +1123,7 @@ function loginPolling() {
                     case 'SIGN_EALERT':
                         if ('1018' === AT_SVID) onAuthError(textOutput('SIGN_EALERT_COOP'));
                         else {
-                            var t = $(AT_SRV_SEL_BTN).text();
+                            var t = $(serverSelBtn).text();
                             0 <= t.indexOf('④')
                                 ? onAuthError(textOutput('SIGN_EALERT_COOP'))
                                 : 0 <= t.toUpperCase().indexOf('XBOX')
@@ -1156,9 +1142,9 @@ function loginPolling() {
                     case 'SIGN_EALREADY':
                         onAuthError(), showMhfMaintenanceDialog();
                         break;
-                    case 'SIGN_ERIGHT':
+                    /* case 'SIGN_ERIGHT':
                         isTrEnabled() ? onAuthError(textOutput('SIGN_EOTHER')) : (onAuthError(), showNoTRDialog());
-                        break;
+                        break; */
                     case 'SIGN_EPASS':
                         onAuthError(textOutput(E));
                         break;
@@ -1167,17 +1153,17 @@ function loginPolling() {
                 }
                 break;
             default:
-                stopLoginPolling(), onAuthError(textOutput('aferr') + ' [' + AT_STATUS + ']');
+                stopLoginPolling(), onAuthError(textOutput('unknownError') + ' [' + AT_STATUS + ']');
         }
 }
 
 function createShortLifeAuthKeyDone() {
     'use strict';
-    !(AT_STATUS = 'AUTH_NULL') === DoLoginCog($(AT_SEL_ID).val(), $(AT_SEL_PW).val(), $(AT_SEL_PW).val())
-        ? onAuthError(textOutput('SIGN_EAPP'), 'r')
-        : (AT_TOI = setInterval(function () {
-              loginPolling();
-          }, 1e3));
+
+    const loginSuccess = DoLoginCog($(inputUserId).val(), $(inputPassword).val(), $(inputPassword).val());
+
+    // if loginSuccess is true, loginPolling will be run; if false, error handling will be run with onAuthError
+    loginSuccess ? (AT_TOI = setInterval(loginPolling, 1000)) : onAuthError(textOutput('SIGN_EAPP'), 'r');
 }
 
 function showCogMaintenanceDialog() {
@@ -1193,42 +1179,44 @@ function selectServerItem(target_elm) {
 
 function lockAuthEdit() {
     'use strict';
-    (AT_SBOX_SEL_ENABLED = false), $(AT_SEL_ID).attr('disabled', true), $(AT_SEL_PW).attr('disabled', true);
+    (AT_SBOX_SEL_ENABLED = false), $(inputUserId).attr('disabled', true), $(inputPassword).attr('disabled', true);
 }
 
 function unlockAuthEdit() {
     'use strict';
-    (AT_SBOX_SEL_ENABLED = true), $(AT_SEL_ID).attr('disabled', false), $(AT_SEL_PW).attr('disabled', false), $('.btn_preferences').show();
+    (AT_SBOX_SEL_ENABLED = true), $(inputUserId).attr('disabled', false), $(inputPassword).attr('disabled', false), $('.btn_preferences').show();
 }
 
 function switchAuthSrv(e) {
     'use strict';
-    (AT_SVID = $(e).attr('svid')), $(AT_SRV_SEL_BTN).text($(e).text());
+    (AT_SVID = $(e).attr('svid')), $(serverSelBtn).text($(e).text());
 }
 
 function showSrvSelList() {
     'use strict';
-    // disable the button
-    $(AT_SRV_SEL_BTN).prop('disabled', true);
 
-    $(AT_SRV_LIST_BOX).slideDown(300, function () {
+    // disable the button
+    $(serverSelBtn).prop('disabled', true);
+
+    $(serverListBox).slideDown(300, function () {
         // re-enable the button after the animation is complete
-        $(AT_SRV_SEL_BTN).prop('disabled', false);
+        $(serverSelBtn).prop('disabled', false);
     }),
-        $(AT_SRV_SEL_BTN).addClass('opened_svr_list'),
+        $(serverSelBtn).addClass('opened_svr_list'),
         (AT_SBOX_IS_OPENED = true);
 }
 
 function hideSrvSelList() {
     'use strict';
-    // disable the button
-    $(AT_SRV_SEL_BTN).prop('disabled', true);
 
-    $(AT_SRV_LIST_BOX).slideUp(300, function () {
+    // disable the button
+    $(serverSelBtn).prop('disabled', true);
+
+    $(serverListBox).slideUp(300, function () {
         // re-enable the button after the animation is complete
-        $(AT_SRV_SEL_BTN).prop('disabled', false);
+        $(serverSelBtn).prop('disabled', false);
     }),
-        $(AT_SRV_SEL_BTN).removeClass('opened_svr_list'),
+        $(serverSelBtn).removeClass('opened_svr_list'),
         (AT_SBOX_IS_OPENED = false);
 }
 
@@ -1247,7 +1235,7 @@ function initSrvSelList() {
     lastSelectedIndex = parseInt(lastSelectedIndex, 10);
 
     // remove all children of the server selection list
-    $(AT_SRV_LIST_BOX).children().remove();
+    $(serverListBox).children().remove();
 
     // loop through each group in the server list xml data and add a server element to the server selection list for each one
     $(serverList)
@@ -1258,35 +1246,35 @@ function initSrvSelList() {
             const name = $(srvItem).attr('nam');
 
             // create and append the server element to the server selection list
-            $(AT_SRV_LIST_BOX).append($('<li' + (isBlocked ? ' block="true"' : '') + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + '</li>'));
+            $(serverListBox).append($('<li' + (isBlocked ? ' block="true"' : '') + ' class="srv" idx="' + index + '" svid="' + svid + '">' + name + '</li>'));
         });
 
     // if the last selected index is out of bounds, set true to the variable for initializing
-    (lastSelectedIndex < 0 || lastSelectedIndex > $(AT_SRV_LIST_ITEM).length) && (AT_IS_UNSELECTED_SRV = true);
+    (lastSelectedIndex < 0 || lastSelectedIndex > $(srvListEachItem).length) && (AT_IS_UNSELECTED_SRV = true);
 
     // if user have previously selected a server, set auth server and assign class to the target server
-    AT_IS_UNSELECTED_SRV ? $(AT_SRV_SEL_BTN).text('Select Your Server') : (switchAuthSrv($(AT_SRV_LIST_ITEM)[lastSelectedIndex]), $('.srv').eq(lastSelectedIndex).addClass('selected_srv'));
+    AT_IS_UNSELECTED_SRV ? $(serverSelBtn).text('Select Your Server') : (switchAuthSrv($(srvListEachItem)[lastSelectedIndex]), $('.srv').eq(lastSelectedIndex).addClass('selected_srv'));
 
     // hide the server selection list
-    $(AT_SRV_LIST_BOX).hide();
+    $(serverListBox).hide();
 
     // the mouseover event to sever select button to play a sound when hovering
-    $(AT_SRV_SEL_BTN).mouseover(function () {
+    $(serverSelBtn).mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
     });
 
     // add the server selection button to the focus elements and bind the mousedown event to it
-    $(AT_SRV_SEL_BTN).mousedown(function () {
+    $(serverSelBtn).mousedown(function () {
         AT_SBOX_SEL_ENABLED && (DoPlaySound('IDR_WAV_OK'), AT_SBOX_IS_OPENED ? hideSrvSelList() : showSrvSelList());
     });
 
     // the mouseover event to each server element to play a sound when hovering
-    $(AT_SRV_LIST_ITEM).mouseover(function () {
+    $(srvListEachItem).mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
     });
 
     // the mousedown event to each server element to select it as the active server, and hide the server selection list
-    $(AT_SRV_LIST_ITEM).mousedown(function () {
+    $(srvListEachItem).mousedown(function () {
         DoPlaySound('IDR_WAV_OK');
         AT_SBOX_TOI && (clearTimeout(AT_SBOX_TOI), (AT_SBOX_TOI = null));
         switchAuthSrv($(this));
@@ -1298,7 +1286,7 @@ function initSrvSelList() {
     });
 
     // the click event to the server selection box and button to stop clicks from propagating to the document
-    $(AT_SRV_LIST_BOX + AT_SRV_SEL_BTN).mousedown(function (e) {
+    $(serverListBox + serverSelBtn).mousedown(function (e) {
         e.stopPropagation();
     });
 }
@@ -1321,12 +1309,12 @@ function hideAuthProgress() {
         });
 }
 
-function showBackboneTimeoutDialog() {
+/* function showBackboneTimeoutDialog() {
     'use strict';
     $('#launcher_login_panel').hide(), $('#launcher_auth_maintenance').addClass('error'), resetKeyActDefMode(), $('#launcher_auth_maintenance').show();
-}
+} */
 
-function clearBBTO() {
+/* function clearBBTO() {
     'use strict';
     if (AT_BB_TOI) {
         try {
@@ -1334,12 +1322,12 @@ function clearBBTO() {
         } catch (e) {}
         AT_BB_TOI = null;
     }
-}
+} */
 
-function onBackboneTimeout() {
+/* function onBackboneTimeout() {
     'use strict';
     clearBBTO(), onAuthError(), showBackboneTimeoutDialog();
-}
+} */
 
 function authExec() {
     'use strict';
@@ -1350,13 +1338,13 @@ function beginAuthProcess(e) {
     'use strict';
     if (($('.btn_preferences').hide(), e && ((AT_IS_ENABLED = !0), clearLog()), AT_IS_ENABLED))
         if ((switchEvtPhase('auth'), switchAuthMode(), COG_MODE)) {
-            if ('' === $(AT_SEL_ID).val() || '' === $(AT_SEL_PW).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noidpass'), 'r');
+            if ('' === $(inputUserId).val() || '' === $(inputPassword).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r');
             else if (authExec()) {
-                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), clearBBTO();
-                var E = setTimeout(function () {
+                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress() /* , clearBBTO() */;
+                /* var E = setTimeout(function () {
                     onBackboneTimeout();
-                }, 6e4);
-                (AT_BB_TOI = E), $(AT_SEL_LBTN).addClass('disabled'), $(AT_SEL_LBTN).fadeTo(200, 0.6), createShortLifeAuthKeyDone();
+                }, 6e4); */
+                /* (AT_BB_TOI = E), */ $(loginBtn).addClass('disabled'), $(loginBtn).fadeTo(200, 0.6), createShortLifeAuthKeyDone();
             }
         } else
             NHN_MODE
@@ -1408,8 +1396,8 @@ function switchAuthMode() {
                 case 13:
                     if (AT_IS_ENABLED)
                         switch (AT_FOCUS_ELMS[E]) {
-                            case AT_SRV_SEL_BTN:
-                                AT_SBOX_IS_OPENED || $(AT_SRV_SEL_BTN).mousedown();
+                            case serverSelBtn:
+                                AT_SBOX_IS_OPENED || $(serverSelBtn).mousedown();
                                 break;
                             default:
                                 $(AT_FOCUS_ELMS[E]).click();
@@ -1427,8 +1415,8 @@ function switchAuthMode() {
             return (AT_FOCUS_IDX = E), t;
         }),
         unlockAuthEdit(),
-        $(AT_SEL_LBTN).fadeTo(1, 1),
-        $(AT_SEL_LBTN).removeClass('disabled'),
+        $(loginBtn).fadeTo(1, 1),
+        $(loginBtn).removeClass('disabled'),
         (AT_IS_ENABLED = !0);
 }
 
@@ -1438,10 +1426,10 @@ function initAuth() {
         (COG_MODE && initSrvSelList(),
         // enable scroll bar on server selector box
         new scrollBarHandler('.srv_sel_box'),
-        AT_FOCUS_ELMS.push(AT_SEL_LBTN),
-        COG_MODE && (AT_FOCUS_ELMS.push(AT_SEL_ICHK), AT_FOCUS_ELMS.push(AT_SEL_PFGT)),
-        $(AT_SEL_LBTN).click(function () {
-            AT_IS_UNSELECTED_SRV ? (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('nosrvsel'), 'r')) : beginAuthProcess();
+        AT_FOCUS_ELMS.push(loginBtn),
+        COG_MODE && (AT_FOCUS_ELMS.push(saveUserIdCheck), AT_FOCUS_ELMS.push(credsForgot)),
+        $(loginBtn).click(function () {
+            AT_IS_UNSELECTED_SRV ? (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noSrvSelected'), 'r')) : beginAuthProcess();
         }),
         (AT_IS_AUTOLC = isAutoLogin()),
         COG_MODE)
@@ -1449,20 +1437,20 @@ function initAuth() {
         readCookie();
         var e = '';
         '' === e && STORAGE['cogid' + EXE_MUTEX] && (e = STORAGE['cogid' + EXE_MUTEX]),
-            $(AT_SEL_ID).val(e),
-            $(AT_SEL_ID).focus(function () {
+            $(inputUserId).val(e),
+            $(inputUserId).focus(function () {
                 DoPlaySound('IDR_WAV_OK');
             });
 
         var E = '';
         if (
             ('' === E && STORAGE['pw' + EXE_MUTEX] && (E = STORAGE['pw' + EXE_MUTEX]),
-            (E = '' !== E ? E : $(AT_SEL_PW).attr('default')),
-            $(AT_SEL_PW).val(E),
-            $(AT_SEL_PW).focus(function () {
-                DoPlaySound('IDR_WAV_OK'), setAuthHover(AT_SEL_PW);
+            (E = '' !== E ? E : $(inputPassword).attr('default')),
+            $(inputPassword).val(E),
+            $(inputPassword).focus(function () {
+                DoPlaySound('IDR_WAV_OK'), setAuthHover(inputPassword);
             }),
-            $(AT_SEL_ID + ',' + AT_SEL_PW).keydown(function (e) {
+            $(inputUserId + ',' + inputPassword).keydown(function (e) {
                 switch (e.which) {
                     case 117:
                         return !1;
@@ -1532,32 +1520,32 @@ function initAuth() {
                         DoPlaySound('IDR_WAV_SEL');
                 }
             }),
-            $(AT_SEL_ICHK).click(function () {
-                $(AT_SEL_ICHK).toggleClass('checked'), DoPlaySound('IDR_WAV_OK'), !$(AT_SEL_ICHK).hasClass('checked') && delCoockie('cogid' + EXE_MUTEX) /* , delCoockie('pw' + EXE_MUTEX) */;
+            $(saveUserIdCheck).click(function () {
+                $(saveUserIdCheck).toggleClass('checked'), DoPlaySound('IDR_WAV_OK'), !$(saveUserIdCheck).hasClass('checked') && delCoockie('cogid' + EXE_MUTEX);
             }),
-            $(AT_SEL_ICHK).hover(
+            $(saveUserIdCheck).hover(
                 function () {
-                    setAuthHover(AT_SEL_ICHK);
+                    setAuthHover(saveUserIdCheck);
                 },
                 function () {
                     removeAuthHover();
                 }
             ),
-            $(AT_SEL_PFGT).hover(
+            $(credsForgot).hover(
                 function () {
-                    setAuthHover(AT_SEL_PFGT);
+                    setAuthHover(credsForgot);
                 },
                 function () {
                     removeAuthHover();
                 }
             ),
-            STORAGE['cogid' + EXE_MUTEX] && !AT_IS_AUTOLC && $(AT_SEL_ICHK).addClass('checked'),
+            STORAGE['cogid' + EXE_MUTEX] && !AT_IS_AUTOLC && $(saveUserIdCheck).addClass('checked'),
             AT_IS_AUTOLC && '' !== e && '' !== E)
         )
-            '_MHF_AUTOLC' === AT_MODE && $(AT_SEL_ICHK).toggleClass('checked'), beginAuthProcess();
+            '_MHF_AUTOLC' === AT_MODE && $(saveUserIdCheck).toggleClass('checked'), beginAuthProcess();
         else if ('' !== e && '' !== E)
             for (var t = 0; t < AT_FOCUS_ELMS.length; t++)
-                if (AT_FOCUS_ELMS[t] === AT_SEL_LBTN) {
+                if (AT_FOCUS_ELMS[t] === loginBtn) {
                     AT_FOCUS_IDX = t;
                     break;
                 }
@@ -1566,8 +1554,8 @@ function initAuth() {
 }
 
 let SEL_LOG = '.msg_contents',
-    CACHE_CR1 = '',
-    CACHE_CR2 = '',
+    accumMsgCache = '',
+    onlyOneMsgCache = '',
     LOG_TOI = null,
     LOG_INT = 100,
     BTNS_IS_ENABLED = null,
@@ -1578,37 +1566,40 @@ let SEL_LOG = '.msg_contents',
 
 function addLogMsg(message, type, isOnlyOneMsg) {
     'use strict';
+
     if (message) {
         let prefix = '';
-        let suffix = '</span>';
+        let suffix = '</p>';
 
         switch (type) {
             case 'g':
-                prefix = '<span class="green">';
+                prefix = '<p class="green">';
                 break;
             case 'b':
-                prefix = '<span class="blue">';
+                prefix = '<p class="blue">';
                 break;
             case 'y':
-                prefix = '<span class="yellow">';
+                prefix = '<p class="yellow">';
                 break;
             case 'r':
-                prefix = '<span class="red">';
+                prefix = '<p class="red">';
         }
         let logMessage = prefix + message + suffix;
 
         if (isOnlyOneMsg) {
-            $(SEL_LOG + ' p').html(CACHE_CR1 + logMessage + '<br>');
-            CACHE_CR2 = logMessage;
+            // just put logMessage into msg_contents, not accumulated
+            $(SEL_LOG).html(accumMsgCache + logMessage);
+            onlyOneMsgCache = logMessage;
             new scrollBarHandler('.msg_contents');
         } else {
-            if (CACHE_CR2 !== '') {
-                logMessage = CACHE_CR2 + '<br>' + logMessage;
-                CACHE_CR2 = '';
+            // prevent the messages with isOnlyOneMsg = true from being overwritten by later messages
+            if (onlyOneMsgCache !== '') {
+                logMessage = onlyOneMsgCache + logMessage;
+                onlyOneMsgCache = '';
             }
-            // accumulate elements
-            CACHE_CR1 += logMessage + '<br>';
-            $(SEL_LOG + ' p').html(CACHE_CR1);
+            // accumulate messages
+            accumMsgCache += logMessage;
+            $(SEL_LOG).html(accumMsgCache);
             new scrollBarHandler('.msg_contents');
         }
     }
@@ -1616,7 +1607,7 @@ function addLogMsg(message, type, isOnlyOneMsg) {
 
 function clearLog() {
     'use strict';
-    (CACHE_CR1 = ''), $(SEL_LOG + ' p').html('');
+    (accumMsgCache = ''), $(SEL_LOG).html('');
 }
 
 function getExLog() {
@@ -1717,9 +1708,9 @@ function showModalDialog(e, E, t) {
         'IDR_SILENCE' !== E[r].snd && (_ = 'DoPlaySound("' + (_ = E[r].snd ? ('IDR_SILENCE' !== E[r].snd ? E[r].snd : null) : 'IDR_WAV_OK') + '");'),
             E[r].isWait
                 ? (a.addClass('wait'),
-                  a.attr('onMouseOver', 'if (_BTNS_IS_ENABLED) {return; } else {DoPlaySound("IDR_WAV_SEL");}'),
+                  a.attr('onMouseOver', 'if (BTNS_IS_ENABLED) {return; } else {DoPlaySound("IDR_WAV_SEL");}'),
                   '' !== _ && (_ = ' ' + _),
-                  a.attr('onclick', 'if (_BTNS_IS_ENABLED) {return false;} else {' + _ + ' ' + E[r].cmd + '}'))
+                  a.attr('onclick', 'if (BTNS_IS_ENABLED) {return false;} else {' + _ + ' ' + E[r].cmd + '}'))
                 : (a.attr('onMouseOver', 'DoPlaySound("IDR_WAV_SEL");'), a.attr('onclick', _ + ' ' + E[r].cmd)),
             E[r].fcs && a.addClass('hover'),
             a.text(E[r].label);
@@ -1749,80 +1740,77 @@ function hideModalDialog() {
     (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), resetModalDialogBtnWaitTimer(), (IS_MODAL = !1);
 }
 
-function showNoTRDialog() {
+/* function showNoTRDialog() {
     'use strict';
     showModalDialog(textOutput('dmt0'), [
         {
-            label: textOutput('dmb0'),
+            label: textOutput('RegisterNow'),
             cmd:
                 'openDefBrowser("' +
                 (COG_MODE ? 'http://www.capcom-onlinegames.jp/pc/right?m=6&service=mhf&right=free' : 'http://members.mh-frontier.jp/auth/dmm_regist/regist.php') +
                 '"); showWaitTRDialog();',
         },
     ]);
-}
+} */
 
-function showWaitTRDialog() {
+/* function showWaitTRDialog() {
     'use strict';
-    showModalDialog(textOutput('dmt1'), [{ label: textOutput('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
-}
+    showModalDialog(textOutput('dmt1'), [{ label: textOutput('Refresh'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
+} */
 
 function showMaintenanceDialog() {
     'use strict';
-    showModalDialog(textOutput('SRV_MNT'), [{ label: textOutput('dmb4'), cmd: 'DoCloseWindow();' }]);
+    showModalDialog(textOutput('SRV_MNT'), [{ label: textOutput('Close'), cmd: 'DoCloseWindow();' }]);
 }
 
 function showAddCharDialog() {
     'use strict';
-    var e = 'http://';
-    (e += COG_MODE ? 'cog' : NHN_MODE ? 'hangame' : 'dmm'),
-        (e += '-members.mhf-z.jp/sp/payment/charadd.html'),
-        showModalDialog(textOutput('dmca0'), [
-            { label: textOutput('dmb7'), cmd: 'DoLoginCog("' + $(AT_SEL_ID).val() + '+' + '", "' + $(AT_SEL_PW).val() + '","' + $(AT_SEL_PW).val() + '"); showWaitCharAddDialog();' },
-            { label: textOutput('dmb8'), cmd: 'hideModalDialog();' },
-        ]);
+    showModalDialog(textOutput('createChara'), [
+        { label: textOutput('AddNow'), cmd: 'DoLoginCog("' + $(inputUserId).val() + '+' + '", "' + $(inputPassword).val() + '","' + $(inputPassword).val() + '"); showWaitCharAddDialog();' },
+        { label: textOutput('Ignore'), cmd: 'hideModalDialog();' },
+    ]);
 }
 
 function showWaitCharAddDialog() {
     'use strict';
-    showModalDialog(textOutput('dmca1'), [{ label: textOutput('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
+    showModalDialog(textOutput('createCharaDone'), [{ label: textOutput('Refresh'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
 }
 
-function showDelCharDialog(e, E) {
+function showDelCharDialog(name, id) {
     'use strict';
     showModalDialog(
-        textOutput('dmcd0') + e + textOutput('dmcd1') + E + textOutput('dmcd2') + textOutput('dmcd3'),
+        textOutput('delCharFirstLine') + name + textOutput('delCharId') + id + ')' + textOutput('delCharSpace') + textOutput('delCharWarn'),
         [
-            { label: textOutput('dmb2'), cmd: 'showDelCharDialog2("' + e + '", "' + E + '");', isWait: !0 },
-            { label: textOutput('dmb3'), cmd: 'charDelReset();' },
+            { label: textOutput('Delete'), cmd: 'showDelCharDialog2("' + name + '", "' + id + '");', isWait: !0 },
+            { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
         { elmClass: 'alert', wait: 3e3 }
     );
 }
 
-function showDelCharDialog2(e, E) {
+function showDelCharDialog2(name, id) {
     'use strict';
     showModalDialog(
-        textOutput('dmcd0') + e + textOutput('dmcd1') + E + textOutput('dmcd2') + (1 < $(CHR_SEL_UNIT).length ? textOutput('dmcd4') : textOutput('dmcd4_2')),
+        textOutput('delCharFirstLine') + name + textOutput('delCharId') + id + textOutput('delCharSpace') + (1 < $(CHR_SEL_UNIT).length ? textOutput('delNormalChar') : textOutput('delLastChar')),
         [
-            { label: textOutput('dmb2'), cmd: 'showDelCharDialog3("' + e + '", "' + E + '");', isWait: !0 },
-            { label: textOutput('dmb3'), cmd: 'charDelReset();' },
+            { label: textOutput('Delete'), cmd: 'showDelCharDialog3("' + name + '", "' + id + '");', isWait: !0 },
+            { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
         { elmClass: 'alert', wait: 2e3 }
     );
 }
 
-function showDelCharDialog3(e, E) {
+function showDelCharDialog3(name, id) {
     'use strict';
     showModalDialog(
-        textOutput('dmcd5') + e + textOutput('dmcd1') + E + textOutput('dmcd6') + textOutput('dmcd7') + textOutput('dmcd8'),
+        '<br>' + name + textOutput('delCharId') + id + ')' + '</span>will be deleted.<br>' + textOutput('delCharFinalConf') + textOutput('delCharIdInput'),
         [
-            { label: textOutput('dmb2'), cmd: 'checkDelID();', isWait: !0 },
-            { label: textOutput('dmb3'), cmd: 'charDelReset();' },
+            { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: !0 },
+            { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
         { elmClass: 'alert', wait: 1e3 }
     ),
-        $('input#del_uid').keydown(function (e) {
+        $('input.del_uid').keydown(function (e) {
             switch (e.which) {
                 case 13:
                     return !1;
@@ -1838,7 +1826,7 @@ function showDelCharDialog3(e, E) {
 
 function showWaitDelCharIdErrorDialog() {
     'use strict';
-    showModalDialog(textOutput('dmcd9'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput('dmcd9'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
 }
 
 function showWaitDelCharDialog(e, E) {
@@ -1848,17 +1836,17 @@ function showWaitDelCharDialog(e, E) {
 
 function showFailDelCharDialog(e) {
     'use strict';
-    showModalDialog(textOutput(1 < e ? 'dmcd11' : 'dmcd12'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput(1 < e ? 'dmcd11' : 'dmcd12'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
 }
 
 function showAddGuaranteeCharDialog() {
     'use strict';
-    showModalDialog(textOutput('dmcd13'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }], { elmClass: 'alert' });
+    showModalDialog(textOutput('dmcd13'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }], { elmClass: 'alert' });
 }
 
 function showCompleteDelCharDialog() {
     'use strict';
-    showModalDialog(textOutput('dmcd14'), [{ label: textOutput('dmb4'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput('dmcd14'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
 }
 
 function showGetHLDialog() {
@@ -1869,14 +1857,14 @@ function showGetHLDialog() {
         ? 'http://hangame-members.mhf-z.jp/sp/payment/basic.html#basic_price'
         : 'http://dmm-members.mhf-z.jp/sp/payment/basic.html#basic_price';
     showModalDialog(textOutput('dmhl0'), [
-        { label: textOutput('dmb7'), cmd: 'openDefBrowser("' + e + '"); showWaitCharAddDialog();' },
-        { label: textOutput('dmb9'), cmd: 'waitGameStart();', snd: 'IDR_SILENCE' },
+        { label: textOutput('AddNow'), cmd: 'openDefBrowser("' + e + '"); showWaitCharAddDialog();' },
+        { label: textOutput('Ignore'), cmd: 'initializing();', snd: 'IDR_SILENCE' },
     ]);
 }
 
 function showWaitHLDialog() {
     'use strict';
-    showModalDialog(textOutput('dmhl1'), [{ label: textOutput('dmb1'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
+    showModalDialog(textOutput('dmhl1'), [{ label: textOutput('Refresh'), cmd: 'beginAuthProcess(true); hideModalDialog();' }]);
 }
 
 function clearEnterDownTimeout() {
@@ -1892,17 +1880,17 @@ function clearEnterDownTimeout() {
 function showGameStartDialog(e, E) {
     'use strict';
     showModalDialog(
-        textOutput('dmgs0') + e + textOutput('dmcd1') + E + textOutput('dmgs1'),
+        textOutput('dmgs0') + e + textOutput('delCharId') + E + textOutput('dmgs1'),
         [
             {
-                label: textOutput('dmb5'),
+                label: textOutput('Yes'),
                 cmd: 'checkHasHL();',
                 snd: 'IDR_SILENCE',
                 fcs: !0,
                 key: 'y',
             },
             {
-                label: textOutput('dmb6'),
+                label: textOutput('No'),
                 cmd: 'gameStartCalcel();',
                 key: 'n',
             },
@@ -2070,4 +2058,13 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
+
+    showModalDialog(
+        '<br>' + 'name' + textOutput('delCharId') + 'id' + ')' + '</span>will be deleted.<br>' + textOutput('delCharFinalConf') + textOutput('delCharIdInput'),
+        [
+            { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: !0 },
+            { label: textOutput('Cancel'), cmd: 'charDelReset();' },
+        ],
+        { elmClass: 'alert', wait: 1e3 }
+    );
 });

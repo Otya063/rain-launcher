@@ -51,19 +51,13 @@ const textData = {
     Ignore: 'Ignore',
     createChara: 'Would you like to add a new character?<br>Press [Add now] below.',
     createCharaDone: 'A new character slot will be requested momentarily,<br>please wait a few seconds and then press<br>the [Refresh] button below.',
-    delCharFirstLine: 'The selected character will be deleted<br>',
-    delCharId: "<span class='uid'> (ID:",
-    delCharSpace: "  </span><br><div class='sp'></div>",
-    delCharWarn: "<span class='attention'>Deleted characters will not revert to [Ready to Hunt] status,<br>but will be completely deleted.</span> Proceed?",
-    delNormalChar:
-        "<span class='notes'>[Warning]<br>You will lose the ability to add characters once an additional character has been deleted.<br>You will need to purchase a new<br>add character license to make one.</span>",
-    delLastChar:
-        "<span class='notes'>You're about to remove the last character.<br>If you delete all the characters, you will be provided<br>with one character under your basic contract guarantee!</span>",
-    delCharFinalConf: "<span class='attention'>Enter the ID of the selected character then click the <br> [Delete] button.</span><br><div class='sp'></div>",
-    delCharIdInput:
-        "<form action='javascript:void(0);'><input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'></form>",
-    dmcd9: "The character could not be deleted.<br><div class='sp'></div><span class='attention'>The selected character ID and entered ID do not match.</span>",
-    dmcd10: ' <br>is being deleted. <br> Please wait.',
+    delCharHeading: 'Do you really want to delete character',
+    delCharWarn: "<p class='attention'>Once deleted, your character data cannot be restored.</p>",
+    delLastChar: "<p class='notes'>You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>",
+    delCharFinalConf: "<p class='attention'>Enter your ID of the selected character then click the [Delete] button.</p>",
+    delCharIdInput: "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+    delCharError: "The character could not be deleted.<p class='attention'>The selected character ID and entered ID do not match.</p>",
+    delCharWaiting: ' <br>is being deleted. <br> Please wait.',
     dmcd11: 'This character cannot be deleted. <br> Please try again later.',
     dmcd12: 'This character cannot be deleted. <br> A period of 7 days from the last deletion<br>must pass in order to delete all characters.',
     dmcd13: "<span class='attention'>One character is guaranteed and provided<br>under the terms of the basic contract</span> <br> All characters have been deleted. <br> You will be provided with one character<br>under your basic contract guarantee!</span><br><span class='notes'>※ A period of 7 days from today is required<br>in order to delete this character.</span>",
@@ -681,7 +675,7 @@ function updateCharCtrlBtnState() {
 function kdCharSelMode() {
     'use strict';
     KEY_ACT_DEF = function (e) {
-        if (IS_MODAL) return !1;
+        if (IS_MODAL) return false;
         var E = !0;
         switch (e.which) {
             case 38:
@@ -750,6 +744,7 @@ function showCharSelector() {
         $(CHR_SEL_BOX + ' .scroll').hide();
 
     var e = DoGetCharacterInfo();
+    alert(e);
     (e = (e = e.split("'").join('"')).split('&apos;').join("'")), (e = $('<div>' + e + '</div>'));
 
     var t = $(e.find('CharacterInfo')[0]).attr('defaultUid');
@@ -1389,7 +1384,7 @@ function switchAuthMode() {
         $('.btn_logout').hide(),
         $(AT_FOCUS_ELMS[AT_FOCUS_IDX]).addClass('hover'),
         (KEY_ACT_DEF = function (e) {
-            if (IS_MODAL) return !1;
+            if (IS_MODAL) return false;
             var E = AT_FOCUS_IDX,
                 t = !0;
             switch (e.which) {
@@ -1693,12 +1688,10 @@ var kuModalAction = function () {};
 function showModalDialog(e, E, t) {
     'use strict';
     resetModalDialogBtnWaitTimer(),
-        (IS_MODAL = !0),
+        (IS_MODAL = true),
         (_KEY_ACT_MODAL = function () {}),
         (t = t || {}),
-        $('#launcher_modal .dialog p').html(e),
-        $('#launcher_modal .dialog p').removeClass(),
-        t.elmClass && $('#launcher_modal .dialog p').addClass(t.elmClass),
+        $('#launcher_modal .dialog li').html(e),
         $('#launcher_modal .dialog .btns').html('<ul></ul>'),
         (BTNS_IS_ENABLED = t.wait);
     for (var r = 0; r < E.length; r++) {
@@ -1737,7 +1730,7 @@ function showModalDialog(e, E, t) {
 
 function hideModalDialog() {
     'use strict';
-    (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), resetModalDialogBtnWaitTimer(), (IS_MODAL = !1);
+    (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), resetModalDialogBtnWaitTimer(), (IS_MODAL = false);
 }
 
 /* function showNoTRDialog() {
@@ -1779,59 +1772,65 @@ function showWaitCharAddDialog() {
 function showDelCharDialog(name, id) {
     'use strict';
     showModalDialog(
-        textOutput('delCharFirstLine') + name + textOutput('delCharId') + id + ')' + textOutput('delCharSpace') + textOutput('delCharWarn'),
+        '<p>' + textOutput('delCharHeading') + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>?</p>' + textOutput('delCharWarn'),
         [
-            { label: textOutput('Delete'), cmd: 'showDelCharDialog2("' + name + '", "' + id + '");', isWait: !0 },
+            { label: textOutput('Delete'), cmd: 'showDelCharDialog2("' + name + '", "' + id + '");', isWait: true },
             { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
-        { elmClass: 'alert', wait: 3e3 }
+        { wait: 1000 }
     );
 }
 
 function showDelCharDialog2(name, id) {
     'use strict';
-    showModalDialog(
-        textOutput('delCharFirstLine') + name + textOutput('delCharId') + id + textOutput('delCharSpace') + (1 < $(CHR_SEL_UNIT).length ? textOutput('delNormalChar') : textOutput('delLastChar')),
-        [
-            { label: textOutput('Delete'), cmd: 'showDelCharDialog3("' + name + '", "' + id + '");', isWait: !0 },
-            { label: textOutput('Cancel'), cmd: 'charDelReset();' },
-        ],
-        { elmClass: 'alert', wait: 2e3 }
-    );
+
+    if (1 < $(CHR_SEL_UNIT).length) {
+        // if user still has more than one character, skip this function
+        showDelCharDialog3(name, id);
+    } else {
+        showModalDialog(
+            '<p>' + textOutput('delCharHeading') + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>?</p>' + textOutput('delLastChar'),
+            [
+                { label: textOutput('Delete'), cmd: 'showDelCharDialog3("' + name + '", "' + id + '");', isWait: true },
+                { label: textOutput('Cancel'), cmd: 'charDelReset();' },
+            ],
+            { wait: 1000 }
+        );
+    }
 }
 
 function showDelCharDialog3(name, id) {
     'use strict';
     showModalDialog(
-        '<br>' + name + textOutput('delCharId') + id + ')' + '</span>will be deleted.<br>' + textOutput('delCharFinalConf') + textOutput('delCharIdInput'),
+        '<p>' + textOutput('delCharHeading') + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>?</p>' + textOutput('delCharFinalConf') + textOutput('delCharIdInput'),
         [
-            { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: !0 },
+            { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: true },
             { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
-        { elmClass: 'alert', wait: 1e3 }
-    ),
-        $('input.del_uid').keydown(function (e) {
-            switch (e.which) {
-                case 13:
-                    return !1;
-            }
-        }),
+        { wait: 1000 }
+    );
+    $('input.del_uid').keydown(function (e) {
+        switch (e.which) {
+            case 13:
+                return false;
+        }
+    }),
         (_KEY_ACT_MODAL = function (e) {
             switch (e.which) {
                 case 13:
-                    return !1;
+                    return false;
             }
         });
 }
 
 function showWaitDelCharIdErrorDialog() {
     'use strict';
-    showModalDialog(textOutput('dmcd9'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
+    showModalDialog(textOutput('delCharError'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
 }
 
 function showWaitDelCharDialog(e, E) {
     'use strict';
-    showModalDialog(e + ' (ID:' + E + textOutput('dmcd10'), []), charDelete();
+    showModalDialog(e + ' (ID:' + E + textOutput('delCharWaiting'), []), charDelete();
 }
 
 function showFailDelCharDialog(e) {
@@ -1841,7 +1840,7 @@ function showFailDelCharDialog(e) {
 
 function showAddGuaranteeCharDialog() {
     'use strict';
-    showModalDialog(textOutput('dmcd13'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }], { elmClass: 'alert' });
+    showModalDialog(textOutput('dmcd13'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
 }
 
 function showCompleteDelCharDialog() {
@@ -1879,26 +1878,20 @@ function clearEnterDownTimeout() {
 
 function showGameStartDialog(e, E) {
     'use strict';
-    showModalDialog(
-        textOutput('dmgs0') + e + textOutput('delCharId') + E + textOutput('dmgs1'),
-        [
-            {
-                label: textOutput('Yes'),
-                cmd: 'checkHasHL();',
-                snd: 'IDR_SILENCE',
-                fcs: !0,
-                key: 'y',
-            },
-            {
-                label: textOutput('No'),
-                cmd: 'gameStartCalcel();',
-                key: 'n',
-            },
-        ],
+    showModalDialog(textOutput('dmgs0') + e + "<span class='uid'> (ID:" + E + textOutput('dmgs1'), [
         {
-            elmClass: 'alert',
-        }
-    ),
+            label: textOutput('Yes'),
+            cmd: 'checkHasHL();',
+            snd: 'IDR_SILENCE',
+            fcs: !0,
+            key: 'y',
+        },
+        {
+            label: textOutput('No'),
+            cmd: 'gameStartCalcel();',
+            key: 'n',
+        },
+    ]),
         (LAST_KEYDOWN = 0),
         (ENTERDOWN_TOI = null),
         (_KEY_ACT_MODAL = function (e) {
@@ -2059,12 +2052,6 @@ $(function () {
     // by default, launcher window can't be moved
     DoBeginDrag(false);
 
-    showModalDialog(
-        '<br>' + 'name' + textOutput('delCharId') + 'id' + ')' + '</span>will be deleted.<br>' + textOutput('delCharFinalConf') + textOutput('delCharIdInput'),
-        [
-            { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: !0 },
-            { label: textOutput('Cancel'), cmd: 'charDelReset();' },
-        ],
-        { elmClass: 'alert', wait: 1e3 }
-    );
+    // IS_MODAL をfalseへ変更忘れずに
+    //showModalDialog("name" + ' （ID: ' + "id" + textOutput('delCharWaiting'), []), charDelete();
 });

@@ -35,6 +35,7 @@ input {
 
 html,
 body {
+
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -46,7 +47,7 @@ body {
     font-family: $font_en;
     color: #d1c0a5;
     font-size: 14px;
-    line-height: 16px;
+    line-height: 1.3;
 
     &:lang(ja) {
         font-family: $font_ja;
@@ -789,7 +790,8 @@ h1 {
     background: rgb(240, 240, 240);
     padding-left: 1%;
     font-size: 1.4rem;
-    border: 2px rgb(0 0 0 / 50%) solid;
+    border: 2px rgba(0,0,0,.5) solid;
+    margin: 2% 0 5% 0;
 
     // input placeholder
     &:-ms-input-placeholder {

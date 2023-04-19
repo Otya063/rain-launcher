@@ -607,7 +607,7 @@
                 height: 320px;
                 background: url(/launcher/assets/img/dialog/bg.jpg) no-repeat 0px 0px;
             }
-            #launcher_modal .dialog .dialog_text_item {
+            #launcher_modal .dialog .dialog_text_contents {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
@@ -615,58 +615,62 @@
                 flex-wrap: nowrap;
                 width: 100%;
                 height: 165px;
-                color: #d1c0a5;
+                color: rgb(230, 230, 230);
                 font-size: 18px;
                 text-align: center;
                 padding-top: 90px;
             }
-            /* #launcher_modal .dialog .dialog_text_item .alert {
+            /* #launcher_modal .dialog .dialog_text_contents .alert {
                 line-height: 26px;
                 padding: 90px 0 110px;
                 font-size: 20px;
             } */
-            #launcher_modal .dialog .dialog_text_item span.uid {
+            #launcher_modal .dialog .dialog_text_contents span.uid {
                 font-size: 1.4rem;
             }
-            #launcher_modal .dialog .dialog_text_item p {
+            #launcher_modal .dialog .dialog_text_contents p {
                 width: 500px;
                 margin: 0 auto;
                 font-size: 1.9rem;
             }
-            #launcher_modal .dialog .dialog_text_item p:last-child {
+            #launcher_modal .dialog .dialog_text_contents p:last-child {
                 margin-bottom: 5%;
             }
-            #launcher_modal .dialog .dialog_text_item p.attention {
+            #launcher_modal .dialog .dialog_text_contents p.attention {
                 color: #f4de22;
             }
-            #launcher_modal .dialog .dialog_text_item p.notes {
+            #launcher_modal .dialog .dialog_text_contents p.notes {
                 color: #eb3535;
             }
-            #launcher_modal .dialog .dialog_text_item div.sp {
+            #launcher_modal .dialog .dialog_text_contents div.sp {
                 width: 100%;
                 height: 10px;
             }
             #launcher_modal .dialog .btnBox {
                 width: 100%;
                 height: 44px;
-                position: absolute;
+                /* position: absolute;
                 left: 0;
-                top: 252px;
+                top: 252px; */
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
             }
-            #launcher_modal .dialog .btns {
+            /* #launcher_modal .dialog .btns {
                 text-align: center;
                 margin: 0 auto;
                 position: relative;
                 overflow: hidden;
                 padding-top: 3px;
-            }
-            #launcher_modal .dialog .btns ul {
+            } */
+            /* #launcher_modal .dialog .btns ul {
                 position: relative;
                 left: 50%;
                 float: left;
                 list-style: none;
-            }
-            #launcher_modal .dialog .btns ul li {
+            } */
+            /* #launcher_modal .dialog .btns ul li {
                 position: relative;
                 left: -50%;
                 float: left;
@@ -693,12 +697,32 @@
             #launcher_modal .dialog .btns ul li div:hover,
             #launcher_modal .dialog .btns ul li div.hover {
                 background-position: 0px -44px;
+            } */
+            #launcher_modal .dialog .btnBox .md_btn {
+                display: block;
+                width: 24%;
+                padding: 2.5% 5%;
+                font-weight: 700;
+                font-size: 1.7rem;
+                color: #27acd9;
+                background: white;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: 0.3s;
             }
-            #launcher_modal .dialog .btns ul li div.wait:hover,
+            #launcher_modal .dialog .btnBox .md_btn:hover {
+                color: white;
+                background: #27acd9;
+            }
+
+            #launcher_modal .dialog .btnBox .md_btn.wait {
+                cursor: default;
+            }
+            /* #launcher_modal .dialog .btns ul li div.wait:hover,
             #launcher_modal .dialog .btns ul li div.wait.hover {
                 background-position: 0px 0px;
                 cursor: default;
-            }
+            } */
             #launcher_modal .dialog .btns ul li div.sign {
                 width: 18px;
                 height: 16px;
@@ -954,12 +978,12 @@
                 <p class="launcher_version">Launcher Version: 1.0</p>
             </div>
 
-            <!--ダイアログ-->
+            <!-- Dialog -->
             <div id="launcher_modal">
                 <div class="modal" onClick="return false;"></div>
                 <ul class="dialog">
-                    <li class="alert dialog_text_item"></li>
-                    <div class="btnBox"><div class="btns"></div></div>
+                    <li class="alert dialog_text_contents"></li>
+                    <li class="btnBox"></li>
                 </ul>
             </div>
 

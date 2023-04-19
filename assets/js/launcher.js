@@ -56,8 +56,7 @@ const textData = {
     delLastChar: "<p class='notes'>You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>",
     delCharFinalConf: "<p class='attention'>Enter your ID of the selected character then click the [Delete] button.</p>",
     delCharIdInput: "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
-    delCharError: "The character could not be deleted.<p class='attention'>The selected character ID and entered ID do not match.</p>",
-    delCharWaiting: ' <br>is being deleted. <br> Please wait.',
+    delCharError: "<p class='attention'>The specified character ID does not match the entered ID.</p>",
     dmcd11: 'This character cannot be deleted. <br> Please try again later.',
     dmcd12: 'This character cannot be deleted. <br> A period of 7 days from the last deletion<br>must pass in order to delete all characters.',
     dmcd13: "<span class='attention'>One character is guaranteed and provided<br>under the terms of the basic contract</span> <br> All characters have been deleted. <br> You will be provided with one character<br>under your basic contract guarantee!</span><br><span class='notes'>※ A period of 7 days from today is required<br>in order to delete this character.</span>",
@@ -367,7 +366,7 @@ var EXE_MUTEX = 0,
     IE_STATE = {},
     CS_ELMS = {},
     ABS_DOC = null,
-    IS_MODAL = true; // need to change this to true to open a dialog
+    IS_MODAL = false; // need to change this to true to open a dialog
 
 function switchEvtPhase(e) {
     'use strict';
@@ -501,7 +500,7 @@ var CHR_CRR = 0,
     CHR_SCR = !1,
     CHR_UID = null,
     CHR_HR = null,
-    CHR_DEL_TOI = null,
+    CHR_DEL_TimerID = null,
     CHR_DEL_STATE = 'NULL',
     CHR_DEL_NAME = '',
     CHR_DEL_UID = null,
@@ -803,18 +802,18 @@ function charDelPolling() {
             case 'DEL_ERROR_MNC':
                 return void showFailDelCharDialog($(CHR_SEL_UNIT).length);
         }
-    CHR_DEL_TOI = setTimeout(function () {
+    CHR_DEL_TimerID = setTimeout(function () {
         charDelPolling();
     }, 1e3);
 }
 
 function stopCharDelPolling() {
     'use strict';
-    if (CHR_DEL_TOI) {
+    if (CHR_DEL_TimerID) {
         try {
-            clearTimeout(CHR_DEL_TOI);
+            clearTimeout(CHR_DEL_TimerID);
         } catch (e) {}
-        CHR_DEL_TOI = null;
+        CHR_DEL_TimerID = null;
     }
 }
 
@@ -828,7 +827,7 @@ function charDelete() {
     stopCharDelPolling(),
         (CHR_DEL_STATE = 'NULL'),
         DoDeleteCharacter(CHR_DEL_UID),
-        (CHR_DEL_TOI = setTimeout(function () {
+        (CHR_DEL_TimerID = setTimeout(function () {
             charDelPolling();
         }, 1e3));
 }
@@ -846,7 +845,7 @@ function initializing() {
 
 function checkHasHL() {
     'use strict';
-    100 <= CHR_HR ? (isHlEnabled() ? initializing() : (DoPlaySound('IDR_WAV_OK'), showGetHLDialog())) : initializing();
+    100 <= CHR_HR ? (isHlEnabled() ? initializing() : DoPlaySound('IDR_WAV_OK') /* , showGetHLDialog() */) : initializing();
 }
 
 function gameStartCalcel() {
@@ -863,7 +862,7 @@ function gameStart() {
 
 function checkDelID() {
     'use strict';
-    CHR_DEL_UID === $('.del_uid').val() ? showWaitDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID) : showWaitDelCharIdErrorDialog();
+    CHR_DEL_UID === $('.del_uid').val() ? showWaitDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID) : showWaitDelCharIdErrorDialog(CHR_DEL_NAME, CHR_DEL_UID);
 }
 
 var UPD_ANIM_SEQ = { loop: [] };
@@ -885,15 +884,15 @@ var UPD_POLLING = !0,
     UPD_BAR_WID = 302,
     UPD_BAR_PER = 0.01 * UPD_BAR_WID,
     EXIT_WAIT = 3e3,
-    UPD_ANIM_TOI = null;
+    UPD_ANIM_TimerID = null;
 
 function clearAnimSq() {
     'use strict';
-    if (UPD_ANIM_TOI) {
+    if (UPD_ANIM_TimerID) {
         try {
-            clearTimeout(UPD_ANIM_TOI);
+            clearTimeout(UPD_ANIM_TimerID);
         } catch (e) {}
-        UPD_ANIM_TOI = null;
+        UPD_ANIM_TimerID = null;
     }
 }
 
@@ -905,7 +904,7 @@ function updateProgressAnimation() {
     e.removeClass(UPD_PRE),
         (UPD_PRE = E.c),
         e.addClass(E.c),
-        (UPD_ANIM_TOI = setTimeout(function () {
+        (UPD_ANIM_TimerID = setTimeout(function () {
             UPD_FRM_LOOP++,
                 UPD_POLLING
                     ? (UPD_ANIM_SEQ.loop.length <= UPD_FRM_LOOP && (UPD_FRM_LOOP = 0), updateProgressAnimation())
@@ -923,7 +922,7 @@ function updateProgressAnimationFinish() {
     e.removeClass(UPD_PRE),
         (UPD_PRE = E.c),
         e.addClass(E.c),
-        (UPD_ANIM_TOI = setTimeout(function () {
+        (UPD_ANIM_TimerID = setTimeout(function () {
             UPD_FRM_FINI++,
                 UPD_ANIM_SEQ.fini.length > UPD_FRM_FINI
                     ? (UPD_ANIM_SEQ.fini.length === UPD_FRM_FINI + 1 && DoPlaySound('IDR_NIKU'), updateProgressAnimationFinish())
@@ -1023,7 +1022,7 @@ let AT_IS_ENABLED = true,
     AT_PW = '',
     AT_FRAME = null,
     AT_FRAME_CB = Math.floor(1e3 * Math.random()),
-    AT_TOI = null,
+    AT_TimerID = null,
     AT_STATUS = 'AUTH_NULL',
     inputUserId = '.userid_input',
     inputPassword = '.password_input',
@@ -1033,15 +1032,15 @@ let AT_IS_ENABLED = true,
     loginBtn = '.btn_login',
     saveUserIdCheck = '.check_save_id',
     credsForgot = '.btn_forgot',
-    AT_SBOX_TOI = null,
+    AT_SBOX_TimerID = null,
     AT_SBOX_SEL_ENABLED = false,
     AT_SBOX_IS_OPENED = false,
-    AT_ANIM_TOI = null,
+    AT_ANIM_TimerID = null,
     AT_IS_AUTOLC = false,
     AT_MODE = '',
     AT_FOCUS_ELMS = [],
     AT_FOCUS_IDX = 0,
-    AT_BB_TOI = null,
+    AT_BB_TimerID = null,
     AT_SVID,
     AT_SVID_DEF = '1000',
     AT_IS_UNSELECTED_SRV = true;
@@ -1054,7 +1053,7 @@ function showMhfMaintenanceDialog() {
 function onAuthError(e, E) {
     'use strict';
     switchEvtPhase('prepare'),
-        e && addLogMsg(e, (E = E || 'y'), true),
+        e && addLogMsg(e, (E = E || 'y')),
         hideAuthProgress(),
         unlockAuthEdit(),
         setTimeout(function () {
@@ -1066,11 +1065,11 @@ function onAuthError(e, E) {
 
 function stopLoginPolling() {
     'use strict';
-    if (AT_TOI) {
+    if (AT_TimerID) {
         try {
-            clearInterval(AT_TOI);
+            clearInterval(AT_TimerID);
         } catch (e) {}
-        AT_TOI = null;
+        AT_TimerID = null;
     }
 }
 
@@ -1158,7 +1157,7 @@ function createShortLifeAuthKeyDone() {
     const loginSuccess = DoLoginCog($(inputUserId).val(), $(inputPassword).val(), $(inputPassword).val());
 
     // if loginSuccess is true, loginPolling will be run; if false, error handling will be run with onAuthError
-    loginSuccess ? (AT_TOI = setInterval(loginPolling, 1000)) : onAuthError(textOutput('SIGN_EAPP'), 'r');
+    loginSuccess ? (AT_TimerID = setInterval(loginPolling, 1000)) : onAuthError(textOutput('SIGN_EAPP'), 'r');
 }
 
 function showCogMaintenanceDialog() {
@@ -1271,7 +1270,7 @@ function initSrvSelList() {
     // the mousedown event to each server element to select it as the active server, and hide the server selection list
     $(srvListEachItem).mousedown(function () {
         DoPlaySound('IDR_WAV_OK');
-        AT_SBOX_TOI && (clearTimeout(AT_SBOX_TOI), (AT_SBOX_TOI = null));
+        AT_SBOX_TimerID && (clearTimeout(AT_SBOX_TimerID), (AT_SBOX_TimerID = null));
         switchAuthSrv($(this));
         const index = parseInt($(this).attr('idx'), 10);
         DoSetIniLastServerIndex(String(index));
@@ -1289,7 +1288,7 @@ function initSrvSelList() {
 function showAuthProgress() {
     'use strict';
     var e = 0;
-    (AT_ANIM_TOI = setInterval(function () {
+    (AT_ANIM_TimerID = setInterval(function () {
         $('#launcher_login_panel .progress .anim').removeClass('f' + e), (e = 11 <= e ? 0 : e + 1), $('#launcher_login_panel .progress .anim').addClass('f' + e);
     }, 100)),
         $('#launcher_login_panel .progress').fadeIn(200);
@@ -1300,7 +1299,7 @@ function hideAuthProgress() {
     $('#launcher_login_panel .progress')
         .stop()
         .fadeOut(200, function () {
-            AT_ANIM_TOI && (clearInterval(AT_ANIM_TOI), (AT_ANIM_TOI = null));
+            AT_ANIM_TimerID && (clearInterval(AT_ANIM_TimerID), (AT_ANIM_TimerID = null));
         });
 }
 
@@ -1311,11 +1310,11 @@ function hideAuthProgress() {
 
 /* function clearBBTO() {
     'use strict';
-    if (AT_BB_TOI) {
+    if (AT_BB_TimerID) {
         try {
-            clearTimeout(AT_BB_TOI);
+            clearTimeout(AT_BB_TimerID);
         } catch (e) {}
-        AT_BB_TOI = null;
+        AT_BB_TimerID = null;
     }
 } */
 
@@ -1339,13 +1338,13 @@ function beginAuthProcess(e) {
                 /* var E = setTimeout(function () {
                     onBackboneTimeout();
                 }, 6e4); */
-                /* (AT_BB_TOI = E), */ $(loginBtn).addClass('disabled'), $(loginBtn).fadeTo(200, 0.6), createShortLifeAuthKeyDone();
+                /* (AT_BB_TimerID = E), */ $(loginBtn).addClass('disabled'), $(loginBtn).fadeTo(200, 0.6), createShortLifeAuthKeyDone();
             }
         } else
             NHN_MODE
                 ? ((AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (AT_STATUS = 'AUTH_NULL'), DoLoginHangame())
                 : ((AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (AT_STATUS = 'AUTH_NULL'), DoLoginDmm()),
-                (AT_TOI = setInterval(function () {
+                (AT_TimerID = setInterval(function () {
                     loginPolling();
                 }, 1e3));
 }
@@ -1551,12 +1550,12 @@ function initAuth() {
 let SEL_LOG = '.msg_contents',
     accumMsgCache = '',
     onlyOneMsgCache = '',
-    LOG_TOI = null,
+    LOG_TimerID = null,
     LOG_INT = 100,
-    BTNS_IS_ENABLED = null,
-    DIALOG_BTN_TOI = null,
+    isBtnDisabled = false,
+    DIALOG_BTN_TimerID = null,
     CONF_SND_BLOCK = false,
-    ENTERDOWN_TOI = null,
+    ENTERDOWN_TimerID = null,
     LAST_KEYDOWN = 0;
 
 function addLogMsg(message, type, isOnlyOneMsg) {
@@ -1581,11 +1580,11 @@ function addLogMsg(message, type, isOnlyOneMsg) {
         }
         let logMessage = prefix + message + suffix;
 
-        if (isOnlyOneMsg) {
+        /* if (isOnlyOneMsg) {
             // just put logMessage into msg_contents, not accumulated
             $(SEL_LOG).html(accumMsgCache + logMessage);
             onlyOneMsgCache = logMessage;
-            new scrollBarHandler('.msg_contents');
+            $(SEL_LOG).get(0).scrollHeight > $(SEL_LOG).get(0).clientHeight ? console.log('a') : console.log('b'), new scrollBarHandler('.msg_contents');
         } else {
             // prevent the messages with isOnlyOneMsg = true from being overwritten by later messages
             if (onlyOneMsgCache !== '') {
@@ -1595,8 +1594,10 @@ function addLogMsg(message, type, isOnlyOneMsg) {
             // accumulate messages
             accumMsgCache += logMessage;
             $(SEL_LOG).html(accumMsgCache);
-            new scrollBarHandler('.msg_contents');
-        }
+            $('#mCSB_3_container').length ? console.log('a') : console.log('b'), new scrollBarHandler('.msg_contents');
+        } */
+        $('#mCSB_3_container').length ? $('#mCSB_3_container').append(logMessage) : $(SEL_LOG).append(logMessage);
+        new scrollBarHandler('.msg_contents');
     }
 }
 
@@ -1659,78 +1660,104 @@ function getExLog() {
 
 function stopExLog() {
     'use strict';
-    if (LOG_TOI) {
+    if (LOG_TimerID) {
         try {
-            clearTimeout(LOG_TOI);
+            clearTimeout(LOG_TimerID);
         } catch (e) {}
-        LOG_TOI = null;
+        LOG_TimerID = null;
     }
 }
 
 function startExLog() {
     'use strict';
-    LOG_TOI = setTimeout(function () {
+    LOG_TimerID = setTimeout(function () {
         getExLog();
     }, LOG_INT);
 }
 
-function resetModalDialogBtnWaitTimer() {
-    'use strict';
-    if (DIALOG_BTN_TOI) {
-        try {
-            clearTimeout(DIALOG_BTN_TOI);
-        } catch (e) {}
-        DIALOG_BTN_TOI = null;
-    }
-}
 var kuModalAction = function () {};
 
-function showModalDialog(e, E, t) {
+function showModalDialog(text, options, standbyTime) {
     'use strict';
-    resetModalDialogBtnWaitTimer(),
-        (IS_MODAL = true),
-        (_KEY_ACT_MODAL = function () {}),
-        (t = t || {}),
-        $('#launcher_modal .dialog li').html(e),
-        $('#launcher_modal .dialog .btns').html('<ul></ul>'),
-        (BTNS_IS_ENABLED = t.wait);
-    for (var r = 0; r < E.length; r++) {
-        var a = $('<div></div>');
-        a.addClass('md_btn');
-        var _ = '';
-        'IDR_SILENCE' !== E[r].snd && (_ = 'DoPlaySound("' + (_ = E[r].snd ? ('IDR_SILENCE' !== E[r].snd ? E[r].snd : null) : 'IDR_WAV_OK') + '");'),
-            E[r].isWait
-                ? (a.addClass('wait'),
-                  a.attr('onMouseOver', 'if (BTNS_IS_ENABLED) {return; } else {DoPlaySound("IDR_WAV_SEL");}'),
-                  '' !== _ && (_ = ' ' + _),
-                  a.attr('onclick', 'if (BTNS_IS_ENABLED) {return false;} else {' + _ + ' ' + E[r].cmd + '}'))
-                : (a.attr('onMouseOver', 'DoPlaySound("IDR_WAV_SEL");'), a.attr('onclick', _ + ' ' + E[r].cmd)),
-            E[r].fcs && a.addClass('hover'),
-            a.text(E[r].label);
-        var s = $('<li></li>');
-        s.append(a.clone()), E[r].key && s.append($('<div class="sign key_' + E[r].key + '"></div>')), $('#launcher_modal .dialog .btns ul').append(s.clone());
+
+    // show the modal dialog
+    $('#launcher_modal').show();
+
+    // initialize child elmemts of button box
+    $('.btnBox').empty();
+
+    // set modal dialog flag to true
+    IS_MODAL = true;
+
+    // set key action for modal dialog to an empty function
+    _KEY_ACT_MODAL = function () {};
+
+    // set the text of the dialog
+    $('.dialog_text_contents').html(text);
+
+    // clear any existing buttons and initialize a new list for buttons
+    $('#launcher_modal .dialog .btns').html('<ul></ul>');
+
+    // set true to isBtnDisabled if standby time is existed
+    standbyTime && (isBtnDisabled = true);
+
+    if (options) {
+        // loop through each button in the options array and create a corresponding HTML element
+        options.forEach(function (option) {
+            const button = $('<button></button>').addClass('md_btn');
+
+            // default is no sound, but if noSound isn't true, set IDR_WAV_OK as onclick sound
+            const sound = option.noSound === true ? '' : 'DoPlaySound("IDR_WAV_OK");';
+
+            option.isWait
+                ? // if button is set to wait, disable hover and click events until isBtnDisabled is set to false
+                  (button.addClass('wait').attr('onMouseOver', 'if (isBtnDisabled) {return; } else {DoPlaySound("IDR_WAV_SEL");}'),
+                  button.attr('onclick', 'if (isBtnDisabled) {return false;} else {' + sound + ' ' + option.cmd + '}'),
+                  button.addClass('wait').css('pointer-events', 'none'))
+                : // if button is not set to wait, set onclick to run the command and play a sound when hovering
+                  button.attr('onMouseOver', 'DoPlaySound("IDR_WAV_SEL");').attr('onclick', sound + ' ' + option.cmd);
+
+            // set the text for each button
+            button.text(option.label);
+
+            // if button has a key assigned, append a key symbol
+            if (option.key) {
+                button.append($('<div class="sign key_' + option.key + '"></div>'));
+            }
+
+            // append the button elements to btnbox
+            $('#launcher_modal .dialog .btnBox').append(button);
+        });
     }
-    $('#launcher_modal .dialog .btns ul li div').hover(
+
+    // hover event for buttons
+    $('#launcher_modal .dialog .btnBox .md_btn').hover(
         function () {
-            $('#launcher_modal .dialog .btns ul li div').removeClass('hover'), $(this).addClass('hover');
+            $('#launcher_modal .dialog .btnBox .md_btn').removeClass('hover');
+            $(this).addClass('hover');
         },
         function () {
             $(this).removeClass('hover');
         }
-    ),
-        $('#launcher_modal .dialog .btns .wait').fadeTo(10, 0.4),
-        $('#launcher_modal').show(),
-        t.wait &&
-            (DIALOG_BTN_TOI = setTimeout(function () {
-                $('#launcher_modal .dialog .btns .wait').fadeTo(200, 1, function () {
-                    (BTNS_IS_ENABLED = !1), $('#launcher_modal .dialog .btns .wait').removeClass('wait');
-                });
-            }, t.wait));
+    );
+
+    // set opacity of wait buttons
+    $('#launcher_modal .dialog .btnBox .wait').fadeTo(10, 0.4);
+
+    // enable wait button
+    if (standbyTime) {
+        setTimeout(function () {
+            $('#launcher_modal .dialog .btnBox .wait').fadeTo(200, 1, function () {
+                (isBtnDisabled = false), $('#launcher_modal .dialog .btnBox .wait').css('pointer-events', 'auto');
+                $('#launcher_modal .dialog .btnBox .wait').removeClass('wait');
+            });
+        }, standbyTime);
+    }
 }
 
 function hideModalDialog() {
     'use strict';
-    (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), resetModalDialogBtnWaitTimer(), (IS_MODAL = false);
+    (_KEY_ACT_MODAL = function () {}), (kuModalAction = function () {}), $('#launcher_modal').hide(), (IS_MODAL = false);
 }
 
 /* function showNoTRDialog() {
@@ -1777,7 +1804,7 @@ function showDelCharDialog(name, id) {
             { label: textOutput('Delete'), cmd: 'showDelCharDialog2("' + name + '", "' + id + '");', isWait: true },
             { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
-        { wait: 1000 }
+        1000
     );
 }
 
@@ -1794,7 +1821,7 @@ function showDelCharDialog2(name, id) {
                 { label: textOutput('Delete'), cmd: 'showDelCharDialog3("' + name + '", "' + id + '");', isWait: true },
                 { label: textOutput('Cancel'), cmd: 'charDelReset();' },
             ],
-            { wait: 1000 }
+            1000
         );
     }
 }
@@ -1807,7 +1834,7 @@ function showDelCharDialog3(name, id) {
             { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: true },
             { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
-        { wait: 1000 }
+        1000
     );
     $('input.del_uid').keydown(function (e) {
         switch (e.which) {
@@ -1823,14 +1850,16 @@ function showDelCharDialog3(name, id) {
         });
 }
 
-function showWaitDelCharIdErrorDialog() {
+function showWaitDelCharIdErrorDialog(name, id) {
     'use strict';
-    showModalDialog(textOutput('delCharError'), [{ label: textOutput('Close'), cmd: 'charDelReset();' }]);
+    showModalDialog('<p>Could not delete character' + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>.</p>' + textOutput('delCharError'), [
+        { label: textOutput('Close'), cmd: 'charDelReset();' },
+    ]);
 }
 
-function showWaitDelCharDialog(e, E) {
+function showWaitDelCharDialog(name, id) {
     'use strict';
-    showModalDialog(e + ' (ID:' + E + textOutput('delCharWaiting'), []), charDelete();
+    showModalDialog('<p>"' + name + '"<span class="uid">（ID: ' + id + '）</span>' + 'is being removed.</p><p style="margin-bottom: 0;">Please wait a moment.</p>'), charDelete();
 }
 
 function showFailDelCharDialog(e) {
@@ -1857,7 +1886,7 @@ function showGetHLDialog() {
         : 'http://dmm-members.mhf-z.jp/sp/payment/basic.html#basic_price';
     showModalDialog(textOutput('dmhl0'), [
         { label: textOutput('AddNow'), cmd: 'openDefBrowser("' + e + '"); showWaitCharAddDialog();' },
-        { label: textOutput('Ignore'), cmd: 'initializing();', snd: 'IDR_SILENCE' },
+        { label: textOutput('Ignore'), cmd: 'initializing();', noSound: true },
     ]);
 }
 
@@ -1868,11 +1897,11 @@ function showWaitHLDialog() {
 
 function clearEnterDownTimeout() {
     'use strict';
-    if (ENTERDOWN_TOI) {
+    if (ENTERDOWN_TimerID) {
         try {
-            clearTimeout(ENTERDOWN_TOI);
+            clearTimeout(ENTERDOWN_TimerID);
         } catch (e) {}
-        ENTERDOWN_TOI = null;
+        ENTERDOWN_TimerID = null;
     }
 }
 
@@ -1882,8 +1911,7 @@ function showGameStartDialog(e, E) {
         {
             label: textOutput('Yes'),
             cmd: 'checkHasHL();',
-            snd: 'IDR_SILENCE',
-            fcs: !0,
+            noSound: true,
             key: 'y',
         },
         {
@@ -1893,7 +1921,7 @@ function showGameStartDialog(e, E) {
         },
     ]),
         (LAST_KEYDOWN = 0),
-        (ENTERDOWN_TOI = null),
+        (ENTERDOWN_TimerID = null),
         (_KEY_ACT_MODAL = function (e) {
             var E,
                 t,
@@ -1909,7 +1937,7 @@ function showGameStartDialog(e, E) {
                                 return -1;
                             })()) &&
                             (clearEnterDownTimeout(),
-                            (ENTERDOWN_TOI = setTimeout(function () {
+                            (ENTERDOWN_TimerID = setTimeout(function () {
                                 $($(E)[t]).click();
                             }, 100))),
                         !1
@@ -2051,7 +2079,4 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
-
-    // IS_MODAL をfalseへ変更忘れずに
-    //showModalDialog("name" + ' （ID: ' + "id" + textOutput('delCharWaiting'), []), charDelete();
 });

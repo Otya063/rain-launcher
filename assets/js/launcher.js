@@ -731,10 +731,8 @@ function translateWeapon(e) {
 
 function showCharSelector() {
     'use strict';
-    switchEvtPhase('standby'),
-        (CHR_DEF = CHR_CRR = 0),
-        (CHR_IS_WAIT = !1),
-        $('#launcher_login_panel').hide(),
+    switchEvtPhase('standby'), (CHR_DEF = CHR_CRR = 0), (CHR_IS_WAIT = !1), clearLog();
+    $('#launcher_login_panel').hide(),
         $('#launcher_update_progress').hide(),
         $('.msg_logs_area').hide(),
         $(CHR_SEL_BOX).hide(),
@@ -1053,7 +1051,7 @@ function showMhfMaintenanceDialog() {
 function onAuthError(e, E) {
     'use strict';
     switchEvtPhase('prepare'),
-        e && addLogMsg(e, (E = E || 'y')),
+        e && addLogMsg(e, (E = E || 'y'), true),
         hideAuthProgress(),
         unlockAuthEdit(),
         setTimeout(function () {
@@ -1330,7 +1328,7 @@ function authExec() {
 
 function beginAuthProcess(e) {
     'use strict';
-    if (($('.btn_preferences').hide(), e && ((AT_IS_ENABLED = !0), clearLog()), AT_IS_ENABLED))
+    if (($('.btn_preferences').hide(), e && (AT_IS_ENABLED = !0), AT_IS_ENABLED))
         if ((switchEvtPhase('auth'), switchAuthMode(), COG_MODE)) {
             if ('' === $(inputUserId).val() || '' === $(inputPassword).val()) DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r');
             else if (authExec()) {
@@ -1548,67 +1546,61 @@ function initAuth() {
 }
 
 let SEL_LOG = '.msg_contents',
-    accumMsgCache = '',
-    onlyOneMsgCache = '',
     LOG_TimerID = null,
     LOG_INT = 100,
     isBtnDisabled = false,
-    DIALOG_BTN_TimerID = null,
     CONF_SND_BLOCK = false,
     ENTERDOWN_TimerID = null,
     LAST_KEYDOWN = 0;
 
 function addLogMsg(message, type, isOnlyOneMsg) {
-    'use strict';
-
     if (message) {
-        let prefix = '';
-        let suffix = '</p>';
+        let color = '';
 
+        // if isOnlyOneMsg is true, add class only
+        const only = isOnlyOneMsg === true ? 'only' : '';
+
+        // switch text color based on type
         switch (type) {
             case 'g':
-                prefix = '<p class="green">';
+                color = 'green';
                 break;
             case 'b':
-                prefix = '<p class="blue">';
+                color = 'blue';
                 break;
             case 'y':
-                prefix = '<p class="yellow">';
+                color = 'yellow';
                 break;
             case 'r':
-                prefix = '<p class="red">';
+                color = 'red';
         }
-        let logMessage = prefix + message + suffix;
 
-        /* if (isOnlyOneMsg) {
-            // just put logMessage into msg_contents, not accumulated
-            $(SEL_LOG).html(accumMsgCache + logMessage);
-            onlyOneMsgCache = logMessage;
-            $(SEL_LOG).get(0).scrollHeight > $(SEL_LOG).get(0).clientHeight ? console.log('a') : console.log('b'), new scrollBarHandler('.msg_contents');
-        } else {
-            // prevent the messages with isOnlyOneMsg = true from being overwritten by later messages
-            if (onlyOneMsgCache !== '') {
-                logMessage = onlyOneMsgCache + logMessage;
-                onlyOneMsgCache = '';
-            }
-            // accumulate messages
-            accumMsgCache += logMessage;
-            $(SEL_LOG).html(accumMsgCache);
-            $('#mCSB_3_container').length ? console.log('a') : console.log('b'), new scrollBarHandler('.msg_contents');
-        } */
+        // generate msg element
+        const logMessage = '<p class="' + color + ' ' + only + '">' + message + '</p>';
+
+        // get all paragraphs
+        const texts = $(SEL_LOG + ' ' + 'p')
+            .contents()
+            .text();
+
+        // if isOnlyOneMsg is true and the text is already existed in SEL_LOG, stop
+        if (isOnlyOneMsg && texts.indexOf(message) !== -1) {
+            return;
+        }
+
+        // append msg to SEL_LOG until scrollable, after that append msg to the generated container
         $('#mCSB_3_container').length ? $('#mCSB_3_container').append(logMessage) : $(SEL_LOG).append(logMessage);
-        new scrollBarHandler('.msg_contents');
+
+        // set scrollbar
+        new scrollBarHandler(SEL_LOG);
     }
 }
 
 function clearLog() {
-    'use strict';
-    (accumMsgCache = ''), $(SEL_LOG).html('');
+    $(SEL_LOG + ' ' + '.only').remove();
 }
 
 function getExLog() {
-    'use strict';
-
     // stop logging before starting
     stopExLog();
 
@@ -1640,7 +1632,6 @@ function getExLog() {
                 type = 'y'; // yellow
             } else if (/^Launcher Ver/.test(message)) {
                 type = 'g'; // green
-                isOnlyOneMsg = true;
             } else if (/^AUTH_SUCCESS/.test(message)) {
                 type = 'b'; // blue
             } else if (/^\[.*%\]/.test(message)) {

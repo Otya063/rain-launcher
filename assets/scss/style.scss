@@ -35,7 +35,6 @@ input {
 
 html,
 body {
-
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -62,7 +61,8 @@ h1 {
     }
 }
 
-// overlay for moving the launcher window
+/* Launcher Overlay
+====================================================*/
 .overlay {
     position: relative;
     left: 0;
@@ -86,7 +86,8 @@ h1 {
     }
 }
 
-// launcher wrapper
+/* Launcher Wrapper
+====================================================*/
 .wrapper {
     width: 1124px;
     height: 600px;
@@ -280,9 +281,10 @@ h1 {
         position: relative;
         width: 290px;
         height: 57px;
-        background: url(/launcher/assets/img/common/login_button_bg.png) no-repeat;
-        text-shadow: 3px 0 3px #003900, 0 3px 3px #003900, -3px 0 3px #003900, 0 -3px 3px #003900;
+        @include main_btn_bg;
         cursor: pointer;
+        border: none;
+        outline: none;
 
         // login text
         &::before {
@@ -303,7 +305,7 @@ h1 {
 
         // when hovering
         &:hover {
-            background-position: 0px -73.5px;
+            background-position: 0px -73.8px;
 
             &::before {
                 color: white;
@@ -409,7 +411,7 @@ h1 {
         }
     }
 
-    /* Server Group Section
+    /* Server Group
 ====================================================*/
     .server_selector_group {
         display: flex;
@@ -520,7 +522,7 @@ h1 {
         }
     }
 
-    /* Log In Alternative Area
+    /* Log In Alternative
 ====================================================*/
     .auth_alternative {
         width: 70%;
@@ -529,7 +531,7 @@ h1 {
         justify-content: space-around;
     }
 
-    /* Message Logs Section
+    /* Message Logs
 ====================================================*/
     .msg_logs_area {
         width: 410px;
@@ -667,7 +669,7 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Banner Section
+　　　　　Banner
 =======================================================*/
 .launcher_bnr {
     width: 515px;
@@ -782,6 +784,130 @@ h1 {
     }
 }
 
+/*=========================================================
+　　　　　Dialog
+=======================================================*/
+#launcher_modal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: none;
+    z-index: 1000;
+
+    .modal {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .dialog {
+        position: absolute;
+        left: 282px;
+        top: 140px;
+        width: 560px;
+        height: 320px;
+        background: url(/launcher/assets/img/dialog/bg.jpg) no-repeat 0px 0px;
+
+        // dialog text contents
+        .dialog_text_contents {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: nowrap;
+            padding-top: 16%;
+            width: 100%;
+            height: 47%;
+            color: rgb(230, 230, 230);
+            text-align: center;
+            cursor: default;
+
+            // dialog text default setting
+            p {
+                width: 500px;
+                margin: 0 auto;
+                font-size: 1.9rem;
+
+                // margin for first paragraph
+                &:first-child {
+                    margin-top: 2%;
+                }
+
+                // margin for last paragraph
+                &:last-child {
+                    margin-bottom: 2%;
+                }
+
+                // caution text
+                &.caution {
+                    color: #f4de22;
+                }
+
+                // warning text
+                &.warning {
+                    color: #eb3535;
+                }
+            }
+
+            // character's id
+            .uid {
+                font-size: 1.4rem;
+            }
+        }
+
+        // dialog buttons
+        .btnBox {
+            width: 100%;
+            position: absolute;
+            bottom: 8%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+
+            // each button default setting
+            .md_btn {
+                display: block;
+                width: 24%;
+                padding: 3% 5%;
+                font-weight: 700;
+                font-size: 1.7rem;
+                color: #27acd9;
+                @include dialog_btn_bg;
+                border-radius: 25px;
+                cursor: pointer;
+                outline: none;
+                border: none;
+
+                // margin for left side button
+                &:first-child {
+                    margin-left: 7%;
+                }
+
+                //margin for right side button
+                &:last-child {
+                    margin-right: 7%;
+                }
+
+                // when hovering
+                &:hover {
+                    background-position: 0px -73.8px;
+                    color: #2bcaff;
+                }
+
+                // when disabled
+                &.wait {
+                    cursor: default;
+                }
+            }
+        }
+    }
+}
+
 // 後で調整
 .del_uid {
     width: 150px;
@@ -790,8 +916,8 @@ h1 {
     background: rgb(240, 240, 240);
     padding-left: 1%;
     font-size: 1.4rem;
-    border: 2px rgba(0,0,0,.5) solid;
-    margin: 2% 0 5% 0;
+    border: 2px rgba(0, 0, 0, 0.5) solid;
+    margin: 2% 0 3% 0;
 
     // input placeholder
     &:-ms-input-placeholder {

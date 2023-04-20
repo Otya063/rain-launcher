@@ -52,14 +52,14 @@ const textData = {
     createChara: 'Would you like to add a new character?<br>Press [Add now] below.',
     createCharaDone: 'A new character slot will be requested momentarily,<br>please wait a few seconds and then press<br>the [Refresh] button below.',
     delCharHeading: 'Do you really want to delete character',
-    delCharWarn: "<p class='attention'>Once deleted, your character data cannot be restored.</p>",
-    delLastChar: "<p class='notes'>You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>",
-    delCharFinalConf: "<p class='attention'>Enter your ID of the selected character then click the [Delete] button.</p>",
+    delCharWarn: "<p class='caution'>Once deleted, your character data cannot be restored.</p>",
+    delLastChar: "<p class='warning'>You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>",
+    delCharFinalConf: "<p class='caution'>Enter your ID of the selected character then click the [Delete] button.</p>",
     delCharIdInput: "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
-    delCharError: "<p class='attention'>The specified character ID does not match the entered ID.</p>",
+    delCharError: "<p class='caution'>The specified character ID does not match the entered ID.</p>",
     dmcd11: 'This character cannot be deleted. <br> Please try again later.',
     dmcd12: 'This character cannot be deleted. <br> A period of 7 days from the last deletion<br>must pass in order to delete all characters.',
-    dmcd13: "<span class='attention'>One character is guaranteed and provided<br>under the terms of the basic contract</span> <br> All characters have been deleted. <br> You will be provided with one character<br>under your basic contract guarantee!</span><br><span class='notes'>※ A period of 7 days from today is required<br>in order to delete this character.</span>",
+    dmcd13: "<p class='caution'>One character is guaranteed and provided<br>under the terms of the basic contract</p> <br> All characters have been deleted. <br> You will be provided with one character<br>under your basic contract guarantee!</span><br><p class='warning'>※ A period of 7 days from today is required<br>in order to delete this character.</p>",
     dmcd14: 'Character deleted.',
     dmhl0: 'The Hunter Life Course has expired. <br> Please purchase the Hunter Life course<br>by clicking [Buy now]. <br> (Browser will open ',
     dmhl1: 'Once you have purchased the Hunter Life Course, <br> please wait a moment and then <br> press the [Refresh] button below.',
@@ -79,7 +79,7 @@ const textData = {
     SIGN_EOTHER: 'Failed to authenticate ID.',
     SIGN_EAPP: 'Authentication failed with an unexpected error in the client.',
     SIGN_EPASS: 'Wrong ID/Password.',
-    SRV_MNT: "<span class='attention'>Unable to log in due to maintenance being performed.</span>",
+    SRV_MNT: "<p class='caution'>Unable to log in due to maintenance being performed.</p>",
 };
 
 function textOutput(textType) {
@@ -509,7 +509,7 @@ var CHR_CRR = 0,
     CHR_SEL_UP = CHR_SEL_BOX + ' .scroll.up',
     CHR_SEL_DOWN = CHR_SEL_BOX + ' .scroll.down',
     CHR_SEL_ADD = CHR_SEL_BOX + ' .btn_add',
-    CHR_SEL_DEL = CHR_SEL_BOX + ' .btn_del',
+    charDeleteBtn = CHR_SEL_BOX + ' .btn_del',
     CHR_IS_WAIT = !1;
 
 function convWpType(e) {
@@ -667,8 +667,8 @@ function updateCharCtrlBtnState() {
         ? ($(CHR_SEL_ADD).removeClass('disabled'), $(CHR_SEL_ADD).fadeTo(100, 1), $(CHR_SEL_ADD).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
         : ($(CHR_SEL_ADD).attr('onMouseOver', ''), $(CHR_SEL_ADD).removeAttr('onMouseOver'), $(CHR_SEL_ADD).addClass('disabled'), $(CHR_SEL_ADD).fadeTo(200, 0.4)),
         '0' !== getCrrChar().attr('hr')
-            ? ($(CHR_SEL_DEL).removeClass('disabled'), $(CHR_SEL_DEL).fadeTo(100, 1), $(CHR_SEL_DEL).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
-            : ($(CHR_SEL_DEL).attr('onMouseOver', ''), $(CHR_SEL_DEL).removeAttr('onMouseOver'), $(CHR_SEL_DEL).addClass('disabled'), $(CHR_SEL_DEL).fadeTo(200, 0.4));
+            ? ($(charDeleteBtn).removeClass('disabled'), $(charDeleteBtn).fadeTo(100, 1), $(charDeleteBtn).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+            : ($(charDeleteBtn).attr('onMouseOver', ''), $(charDeleteBtn).removeAttr('onMouseOver'), $(charDeleteBtn).addClass('disabled'), $(charDeleteBtn).fadeTo(200, 0.4));
 }
 
 function kdCharSelMode() {
@@ -858,9 +858,9 @@ function gameStart() {
     (CHR_UID = e.attr('uid')), (CHR_HR = parseInt(e.attr('hr'), 10)), showGameStartDialog(e.attr('name'), e.attr('uid'));
 }
 
-function checkDelID() {
+function checkDelID(name, id) {
     'use strict';
-    CHR_DEL_UID === $('.del_uid').val() ? showWaitDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID) : showWaitDelCharIdErrorDialog(CHR_DEL_NAME, CHR_DEL_UID);
+    id === $('.del_uid').val() ? showWaitDelCharDialog(name, id) : showWaitDelCharIdErrorDialog(name, id);
 }
 
 var UPD_ANIM_SEQ = { loop: [] };
@@ -1711,11 +1711,6 @@ function showModalDialog(text, options, standbyTime) {
             // set the text for each button
             button.text(option.label);
 
-            // if button has a key assigned, append a key symbol
-            if (option.key) {
-                button.append($('<div class="sign key_' + option.key + '"></div>'));
-            }
-
             // append the button elements to btnbox
             $('#launcher_modal .dialog .btnBox').append(button);
         });
@@ -1822,7 +1817,7 @@ function showDelCharDialog3(name, id) {
     showModalDialog(
         '<p>' + textOutput('delCharHeading') + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>?</p>' + textOutput('delCharFinalConf') + textOutput('delCharIdInput'),
         [
-            { label: textOutput('Delete'), cmd: 'checkDelID();', isWait: true },
+            { label: textOutput('Delete'), cmd: 'checkDelID("' + name + '", "' + id + '");', isWait: true },
             { label: textOutput('Cancel'), cmd: 'charDelReset();' },
         ],
         1000
@@ -1903,12 +1898,10 @@ function showGameStartDialog(e, E) {
             label: textOutput('Yes'),
             cmd: 'checkHasHL();',
             noSound: true,
-            key: 'y',
         },
         {
             label: textOutput('No'),
             cmd: 'gameStartCalcel();',
-            key: 'n',
         },
     ]),
         (LAST_KEYDOWN = 0),
@@ -2023,13 +2016,26 @@ $(function () {
     $(CHR_SEL_DOWN).click(function () {
         DoPlaySound('IDR_WAV_OK'), scrollCharUni(1);
     });
-    $(CHR_SEL_DEL).click(function () {
+
+    // delete a character event
+    $(charDeleteBtn).click(function () {
+        // check if the clicked element is not disabled and a character is not already being deleted
         if (!$(this).hasClass('disabled') && !CHR_DEL_UID) {
+            // play a sound
             DoPlaySound('IDR_WAV_OK');
-            var e = getCrrChar();
-            (CHR_DEL_NAME = e.attr('name')), (CHR_DEL_UID = e.attr('uid')), showDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID);
+
+            // get the user data of the currently selected character
+            const userData = getCrrChar();
+
+            // set the name and UID of the character to be deleted
+            CHR_DEL_NAME = userData.attr('name');
+            CHR_DEL_UID = userData.attr('uid');
+
+            // show a confirmation dialog for deleting the character
+            showDelCharDialog(CHR_DEL_NAME, CHR_DEL_UID);
         }
     });
+
     $(CHR_SEL_ADD).click(function () {
         $(this).hasClass('disabled') || (DoPlaySound('IDR_WAV_OK'), showAddCharDialog());
     });
@@ -2070,4 +2076,6 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
+
+    showDelCharDialog('お茶', '12345');
 });

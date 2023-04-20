@@ -557,182 +557,6 @@
                 top: 30%;
                 right: 1.5%;
             }
-
-            #launcher_header {
-                width: 106px;
-                height: 20px;
-                position: absolute;
-                right: 10px;
-                top: 0;
-                z-index: 1000;
-            }
-            #launcher_header div {
-                width: 50px;
-                height: 20px;
-                position: absolute;
-                top: 0;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-            }
-            #launcher_header div:hover {
-                background-position: 0px -20px;
-            }
-            #launcher_header .min {
-                left: 0;
-            }
-            #launcher_header .close {
-                right: 0;
-            }
-            #launcher_modal {
-                width: 100%;
-                height: 100%;
-                position: fixed;
-                left: 0;
-                top: 0;
-                display: none;
-                z-index: 1000;
-            }
-            #launcher_modal .modal {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-            #launcher_modal .dialog {
-                position: absolute;
-                left: 282px;
-                top: 140px;
-                width: 560px;
-                height: 320px;
-                background: url(/launcher/assets/img/dialog/bg.jpg) no-repeat 0px 0px;
-            }
-            #launcher_modal .dialog .dialog_text_contents {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                align-items: center;
-                flex-wrap: nowrap;
-                width: 100%;
-                height: 165px;
-                color: rgb(230, 230, 230);
-                font-size: 18px;
-                text-align: center;
-                padding-top: 90px;
-            }
-            /* #launcher_modal .dialog .dialog_text_contents .alert {
-                line-height: 26px;
-                padding: 90px 0 110px;
-                font-size: 20px;
-            } */
-            #launcher_modal .dialog .dialog_text_contents span.uid {
-                font-size: 1.4rem;
-            }
-            #launcher_modal .dialog .dialog_text_contents p {
-                width: 500px;
-                margin: 0 auto;
-                font-size: 1.9rem;
-            }
-            #launcher_modal .dialog .dialog_text_contents p:last-child {
-                margin-bottom: 5%;
-            }
-            #launcher_modal .dialog .dialog_text_contents p.attention {
-                color: #f4de22;
-            }
-            #launcher_modal .dialog .dialog_text_contents p.notes {
-                color: #eb3535;
-            }
-            #launcher_modal .dialog .dialog_text_contents div.sp {
-                width: 100%;
-                height: 10px;
-            }
-            #launcher_modal .dialog .btnBox {
-                width: 100%;
-                height: 44px;
-                /* position: absolute;
-                left: 0;
-                top: 252px; */
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                align-items: center;
-            }
-            /* #launcher_modal .dialog .btns {
-                text-align: center;
-                margin: 0 auto;
-                position: relative;
-                overflow: hidden;
-                padding-top: 3px;
-            } */
-            /* #launcher_modal .dialog .btns ul {
-                position: relative;
-                left: 50%;
-                float: left;
-                list-style: none;
-            } */
-            /* #launcher_modal .dialog .btns ul li {
-                position: relative;
-                left: -50%;
-                float: left;
-                margin-left: 33px;
-            }
-            #launcher_modal .dialog .btns ul li:first-child {
-                margin-left: 5px;
-            }
-            #launcher_modal .dialog .btns ul li div {
-                display: block;
-                width: 200px;
-                height: 35px;
-                padding-top: 9px;
-                position: relative;
-                background: no-repeat 0px 0px;
-                text-decoration: none;
-                color: #d1c0a5;
-                font-weight: bold;
-                font-size: 18px;
-                line-height: 18px;
-                text-align: center;
-                cursor: pointer;
-            }
-            #launcher_modal .dialog .btns ul li div:hover,
-            #launcher_modal .dialog .btns ul li div.hover {
-                background-position: 0px -44px;
-            } */
-            #launcher_modal .dialog .btnBox .md_btn {
-                display: block;
-                width: 24%;
-                padding: 2.5% 5%;
-                font-weight: 700;
-                font-size: 1.7rem;
-                color: #27acd9;
-                background: white;
-                border-radius: 25px;
-                cursor: pointer;
-                transition: 0.3s;
-            }
-            #launcher_modal .dialog .btnBox .md_btn:hover {
-                color: white;
-                background: #27acd9;
-            }
-
-            #launcher_modal .dialog .btnBox .md_btn.wait {
-                cursor: default;
-            }
-            /* #launcher_modal .dialog .btns ul li div.wait:hover,
-            #launcher_modal .dialog .btns ul li div.wait.hover {
-                background-position: 0px 0px;
-                cursor: default;
-            } */
-            #launcher_modal .dialog .btns ul li div.sign {
-                width: 18px;
-                height: 16px;
-                margin: 0;
-                padding: 0;
-                position: absolute;
-                left: -3px;
-                top: -3px;
-                background: no-repeat 0px 0px;
-            }
             #launcher_game_start_wait {
                 position: absolute;
                 left: 0;
@@ -743,41 +567,7 @@
                 display: none;
                 z-index: 2000;
             }
-            .scroll_bar_box {
-                width: 10px;
-                position: absolute;
-            }
-            .scroll_bar_box_base {
-                width: 10px;
-                height: 100%;
-                position: absolute;
-                right: 0;
-                top: 0;
-                border-radius: 5px;
-                background: #000;
-                opacity: 0.4;
-                -moz-opacity: 0.4;
-                filter: alpha(opacity=40);
-                -ms-filter: 'alpha(opacity=40)';
-            }
-            .scroll_bar_box_body {
-                width: 6px;
-                position: absolute;
-                right: 2px;
-                border-radius: 3px;
-                background: #535353;
-                transition: background-color 0.2s linear 0;
-                cursor: pointer;
-                opacity: 0.8;
-                -moz-opacity: 0.8;
-                filter: alpha(opacity=80);
-                -ms-filter: 'alpha(opacity=80)';
-            }
-            .scroll_bar_box_body:hover,
-            .scroll_bar_box_body.active {
-                background: #fff;
-                transition: background-color 0.4s linear 0;
-            }
+
             #dev {
                 display: block;
                 width: 100%;
@@ -839,6 +629,7 @@
 
     <body>
         <div class="wrapper">
+            <!-- Launcher Overlay -->
             <div class="overlay">
                 <p class="overlay_text">Launcher Window Movable</p>
             </div>
@@ -866,6 +657,7 @@
             <div class="logout_container">
                 <!-- User ID / Server Name Label -->
                 <p class="id_srv_label"></p>
+
                 <!-- Log Out Button -->
                 <button class="btn_logout" onclick="switchAuthMode();" style="display: none">Log Out</button>
             </div>
@@ -889,7 +681,7 @@
                     </div>
                 </form>
 
-                <!-- Server Group Section -->
+                <!-- Server Group -->
                 <ul class="server_selector_group">
                     <label for="server_sel">Server Selection</label>
                     <li>
@@ -898,15 +690,15 @@
                     </li>
                 </ul>
 
-                <div class="btn_login selsnd"></div>
+                <button class="btn_login selsnd"></button>
 
-                <!-- Log In Alternative Area（後でpタグへ変更） -->
+                <!-- Log In Alternative（後でpタグへ変更） -->
                 <div class="auth_alternative">
                     <div class="check_save_id selsnd"></div>
                     <div class="btn_forgot selsnd"></div>
                 </div>
 
-                <!-- Message Logs Section -->
+                <!-- Message Logs -->
                 <section class="msg_logs_area">
                     <div class="msg_contents"></div>
                 </section>
@@ -944,7 +736,7 @@
                 <div class="btn_start selsnd"></div>
             </div>
 
-            <!-- Banner Section -->
+            <!-- Banner -->
             <ul class="launcher_bnr">
                 <li class="bnr"><img src="/launcher/assets/img/bnr/0705_3.jpg" alt="" /></li>
                 <li class="bnr"><img src="/launcher/assets/img/bnr/0801_3.jpg" alt="" /></li>
@@ -982,7 +774,7 @@
             <div id="launcher_modal">
                 <div class="modal" onClick="return false;"></div>
                 <ul class="dialog">
-                    <li class="alert dialog_text_contents"></li>
+                    <li class="dialog_text_contents"></li>
                     <li class="btnBox"></li>
                 </ul>
             </div>

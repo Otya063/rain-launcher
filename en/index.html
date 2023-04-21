@@ -9,7 +9,7 @@
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
         <title>Monster Hunter Frontier Online Launcher</title>
         <style type="text/css">
-            #launcher_login_panel .progress .anim {
+            .launcher_login_panel .progress .anim {
                 position: absolute;
                 left: 132px;
                 top: 77px;
@@ -17,40 +17,40 @@
                 height: 43px;
                 background: no-repeat 0px 0px;
             }
-            #launcher_login_panel .progress .anim.f1 {
+            .launcher_login_panel .progress .anim.f1 {
                 background-position: 0px -43px;
             }
-            #launcher_login_panel .progress .anim.f2 {
+            .launcher_login_panel .progress .anim.f2 {
                 background-position: 0px -86px;
             }
-            #launcher_login_panel .progress .anim.f3 {
+            .launcher_login_panel .progress .anim.f3 {
                 background-position: 0px -129px;
             }
-            #launcher_login_panel .progress .anim.f4 {
+            .launcher_login_panel .progress .anim.f4 {
                 background-position: 0px -172px;
             }
-            #launcher_login_panel .progress .anim.f5 {
+            .launcher_login_panel .progress .anim.f5 {
                 background-position: 0px -215px;
             }
-            #launcher_login_panel .progress .anim.f6 {
+            .launcher_login_panel .progress .anim.f6 {
                 background-position: 0px -258px;
             }
-            #launcher_login_panel .progress .anim.f7 {
+            .launcher_login_panel .progress .anim.f7 {
                 background-position: 0px -301px;
             }
-            #launcher_login_panel .progress .anim.f8 {
+            .launcher_login_panel .progress .anim.f8 {
                 background-position: 0px -344px;
             }
-            #launcher_login_panel .progress .anim.f9 {
+            .launcher_login_panel .progress .anim.f9 {
                 background-position: 0px -387px;
             }
-            #launcher_login_panel .progress .anim.f10 {
+            .launcher_login_panel .progress .anim.f10 {
                 background-position: 0px -430px;
             }
-            #launcher_login_panel .progress .anim.f11 {
+            .launcher_login_panel .progress .anim.f11 {
                 background-position: 0px -473px;
             }
-            #launcher_login_panel .progress p {
+            .launcher_login_panel .progress p {
                 color: #fff;
                 text-align: center;
                 width: 100%;
@@ -608,8 +608,15 @@
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
-        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap" />
+        <link
+            rel="preload"
+            as="style"
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap"
+        />
         <!-- js -->
         <script type="text/javascript" src="/launcher/assets/js/jquery.js"></script>
         <script type="text/javascript" src="/launcher/assets/js/launcher.js"></script>
@@ -663,20 +670,42 @@
             </div>
 
             <!-- Log In Area -->
-            <main id="launcher_login_panel" class="">
+            <main class="launcher_login_panel">
+
                 <form class="auth_section">
+                    <!-- User ID -->
                     <div class="auth_group">
                         <label for="user_id">User ID</label>
                         <div class="auth_userid">
                             <span class="user_icon"></span>
-                            <input class="userid_input" type="text" name="user_id" placeholder="User ID" autocomplete="off" autocapitalize="off" aria-label="UserID" aria-invalid="false" />
+                            <input
+                                class="userid_input"
+                                type="text"
+                                name="user_id"
+                                placeholder="User ID"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                aria-label="UserID"
+                                aria-invalid="false"
+                            />
                         </div>
                     </div>
+
+                    <!-- Password -->
                     <div class="auth_group">
                         <label for="password">Password</label>
                         <div class="auth_password">
                             <span class="password_icon"></span>
-                            <input class="password_input" type="password" name="password" placeholder="Password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" />
+                            <input
+                                class="password_input"
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                autocomplete="off"
+                                autocapitalize="off"
+                                aria-label="Password"
+                                aria-invalid="false"
+                            />
                         </div>
                     </div>
                 </form>
@@ -766,7 +795,9 @@
             <!-- Footer -->
             <div id="launcher_footer">
                 <div class="glove"></div>
-                <p class="disclaimer">* Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.</p>
+                <p class="disclaimer">
+                    * Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.
+                </p>
                 <p class="launcher_version">Launcher Version: 1.0</p>
             </div>
 

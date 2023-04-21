@@ -264,7 +264,7 @@ h1 {
 /*=========================================================
 　　　　　Log In Area
 =======================================================*/
-#launcher_login_panel {
+.launcher_login_panel {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -873,7 +873,7 @@ h1 {
             .md_btn {
                 display: block;
                 width: 24%;
-                padding: 3% 5%;
+                padding: 2.5% 0;
                 font-weight: 700;
                 font-size: 1.7rem;
                 color: #27acd9;
@@ -900,7 +900,7 @@ h1 {
                 }
 
                 // when disabled
-                &.wait {
+                &.standby {
                     cursor: default;
                 }
             }

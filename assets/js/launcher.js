@@ -1030,7 +1030,9 @@ function startUpdateProcess() {
               setTimeout(function () {
                   progressUpdatePercentage();
               }, 50))
-            : (updateDisabled ? finishUpdateProcess() : $('.launcher_login_panel').show(),
+            : (updateDisabled
+                  ? finishUpdateProcess()
+                  : ($('.launcher_login_panel').show(), $(loginBtn).fadeTo(1, 1), $(loginBtn).removeClass('disabled')),
               onAuthError(textOutput('serverMaint')))
         : finishUpdateProcess();
 }
@@ -1077,11 +1079,7 @@ function onAuthError(e, E) {
         e && addLogMsg(e, (E = E || 'y'), true),
         hideAuthProgress(),
         unlockAuthEdit(),
-        setTimeout(function () {
-            $(loginBtn).fadeTo(200, 1, function () {
-                $(loginBtn).removeClass('disabled'), (AT_IS_ENABLED = !0);
-            });
-        }, 5e3);
+        (AT_IS_ENABLED = !0);
 }
 
 function stopLoginPolling() {
@@ -1114,9 +1112,7 @@ function loginPolling() {
                     COG_MODE &&
                         ($(saveUserIdCheck).hasClass('checked') &&
                             ((STORAGE['cogid' + EXE_MUTEX] = $(inputUserId).val()), writeCookie()),
-                        $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text()))) /* ,
-                        !isTrEnabled() */ /* 
-                    return void showNoTRDialog() */
+                        $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text())))
                 );
                 startUpdateProcess();
                 break;
@@ -1158,9 +1154,6 @@ function loginPolling() {
                     case 'SIGN_EALREADY':
                         onAuthError(), showMhfMaintenanceDialog();
                         break;
-                    /* case 'SIGN_ERIGHT':
-                        isTrEnabled() ? onAuthError(textOutput('SIGN_EOTHER')) : (onAuthError(), showNoTRDialog());
-                        break; */
                     case 'SIGN_EPASS':
                         onAuthError(textOutput(E));
                         break;
@@ -1327,43 +1320,24 @@ function initSrvSelList() {
 
 function showAuthProgress() {
     'use strict';
+    $(loginBtn).addClass('disabled');
+    $(loginBtn).fadeTo(1, 0.6);
+
     var e = 0;
     (AT_ANIM_TimerID = setInterval(function () {
-        $('.launcher_login_panel .progress .anim').removeClass('f' + e),
-            (e = 11 <= e ? 0 : e + 1),
-            $('.launcher_login_panel .progress .anim').addClass('f' + e);
+        $('.progress .anim').removeClass('f' + e), (e = 11 <= e ? 0 : e + 1), $('.progress .anim').addClass('f' + e);
     }, 100)),
-        $('.launcher_login_panel .progress').fadeIn(200);
+        $('.progress').fadeIn(200);
 }
 
 function hideAuthProgress() {
     'use strict';
-    $('.launcher_login_panel .progress')
+    $('.progress')
         .stop()
         .fadeOut(200, function () {
             AT_ANIM_TimerID && (clearInterval(AT_ANIM_TimerID), (AT_ANIM_TimerID = null));
         });
 }
-
-/* function showBackboneTimeoutDialog() {
-    'use strict';
-    $('.launcher_login_panel').hide(), $('#launcher_auth_maintenance').addClass('error'), resetKeyActDefMode(), $('#launcher_auth_maintenance').show();
-} */
-
-/* function clearBBTO() {
-    'use strict';
-    if (AT_BB_TimerID) {
-        try {
-            clearTimeout(AT_BB_TimerID);
-        } catch (e) {}
-        AT_BB_TimerID = null;
-    }
-} */
-
-/* function onBackboneTimeout() {
-    'use strict';
-    clearBBTO(), onAuthError(), showBackboneTimeoutDialog();
-} */
 
 function authExec() {
     'use strict';
@@ -1377,16 +1351,8 @@ function beginAuthProcess(e) {
             if ('' === $(inputUserId).val() || '' === $(inputPassword).val())
                 DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r');
             else if (authExec()) {
-                DoPlaySound('IDR_WAV_PRE_LOGIN'),
-                    (AT_IS_ENABLED = !1),
-                    lockAuthEdit(),
-                    showAuthProgress() /* , clearBBTO() */;
-                /* var E = setTimeout(function () {
-                    onBackboneTimeout();
-                }, 6e4); */
-                /* (AT_BB_TimerID = E), */ $(loginBtn).addClass('disabled'),
-                    $(loginBtn).fadeTo(200, 0.6),
-                    createShortLifeAuthKeyDone();
+                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress();
+                createShortLifeAuthKeyDone();
             }
         } else
             NHN_MODE
@@ -1434,6 +1400,8 @@ function switchAuthMode() {
         $(CHR_SEL_BOX).hide(),
         $('.msg_logs_area').show(),
         $('.launcher_login_panel').show(),
+        $(loginBtn).fadeTo(1, 1),
+        $(loginBtn).removeClass('disabled'),
         $('.id_srv_label').text(''),
         $('.btn_logout').hide(),
         $(AT_FOCUS_ELMS[AT_FOCUS_IDX]).addClass('hover'),
@@ -1469,8 +1437,6 @@ function switchAuthMode() {
             return (AT_FOCUS_IDX = E), t;
         }),
         unlockAuthEdit(),
-        $(loginBtn).fadeTo(1, 1),
-        $(loginBtn).removeClass('disabled'),
         (AT_IS_ENABLED = !0);
 }
 
@@ -2159,4 +2125,25 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
+});
+
+$(function () {
+    const url = 'https://www.jma.go.jp/bosai/forecast/data/overview_forecast/130000.json';
+    $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: 'json',
+        // 取得に成功したときの処理
+        success: function (data) {
+            console.log(JSON.stringify(data, null, 2));
+        },
+        // 完了したときの処理
+        complete: function () {
+            console.log('通信が完了しました。');
+        },
+        // 失敗したときの処理
+        error: function () {
+            console.log('通信に失敗しました。');
+        },
+    });
 });

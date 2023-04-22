@@ -9,55 +9,6 @@
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
         <title>Monster Hunter Frontier Online Launcher</title>
         <style type="text/css">
-            .launcher_login_panel .progress .anim {
-                position: absolute;
-                left: 132px;
-                top: 77px;
-                width: 43px;
-                height: 43px;
-                background: no-repeat 0px 0px;
-            }
-            .launcher_login_panel .progress .anim.f1 {
-                background-position: 0px -43px;
-            }
-            .launcher_login_panel .progress .anim.f2 {
-                background-position: 0px -86px;
-            }
-            .launcher_login_panel .progress .anim.f3 {
-                background-position: 0px -129px;
-            }
-            .launcher_login_panel .progress .anim.f4 {
-                background-position: 0px -172px;
-            }
-            .launcher_login_panel .progress .anim.f5 {
-                background-position: 0px -215px;
-            }
-            .launcher_login_panel .progress .anim.f6 {
-                background-position: 0px -258px;
-            }
-            .launcher_login_panel .progress .anim.f7 {
-                background-position: 0px -301px;
-            }
-            .launcher_login_panel .progress .anim.f8 {
-                background-position: 0px -344px;
-            }
-            .launcher_login_panel .progress .anim.f9 {
-                background-position: 0px -387px;
-            }
-            .launcher_login_panel .progress .anim.f10 {
-                background-position: 0px -430px;
-            }
-            .launcher_login_panel .progress .anim.f11 {
-                background-position: 0px -473px;
-            }
-            .launcher_login_panel .progress p {
-                color: #fff;
-                text-align: center;
-                width: 100%;
-                position: absolute;
-                left: 0;
-                top: 128px;
-            }
             #launcher_auth_maintenance {
                 width: 426px;
                 height: 169px;
@@ -386,87 +337,6 @@
                 background-position: 0px -64px;
             }
 
-            #launcher_info_detail {
-                width: 532px;
-                height: 423px;
-                position: absolute;
-                right: 38px;
-                top: 30px;
-                background: no-repeat 0px 0px;
-            }
-            #launcher_info_detail .article_frame {
-                width: 532px;
-                height: 423px;
-                position: absolute;
-                left: 0;
-                top: 0;
-                overflow: hidden;
-                overflow-y: auto;
-            }
-            #launcher_info_detail .article_frame .article {
-                width: 515px;
-                min-height: 394px;
-                position: relative;
-                margin: 10px 0 10px;
-                padding-top: 9px;
-                background-color: #fef5e6;
-                font-family: 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
-                font-size: 14px;
-                line-height: 18px;
-                color: #333333;
-            }
-            #launcher_info_detail .article_frame .article .article_category {
-                width: 515px;
-                height: 24px;
-                background: no-repeat 0px 0px;
-                margin-bottom: 9px;
-                background-color: #313131;
-            }
-            #launcher_info_detail .article_frame .article .newstitle_area {
-                width: 515px;
-                background-color: #e8d9b9;
-                padding: 4px 0 2px;
-                margin: 0 auto 10px;
-            }
-            #launcher_info_detail .article_frame .article .newstitle_area table td:first-child {
-                width: 10px;
-            }
-            #launcher_info_detail .article_frame .article .newstitle_area table td:first-child + * {
-                width: 415px;
-            }
-            #launcher_info_detail .article_frame .article .newstitle_area table td:nth-child(2) {
-                width: 415px;
-            }
-            #launcher_info_detail .article_frame .article .newstext_area {
-                width: 515px;
-                margin: 0 auto;
-            }
-            #launcher_info_detail .article_frame .article .newstext_area .category,
-            #launcher_info_detail .article_frame .article .newstext_area .article_title {
-                display: none;
-            }
-            #launcher_info_detail .article_frame .article .newstext_area .article_body p {
-                padding: 0 10px;
-            }
-            #launcher_info_detail .article_frame .article .newstext_area .article_body table {
-                max-width: 505px;
-                margin: 0 auto;
-            }
-            #launcher_info_detail .btn_back {
-                cursor: pointer;
-                width: 160px;
-                height: 18px;
-                position: absolute;
-                left: 184px;
-                bottom: 6px;
-                background: no-repeat 0px 0px;
-            }
-            #launcher_info_detail .btn_back:hover {
-                background-position: 0px -18px;
-            }
-            #launcher_info_detail a {
-                cursor: pointer;
-            }
             #launcher_menu {
                 height: 86px;
                 position: absolute;
@@ -511,6 +381,7 @@
             body#dmm #launcher_menu .btn.dmmmypage {
                 display: block;
             }
+
             #launcher_footer {
                 width: 100%;
                 height: 39px;
@@ -671,7 +542,6 @@
 
             <!-- Log In Area -->
             <main class="launcher_login_panel">
-
                 <form class="auth_section">
                     <!-- User ID -->
                     <div class="auth_group">
@@ -681,7 +551,7 @@
                             <input
                                 class="userid_input"
                                 type="text"
-                                name="user_id"
+                                id="user_id"
                                 placeholder="User ID"
                                 autocomplete="off"
                                 autocapitalize="off"
@@ -699,7 +569,7 @@
                             <input
                                 class="password_input"
                                 type="password"
-                                name="password"
+                                id="password"
                                 placeholder="Password"
                                 autocomplete="off"
                                 autocapitalize="off"
@@ -714,7 +584,7 @@
                 <ul class="server_selector_group">
                     <label for="server_sel">Server Selection</label>
                     <li>
-                        <button class="srv_sel_btn" name="server_sel"></button>
+                        <button class="srv_sel_btn" id="server_sel"></button>
                         <ul class="srv_sel_box"></ul>
                     </li>
                 </ul>
@@ -723,7 +593,12 @@
 
                 <!-- Log In Alternative（後でpタグへ変更） -->
                 <div class="auth_alternative">
-                    <div class="check_save_id selsnd"></div>
+                    <!-- <div class="check_save_id selsnd"></div> -->
+                    <label class="checkbox" for="check_save_id">
+                        <input class="selsnd" type="checkbox" id="check_save_id" />
+                        <span class="indicator"></span>
+                        Remember User ID
+                    </label>
                     <div class="btn_forgot selsnd"></div>
                 </div>
 
@@ -736,13 +611,15 @@
                 <button class="btn_preferences">
                     <p class="btn_preferences_text">In-Game Preferences</p>
                 </button>
-
-                <!-- Authenticating Display -->
-                <div class="progress" onClick="return false;" style="display: none">
-                    <div class="anim"></div>
-                    <p class="">Authenticating...</p>
-                </div>
             </main>
+
+            <!-- Authenticating Display -->
+            <div class="progress" onClick="return false;" style="display: none">
+                <div class="progress_loader">
+                    <div class="progress_loader_core"></div>
+                </div>
+                <p class="progress_text">Authenticating...</p>
+            </div>
 
             <!--メンテor認証不可状態時表示枠-->
             <div id="launcher_auth_maintenance"></div>

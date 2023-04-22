@@ -56,3 +56,17 @@
     background: url(/launcher/assets/img/common/dialog_button_bg.png) no-repeat;
     text-shadow: 3px 0 3px #003900, 0 3px 3px #003900, -3px 0 3px #003900, 0 -3px 3px #003900;
 }
+
+/* Animation
+====================================================*/
+// Authenticating Progress
+@mixin authProgKey {
+    @keyframes authProgAni {
+        from {
+            transform: rotate(0);
+        }
+        to {
+            transform: rotate(359deg);
+        }
+    }
+}

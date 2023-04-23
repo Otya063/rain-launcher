@@ -515,13 +515,13 @@
             <!-- Window Controls -->
             <div class="win_ctrls">
                 <!-- Grab Area -->
-                <button class="move selsnd"></button>
+                <button class="move sound_on"></button>
 
                 <!-- Minimize Button -->
-                <button class="min selsnd" onClick="addEvent('min_click'); DoMinimizeWindow();">ー</button>
+                <button class="min sound_on" onClick="addEvent('min_click'); DoMinimizeWindow();">ー</button>
 
                 <!-- Close Button -->
-                <button class="close selsnd" onClick="addEvent('close_click'); DoCloseWindow();">×</button>
+                <button class="close sound_on" onClick="addEvent('close_click'); DoCloseWindow();">×</button>
             </div>
 
             <!-- Launcher Header -->
@@ -589,17 +589,19 @@
                     </li>
                 </ul>
 
-                <button class="btn_login selsnd"></button>
+                <!-- Log In Button -->
+                <button class="btn_login sound_on"></button>
 
-                <!-- Log In Alternative（後でpタグへ変更） -->
+                <!-- Log In Alternative -->
                 <div class="auth_alternative">
-                    <!-- <div class="check_save_id selsnd"></div> -->
-                    <label class="checkbox" for="check_save_id">
-                        <input class="selsnd" type="checkbox" id="check_save_id" />
+                    <!-- Remember Checkbox -->
+                    <label class="checkbox sound_on" for="check_save_id">
+                        <input type="checkbox" class="check_save_id" id="check_save_id" />
                         <span class="indicator"></span>
                         Remember User ID
                     </label>
-                    <div class="btn_forgot selsnd"></div>
+                    <!-- Reset Credentials Link -->
+                    <p class="forgot_creds sound_on" onClick="">Forgot your credentials?</p>
                 </div>
 
                 <!-- Message Logs -->
@@ -614,7 +616,7 @@
             </main>
 
             <!-- Authenticating Display -->
-            <div class="progress" onClick="return false;" style="display: none">
+            <div class="progress" style="display: none">
                 <div class="progress_loader">
                     <div class="progress_loader_core"></div>
                 </div>
@@ -623,6 +625,7 @@
 
             <!--メンテor認証不可状態時表示枠-->
             <div id="launcher_auth_maintenance"></div>
+            
             <!--アップデート-->
             <div id="launcher_update_progress" style="display: none">
                 <div class="bar_area">
@@ -632,14 +635,15 @@
                 <div class="anim f0"></div>
                 <div class="msg"></div>
             </div>
+
             <!--キャラクター選択-->
             <div id="launcher_character_select">
                 <div class="units"></div>
-                <div class="scroll up selsnd"></div>
-                <div class="scroll down selsnd"></div>
+                <div class="scroll up sound_on"></div>
+                <div class="scroll down sound_on"></div>
                 <div class="btn_add"></div>
                 <div class="btn_del"></div>
-                <div class="btn_start selsnd"></div>
+                <div class="btn_start sound_on"></div>
             </div>
 
             <!-- Banner -->
@@ -657,10 +661,10 @@
             <!-- Menu -->
             <div id="launcher_menu">
                 <!-- Member Site -->
-                <div class="cogb btn" onClick="openMemberSite();"></div>
+                <div class="cogb btn" onClick=""></div>
 
                 <!-- Online Manual -->
-                <div class="manual btn" onClick="openManual();"></div>
+                <div class="manual btn" onClick=""></div>
 
                 <!-- Inquiry -->
                 <div class="inquiry btn" onClick=""></div>
@@ -671,7 +675,6 @@
 
             <!-- Footer -->
             <div id="launcher_footer">
-                <div class="glove"></div>
                 <p class="disclaimer">
                     * Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.
                 </p>
@@ -679,11 +682,10 @@
             </div>
 
             <!-- Dialog -->
-            <div id="launcher_modal">
-                <div class="modal" onClick="return false;"></div>
-                <ul class="dialog">
+            <div class="launcher_dialog">
+                <ul class="dialog_contents">
                     <li class="dialog_text_contents"></li>
-                    <li class="btnBox"></li>
+                    <li class="dialog_btnBox"></li>
                 </ul>
             </div>
 

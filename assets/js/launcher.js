@@ -1030,9 +1030,7 @@ function startUpdateProcess() {
               setTimeout(function () {
                   progressUpdatePercentage();
               }, 50))
-            : (updateDisabled
-                  ? finishUpdateProcess()
-                  : ($('.launcher_login_panel').show(), $(loginBtn).fadeTo(1, 1), $(loginBtn).removeClass('disabled')),
+            : (updateDisabled ? finishUpdateProcess() : $('.launcher_login_panel').show(),
               onAuthError(textOutput('serverMaint')))
         : finishUpdateProcess();
 }
@@ -1043,27 +1041,20 @@ let AT_IS_ENABLED = true,
     AT_FRAME = null,
     AT_FRAME_CB = Math.floor(1e3 * Math.random()),
     AT_TimerID = null,
-    AT_STATUS = 'AUTH_NULL',
+    authStatus = 'AUTH_NULL',
     inputUserId = '.userid_input',
+    userId = '',
     inputPassword = '.password_input',
+    password = '',
     serverSelBtn = '.srv_sel_btn',
     serverListBox = '.srv_sel_box',
     srvListEachItem = '.srv_sel_box .srv',
+    serverListOpen = false,
+    serverNotSelected = true,
     loginBtn = '.btn_login',
     saveUserIdCheck = '.check_save_id',
-    credsForgot = '.btn_forgot',
-    AT_SBOX_TimerID = null,
-    AT_SBOX_SEL_ENABLED = false,
-    AT_SBOX_IS_OPENED = false,
-    AT_ANIM_TimerID = null,
-    AT_IS_AUTOLC = false,
-    AT_MODE = '',
-    AT_FOCUS_ELMS = [],
-    AT_FOCUS_IDX = 0,
-    AT_BB_TimerID = null,
-    AT_SVID,
-    AT_SVID_DEF = '1000',
-    AT_IS_UNSELECTED_SRV = true;
+    isChecked = false,
+    credsForgot = '.btn_forgot';
 
 function showMhfMaintenanceDialog() {
     'use strict';
@@ -1075,11 +1066,7 @@ function showMhfMaintenanceDialog() {
 
 function onAuthError(e, E) {
     'use strict';
-    switchEvtPhase('prepare'),
-        e && addLogMsg(e, (E = E || 'y'), true),
-        hideAuthProgress(),
-        unlockAuthEdit(),
-        (AT_IS_ENABLED = !0);
+    switchEvtPhase('prepare'), e && addLogMsg(e, (E = E || 'y'), true), hideAuthProgress(), (AT_IS_ENABLED = !0);
 }
 
 function stopLoginPolling() {
@@ -1095,8 +1082,8 @@ function stopLoginPolling() {
 function loginPolling() {
     'use strict';
     var e = DoGetLastAuthResult();
-    if (e !== AT_STATUS)
-        switch ((AT_STATUS = e)) {
+    if (e !== authStatus)
+        switch ((authStatus = e)) {
             case 'AUTH_NULL':
             case 'AUTH_PROGRESS':
             case 'DELETE_PROGRESS':
@@ -1105,17 +1092,22 @@ function loginPolling() {
             case 'DELETE_ERROR_IVL':
             case 'DELETE_ERROR_MNC':
                 break;
+
             case 'AUTH_SUCCESS':
-                if (
-                    (stopLoginPolling(),
-                    hideAuthProgress(),
-                    COG_MODE &&
-                        ($(saveUserIdCheck).hasClass('checked') &&
-                            ((STORAGE['cogid' + EXE_MUTEX] = $(inputUserId).val()), writeCookie()),
-                        $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text())))
-                );
+                stopLoginPolling();
+                hideAuthProgress();
+                if (COG_MODE && $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text())) {
+                    $(saveUserIdCheck).is(':checked')
+                        ? (localStorage.setItem('UserID', $(inputUserId).val()),
+                          localStorage.setItem('Password', $(inputPassword).val()),
+                          localStorage.setItem('IsChecked', 'true'))
+                        : (localStorage.removeItem('UserID'),
+                          localStorage.removeItem('Password'),
+                          localStorage.removeItem('IsChecked'));
+                }
                 startUpdateProcess();
                 break;
+
             case 'AUTH_ERROR_NET':
                 stopLoginPolling(), onAuthError(textOutput('SIGN_EFAILED'), 'r');
                 break;
@@ -1131,17 +1123,6 @@ function loginPolling() {
                     case 'SIGN_ERESPONSE':
                     case 'SIGN_EDATABASE':
                         onAuthError(textOutput(E), 'r');
-                        break;
-                    case 'SIGN_EALERT':
-                        if ('1018' === AT_SVID) onAuthError(textOutput('SIGN_EALERT_COOP'));
-                        else {
-                            var t = $(serverSelBtn).text();
-                            0 <= t.indexOf('④')
-                                ? onAuthError(textOutput('SIGN_EALERT_COOP'))
-                                : 0 <= t.toUpperCase().indexOf('XBOX')
-                                ? onAuthError(textOutput('SIGN_EALERT_COOP'))
-                                : onAuthError(textOutput(E), 'r');
-                        }
                         break;
                     case 'SIGN_ESUSPEND':
                     case 'SIGN_EELIMINATE':
@@ -1162,7 +1143,7 @@ function loginPolling() {
                 }
                 break;
             default:
-                stopLoginPolling(), onAuthError(textOutput('unknownError') + ' [' + AT_STATUS + ']');
+                stopLoginPolling(), onAuthError(textOutput('unknownError') + ' [' + authStatus + ']');
         }
 }
 
@@ -1186,27 +1167,11 @@ function selectServerItem(target_elm) {
     $('.selected_srv').removeClass('selected_srv'), $(target_elm).toggleClass('selected_srv');
 }
 
-function lockAuthEdit() {
-    'use strict';
-    (AT_SBOX_SEL_ENABLED = false), $(inputUserId).attr('disabled', true), $(inputPassword).attr('disabled', true);
-}
-
-function unlockAuthEdit() {
-    'use strict';
-    (AT_SBOX_SEL_ENABLED = true),
-        $(inputUserId).attr('disabled', false),
-        $(inputPassword).attr('disabled', false),
-        $('.btn_preferences').show();
-}
-
-function switchAuthSrv(e) {
-    'use strict';
-    (AT_SVID = $(e).attr('svid')), $(serverSelBtn).text($(e).text());
+function switchAuthSrv(serverElm) {
+    $(serverSelBtn).text($(serverElm).text());
 }
 
 function showSrvSelList() {
-    'use strict';
-
     // disable the button
     $(serverSelBtn).prop('disabled', true);
 
@@ -1215,12 +1180,10 @@ function showSrvSelList() {
         $(serverSelBtn).prop('disabled', false);
     }),
         $(serverSelBtn).addClass('opened_svr_list'),
-        (AT_SBOX_IS_OPENED = true);
+        (serverListOpen = true);
 }
 
 function hideSrvSelList() {
-    'use strict';
-
     // disable the button
     $(serverSelBtn).prop('disabled', true);
 
@@ -1229,20 +1192,19 @@ function hideSrvSelList() {
         $(serverSelBtn).prop('disabled', false);
     }),
         $(serverSelBtn).removeClass('opened_svr_list'),
-        (AT_SBOX_IS_OPENED = false);
+        (serverListOpen = false);
 }
 
 function initSrvSelList() {
     'use strict';
 
     // check from local storage whether users have selected a server before
-    AT_IS_UNSELECTED_SRV = localStorage.getItem('NeverSelectedSrv') !== 'false';
+    serverNotSelected = localStorage.getItem('NeverSelectedSrv') !== 'false';
 
     // get server list xml data and wrap it in a div element
     const serverList = DoGetServerList();
 
-    // get the index of the last selected server from INI settings and convert it to an integer
-    // in local environment, lastSelectedIndex = 0;
+    // get the index of the last selected server from ini settings and convert it to an integer
     let lastSelectedIndex = DoGetIniLastServerIndex();
     lastSelectedIndex = parseInt(lastSelectedIndex, 10);
 
@@ -1253,31 +1215,20 @@ function initSrvSelList() {
     $(serverList)
         .find('group')
         .each(function (index, srvItem) {
-            const svid = $(srvItem).attr('svid') ? $(srvItem).attr('svid') : AT_SVID_DEF;
             const isBlocked = $(srvItem).attr('ip') === '';
             const name = $(srvItem).attr('nam');
 
             // create and append the server element to the server selection list
             $(serverListBox).append(
-                $(
-                    '<li' +
-                        (isBlocked ? ' block="true"' : '') +
-                        ' class="srv" idx="' +
-                        index +
-                        '" svid="' +
-                        svid +
-                        '">' +
-                        name +
-                        '</li>'
-                )
+                $('<li' + (isBlocked ? ' block="true"' : '') + ' class="srv" idx="' + index + '">' + name + '</li>')
             );
         });
 
     // if the last selected index is out of bounds, set true to the variable for initializing
-    (lastSelectedIndex < 0 || lastSelectedIndex > $(srvListEachItem).length) && (AT_IS_UNSELECTED_SRV = true);
+    (lastSelectedIndex < 0 || lastSelectedIndex > $(srvListEachItem).length) && (serverNotSelected = true);
 
     // if user have previously selected a server, set auth server and assign class to the target server
-    AT_IS_UNSELECTED_SRV
+    serverNotSelected
         ? $(serverSelBtn).text('Select Your Server')
         : (switchAuthSrv($(srvListEachItem)[lastSelectedIndex]),
           $('.srv').eq(lastSelectedIndex).addClass('selected_srv'));
@@ -1292,7 +1243,7 @@ function initSrvSelList() {
 
     // add the server selection button to the focus elements and bind the mousedown event to it
     $(serverSelBtn).mousedown(function () {
-        AT_SBOX_SEL_ENABLED && (DoPlaySound('IDR_WAV_OK'), AT_SBOX_IS_OPENED ? hideSrvSelList() : showSrvSelList());
+        DoPlaySound('IDR_WAV_OK'), serverListOpen ? hideSrvSelList() : showSrvSelList();
     });
 
     // the mouseover event to each server element to play a sound when hovering
@@ -1303,12 +1254,11 @@ function initSrvSelList() {
     // the mousedown event to each server element to select it as the active server, and hide the server selection list
     $(srvListEachItem).mousedown(function () {
         DoPlaySound('IDR_WAV_OK');
-        AT_SBOX_TimerID && (clearTimeout(AT_SBOX_TimerID), (AT_SBOX_TimerID = null));
         switchAuthSrv($(this));
         const index = parseInt($(this).attr('idx'), 10);
         DoSetIniLastServerIndex(String(index));
         selectServerItem($(this));
-        AT_IS_UNSELECTED_SRV && (localStorage.setItem('NeverSelectedSrv', 'false'), (AT_IS_UNSELECTED_SRV = false));
+        serverNotSelected && (localStorage.setItem('NeverSelectedSrv', 'false'), (serverNotSelected = false));
         hideSrvSelList();
     });
 
@@ -1319,24 +1269,15 @@ function initSrvSelList() {
 }
 
 function showAuthProgress() {
-    'use strict';
     $(loginBtn).addClass('disabled');
     $(loginBtn).fadeTo(1, 0.6);
-
-    var e = 0;
-    (AT_ANIM_TimerID = setInterval(function () {
-        $('.progress .anim').removeClass('f' + e), (e = 11 <= e ? 0 : e + 1), $('.progress .anim').addClass('f' + e);
-    }, 100)),
-        $('.progress').fadeIn(200);
+    $('.progress').fadeIn(200);
 }
 
 function hideAuthProgress() {
-    'use strict';
-    $('.progress')
-        .stop()
-        .fadeOut(200, function () {
-            AT_ANIM_TimerID && (clearInterval(AT_ANIM_TimerID), (AT_ANIM_TimerID = null));
-        });
+    $(loginBtn).fadeTo(1, 1);
+    $(loginBtn).removeClass('disabled');
+    $('.progress').fadeOut(200);
 }
 
 function authExec() {
@@ -1351,47 +1292,16 @@ function beginAuthProcess(e) {
             if ('' === $(inputUserId).val() || '' === $(inputPassword).val())
                 DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r');
             else if (authExec()) {
-                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress();
+                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), showAuthProgress();
                 createShortLifeAuthKeyDone();
             }
         } else
             NHN_MODE
-                ? ((AT_IS_ENABLED = !1),
-                  lockAuthEdit(),
-                  showAuthProgress(),
-                  (AT_STATUS = 'AUTH_NULL'),
-                  DoLoginHangame())
-                : ((AT_IS_ENABLED = !1), lockAuthEdit(), showAuthProgress(), (AT_STATUS = 'AUTH_NULL'), DoLoginDmm()),
+                ? ((AT_IS_ENABLED = !1), showAuthProgress(), (authStatus = 'AUTH_NULL'), DoLoginHangame())
+                : ((AT_IS_ENABLED = !1), showAuthProgress(), (authStatus = 'AUTH_NULL'), DoLoginDmm()),
                 (AT_TimerID = setInterval(function () {
                     loginPolling();
                 }, 1e3));
-}
-
-function isAutoLogin() {
-    'use strict';
-    var e = !1;
-    switch ((AT_MODE = DoGetMhfBootMode())) {
-        case '_MHF_SELFUP':
-        case '_MHF_DMM_SELF_UPDATE':
-        case '_MHF_AUTOLC':
-        case '_MHF_DMM_AUTO_LAUNCH':
-            e = !0;
-    }
-    return e;
-}
-
-function removeAuthHover(e) {
-    'use strict';
-    for (var E = 0; E < AT_FOCUS_ELMS.length; E++) $(AT_FOCUS_ELMS[E]).removeClass('hover');
-    e && (AT_FOCUS_IDX = -1);
-}
-
-function setAuthHover(e) {
-    'use strict';
-    for (var E = 0; E < AT_FOCUS_ELMS.length; E++)
-        e === AT_FOCUS_ELMS[E]
-            ? ((AT_FOCUS_IDX = E), $(AT_FOCUS_ELMS[E]).addClass('hover'))
-            : $(AT_FOCUS_ELMS[E]).removeClass('hover');
 }
 
 function switchAuthMode() {
@@ -1400,180 +1310,43 @@ function switchAuthMode() {
         $(CHR_SEL_BOX).hide(),
         $('.msg_logs_area').show(),
         $('.launcher_login_panel').show(),
-        $(loginBtn).fadeTo(1, 1),
-        $(loginBtn).removeClass('disabled'),
         $('.id_srv_label').text(''),
         $('.btn_logout').hide(),
-        $(AT_FOCUS_ELMS[AT_FOCUS_IDX]).addClass('hover'),
-        (KEY_ACT_DEF = function (e) {
-            if (IS_MODAL) return false;
-            var E = AT_FOCUS_IDX,
-                t = !0;
-            switch (e.which) {
-                case 13:
-                    if (AT_IS_ENABLED)
-                        switch (AT_FOCUS_ELMS[E]) {
-                            case serverSelBtn:
-                                AT_SBOX_IS_OPENED || $(serverSelBtn).mousedown();
-                                break;
-                            default:
-                                $(AT_FOCUS_ELMS[E]).click();
-                        }
-                    t = !1;
-                    break;
-                case 9:
-                    if ((removeAuthHover(), AT_IS_ENABLED)) {
-                        if (
-                            (e.shiftKey
-                                ? (E = --E < 0 ? AT_FOCUS_ELMS.length - 1 : E)
-                                : (E++, (E = AT_FOCUS_ELMS.length <= E ? 0 : E)),
-                            $(AT_FOCUS_ELMS[E]).hasClass('disabled'))
-                        )
-                            return (AT_FOCUS_IDX = E), KEY_ACT_DEF(e);
-                        $(AT_FOCUS_ELMS[E]).addClass('hover');
-                    }
-                    t = !1;
-            }
-            return (AT_FOCUS_IDX = E), t;
-        }),
-        unlockAuthEdit(),
         (AT_IS_ENABLED = !0);
 }
 
 function initAuth() {
-    'use strict';
-    if (
-        (COG_MODE && initSrvSelList(),
-        // enable scroll bar on server selector box
-        new scrollBarHandler('.srv_sel_box'),
-        AT_FOCUS_ELMS.push(loginBtn),
-        COG_MODE && (AT_FOCUS_ELMS.push(saveUserIdCheck), AT_FOCUS_ELMS.push(credsForgot)),
-        $(loginBtn).click(function () {
-            AT_IS_UNSELECTED_SRV
-                ? (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noSrvSelected'), 'r'))
-                : beginAuthProcess();
-        }),
-        (AT_IS_AUTOLC = isAutoLogin()),
-        COG_MODE)
-    ) {
-        readCookie();
-        var e = '';
-        '' === e && STORAGE['cogid' + EXE_MUTEX] && (e = STORAGE['cogid' + EXE_MUTEX]),
-            $(inputUserId).val(e),
-            $(inputUserId).focus(function () {
-                DoPlaySound('IDR_WAV_OK');
-            });
+    // initialize server selector list
+    initSrvSelList();
+    // enable scroll bar on server selector box
+    new scrollBarHandler('.srv_sel_box');
 
-        var E = '';
-        if (
-            ('' === E && STORAGE['pw' + EXE_MUTEX] && (E = STORAGE['pw' + EXE_MUTEX]),
-            (E = '' !== E ? E : $(inputPassword).attr('default')),
-            $(inputPassword).val(E),
-            $(inputPassword).focus(function () {
-                DoPlaySound('IDR_WAV_OK'), setAuthHover(inputPassword);
-            }),
-            $(inputUserId + ',' + inputPassword).keydown(function (e) {
-                switch (e.which) {
-                    case 117:
-                        return !1;
-                    case 48:
-                    case 49:
-                    case 50:
-                    case 51:
-                    case 52:
-                    case 53:
-                    case 54:
-                    case 55:
-                    case 56:
-                    case 57:
-                    case 65:
-                    case 66:
-                    case 67:
-                    case 68:
-                    case 69:
-                    case 70:
-                    case 71:
-                    case 72:
-                    case 73:
-                    case 74:
-                    case 75:
-                    case 76:
-                    case 77:
-                    case 78:
-                    case 79:
-                    case 80:
-                    case 81:
-                    case 82:
-                    case 83:
-                    case 84:
-                    case 85:
-                    case 86:
-                    case 87:
-                    case 88:
-                    case 89:
-                    case 90:
-                    case 96:
-                    case 97:
-                    case 98:
-                    case 99:
-                    case 100:
-                    case 101:
-                    case 102:
-                    case 103:
-                    case 104:
-                    case 105:
-                    case 106:
-                    case 107:
-                    case 109:
-                    case 110:
-                    case 111:
-                    case 186:
-                    case 187:
-                    case 188:
-                    case 189:
-                    case 190:
-                    case 191:
-                    case 192:
-                    case 219:
-                    case 220:
-                    case 221:
-                    case 222:
-                    case 226:
-                        DoPlaySound('IDR_WAV_SEL');
-                }
-            }),
-            $(saveUserIdCheck).click(function () {
-                $(saveUserIdCheck).toggleClass('checked'),
-                    DoPlaySound('IDR_WAV_OK'),
-                    !$(saveUserIdCheck).hasClass('checked') && delCoockie('cogid' + EXE_MUTEX);
-            }),
-            $(saveUserIdCheck).hover(
-                function () {
-                    setAuthHover(saveUserIdCheck);
-                },
-                function () {
-                    removeAuthHover();
-                }
-            ),
-            $(credsForgot).hover(
-                function () {
-                    setAuthHover(credsForgot);
-                },
-                function () {
-                    removeAuthHover();
-                }
-            ),
-            STORAGE['cogid' + EXE_MUTEX] && !AT_IS_AUTOLC && $(saveUserIdCheck).addClass('checked'),
-            AT_IS_AUTOLC && '' !== e && '' !== E)
-        )
-            '_MHF_AUTOLC' === AT_MODE && $(saveUserIdCheck).toggleClass('checked'), beginAuthProcess();
-        else if ('' !== e && '' !== E)
-            for (var t = 0; t < AT_FOCUS_ELMS.length; t++)
-                if (AT_FOCUS_ELMS[t] === loginBtn) {
-                    AT_FOCUS_IDX = t;
-                    break;
-                }
-    } else AT_IS_AUTOLC && beginAuthProcess();
+    // login button click event
+    $(loginBtn).click(function () {
+        serverNotSelected
+            ? (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noSrvSelected'), 'r'))
+            : beginAuthProcess();
+    });
+
+    // set user_id and focus event
+    userId = localStorage.getItem('UserID');
+    $(inputUserId).val(userId);
+    $(inputUserId).focus(function () {
+        DoPlaySound('IDR_WAV_OK');
+    });
+
+    // set password and focus event
+    password = localStorage.getItem('Password');
+    $(inputPassword).val(password);
+    $(inputPassword).focus(function () {
+        DoPlaySound('IDR_WAV_OK');
+    });
+
+    // set check state for saveUserIdCheck
+    isChecked = localStorage.getItem('IsChecked') === 'true';
+    isChecked === true ? $(saveUserIdCheck).prop('checked', true) : $(saveUserIdCheck).prop('checked', false);
+
+    // Switch authentication mode (username/password or smart card) if necessary
     switchAuthMode();
 }
 
@@ -1702,13 +1475,13 @@ function startExLog() {
 =======================================================*/
 let kuModalAction = function () {},
     dialogTexts = '.dialog_text_contents',
-    dialogButtons = '.btnBox',
+    dialogButtons = '.dialog_btnBox',
     dialogEachBtn = '.md_btn',
     dialogStandbyBtn = '.md_btn.standby';
 
 function showModalDialog(text, options, standbyTime) {
     // show the modal dialog
-    $('#launcher_modal').show();
+    $('.launcher_dialog').show();
 
     // initialize child elmemts
     $(dialogTexts).empty();
@@ -1770,7 +1543,7 @@ function showModalDialog(text, options, standbyTime) {
 function hideModalDialog() {
     (_KEY_ACT_MODAL = function () {}),
         (kuModalAction = function () {}),
-        $('#launcher_modal').hide(),
+        $('.launcher_dialog').hide(),
         $(dialogTexts).empty(),
         $(dialogButtons).empty(),
         (IS_MODAL = false);
@@ -2044,7 +1817,7 @@ $(function () {
         DoPlaySound('IDR_WAV_OK');
     });
 
-    // play sound when hovering preferences button
+    // play a sound when hovering preferences button
     $('.btn_preferences_text').mouseover(function () {
         CONF_SND_BLOCK ? ((CONF_SND_BLOCK = false), startExLog()) : DoPlaySound('IDR_WAV_SEL');
     });
@@ -2054,8 +1827,14 @@ $(function () {
         (CONF_SND_BLOCK = true), stopExLog(), DoOpenMhlConfig();
     });
 
-    $('#launcher_menu a,.selsnd,.btn').mouseover(function () {
+    // play a sound when hovering the element with sound_on class
+    $('.sound_on').mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
+    });
+
+    // play a sound when clicking the element with sound_on class except for login btn
+    $('.sound_on').click(function (e) {
+        e.target !== $(loginBtn).get(0) && DoPlaySound('IDR_WAV_OK');
     });
 
     $(CHR_SEL_UP).click(function () {

@@ -1,8 +1,10 @@
+@use './variables' as *;
+
 /* Images
 ====================================================*/
 // Background
 @mixin launcher_bg {
-    background: url(/launcher/assets/img/common/background.jpg) center center no-repeat;
+    background: url(#{$img}/common/background.jpg) center center no-repeat;
 }
 
 // Move Icon
@@ -36,13 +38,26 @@
 
 // Down Arrow Icon
 @mixin down_arrow_icon {
-    background: url('/launcher/assets/img/common/down_arrow.png') center / 14px no-repeat;
+    background: url('#{$img}/common/down_arrow.png') center / 14px no-repeat;
 }
 
 // Main Button Background
 @mixin main_btn_bg {
-    background: url(/launcher/assets/img/common/login_button_bg.png) no-repeat;
+    background: url(#{$img}/common/login_button_bg.png) no-repeat;
     text-shadow: 3px 0 3px #003900, 0 3px 3px #003900, -3px 0 3px #003900, 0 -3px 3px #003900;
+}
+
+// Checkbox Check Mark
+@mixin check_mark {
+    background: #0d97fa
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-check' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='white' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M5 12l5 5l10 -10'%3E%3C/path%3E%3C/svg%3E")
+        center / 16px no-repeat;
+}
+
+// Right Caret Arrow Icon
+@mixin caret_right_arrow_icon {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-caret-right' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='white' fill='white' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'%3E%3C/path%3E%3Cpath d='M10 18l6 -6l-6 -6v12'%3E%3C/path%3E%3C/svg%3E")
+        center / 18px no-repeat;
 }
 
 // Gear Icon on Preferences
@@ -53,7 +68,7 @@
 
 // Dialog Button Background
 @mixin dialog_btn_bg {
-    background: url(/launcher/assets/img/common/dialog_button_bg.png) no-repeat;
+    background: url(#{$img}/common/dialog_button_bg.png) no-repeat;
     text-shadow: 3px 0 3px #003900, 0 3px 3px #003900, -3px 0 3px #003900, 0 -3px 3px #003900;
 }
 
@@ -62,10 +77,10 @@
 // Authenticating Progress
 @mixin authProgKey {
     @keyframes authProgAni {
-        from {
+        0% {
             transform: rotate(0);
         }
-        to {
+        100% {
             transform: rotate(359deg);
         }
     }

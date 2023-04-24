@@ -399,7 +399,7 @@ h1 {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 3% 0;
+        padding: 2% 0 3% 0;
 
         // label area
         label {
@@ -512,7 +512,7 @@ h1 {
         display: flex;
         justify-content: space-around;
 
-        // remember id
+        // remember me
         .checkbox {
             position: relative;
             padding-left: 6%;
@@ -700,10 +700,10 @@ h1 {
 =======================================================*/
 .progress {
     position: absolute;
-    width: 450px;
-    height: 414px;
-    left: 5%;
-    top: 23%;
+    width: 470px;
+    height: 424px;
+    left: 4%;
+    top: 22%;
     background: rgba(0, 0, 0, 0.5);
     text-shadow: 3px 0 3px #757575, 0 3px 3px #757575, -3px 0 3px #757575, 0 -3px 3px #757575;
     z-index: 200;
@@ -746,6 +746,264 @@ h1 {
 }
 
 /*=========================================================
+　　　　　Character Selection
+=======================================================*/
+.character_selection {
+    width: 520px;
+    height: 378px;
+    position: absolute;
+    left: 15px;
+    top: 134px;
+    color: #313131;
+
+    // arrows
+    .scroll {
+        width: 131px;
+        height: 39px;
+        position: absolute;
+        left: 198px;
+        background: no-repeat 0px 0px;
+        cursor: pointer;
+        z-index: 1000;
+
+        &.disabled {
+            cursor: default;
+
+            &:hover {
+                background-position: 0px 0px;
+            }
+        }
+
+        // up arrow
+        &.up {
+            top: 14px;
+        }
+
+        // down arrow
+        &.down {
+            top: 210px;
+        }
+
+        // when hovering
+        &:hover {
+            background-position: 0px -39px;
+        }
+    }
+
+    // character group units
+    .units {
+        width: 520px;
+        height: 263px;
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        // character individual unit
+        .unit {
+            width: 520px;
+            height: 143px;
+            position: absolute;
+            left: 0;
+            top: 60px;
+            background: url(#{$img}/char/background.png) no-repeat 0px 0px;
+            cursor: default;
+
+            &.onehandsword {
+                @include char_sel_unit('sword_and_shield');
+            }
+
+            &.twinsword {
+                @include char_sel_unit('dual_blades');
+            }
+
+            &.largesword {
+                @include char_sel_unit('great_sword');
+            }
+
+            &.longsword {
+                @include char_sel_unit('long_sword');
+            }
+
+            &.horn {
+                @include char_sel_unit('hunting_horn');
+            }
+
+            &.hammer {
+                @include char_sel_unit('hammer');
+            }
+
+            &.lance {
+                @include char_sel_unit('lance');
+            }
+
+            &.gunlance {
+                @include char_sel_unit('gunlance');
+            }
+
+            &.senryukon {
+                @include char_sel_unit('tonfa');
+            }
+
+            &.slashaxe {
+                @include char_sel_unit('switch_axe');
+
+                .wp {
+                    left: 84px;
+                    letter-spacing: -2px;
+                }
+            }
+
+            &.magnetspike {
+                @include char_sel_unit('magnet_spike');
+
+                .wp {
+                    left: 90px;
+                    letter-spacing: -1px;
+                }
+            }
+
+            &.lbowgun {
+                @include char_sel_unit('light_bowgun');
+            }
+
+            &.hbowgun {
+                @include char_sel_unit('heavy_bowgun');
+            }
+
+            &.bow {
+                @include char_sel_unit('bow');
+            }
+
+            // current character
+            &.crr {
+                cursor: pointer;
+
+                .sign {
+                    width: 134px;
+                    height: 124px;
+                    position: absolute;
+                    right: 9px;
+                    top: 9px;
+                    background: no-repeat 0px 0px;
+
+                    &.down {
+                        background-position: 0px -124px;
+                    }
+                }
+
+                .cover {
+                    width: 520px;
+                    height: 143px;
+                    left: 0;
+                    top: 0;
+                    background: none;
+                }
+            }
+
+            // new character
+            &.new {
+                .name {
+                    font-weight: normal;
+                }
+
+                .new {
+                    display: block;
+                    width: 100%;
+                    position: absolute;
+                    left: 0;
+                    top: 66px;
+                    color: #313131;
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-align: center;
+                    line-height: 18px;
+
+                    &:first-line {
+                        font-size: 26px;
+                        line-height: 32px;
+                        color: #3169f0;
+                    }
+                }
+            }
+
+            // character index img
+            .num {
+                width: 81px;
+                height: 77px;
+                position: absolute;
+                left: 11px;
+                top: 11px;
+                background: no-repeat 0px 0px;
+            }
+
+            // weapon icon
+            .icon {
+                width: 48px;
+                height: 47px;
+                position: absolute;
+                left: 31px;
+                top: 69px;
+                background: no-repeat 0px 0px;
+            }
+
+            // character name
+            .name {
+                font-size: 30px;
+                line-height: 30px;
+                letter-spacing: 0.25;
+                text-align: center;
+                font-weight: bold;
+                position: absolute;
+                top: 23px;
+                left: 0;
+                width: 100%;
+            }
+
+            // character weapon
+            .wp {
+                font-size: 18px;
+                line-height: 20px;
+                text-align: center;
+                font-weight: bold;
+                display: block;
+                position: absolute;
+                left: 90px;
+                top: 73px;
+                white-space: nowrap;
+
+                // weapon text adjustment
+                &:first-line {
+                    font-size: 14px;
+                    letter-spacing: 0;
+                }
+            }
+
+            // character data
+            .data {
+                text-align: left;
+                font-size: 16px;
+                line-height: 18px;
+                display: block;
+                white-space: nowrap;
+                position: absolute;
+                left: 252px;
+                top: 65px;
+            }
+
+            // ??
+            .cover {
+                width: 504px;
+                height: 127px;
+                position: absolute;
+                left: 8px;
+                top: 8px;
+                background: #000;
+            }
+        }
+    }
+}
+
+/*=========================================================
 　　　　　Banner
 =======================================================*/
 .launcher_bnr {
@@ -765,7 +1023,7 @@ h1 {
 /*=========================================================
 　　　　　Launcher Information
 =======================================================*/
-.launcher_info_list {
+.info_list {
     width: 535px;
     height: 288px;
     position: absolute;

@@ -1,14 +1,6 @@
 var updateDisabled = true;
 
-function trackPageView(e, E) {
-    console.log('trackPageView:\ne=' + e + '\nE=' + E);
-    return;
-}
-
-function trackEvent(e, E, t, r) {
-    var m = '<br>EVENT > e=' + e + ':E=' + E + ':t=' + t + ':r=' + r;
-    console.log(m);
-}
+function addEvent() {} // error occurs when deleting, leave this as it is
 
 function scrollBarHandler(selector) {
     this.$el = $(selector);
@@ -92,32 +84,16 @@ function dialogTextOutput(textType) {
     return decodeURIComponent(dialogTextData[textType]);
 }
 
-let AT_MOVE_MODE_ENABLED = false;
-
 function launcherMovingHandler() {
     $('.move')
         .hover(function () {
             // when the mouse button is hovering and pressed within the area
-            AT_MOVE_MODE_ENABLED !== true && $('.overlay').fadeIn(200),
-                (AT_MOVE_MODE_ENABLED = true),
-                DoBeginDrag(true);
+            $('.overlay').fadeIn(200), DoBeginDrag(true);
         })
         .mouseout(function () {
             // when the mouse button is released within the area
-            AT_MOVE_MODE_ENABLED !== false && $('.overlay').fadeOut(200),
-                (AT_MOVE_MODE_ENABLED = false),
-                DoBeginDrag(false);
+            $('.overlay').fadeOut(200), DoBeginDrag(false);
         });
-}
-
-function DoGetMhfBootMode() {
-    'use strict';
-
-    try {
-        return window.external.getMhfBootMode();
-    } catch (e) {
-        return '_MHF_NORMAL';
-    }
 }
 
 function DoGetIniLastServerIndex() {
@@ -167,13 +143,6 @@ function DoOpenMhlConfig() {
     window.external.openMhlConfig();
 }
 
-function DoRestartMhf() {
-    'use strict';
-
-    DoPlaySound('IDR_WAV_OK');
-    window.external.restartMhf();
-}
-
 function DoOpenBrowser(e) {
     'use strict';
 
@@ -187,30 +156,10 @@ function DoBeginDrag(e) {
     } catch (e) {}
 }
 
-function DoGetUserId() {
-    'use strict';
-
-    try {
-        return window.external.getUserId() || '';
-    } catch (e) {
-        return '';
-    }
-}
-
-function DoGetPassword() {
-    'use strict';
-
-    try {
-        return window.external.getPassword() || '';
-    } catch (e) {
-        return '';
-    }
-}
-
-function DoLoginCog(e, E, t) {
+function DoLoginCog(userId, pass1, pass2) {
     'use strict';
     try {
-        return window.external.loginCog(e, E, t);
+        return window.external.loginCog(userId, pass1, pass2);
     } catch (e) {}
 }
 
@@ -287,16 +236,6 @@ function DoGetUpdateStatus() {
     }
 }
 
-function DoGetAccountRights() {
-    'use strict';
-
-    try {
-        return window.external.getAccountRights();
-    } catch (e) {
-        return '';
-    }
-}
-
 function DoGetLauncherReturnCode() {
     'use strict';
 
@@ -366,42 +305,6 @@ function DoExtractLog(e) {
     }
 }
 
-var EXE_MUTEX = 0,
-    EVT_PHASE = 'prepare',
-    STORAGE = {},
-    TRG_STORAGE_KEY = {},
-    HOSTS = {},
-    COG_MODE = true,
-    NHN_MODE = !0,
-    IE_STATE = {},
-    CS_ELMS = {},
-    ABS_DOC = null,
-    IS_MODAL = false; // need to change this to true to open a dialog
-
-function switchEvtPhase(e) {
-    'use strict';
-    EVT_PHASE = e;
-}
-
-function addEvent(e) {
-    'use strict';
-    trackEvent('launcher', EVT_PHASE, e);
-}
-
-var _KEY_ACT_MODAL = function () {},
-    KEY_ACT_DEF;
-
-function resetKeyActDefMode() {
-    'use strict';
-    KEY_ACT_DEF = function (e) {
-        switch (e.which) {
-            case 9:
-                return !1;
-        }
-        return !0;
-    };
-}
-
 function overrideAnker(selector) {
     $(selector)
         .find('a')
@@ -411,62 +314,20 @@ function overrideAnker(selector) {
         });
 }
 
-function readCookie() {
-    'use strict';
-    var e = '';
-    STORAGE = {};
-    try {
-        e = document.cookie;
-    } catch (e) {}
-    if ('' !== e) {
-        e = e.split(';');
-        for (var E = 0; E < e.length; E++) {
-            var t = e[E].split('='),
-                r = t[0].split(' ').join('');
-            TRG_STORAGE_KEY[r] = r && (STORAGE[r] = decodeURIComponent(t[1]));
-        }
-    }
-    STORAGE['cogid' + EXE_MUTEX] || (STORAGE['cogid' + EXE_MUTEX] = ''),
-        STORAGE['pw' + EXE_MUTEX] || (STORAGE['pw' + EXE_MUTEX] = '');
-}
-
-function writeCookie() {
-    'use strict';
-    var e = [];
-    for (var E in STORAGE) STORAGE.hasOwnProperty(E) && e.push(E + '=' + STORAGE[E]);
-    if (e.length) {
-        var t = new Date();
-        t.setDate(t.getDate() + 365);
-        try {
-            for (var r = 0; r < e.length; r++) document.cookie = e[r] + '; expires=' + t.toGMTString();
-        } catch (e) {}
-    }
-}
-
-function delCoockie(e) {
-    'use strict';
-    if (STORAGE[e])
-        try {
-            document.cookie = e + '=' + STORAGE[e] + '; expires=' + new Date(0).toGMTString();
-        } catch (e) {}
-}
-resetKeyActDefMode();
-
-let INF_URL = '/launcher/en/launcher_list.html',
-    INF_SEL_LI = '.launcher_info_list',
-    INF_SEL_US = '.launcher_info_list img, .launcher_info_list a';
+let infoListUrl = '/launcher/en/info_list.html',
+    infoList = '.info_list';
 
 function beginLoadInfo() {
     'use strict';
     $.ajax({
         type: 'GET',
-        url: INF_URL,
+        url: infoListUrl,
         dataType: 'text',
         cache: false,
         success: function (e) {
-            $(INF_SEL_LI).html(e);
-            overrideAnker(INF_SEL_LI);
-            new scrollBarHandler(INF_SEL_LI);
+            $(infoList).html(e);
+            overrideAnker(infoList);
+            new scrollBarHandler(infoList);
         },
     });
 }
@@ -480,12 +341,12 @@ var CHR_CRR = 0,
     CHR_HR = null,
     delCharName = '',
     delCharUid = '',
-    CHR_SEL_BOX = '#launcher_character_select',
-    CHR_SEL_UNIT = CHR_SEL_BOX + ' .unit',
-    CHR_SEL_UP = CHR_SEL_BOX + ' .scroll.up',
-    CHR_SEL_DOWN = CHR_SEL_BOX + ' .scroll.down',
-    CHR_SEL_ADD = CHR_SEL_BOX + ' .btn_add',
-    charDeleteBtn = CHR_SEL_BOX + ' .btn_del',
+    charSelBox = '.character_selection',
+    charSelUnit = charSelBox + ' .unit',
+    charSelUpArrow = charSelBox + ' .scroll.up',
+    charSelDownArrow = charSelBox + ' .scroll.down',
+    charAddButton = charSelBox + ' .btn_add',
+    charDelButton = charSelBox + ' .btn_del',
     CHR_IS_WAIT = !1;
 
 function convWpType(e) {
@@ -538,36 +399,36 @@ function entityRef(e) {
         .join('&quot;'));
 }
 
-function createCharUnit(e, E, t, r, a, _, s, n) {
+function createCharUnit(index, name, uid, hr, gr, weapon, gender, lastLogin) {
     'use strict';
-    _ = _.split('F').join('Ｆ');
-    E = E.split('狩人申請可能').join('Ready to Hunt');
-    var o = $('<div class="unit" uid="' + t + '" name="' + E + '" hr="' + r + '" to="0"></div>');
+    weapon = weapon.split('F').join('Ｆ');
+    name = name.split('狩人申請可能').join('Ready to Hunt');
+    var o = $('<div class="unit" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>');
     if (
-        (o.append($('<div class="num n' + e + '"></div>')),
+        (o.append($('<div class="num n' + index + '"></div>')),
         o.append($('<div class="sign"></div>')),
-        o.append($('<p class="name">' + entityRef(E) + '</p>')),
-        0 === r)
+        o.append($('<p class="name">' + entityRef(name) + '</p>')),
+        0 === hr)
     )
         o.addClass('new'), o.append($('<p class="new">' + textOutput('readyNewChara') + '</p>'));
     else {
-        var i = convWpType(_);
+        var i = convWpType(weapon);
         o.addClass(i),
             o.append($('<div class="icon' + ('' !== i ? ' ' + i : '') + '"></div>')),
-            o.append($('<p class="wp">' + 'Weapon' + '<br>' + translateWeapon(_) + '</p>')),
+            o.append($('<p class="wp">' + 'Weapon' + '<br>' + weapon + '</p>')),
             o.append(
                 $(
                     '<p class="data">HR' +
-                        r +
-                        (0 < a ? '　GR' + a : '') +
+                        hr +
+                        (0 < gr ? '　GR' + gr : '') +
                         '　' +
-                        ('M' === s ? '♂' : '♀') +
+                        ('M' === gender ? '♂' : '♀') +
                         '<br>ID:' +
-                        t +
+                        uid +
                         '<br>' +
                         'Last Login' +
                         ':' +
-                        convLastDateStr(n) +
+                        convLastDateStr(lastLogin) +
                         '</p>'
                 )
             );
@@ -581,13 +442,9 @@ function createCharUnit(e, E, t, r, a, _, s, n) {
     );
 }
 
-function removeStampe() {}
-
-function addStamp() {}
-
 function getCrrChar() {
     'use strict';
-    return $($(CHR_SEL_UNIT)[CHR_CRR]);
+    return $($(charSelUnit)[CHR_CRR]);
 }
 
 function convTop2Z(e) {
@@ -602,10 +459,10 @@ function scrollCharUni(e, r) {
         CHR_SCR = !0;
         var a = 'easeOutBounce' !== (r = r || 'easeOutBounce') ? 1 : 400;
         CHR_CRR += e;
-        var E = $(CHR_SEL_UNIT).length;
+        var E = $(charSelUnit).length;
         (CHR_CRR = Math.max(0, Math.min(CHR_CRR, E - 1))),
             'easeOutBounce' === r && (updateScrollBtnState(), updateCharCtrlBtnState()),
-            $(CHR_SEL_UNIT).each(function (E, t) {
+            $(charSelUnit).each(function (E, t) {
                 $(t).stop();
                 var e = E - CHR_CRR + CHR_UNIT_I;
                 e < 0
@@ -613,15 +470,13 @@ function scrollCharUni(e, r) {
                       $(t).css('display', 'none'),
                       $(t).css('z-index', '0'),
                       $(t).removeClass('crr'),
-                      $($(t).children('.cover')[0]).stop().fadeTo(100, 1),
-                      removeStampe(t))
+                      $($(t).children('.cover')[0]).stop().fadeTo(100, 1))
                     : CHR_UNIT_Y.length <= e
                     ? ($(t).css('top', CHR_UNIT_Y[CHR_UNIT_Y.length - 1] + 'px'),
                       $(t).css('display', 'none'),
                       $(t).css('z-index', '0'),
                       $(t).removeClass('crr'),
-                      $($(t).children('.cover')[0]).stop().fadeTo(100, 1),
-                      removeStampe(t))
+                      $($(t).children('.cover')[0]).stop().fadeTo(100, 1))
                     : ($(t).css('display', 'block'),
                       $($(t).children('.cover')[0])
                           .stop()
@@ -636,10 +491,8 @@ function scrollCharUni(e, r) {
                                   $(this).css('z-index', e),
                                       60 < e
                                           ? E === CHR_CRR &&
-                                            ($($(t).children('.cover')[0]).stop().fadeTo(100, 0),
-                                            $(t).addClass('crr'),
-                                            addStamp(t))
-                                          : ($(t).removeClass('crr'), removeStampe(t));
+                                            ($($(t).children('.cover')[0]).stop().fadeTo(100, 0), $(t).addClass('crr'))
+                                          : $(t).removeClass('crr');
                               },
                               complete: function () {
                                   (CHR_SCR = !1),
@@ -647,10 +500,9 @@ function scrollCharUni(e, r) {
                                           'easeOutBounce' !== r &&
                                           (CHR_CRR !== CHR_DEF
                                               ? scrollCharUni(1, 'swing')
-                                              : (addStamp(t),
-                                                updateScrollBtnState(),
+                                              : (updateScrollBtnState(),
                                                 updateCharCtrlBtnState(),
-                                                $(CHR_SEL_BOX).show()));
+                                                $(charSelBox).show()));
                               },
                           }
                       ));
@@ -660,108 +512,43 @@ function scrollCharUni(e, r) {
 
 function updateScrollBtnState() {
     'use strict';
-    var e = $(CHR_SEL_UNIT).length;
+    var e = $(charSelUnit).length;
     1 < e
-        ? (0 !== CHR_CRR ? $(CHR_SEL_UP).removeClass('disabled') : $(CHR_SEL_UP).addClass('disabled'),
-          CHR_CRR !== e - 1 ? $(CHR_SEL_DOWN).removeClass('disabled') : $(CHR_SEL_DOWN).addClass('disabled'),
-          $(CHR_SEL_BOX + ' .scroll').show())
-        : $(CHR_SEL_BOX + ' .scroll').hide(),
-        kdCharSelMode();
+        ? (0 !== CHR_CRR ? $(charSelUpArrow).removeClass('disabled') : $(charSelUpArrow).addClass('disabled'),
+          CHR_CRR !== e - 1 ? $(charSelDownArrow).removeClass('disabled') : $(charSelDownArrow).addClass('disabled'),
+          $(charSelBox + ' .scroll').show())
+        : $(charSelBox + ' .scroll').hide();
 }
 
 function updateCharCtrlBtnState() {
     'use strict';
-    $(CHR_SEL_UNIT).length < 11
-        ? ($(CHR_SEL_ADD).removeClass('disabled'),
-          $(CHR_SEL_ADD).fadeTo(100, 1),
-          $(CHR_SEL_ADD).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
-        : ($(CHR_SEL_ADD).attr('onMouseOver', ''),
-          $(CHR_SEL_ADD).removeAttr('onMouseOver'),
-          $(CHR_SEL_ADD).addClass('disabled'),
-          $(CHR_SEL_ADD).fadeTo(200, 0.4)),
+    $(charSelUnit).length < 11
+        ? ($(charAddButton).removeClass('disabled'),
+          $(charAddButton).fadeTo(100, 1),
+          $(charAddButton).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+        : ($(charAddButton).attr('onMouseOver', ''),
+          $(charAddButton).removeAttr('onMouseOver'),
+          $(charAddButton).addClass('disabled'),
+          $(charAddButton).fadeTo(200, 0.4)),
         '0' !== getCrrChar().attr('hr')
-            ? ($(charDeleteBtn).removeClass('disabled'),
-              $(charDeleteBtn).fadeTo(100, 1),
-              $(charDeleteBtn).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
-            : ($(charDeleteBtn).attr('onMouseOver', ''),
-              $(charDeleteBtn).removeAttr('onMouseOver'),
-              $(charDeleteBtn).addClass('disabled'),
-              $(charDeleteBtn).fadeTo(200, 0.4));
-}
-
-function kdCharSelMode() {
-    'use strict';
-    KEY_ACT_DEF = function (e) {
-        if (IS_MODAL) return false;
-        var E = !0;
-        switch (e.which) {
-            case 38:
-            case 33:
-                CHR_SCR || !$(CHR_SEL_UP).is(':visible') || $(CHR_SEL_UP).hasClass('disabled') || $(CHR_SEL_UP).click(),
-                    (E = !1);
-                break;
-            case 40:
-            case 34:
-                CHR_SCR ||
-                    !$(CHR_SEL_DOWN).is(':visible') ||
-                    $(CHR_SEL_DOWN).hasClass('disabled') ||
-                    $(CHR_SEL_DOWN).click(),
-                    (E = !1);
-                break;
-            case 13:
-                CHR_IS_WAIT || ((CHR_IS_WAIT = !0), $(CHR_SEL_BOX + ' .btn_start').click()), (E = !1);
-                break;
-            case 9:
-                E = !1;
-        }
-        return E;
-    };
-}
-
-function translateWeapon(e) {
-    var E = {
-        'Sword & Shield': 'Sword & Shield',
-        片手剣: 'Sword & Shield',
-        'Dual Swords': 'Dual Swords',
-        双剣: 'Dual Swords',
-        'Great Sword': 'Great Sword',
-        大剣: 'Great Sword',
-        'Long Sword': 'Long Sword',
-        太刀: 'Long Sword',
-        Hammer: 'Hammer',
-        ハンマー: 'Hammer',
-        'Hunting Horn': 'Hunting Horn',
-        狩猟笛: 'Hunting Horn',
-        Lance: 'Lance',
-        ランス: 'Lance',
-        Gunlance: 'Gunlance',
-        ガンランス: 'Gunlance',
-        Tonfa: 'Tonfa',
-        穿龍棍: 'Tonfa',
-        'Switch Axe F': 'Switch Axe F',
-        スラッシュアックスＦ: 'Switch Axe F',
-        'Magnet Spike': 'Magnet Spike',
-        マグネットスパイク: 'Magnet Spike',
-        'Heavy Bowgun': 'Heavy Bowgun',
-        ヘビィボウガン: 'Heavy Bowgun',
-        'Light Bowgun': 'Light Bowgun',
-        ライトボウガン: 'Light Bowgun',
-        Bow: 'Bow',
-        弓: 'Bow',
-    };
-    return E[e] || 'Unknown';
+            ? ($(charDelButton).removeClass('disabled'),
+              $(charDelButton).fadeTo(100, 1),
+              $(charDelButton).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+            : ($(charDelButton).attr('onMouseOver', ''),
+              $(charDelButton).removeAttr('onMouseOver'),
+              $(charDelButton).addClass('disabled'),
+              $(charDelButton).fadeTo(200, 0.4));
 }
 
 function showCharSelector() {
     'use strict';
-    switchEvtPhase('standby'), (CHR_DEF = CHR_CRR = 0), (CHR_IS_WAIT = !1), clearLog();
+    (CHR_DEF = CHR_CRR = 0), (CHR_IS_WAIT = !1), clearOnlyLog();
     $('.launcher_login_panel').hide(),
         $('#launcher_update_progress').hide(),
-        $('.msg_logs_area').hide(),
-        $(CHR_SEL_BOX).hide(),
+        $(charSelBox).hide(),
         $('.btn_logout').show(),
-        $(CHR_SEL_BOX + ' .units').html(''),
-        $(CHR_SEL_BOX + ' .scroll').hide();
+        $(charSelBox + ' .units').html(''),
+        $(charSelBox + ' .scroll').hide();
 
     var e = DoGetCharacterInfo();
     (e = (e = e.split("'").join('"')).split('&apos;').join("'")), (e = $('<div>' + e + '</div>'));
@@ -769,7 +556,7 @@ function showCharSelector() {
     var t = $(e.find('CharacterInfo')[0]).attr('defaultUid');
     e.find('Character').each(function (e, E) {
         $(E).attr('uid') === t && (CHR_DEF = e),
-            $(CHR_SEL_BOX + ' .units').append(
+            $(charSelBox + ' .units').append(
                 createCharUnit(
                     e + 1,
                     $(E).attr('name'),
@@ -782,7 +569,7 @@ function showCharSelector() {
                 )
             );
     }),
-        $(CHR_SEL_UNIT).each(function (e, E) {
+        $(charSelUnit).each(function (e, E) {
             $(E).removeClass('crr'), $(E).css('display', 'none'), $(E).css('z-index', '0');
             var t = e - CHR_CRR + CHR_UNIT_I;
             t < 0
@@ -793,14 +580,14 @@ function showCharSelector() {
                   $(E).css('display', 'block'),
                   $(E).css('z-index', convTop2Z(E)),
                   t === CHR_UNIT_I
-                      ? ($(E).addClass('crr'), $($(E).children('.cover')[0]).stop().fadeTo(0, 1), addStamp(E))
+                      ? ($(E).addClass('crr'), $($(E).children('.cover')[0]).stop().fadeTo(0, 1))
                       : $($(E).children('.cover')[0])
                             .stop()
                             .fadeTo(0, Math.min(0.75, 0.45 * Math.abs(t - CHR_UNIT_I))));
         }),
         CHR_CRR !== CHR_DEF
             ? scrollCharUni(1, 'swing')
-            : (updateScrollBtnState(), updateCharCtrlBtnState(), $(CHR_SEL_BOX).show());
+            : (updateScrollBtnState(), updateCharCtrlBtnState(), $(charSelBox).show());
 }
 
 function charDelPolling() {
@@ -820,7 +607,7 @@ function charDelPolling() {
 
         case 'DEL_SUCCESS':
             // switch the dialog display according to the number of characters owned
-            1 < $(CHR_SEL_UNIT).length
+            1 < $(charSelUnit).length
                 ? showDoneDelNormCharDialog(delCharName, delCharUid)
                 : showDoneDelLastCharDialog(delCharName, delCharUid);
             break;
@@ -829,7 +616,7 @@ function charDelPolling() {
         case 'DEL_ERROR_IVL':
         case 'DEL_ERROR_MNC':
             // show the fail dialog
-            showFailDelCharDialog($(CHR_SEL_UNIT).length);
+            showFailDelCharDialog($(charSelUnit).length);
             break;
     }
 }
@@ -871,7 +658,6 @@ function gameStart() {
 }
 
 function checkDelID(name, id) {
-    'use strict';
     id === $('.del_uid').val() ? showWaitDelCharDialog(name, id) : showWaitdelCharUidErrorDialog(name, id);
 }
 
@@ -999,7 +785,7 @@ function progressUpdatePercentage() {
 function finishUpdateProcess() {
     'use strict';
     DoCheckIsEnableSessionId()
-        ? (showCharSelector(), $('.btn_preferences').show())
+        ? showCharSelector()
         : ($('.launcher_login_panel').hide(),
           $('#launcher_update_progress').hide(),
           $('.msg_logs_area').hide(),
@@ -1008,16 +794,6 @@ function finishUpdateProcess() {
 
 function startUpdateProcess() {
     'use strict';
-    $('.btn_preferences').hide(),
-        switchEvtPhase('update'),
-        (KEY_ACT_DEF = function (e) {
-            switch (e.which) {
-                case 9:
-                    return !1;
-                default:
-                    return !0;
-            }
-        });
     $('#launcher_update_progress .bar_area .file_progress').width(0);
     $('#launcher_update_progress .bar_area .total_progress').width(0);
     $('.launcher_login_panel').hide();
@@ -1035,8 +811,7 @@ function startUpdateProcess() {
         : finishUpdateProcess();
 }
 
-let AT_IS_ENABLED = true,
-    AT_ID = '',
+let AT_ID = '',
     AT_PW = '',
     AT_FRAME = null,
     AT_FRAME_CB = Math.floor(1e3 * Math.random()),
@@ -1060,13 +835,12 @@ function showMhfMaintenanceDialog() {
     'use strict';
     $('.launcher_login_panel').hide(),
         $('#launcher_auth_maintenance').addClass('mhf'),
-        resetKeyActDefMode(),
         $('#launcher_auth_maintenance').show();
 }
 
 function onAuthError(e, E) {
     'use strict';
-    switchEvtPhase('prepare'), e && addLogMsg(e, (E = E || 'y'), true), hideAuthProgress(), (AT_IS_ENABLED = !0);
+    e && addLogMsg(e, (E = E || 'y'), true), hideAuthProgress();
 }
 
 function stopLoginPolling() {
@@ -1096,15 +870,14 @@ function loginPolling() {
             case 'AUTH_SUCCESS':
                 stopLoginPolling();
                 hideAuthProgress();
-                if (COG_MODE && $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text())) {
-                    $(saveUserIdCheck).is(':checked')
-                        ? (localStorage.setItem('UserID', $(inputUserId).val()),
-                          localStorage.setItem('Password', $(inputPassword).val()),
-                          localStorage.setItem('IsChecked', 'true'))
-                        : (localStorage.removeItem('UserID'),
-                          localStorage.removeItem('Password'),
-                          localStorage.removeItem('IsChecked'));
-                }
+                $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text());
+                $(saveUserIdCheck).is(':checked')
+                    ? (localStorage.setItem('UserID', $(inputUserId).val()),
+                      localStorage.setItem('Password', $(inputPassword).val()),
+                      localStorage.setItem('IsChecked', 'true'))
+                    : (localStorage.removeItem('UserID'),
+                      localStorage.removeItem('Password'),
+                      localStorage.removeItem('IsChecked'));
                 startUpdateProcess();
                 break;
 
@@ -1158,7 +931,7 @@ function createShortLifeAuthKeyDone() {
 
 function showCogMaintenanceDialog() {
     'use strict';
-    $('.launcher_login_panel').hide(), resetKeyActDefMode(), $('#launcher_auth_maintenance').show();
+    $('.launcher_login_panel').hide(), $('#launcher_auth_maintenance').show();
 }
 
 function selectServerItem(target_elm) {
@@ -1269,55 +1042,55 @@ function initSrvSelList() {
 }
 
 function showAuthProgress() {
+    // diabled login button
     $(loginBtn).addClass('disabled');
     $(loginBtn).fadeTo(1, 0.6);
+
+    // show auth progress display
     $('.progress').fadeIn(200);
 }
 
 function hideAuthProgress() {
+    // enabled login button
     $(loginBtn).fadeTo(1, 1);
     $(loginBtn).removeClass('disabled');
+
+    // hide auth progress display
     $('.progress').fadeOut(200);
 }
 
-function authExec() {
-    'use strict';
-    return !0;
-}
+function beginAuthProcess() {
+    const userId = $(inputUserId).val();
+    const password = $(inputPassword).val();
 
-function beginAuthProcess(e) {
-    'use strict';
-    if (($('.btn_preferences').hide(), e && (AT_IS_ENABLED = !0), AT_IS_ENABLED))
-        if ((switchEvtPhase('auth'), switchAuthMode(), COG_MODE)) {
-            if ('' === $(inputUserId).val() || '' === $(inputPassword).val())
-                DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r');
-            else if (authExec()) {
-                DoPlaySound('IDR_WAV_PRE_LOGIN'), (AT_IS_ENABLED = !1), showAuthProgress();
-                createShortLifeAuthKeyDone();
-            }
-        } else
-            NHN_MODE
-                ? ((AT_IS_ENABLED = !1), showAuthProgress(), (authStatus = 'AUTH_NULL'), DoLoginHangame())
-                : ((AT_IS_ENABLED = !1), showAuthProgress(), (authStatus = 'AUTH_NULL'), DoLoginDmm()),
-                (AT_TimerID = setInterval(function () {
-                    loginPolling();
-                }, 1e3));
+    '' === userId || '' === password
+        ? // if credentials are not entered, return error
+          (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r'))
+        : // if credentials are entered, proceed to auth process
+          (DoPlaySound('IDR_WAV_PRE_LOGIN'), showAuthProgress(), createShortLifeAuthKeyDone());
 }
 
 function switchAuthMode() {
-    'use strict';
-    $('#launcher_update_progress').hide(),
-        $(CHR_SEL_BOX).hide(),
-        $('.msg_logs_area').show(),
-        $('.launcher_login_panel').show(),
-        $('.id_srv_label').text(''),
-        $('.btn_logout').hide(),
-        (AT_IS_ENABLED = !0);
+    // hide update display
+    $('#launcher_update_progress').hide();
+
+    // hide character selection
+    $(charSelBox).hide();
+
+    // show login main panel
+    $('.launcher_login_panel').show();
+
+    // reset server name label
+    $('.id_srv_label').text('');
+
+    // hide logout button
+    $('.btn_logout').hide();
 }
 
 function initAuth() {
     // initialize server selector list
     initSrvSelList();
+
     // enable scroll bar on server selector box
     new scrollBarHandler('.srv_sel_box');
 
@@ -1346,16 +1119,11 @@ function initAuth() {
     isChecked = localStorage.getItem('IsChecked') === 'true';
     isChecked === true ? $(saveUserIdCheck).prop('checked', true) : $(saveUserIdCheck).prop('checked', false);
 
-    // Switch authentication mode (username/password or smart card) if necessary
+    // set launcher display to initial state
     switchAuthMode();
 }
 
-let SEL_LOG = '.msg_contents',
-    LOG_TimerID = null,
-    LOG_INT = 100,
-    CONF_SND_BLOCK = false,
-    ENTERDOWN_TimerID = null,
-    LAST_KEYDOWN = 0;
+let messageContents = '.msg_contents';
 
 function addLogMsg(message, type, isOnlyOneMsg) {
     if (message) {
@@ -1383,7 +1151,7 @@ function addLogMsg(message, type, isOnlyOneMsg) {
         const logMessage = '<p class="' + color + ' ' + only + '">' + message + '</p>';
 
         // get all paragraphs
-        const texts = $(SEL_LOG + ' ' + 'p')
+        const texts = $(messageContents + ' ' + 'p')
             .contents()
             .text();
 
@@ -1393,21 +1161,20 @@ function addLogMsg(message, type, isOnlyOneMsg) {
         }
 
         // append msg to SEL_LOG until scrollable, after that append msg to the generated container
-        $('#mCSB_3_container').length ? $('#mCSB_3_container').append(logMessage) : $(SEL_LOG).append(logMessage);
+        $('#mCSB_3_container').length
+            ? $('#mCSB_3_container').append(logMessage)
+            : $(messageContents).append(logMessage);
 
         // set scrollbar
-        new scrollBarHandler(SEL_LOG);
+        new scrollBarHandler(messageContents);
     }
 }
 
-function clearLog() {
-    $(SEL_LOG + ' ' + '.only').remove();
+function clearOnlyLog() {
+    $(messageContents + ' ' + '.only').remove();
 }
 
 function getExLog() {
-    // stop logging before starting
-    stopExLog();
-
     // extract logs and sanitize them for display
     const extractedLog = DoExtractLog();
     if (extractedLog) {
@@ -1448,33 +1215,12 @@ function getExLog() {
             isOnlyOneMsg = false;
         });
     }
-
-    // start logging again
-    startExLog();
-}
-
-function stopExLog() {
-    'use strict';
-    if (LOG_TimerID) {
-        try {
-            clearTimeout(LOG_TimerID);
-        } catch (e) {}
-        LOG_TimerID = null;
-    }
-}
-
-function startExLog() {
-    'use strict';
-    LOG_TimerID = setTimeout(function () {
-        getExLog();
-    }, LOG_INT);
 }
 
 /*=========================================================
 　　　　　Dialog Functions
 =======================================================*/
-let kuModalAction = function () {},
-    dialogTexts = '.dialog_text_contents',
+let dialogTexts = '.dialog_text_contents',
     dialogButtons = '.dialog_btnBox',
     dialogEachBtn = '.md_btn',
     dialogStandbyBtn = '.md_btn.standby';
@@ -1486,12 +1232,6 @@ function showModalDialog(text, options, standbyTime) {
     // initialize child elmemts
     $(dialogTexts).empty();
     $(dialogButtons).empty();
-
-    // set modal dialog flag to true
-    IS_MODAL = true;
-
-    // set key action for modal dialog to an empty function
-    _KEY_ACT_MODAL = function () {};
 
     // set the text of the dialog
     $(dialogTexts).html(text);
@@ -1541,12 +1281,14 @@ function showModalDialog(text, options, standbyTime) {
 }
 
 function hideModalDialog() {
-    (_KEY_ACT_MODAL = function () {}),
-        (kuModalAction = function () {}),
-        $('.launcher_dialog').hide(),
-        $(dialogTexts).empty(),
-        $(dialogButtons).empty(),
-        (IS_MODAL = false);
+    // hide dialog body
+    $('.launcher_dialog').hide();
+
+    // reset dialog texts
+    $(dialogTexts).empty();
+
+    // reset dialog buttons
+    $(dialogButtons).empty();
 }
 
 function showMaintenanceDialog() {
@@ -1567,7 +1309,7 @@ function showAddCharDialog() {
 
 function showWaitCharAddDialog() {
     showModalDialog(dialogTextOutput('createCharWait'), [
-        { label: 'Refresh', cmd: 'beginAuthProcess(true); hideModalDialog();' },
+        { label: 'Refresh', cmd: 'beginAuthProcess(); hideModalDialog();' },
     ]);
 }
 
@@ -1590,7 +1332,7 @@ function showDelCharDialog(name, id) {
 }
 
 function showDelCharDialog2(name, id) {
-    if (1 < $(CHR_SEL_UNIT).length) {
+    if (1 < $(charSelUnit).length) {
         // if user still has more than one character, skip this function
         showDelCharDialog3(name, id);
     } else {
@@ -1633,18 +1375,6 @@ function showDelCharDialog3(name, id) {
         ],
         1000
     );
-    $('input.del_uid').keydown(function (e) {
-        switch (e.which) {
-            case 13:
-                return false;
-        }
-    }),
-        (_KEY_ACT_MODAL = function (e) {
-            switch (e.which) {
-                case 13:
-                    return false;
-            }
-        });
 }
 
 function showWaitdelCharUidErrorDialog(name, id) {
@@ -1681,7 +1411,7 @@ function showFailDelCharDialog(numOwnedChars) {
 function showDoneDelNormCharDialog(name, id) {
     showModalDialog(
         '<p>Character' + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>' + 'has been deleted.</p>',
-        [{ label: 'Close', cmd: 'beginAuthProcess(true); charDelReset();' }]
+        [{ label: 'Close', cmd: 'beginAuthProcess(); charDelReset();' }]
     );
 }
 
@@ -1699,16 +1429,6 @@ function showDoneDelLastCharDialog(name, id) {
     );
 }
 
-function clearEnterDownTimeout() {
-    'use strict';
-    if (ENTERDOWN_TimerID) {
-        try {
-            clearTimeout(ENTERDOWN_TimerID);
-        } catch (e) {}
-        ENTERDOWN_TimerID = null;
-    }
-}
-
 function showGameStartDialog(name, id) {
     'use strict';
     showModalDialog(textOutput('dmgs0') + name + "<span class='uid'> (ID:" + id + textOutput('dmgs1'), [
@@ -1721,92 +1441,10 @@ function showGameStartDialog(name, id) {
             label: 'No',
             cmd: 'gameStartCalcel();',
         },
-    ]),
-        (LAST_KEYDOWN = 0),
-        (ENTERDOWN_TimerID = null),
-        (_KEY_ACT_MODAL = function (e) {
-            var E,
-                t,
-                r = new Date().getTime();
-            if (r - LAST_KEYDOWN < 100) return !0;
-            switch (((LAST_KEYDOWN = r), e.which)) {
-                case 13:
-                    return (
-                        (E = dialogEachBtn),
-                        -1 !==
-                            (t = (function () {
-                                for (var e = 0; e < $(E).length; e++) if ($($(E)[e]).hasClass('hover')) return e;
-                                return -1;
-                            })()) &&
-                            (clearEnterDownTimeout(),
-                            (ENTERDOWN_TimerID = setTimeout(function () {
-                                $($(E)[t]).click();
-                            }, 100))),
-                        !1
-                    );
-                case 89: // Y
-                    return clearEnterDownTimeout(), initializing(), false;
-                case 27:
-                case 78: // N
-                    return clearEnterDownTimeout(), DoPlaySound('IDR_WAV_OK'), gameStartCalcel(), false;
-                case 9:
-                case 38:
-                case 40:
-                    if (
-                        ((E = dialogEachBtn),
-                        (t = (function () {
-                            for (var e = 0; e < $(E).length; e++) if ($($(E)[e]).hasClass('hover')) return e;
-                            return -1;
-                        })()),
-                        $(E).removeClass('hover'),
-                        -1 !== t)
-                    ) {
-                        t += e.shiftKey || 37 === e.which || 38 === e.which ? -1 : 1;
-                        var a = $(E).length - 1;
-                        t = t < 0 ? a : a < t ? 0 : t;
-                    } else t = 0;
-                    return $($(E)[t]).addClass('hover'), !1;
-            }
-        });
-}
-
-function openMemberSite() {
-    'use strict';
-    openDefBrowser(
-        'http://' +
-            (COG_MODE ? 'cog-members.mhf-z.jp/' : NHN_MODE ? 'members-mhf-z.hange.jp/' : 'dmm-members.mhf-z.jp/')
-    );
-}
-
-function openInquiry() {
-    'use strict';
-    openDefBrowser('http://' + (COG_MODE ? 'cog' : NHN_MODE ? 'hangame' : 'dmm') + '-members.mhf-z.jp/sp/inquiry/');
-}
-
-function openManual() {
-    'use strict';
-    openDefBrowser('http://' + (COG_MODE ? 'cog' : NHN_MODE ? 'hangame' : 'dmm') + '-members.mhf-z.jp/sp/manual/');
-}
-
-function doEval() {
-    try {
-        addLogMsg(eval(document.getElementById('console').value), 'w');
-    } catch (e) {
-        addLogMsg('Error on doEval: ' + e, 'r');
-    }
+    ]);
 }
 
 $(function () {
-    'use strict';
-
-    $('html').keydown(function (e) {
-        return !!_KEY_ACT_MODAL(e) || (!1 !== _KEY_ACT_MODAL(e) && KEY_ACT_DEF(e));
-    });
-    (!IE_STATE.isIE || 8 <= IE_STATE.version) && beginLoadInfo(),
-        $('a').bind('focus', function () {
-            this.blur && this.blur();
-        });
-
     // play a sound when hovering logout button
     $('.btn_logout').mouseover(function () {
         DoPlaySound('IDR_WAV_SEL');
@@ -1819,12 +1457,12 @@ $(function () {
 
     // play a sound when hovering preferences button
     $('.btn_preferences_text').mouseover(function () {
-        CONF_SND_BLOCK ? ((CONF_SND_BLOCK = false), startExLog()) : DoPlaySound('IDR_WAV_SEL');
+        DoPlaySound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking preferences button
     $('.btn_preferences').click(function () {
-        (CONF_SND_BLOCK = true), stopExLog(), DoOpenMhlConfig();
+        DoOpenMhlConfig();
     });
 
     // play a sound when hovering the element with sound_on class
@@ -1837,15 +1475,23 @@ $(function () {
         e.target !== $(loginBtn).get(0) && DoPlaySound('IDR_WAV_OK');
     });
 
-    $(CHR_SEL_UP).click(function () {
+    // play a sound when clicking up arrow on character selection, and move a unit
+    $(charSelUpArrow).click(function () {
         DoPlaySound('IDR_WAV_OK'), scrollCharUni(-1);
     });
-    $(CHR_SEL_DOWN).click(function () {
+
+    // play a sound when clicking down arrow on character selection, and move a unit
+    $(charSelDownArrow).click(function () {
         DoPlaySound('IDR_WAV_OK'), scrollCharUni(1);
     });
 
-    // delete a character event
-    $(charDeleteBtn).click(function () {
+    // add a character
+    $(charAddButton).click(function () {
+        $(this).hasClass('disabled') || (DoPlaySound('IDR_WAV_OK'), showAddCharDialog());
+    });
+
+    // delete a character
+    $(charDelButton).click(function () {
         // check if the clicked element is not disabled and a character is not already being deleted
         if (!$(this).hasClass('disabled') && !delCharUid && !delCharName) {
             // play a sound
@@ -1863,17 +1509,20 @@ $(function () {
         }
     });
 
-    $(CHR_SEL_ADD).click(function () {
-        $(this).hasClass('disabled') || (DoPlaySound('IDR_WAV_OK'), showAddCharDialog());
-    });
-
-    $(CHR_SEL_BOX + ' .btn_start').click(function () {
+    $(charSelBox + ' .btn_start').click(function () {
         gameStart();
     });
+
+    // initial authentication, including server and id or password setup
     initAuth();
 
     // initial display of msg log
-    startExLog();
+    setTimeout(function () {
+        getExLog();
+    }, 100);
+
+    // set information section
+    beginLoadInfo();
 
     // prevent user from selecting all texts in the launcher
     $(document).on('selectstart', function (e) {
@@ -1904,6 +1553,19 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
+
+    $(charSelBox + ' .units').append(
+        createCharUnit(
+            1,
+            "name",
+            "12345",
+            0,
+            0,
+            "Hammer",
+            "M",
+            2020
+        )
+    );
 });
 
 $(function () {

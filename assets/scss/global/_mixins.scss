@@ -43,7 +43,7 @@
 
 // Main Button Background
 @mixin main_btn_bg {
-    background: url(#{$img}/common/login_button_bg.png) no-repeat;
+    background: url(#{$img}/common/main_btn_bg.png) no-repeat;
     text-shadow: 3px 0 3px #003900, 0 3px 3px #003900, -3px 0 3px #003900, 0 -3px 3px #003900;
 }
 
@@ -66,8 +66,14 @@
         center / contain no-repeat;
 }
 
+// Character Selector Background
 @mixin char_sel_unit($weapon_name) {
     background: url(#{$img}/char/#{$weapon_name}.png);
+}
+
+// Character Miscellaneous Button Background
+@mixin character_misc_btn_bg {
+    background: url(#{$img}/common/character_misc_btn_bg.png) no-repeat;
 }
 
 // Dialog Button Background

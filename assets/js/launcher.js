@@ -31,8 +31,6 @@ const textData = {
     unknownError: 'Unknown error occurred.',
     noUseridPass: 'First, please enter both your User ID and Password.',
     serverMaint: 'The server is currently under maintenance and cannot be joined.<br>Please try again later.',
-    dmgs0: 'Selected character <br>',
-    dmgs1: ' </span><br><br>Log in and start the game <br> with the selected character?',
     SIGN_EFAILED: 'Failed to connect to authentication server.',
     SIGN_EILLEGAL: 'Authentication cancelled due to wrong input.',
     SIGN_EALERT: 'A processing error has occured with the authentication server.',
@@ -51,6 +49,9 @@ const textData = {
 };
 
 const dialogTextData = {
+    // Start the Game
+    startTheGame: '<p class="caution">Are you sure to start the game with the following character?</p>',
+
     // Add Character
     createChar:
         '<p>Add a new character to your account.<br>Click "Add Now" below, and your browser will open automatically.</p>',
@@ -345,46 +346,8 @@ var CHR_CRR = 0,
     charSelUnit = charSelBox + ' .unit',
     charSelUpArrow = charSelBox + ' .scroll.up',
     charSelDownArrow = charSelBox + ' .scroll.down',
-    charAddButton = charSelBox + ' .btn_add',
-    charDelButton = charSelBox + ' .btn_del',
-    CHR_IS_WAIT = !1;
-
-function convWpType(e) {
-    'use strict';
-    var E = {
-        'Sword%20%26%20Shield': 'onehandsword',
-        '%E7%89%87%E6%89%8B%E5%89%A3': 'onehandsword',
-        'Dual%20Swords': 'twinsword',
-        '%E5%8F%8C%E5%89%A3': 'twinsword',
-        'Great%20Sword': 'largesword',
-        '%E5%A4%A7%E5%89%A3': 'largesword',
-        'Long%20Sword': 'longsword',
-        '%E5%A4%AA%E5%88%80': 'longsword',
-        Hammer: 'hammer',
-        '%E3%83%8F%E3%83%B3%E3%83%9E%E3%83%BC': 'hammer',
-        'Hunting%20Horn': 'horn',
-        '%E7%8B%A9%E7%8C%9F%E7%AC%9B': 'horn',
-        Lance: 'lance',
-        '%E3%83%A9%E3%83%B3%E3%82%B9': 'lance',
-        Gunlance: 'gunlance',
-        '%E3%82%AC%E3%83%B3%E3%83%A9%E3%83%B3%E3%82%B9': 'gunlance',
-        Tonfa: 'senryukon',
-        '%E7%A9%BF%E9%BE%8D%E6%A3%8D': 'senryukon',
-        'Switch%20Axe%20F': 'slashaxe',
-        '%E3%82%B9%E3%83%A9%E3%83%83%E3%82%B7%E3%83%A5%E3%82%A2%E3%83%83%E3%82%AF%E3%82%B9': 'slashaxe',
-        '%E3%82%B9%E3%83%A9%E3%83%83%E3%82%B7%E3%83%A5%E3%82%A2%E3%83%83%E3%82%AF%E3%82%B9F': 'slashaxe',
-        '%E3%82%B9%E3%83%A9%E3%83%83%E3%82%B7%E3%83%A5%E3%82%A2%E3%83%83%E3%82%AF%E3%82%B9%EF%BC%A6': 'slashaxe',
-        'Magnet%20Spike': 'magnetspike',
-        '%E3%83%9E%E3%82%B0%E3%83%8D%E3%83%83%E3%83%88%E3%82%B9%E3%83%91%E3%82%A4%E3%82%AF': 'magnetspike',
-        'Light%20Bowgun': 'lbowgun',
-        '%E3%83%A9%E3%82%A4%E3%83%88%E3%83%9C%E3%82%A6%E3%82%AC%E3%83%B3': 'lbowgun',
-        'Heavy%20Bowgun': 'hbowgun',
-        '%E3%83%98%E3%83%93%E3%82%A3%E3%83%9C%E3%82%A6%E3%82%AC%E3%83%B3': 'hbowgun',
-        Bow: 'bow',
-        '%E5%BC%93': 'bow',
-    };
-    return E[encodeURIComponent(e)] || '';
-}
+    charAddButton = charSelBox + ' .char_add',
+    charDelButton = charSelBox + ' .char_del';
 
 function convLastDateStr(e) {
     'use strict';
@@ -400,46 +363,52 @@ function entityRef(e) {
 }
 
 function createCharUnit(index, name, uid, hr, gr, weapon, gender, lastLogin) {
-    'use strict';
-    weapon = weapon.split('F').join('Ｆ');
-    name = name.split('狩人申請可能').join('Ready to Hunt');
-    var o = $('<div class="unit" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>');
-    if (
-        (o.append($('<div class="num n' + index + '"></div>')),
-        o.append($('<div class="sign"></div>')),
-        o.append($('<p class="name">' + entityRef(name) + '</p>')),
-        0 === hr)
-    )
-        o.addClass('new'), o.append($('<p class="new">' + textOutput('readyNewChara') + '</p>'));
-    else {
-        var i = convWpType(weapon);
-        o.addClass(i),
-            o.append($('<div class="icon' + ('' !== i ? ' ' + i : '') + '"></div>')),
-            o.append($('<p class="wp">' + 'Weapon' + '<br>' + weapon + '</p>')),
-            o.append(
-                $(
-                    '<p class="data">HR' +
-                        hr +
-                        (0 < gr ? '　GR' + gr : '') +
-                        '　' +
-                        ('M' === gender ? '♂' : '♀') +
-                        '<br>ID:' +
-                        uid +
-                        '<br>' +
-                        'Last Login' +
-                        ':' +
-                        convLastDateStr(lastLogin) +
-                        '</p>'
-                )
-            );
-    }
-    return (
-        o.append($('<div class="cover"></div>')),
-        o.click(function () {
-            $(this).hasClass('crr') && gameStart();
-        }),
-        o
-    );
+    // convert weapon name for style usage
+    let weaponStyle = weapon.replace(/\s+/g, '').replace(/&/g, 'And');
+    weaponStyle = weaponStyle.toLowerCase().charAt(0) + weaponStyle.slice(1);
+
+    // generate a new div element with the given attributes
+    const $charUnit = $('<div class="unit" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>');
+
+    // add a number element, a sign element, and a name element to the div
+    $charUnit.append($('<div class="num n' + index + '"></div>'));
+    $charUnit.append($('<div class="sign"></div>'));
+    $charUnit.append($('<p class="name">' + entityRef(name) + '</p>'));
+
+    hr === 0
+        ? // if the character is new (HR is 0), add a new class and a new element to the div
+          ($charUnit.addClass('new'), $charUnit.append($('<p class="new">' + textOutput('readyNewChara') + '</p>')))
+        : // if not, add an icon element, a weapon element, and a data element to the div
+          ($charUnit.addClass(weaponStyle),
+          $charUnit.append($('<div class="icon' + (weaponStyle ? ' ' + weaponStyle : '') + '"></div>')),
+          $charUnit.append($('<p class="wp">' + 'Weapon' + '<br>' + weapon + '</p>')),
+          $charUnit.append(
+              $(
+                  '<p class="data">HR' +
+                      hr +
+                      (gr ? '　GR' + gr : '') +
+                      '　' +
+                      (gender === 'M' ? '♂' : '♀') +
+                      '<br>ID:' +
+                      uid +
+                      '<br>' +
+                      'Last Login' +
+                      ':' +
+                      convLastDateStr(lastLogin) +
+                      '</p>'
+              )
+          ));
+
+    // add a cover element to the div for none-current character
+    $charUnit.append($('<div class="cover"></div>'));
+
+    // add a click event to start the game if the div has the crr class
+    $charUnit.click(function () {
+        $(this).hasClass('crr') && gameStart();
+    });
+
+    // return the div
+    return $charUnit;
 }
 
 function getCrrChar() {
@@ -542,7 +511,7 @@ function updateCharCtrlBtnState() {
 
 function showCharSelector() {
     'use strict';
-    (CHR_DEF = CHR_CRR = 0), (CHR_IS_WAIT = !1), clearOnlyLog();
+    (CHR_DEF = CHR_CRR = 0), clearOnlyLog();
     $('.launcher_login_panel').hide(),
         $('#launcher_update_progress').hide(),
         $(charSelBox).hide(),
@@ -551,6 +520,7 @@ function showCharSelector() {
         $(charSelBox + ' .scroll').hide();
 
     var e = DoGetCharacterInfo();
+    alert('E:' + e);
     (e = (e = e.split("'").join('"')).split('&apos;').join("'")), (e = $('<div>' + e + '</div>'));
 
     var t = $(e.find('CharacterInfo')[0]).attr('defaultUid');
@@ -641,11 +611,6 @@ function initializing() {
         setTimeout(function () {
             DoExitLauncher();
         }, 500);
-}
-
-function gameStartCalcel() {
-    'use strict';
-    (CHR_IS_WAIT = !1), hideModalDialog();
 }
 
 function gameStart() {
@@ -811,11 +776,7 @@ function startUpdateProcess() {
         : finishUpdateProcess();
 }
 
-let AT_ID = '',
-    AT_PW = '',
-    AT_FRAME = null,
-    AT_FRAME_CB = Math.floor(1e3 * Math.random()),
-    AT_TimerID = null,
+let AT_TimerID = null,
     authStatus = 'AUTH_NULL',
     inputUserId = '.userid_input',
     userId = '',
@@ -856,73 +817,71 @@ function stopLoginPolling() {
 function loginPolling() {
     'use strict';
     var e = DoGetLastAuthResult();
-    if (e !== authStatus)
-        switch ((authStatus = e)) {
-            case 'AUTH_NULL':
-            case 'AUTH_PROGRESS':
-            case 'DELETE_PROGRESS':
-            case 'DELETE_SUCCESS':
-            case 'DELETE_ERROR_NET':
-            case 'DELETE_ERROR_IVL':
-            case 'DELETE_ERROR_MNC':
-                break;
 
-            case 'AUTH_SUCCESS':
-                stopLoginPolling();
-                hideAuthProgress();
-                $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text());
-                $(saveUserIdCheck).is(':checked')
-                    ? (localStorage.setItem('UserID', $(inputUserId).val()),
-                      localStorage.setItem('Password', $(inputPassword).val()),
-                      localStorage.setItem('IsChecked', 'true'))
-                    : (localStorage.removeItem('UserID'),
-                      localStorage.removeItem('Password'),
-                      localStorage.removeItem('IsChecked'));
-                startUpdateProcess();
-                break;
+    switch (e) {
+        case 'AUTH_NULL':
+        case 'AUTH_PROGRESS':
+        case 'DELETE_PROGRESS':
+        case 'DELETE_SUCCESS':
+        case 'DELETE_ERROR_NET':
+        case 'DELETE_ERROR_IVL':
+        case 'DELETE_ERROR_MNC':
+            break;
 
-            case 'AUTH_ERROR_NET':
-                stopLoginPolling(), onAuthError(textOutput('SIGN_EFAILED'), 'r');
-                break;
-            case 'AUTH_ERROR_ACC':
-            case 'AUTH_ERROR_PWD':
-                stopLoginPolling();
+        case 'AUTH_SUCCESS':
+            stopLoginPolling();
+            hideAuthProgress();
+            $('.id_srv_label').text($(inputUserId).val() + '@' + $(serverSelBtn).text());
+            $(saveUserIdCheck).is(':checked')
+                ? (localStorage.setItem('UserID', $(inputUserId).val()),
+                  localStorage.setItem('Password', $(inputPassword).val()),
+                  localStorage.setItem('IsChecked', 'true'))
+                : (localStorage.removeItem('UserID'),
+                  localStorage.removeItem('Password'),
+                  localStorage.removeItem('IsChecked'));
+            startUpdateProcess();
+            break;
 
-                var E = DoGetSignResult();
-                switch (E) {
-                    case 'SIGN_EFAILED':
-                    case 'SIGN_EILLEGAL':
-                    case 'SIGN_EABORT':
-                    case 'SIGN_ERESPONSE':
-                    case 'SIGN_EDATABASE':
-                        onAuthError(textOutput(E), 'r');
-                        break;
-                    case 'SIGN_ESUSPEND':
-                    case 'SIGN_EELIMINATE':
-                    case 'SIGN_ECLOSE_EX':
-                    case 'SIGN_EIPADDR':
-                        onAuthError(textOutput(E));
-                        break;
-                    case 'SIGN_ECLOSE':
-                    case 'SIGN_ENOTREADY':
-                    case 'SIGN_EALREADY':
-                        onAuthError(), showMhfMaintenanceDialog();
-                        break;
-                    case 'SIGN_EPASS':
-                        onAuthError(textOutput(E));
-                        break;
-                    default:
-                        onAuthError(textOutput('SIGN_EOTHER'));
-                }
-                break;
-            default:
-                stopLoginPolling(), onAuthError(textOutput('unknownError') + ' [' + authStatus + ']');
-        }
+        case 'AUTH_ERROR_NET':
+            stopLoginPolling(), onAuthError(textOutput('SIGN_EFAILED'), 'r');
+            break;
+        case 'AUTH_ERROR_ACC':
+        case 'AUTH_ERROR_PWD':
+            stopLoginPolling();
+
+            var E = DoGetSignResult();
+            switch (E) {
+                case 'SIGN_EFAILED':
+                case 'SIGN_EILLEGAL':
+                case 'SIGN_EABORT':
+                case 'SIGN_ERESPONSE':
+                case 'SIGN_EDATABASE':
+                    onAuthError(textOutput(E), 'r');
+                    break;
+                case 'SIGN_ESUSPEND':
+                case 'SIGN_EELIMINATE':
+                case 'SIGN_ECLOSE_EX':
+                case 'SIGN_EIPADDR':
+                    onAuthError(textOutput(E));
+                    break;
+                case 'SIGN_ECLOSE':
+                case 'SIGN_ENOTREADY':
+                case 'SIGN_EALREADY':
+                    onAuthError(), showMhfMaintenanceDialog();
+                    break;
+                case 'SIGN_EPASS':
+                    onAuthError(textOutput(E));
+                    break;
+                default:
+                    onAuthError(textOutput('SIGN_EOTHER'));
+            }
+            break;
+        default:
+            stopLoginPolling(), onAuthError(textOutput('unknownError') + ' [' + authStatus + ']');
+    }
 }
 
 function createShortLifeAuthKeyDone() {
-    'use strict';
-
     const loginSuccess = DoLoginCog($(inputUserId).val(), $(inputPassword).val(), $(inputPassword).val());
 
     // if loginSuccess is true, loginPolling will be run; if false, error handling will be run with onAuthError
@@ -988,13 +947,10 @@ function initSrvSelList() {
     $(serverList)
         .find('group')
         .each(function (index, srvItem) {
-            const isBlocked = $(srvItem).attr('ip') === '';
             const name = $(srvItem).attr('nam');
 
             // create and append the server element to the server selection list
-            $(serverListBox).append(
-                $('<li' + (isBlocked ? ' block="true"' : '') + ' class="srv" idx="' + index + '">' + name + '</li>')
-            );
+            $(serverListBox).append($('<li class="srv" idx="' + index + '">' + name + '</li>'));
         });
 
     // if the last selected index is out of bounds, set true to the variable for initializing
@@ -1062,6 +1018,8 @@ function hideAuthProgress() {
 function beginAuthProcess() {
     const userId = $(inputUserId).val();
     const password = $(inputPassword).val();
+
+    $(charSelBox).is(':visible') && switchAuthMode();
 
     '' === userId || '' === password
         ? // if credentials are not entered, return error
@@ -1301,7 +1259,17 @@ function showAddCharDialog() {
     showModalDialog(dialogTextOutput('createChar'), [
         {
             label: 'Add Now',
-            cmd: 'DoOpenBrowser("' + createCharURL + '"); showWaitCharAddDialog();',
+            cmd:
+                'DoLoginCog("' +
+                $(inputUserId).val() +
+                '+' +
+                '", "' +
+                $(inputPassword).val() +
+                '","' +
+                $(inputPassword).val() +
+                '"); DoOpenBrowser("' +
+                createCharURL +
+                '"); showWaitCharAddDialog();',
         },
         { label: 'Not Add', cmd: 'hideModalDialog();' },
     ]);
@@ -1430,18 +1398,25 @@ function showDoneDelLastCharDialog(name, id) {
 }
 
 function showGameStartDialog(name, id) {
-    'use strict';
-    showModalDialog(textOutput('dmgs0') + name + "<span class='uid'> (ID:" + id + textOutput('dmgs1'), [
-        {
-            label: 'Yes',
-            cmd: 'initializing();',
-            noSound: true,
-        },
-        {
-            label: 'No',
-            cmd: 'gameStartCalcel();',
-        },
-    ]);
+    showModalDialog(
+        dialogTextOutput('startTheGame') +
+            '<p style="font-size: 2.1rem;">"' +
+            name +
+            '"<span class="uid">（ID: ' +
+            id +
+            '）</span>',
+        [
+            {
+                label: 'Yes',
+                cmd: 'initializing();',
+                noSound: true,
+            },
+            {
+                label: 'No',
+                cmd: 'hideModalDialog();',
+            },
+        ]
+    );
 }
 
 $(function () {
@@ -1553,19 +1528,6 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
-
-    $(charSelBox + ' .units').append(
-        createCharUnit(
-            1,
-            "name",
-            "12345",
-            0,
-            0,
-            "Hammer",
-            "M",
-            2020
-        )
-    );
 });
 
 $(function () {

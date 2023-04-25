@@ -749,8 +749,13 @@ h1 {
 　　　　　Character Selection
 =======================================================*/
 .character_selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: 520px;
     height: 378px;
+    margin-top: 1%;
     position: absolute;
     left: 15px;
     top: 134px;
@@ -760,8 +765,6 @@ h1 {
     .scroll {
         width: 131px;
         height: 39px;
-        position: absolute;
-        left: 198px;
         background: no-repeat 0px 0px;
         cursor: pointer;
         z-index: 1000;
@@ -774,29 +777,110 @@ h1 {
             }
         }
 
-        // up arrow
-        &.up {
-            top: 14px;
-        }
-
-        // down arrow
-        &.down {
-            top: 210px;
-        }
-
         // when hovering
         &:hover {
             background-position: 0px -39px;
         }
     }
 
+    // character misc list
+    .character_misc {
+        display: flex;
+        justify-content: space-around;
+        width: 500px;
+
+        // character misc item
+        li {
+            position: relative;
+            width: 210px;
+            height: 30px;
+            @include character_misc_btn_bg;
+            cursor: pointer;
+
+            &::before {
+                color: #e6e6e6;
+                font-size: 1.5rem;
+                font-family: 'Noto Serif', serif;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 100%;
+                height: 100%;
+                line-height: 30px;
+                text-align: center;
+                transform: translate(-50%, -50%);
+                transition: all 0.2s;
+            }
+
+            &:hover {
+                background-position: 0px -46px;
+
+                &::before {
+                    color: white;
+                }
+            }
+
+            &.disabled {
+                pointer-events: none;
+            }
+        }
+
+        // character add button
+        .char_add {
+            &::before {
+                content: 'Add New Character';
+            }
+        }
+
+        // chraceter delete button
+        .char_del {
+            &::before {
+                content: 'Delete Character';
+            }
+        }
+    }
+
+    // game start button
+    .btn_start {
+        position: relative;
+        width: 290px;
+        height: 57px;
+        @include main_btn_bg;
+        cursor: pointer;
+        border: none;
+        outline: none;
+
+        // game start text
+        &::before {
+            content: 'START GAME';
+            color: rgb(230, 230, 230);
+            font-size: 3rem;
+            font-family: $font_title_en;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            height: 100%;
+            line-height: 57px;
+            text-align: center;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s;
+        }
+
+        // when hovering
+        &:hover {
+            background-position: 0px -73.8px;
+
+            &::before {
+                color: white;
+            }
+        }
+    }
+
     // character group units
     .units {
         width: 520px;
-        height: 263px;
-        position: absolute;
-        left: 0;
-        top: 0;
+        height: 150px;
 
         // character individual unit
         .unit {
@@ -808,70 +892,12 @@ h1 {
             background: url(#{$img}/char/background.png) no-repeat 0px 0px;
             cursor: default;
 
-            &.onehandsword {
-                @include char_sel_unit('sword_and_shield');
-            }
-
-            &.twinsword {
-                @include char_sel_unit('dual_blades');
-            }
-
-            &.largesword {
-                @include char_sel_unit('great_sword');
-            }
-
-            &.longsword {
-                @include char_sel_unit('long_sword');
-            }
-
-            &.horn {
-                @include char_sel_unit('hunting_horn');
-            }
-
-            &.hammer {
-                @include char_sel_unit('hammer');
-            }
-
-            &.lance {
-                @include char_sel_unit('lance');
-            }
-
-            &.gunlance {
-                @include char_sel_unit('gunlance');
-            }
-
-            &.senryukon {
-                @include char_sel_unit('tonfa');
-            }
-
-            &.slashaxe {
-                @include char_sel_unit('switch_axe');
-
-                .wp {
-                    left: 84px;
-                    letter-spacing: -2px;
+            // loop through weapon names and set corresponding image and class
+            $weaponNames: $weaponNamesArray;
+            @each $weapon in $weaponNames {
+                &.#{$weapon} {
+                    @include char_sel_unit(#{$weapon});
                 }
-            }
-
-            &.magnetspike {
-                @include char_sel_unit('magnet_spike');
-
-                .wp {
-                    left: 90px;
-                    letter-spacing: -1px;
-                }
-            }
-
-            &.lbowgun {
-                @include char_sel_unit('light_bowgun');
-            }
-
-            &.hbowgun {
-                @include char_sel_unit('heavy_bowgun');
-            }
-
-            &.bow {
-                @include char_sel_unit('bow');
             }
 
             // current character
@@ -990,7 +1016,7 @@ h1 {
                 top: 65px;
             }
 
-            // ??
+            // character cover
             .cover {
                 width: 504px;
                 height: 127px;
@@ -1155,7 +1181,7 @@ h1 {
 
             // dialog text default setting
             p {
-                width: 500px;
+                width: 490px;
                 margin: 0 auto;
                 font-size: 1.9rem;
 

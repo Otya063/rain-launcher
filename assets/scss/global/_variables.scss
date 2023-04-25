@@ -1,14 +1,14 @@
-/* Font Family
-====================================================*/
-// Common
+// Common - Font Family
 $font_ja: 'Noto Sans JP', sans-serif;
 $font_en: 'Roboto', 'Open Sans', sans-serif;
 
-// Title
+// Title - Font Family
 $font_title_ja: 'Noto Serif JP', serif;
 $font_title_en: 'Noto Serif', serif;
 
-/* File Path
-====================================================*/
-// Images
+// Images - File Path
 $img: '/launcher/assets/img';
+
+// Array Weapon Name
+$weaponNamesArray: swordAndShield, dualSwords, greatSword, longSword, huntingHorn, hammer, lance, gunlance, tonfa,
+    switchAxeF, magnetSpike, lightBowgun, heavyBowgun, bow;

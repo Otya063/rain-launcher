@@ -89,53 +89,6 @@
                 background: no-repeat 0px 0px;
             }
 
-
-
-
-
-            .character_selection .btn_add {
-                width: 220px;
-                height: 38px;
-                position: absolute;
-                left: 89px;
-                top: 269px;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-                z-index: 1000;
-            }
-            .character_selection .btn_del {
-                width: 120px;
-                height: 38px;
-                position: absolute;
-                left: 321px;
-                top: 269px;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-                z-index: 1000;
-            }
-            .character_selection .btn_add:hover,
-            .character_selection .btn_del:hover {
-                background-position: 0px -38px;
-            }
-            .character_selection .btn_add.disabled,
-            .character_selection .btn_del.disabled {
-                cursor: default;
-                background-position: 0px 0px;
-            }
-            .character_selection .btn_start {
-                width: 300px;
-                height: 64px;
-                position: absolute;
-                left: 114px;
-                top: 314px;
-                background: no-repeat 0px 0px;
-                cursor: pointer;
-                z-index: 1000;
-            }
-            .character_selection .btn_start:hover {
-                background-position: 0px -64px;
-            }
-
             #launcher_menu {
                 height: 86px;
                 position: absolute;
@@ -385,11 +338,13 @@
 
             <!-- Character Selection -->
             <section class="character_selection">
-                <div class="units"></div>
                 <div class="scroll up sound_on"></div>
+                <div class="units"></div>
                 <div class="scroll down sound_on"></div>
-                <div class="btn_add"></div>
-                <div class="btn_del"></div>
+                <ul class="character_misc">
+                    <li class="char_add"></li>
+                    <li class="char_del"></li>
+                </ul>
                 <div class="btn_start sound_on"></div>
             </section>
 
@@ -451,24 +406,5 @@
 
             <div id="launcher_game_start_wait"></div>
         </div>
-
-       <!--  <div id="preload" style="width: 1px; height: 1px; overflow: hidden; position: fixed; left: -100px; top: -100px">
-            <img src="/launcher/assets/img/dialog/bg.jpg" alt="ダイアログ用背景" />
-            <img src="/launcher/assets/img/char/unit_bg.png" alt="キャラ作成用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_bow.png" alt="弓用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_hbowgun.png" alt="ヘビィボウガン用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_lbowgun.png" alt="ライトボウガン用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_slashaxe.png" alt="スラッシュアックスＦ用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_senryukon.png" alt="穿龍棍用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_gunlance.png" alt="ガンランス用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_lance.png" alt="ランス用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_horn.png" alt="狩猟笛用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_hammer.png" alt="ハンマー用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_longsword.png" alt="太刀用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_largesword.png" alt="大剣用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_twinsword.png" alt="双剣用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_onehandsword.png" alt="片手剣用背景" />
-            <img src="/launcher/assets/img/char/unit_bg_magnetspike.png" alt="マグネットスパイク用" />
-        </div> -->
     </body>
 </html>

@@ -126,28 +126,28 @@ function DoGetServerList() {
 function DoMinimizeWindow() {
     'use strict';
 
-    DoPlaySound('IDR_WAV_OK');
+    playSound('IDR_WAV_OK');
     window.external.minimizeWindow();
 }
 
 function DoCloseWindow() {
     'use strict';
 
-    DoPlaySound('IDR_WAV_OK');
+    playSound('IDR_WAV_OK');
     window.external.closeWindow();
 }
 
 function DoOpenMhlConfig() {
     'use strict';
 
-    DoPlaySound('IDR_WAV_OK');
+    playSound('IDR_WAV_OK');
     window.external.openMhlConfig();
 }
 
 function DoOpenBrowser(e) {
     'use strict';
 
-    DoPlaySound('IDR_WAV_OK'), window.external.openBrowser(e);
+    playSound('IDR_WAV_OK'), window.external.openBrowser(e);
 }
 
 function DoBeginDrag(e) {
@@ -247,7 +247,7 @@ function DoGetLauncherReturnCode() {
     }
 }
 
-function DoExitLauncher() {
+function exitLauncher() {
     'use strict';
     try {
         window.external.exitLauncher();
@@ -263,7 +263,7 @@ function DoCheckIsEnableSessionId() {
     }
 }
 
-function DoGetCharacterInfo() {
+function getCharacterInfo() {
     'use strict';
 
     try {
@@ -283,17 +283,17 @@ function DoDeleteCharacter(e) {
     }
 }
 
-function DoSelectCharacter(e, E) {
+function selectCharacter(name, uid) {
     'use strict';
     try {
-        window.external.selectCharacter(e, E);
+        window.external.selectCharacter(name, uid);
     } catch (e) {}
 }
 
-function DoPlaySound(e) {
+function playSound(soundType) {
     'use strict';
     try {
-        window.external.playSound(e);
+        window.external.playSound(soundType);
     } catch (e) {}
 }
 
@@ -315,31 +315,28 @@ function overrideAnker(selector) {
         });
 }
 
-let infoListUrl = '/launcher/en/info_list.html',
-    infoList = '.info_list';
+let infoList = '.info_list';
 
 function beginLoadInfo() {
     'use strict';
     $.ajax({
         type: 'GET',
-        url: infoListUrl,
+        url: '/launcher/en/info_list.html',
         dataType: 'text',
         cache: false,
-        success: function (e) {
-            $(infoList).html(e);
+        success: function (infoListData) {
+            $(infoList).html(infoListData);
             overrideAnker(infoList);
             new scrollBarHandler(infoList);
         },
     });
 }
 
-var CHR_CRR = 0,
+let currentCharIndex = 0,
     CHR_DEF = 0,
     CHR_UNIT_Y = [0, 18, 60, 102, 120],
     CHR_UNIT_I = Math.floor(0.5 * CHR_UNIT_Y.length),
     CHR_SCR = !1,
-    CHR_UID = null,
-    CHR_HR = null,
     delCharName = '',
     delCharUid = '',
     charSelBox = '.character_selection',
@@ -349,20 +346,35 @@ var CHR_CRR = 0,
     charAddButton = charSelBox + ' .char_add',
     charDelButton = charSelBox + ' .char_del';
 
-function convLastDateStr(e) {
-    'use strict';
-    var E = new Date(1e3 * e);
-    return E.getFullYear() + '.' + (E.getMonth() + 1) + '.' + E.getDate();
-}
+const convLastLoginDate = function (date) {
+    // convert unix timestamp to a date object
+    const convDate = new Date(1000 * date);
 
-function entityRef(e) {
-    'use strict';
-    return (e = (e = (e = (e = e.split('&').join('&amp;')).split('<').join('&lt;')).split('>').join('&gt;'))
-        .split('"')
-        .join('&quot;'));
-}
+    // get the language attribute of html tag for locale
+    const lang = $('html')[0].lang;
 
-function createCharUnit(index, name, uid, hr, gr, weapon, gender, lastLogin) {
+    // set options for the date string and locale based on the language
+    const options =
+        lang === 'en'
+            ? { year: 'numeric', month: 'short', day: 'numeric' }
+            : { year: 'numeric', month: 'long', day: 'numeric' };
+    const locale = lang === 'en' ? 'en-US' : 'ja-JP';
+
+    // return the localized date string
+    return convDate.toLocaleDateString(locale, options);
+};
+
+const convEntities = function (name) {
+    // define an object of special characters and their corresponding entity references
+    const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
+
+    // replace special characters with their entity references using regex and the entities object
+    return name.replace(/[&<>"]/g, function (m) {
+        return entities[m];
+    });
+};
+
+const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastLogin) {
     // convert weapon name for style usage
     let weaponStyle = weapon.replace(/\s+/g, '').replace(/&/g, 'And');
     weaponStyle = weaponStyle.toLowerCase().charAt(0) + weaponStyle.slice(1);
@@ -373,7 +385,7 @@ function createCharUnit(index, name, uid, hr, gr, weapon, gender, lastLogin) {
     // add a number element, a sign element, and a name element to the div
     $charUnit.append($('<div class="num n' + index + '"></div>'));
     $charUnit.append($('<div class="sign"></div>'));
-    $charUnit.append($('<p class="name">' + entityRef(name) + '</p>'));
+    $charUnit.append($('<p class="name">' + convEntities(name) + '</p>'));
 
     hr === 0
         ? // if the character is new (HR is 0), add a new class and a new element to the div
@@ -394,13 +406,13 @@ function createCharUnit(index, name, uid, hr, gr, weapon, gender, lastLogin) {
                       '<br>' +
                       'Last Login' +
                       ':' +
-                      convLastDateStr(lastLogin) +
+                      convLastLoginDate(lastLogin) +
                       '</p>'
               )
           ));
 
     // add a cover element to the div for none-current character
-    $charUnit.append($('<div class="cover"></div>'));
+    //$charUnit.append($('<div class="cover"></div>'));
 
     // add a click event to start the game if the div has the crr class
     $charUnit.click(function () {
@@ -409,12 +421,11 @@ function createCharUnit(index, name, uid, hr, gr, weapon, gender, lastLogin) {
 
     // return the div
     return $charUnit;
-}
+};
 
-function getCrrChar() {
-    'use strict';
-    return $($(charSelUnit)[CHR_CRR]);
-}
+const getCurrentCharData = function () {
+    return $($(charSelUnit)[currentCharIndex]);
+};
 
 function convTop2Z(e) {
     'use strict';
@@ -427,13 +438,13 @@ function scrollCharUni(e, r) {
     if (!CHR_SCR) {
         CHR_SCR = !0;
         var a = 'easeOutBounce' !== (r = r || 'easeOutBounce') ? 1 : 400;
-        CHR_CRR += e;
+        currentCharIndex += e;
         var E = $(charSelUnit).length;
-        (CHR_CRR = Math.max(0, Math.min(CHR_CRR, E - 1))),
+        (currentCharIndex = Math.max(0, Math.min(currentCharIndex, E - 1))),
             'easeOutBounce' === r && (updateScrollBtnState(), updateCharCtrlBtnState()),
             $(charSelUnit).each(function (E, t) {
                 $(t).stop();
-                var e = E - CHR_CRR + CHR_UNIT_I;
+                var e = E - currentCharIndex + CHR_UNIT_I;
                 e < 0
                     ? ($(t).css('top', CHR_UNIT_Y[0] + 'px'),
                       $(t).css('display', 'none'),
@@ -459,15 +470,15 @@ function scrollCharUni(e, r) {
                                   var e = convTop2Z(t);
                                   $(this).css('z-index', e),
                                       60 < e
-                                          ? E === CHR_CRR &&
+                                          ? E === currentCharIndex &&
                                             ($($(t).children('.cover')[0]).stop().fadeTo(100, 0), $(t).addClass('crr'))
                                           : $(t).removeClass('crr');
                               },
                               complete: function () {
                                   (CHR_SCR = !1),
-                                      E === CHR_CRR &&
+                                      E === currentCharIndex &&
                                           'easeOutBounce' !== r &&
-                                          (CHR_CRR !== CHR_DEF
+                                          (currentCharIndex !== CHR_DEF
                                               ? scrollCharUni(1, 'swing')
                                               : (updateScrollBtnState(),
                                                 updateCharCtrlBtnState(),
@@ -483,8 +494,10 @@ function updateScrollBtnState() {
     'use strict';
     var e = $(charSelUnit).length;
     1 < e
-        ? (0 !== CHR_CRR ? $(charSelUpArrow).removeClass('disabled') : $(charSelUpArrow).addClass('disabled'),
-          CHR_CRR !== e - 1 ? $(charSelDownArrow).removeClass('disabled') : $(charSelDownArrow).addClass('disabled'),
+        ? (0 !== currentCharIndex ? $(charSelUpArrow).removeClass('disabled') : $(charSelUpArrow).addClass('disabled'),
+          currentCharIndex !== e - 1
+              ? $(charSelDownArrow).removeClass('disabled')
+              : $(charSelDownArrow).addClass('disabled'),
           $(charSelBox + ' .scroll').show())
         : $(charSelBox + ' .scroll').hide();
 }
@@ -494,71 +507,109 @@ function updateCharCtrlBtnState() {
     $(charSelUnit).length < 11
         ? ($(charAddButton).removeClass('disabled'),
           $(charAddButton).fadeTo(100, 1),
-          $(charAddButton).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+          $(charAddButton).attr('onMouseOver', "playSound('IDR_WAV_SEL');"))
         : ($(charAddButton).attr('onMouseOver', ''),
           $(charAddButton).removeAttr('onMouseOver'),
           $(charAddButton).addClass('disabled'),
           $(charAddButton).fadeTo(200, 0.4)),
-        '0' !== getCrrChar().attr('hr')
+        '0' !== getCurrentCharData().attr('hr')
             ? ($(charDelButton).removeClass('disabled'),
               $(charDelButton).fadeTo(100, 1),
-              $(charDelButton).attr('onMouseOver', "DoPlaySound('IDR_WAV_SEL');"))
+              $(charDelButton).attr('onMouseOver', "playSound('IDR_WAV_SEL');"))
             : ($(charDelButton).attr('onMouseOver', ''),
               $(charDelButton).removeAttr('onMouseOver'),
               $(charDelButton).addClass('disabled'),
               $(charDelButton).fadeTo(200, 0.4));
 }
 
-function showCharSelector() {
-    'use strict';
-    (CHR_DEF = CHR_CRR = 0), clearOnlyLog();
-    $('.launcher_login_panel').hide(),
-        $('#launcher_update_progress').hide(),
-        $(charSelBox).hide(),
-        $('.btn_logout').show(),
-        $(charSelBox + ' .units').html(''),
-        $(charSelBox + ' .scroll').hide();
+const showCharSelector = function () {
+    // set CHR_DEF and currentCharIndex to 0, then clear the log
+    (CHR_DEF = currentCharIndex = 0), clearOnlyLog();
 
-    var e = DoGetCharacterInfo();
-    alert('E:' + e);
-    (e = (e = e.split("'").join('"')).split('&apos;').join("'")), (e = $('<div>' + e + '</div>'));
+    // hide launcher_login_panel, launcher_update_progress, and character selection box
+    $('.launcher_login_panel').hide();
+    $('#launcher_update_progress').hide();
+    $(charSelBox).show();
 
-    var t = $(e.find('CharacterInfo')[0]).attr('defaultUid');
-    e.find('Character').each(function (e, E) {
-        $(E).attr('uid') === t && (CHR_DEF = e),
-            $(charSelBox + ' .units').append(
-                createCharUnit(
-                    e + 1,
-                    $(E).attr('name'),
-                    $(E).attr('uid'),
-                    parseInt($(E).attr('HR'), 10),
-                    parseInt($(E).attr('GR'), 10),
-                    $(E).attr('weapon'),
-                    $(E).attr('sex'),
-                    parseInt($(E).attr('lastLogin'), 10)
-                )
-            );
-    }),
-        $(charSelUnit).each(function (e, E) {
-            $(E).removeClass('crr'), $(E).css('display', 'none'), $(E).css('z-index', '0');
-            var t = e - CHR_CRR + CHR_UNIT_I;
-            t < 0
-                ? $(E).css('top', CHR_UNIT_Y[0] + 'px')
-                : CHR_UNIT_Y.length <= t
-                ? $(E).css('top', CHR_UNIT_Y[CHR_UNIT_Y.length - 1] + 'px')
-                : ($(E).css('top', CHR_UNIT_Y[t] + 'px'),
-                  $(E).css('display', 'block'),
-                  $(E).css('z-index', convTop2Z(E)),
-                  t === CHR_UNIT_I
-                      ? ($(E).addClass('crr'), $($(E).children('.cover')[0]).stop().fadeTo(0, 1))
-                      : $($(E).children('.cover')[0])
-                            .stop()
-                            .fadeTo(0, Math.min(0.75, 0.45 * Math.abs(t - CHR_UNIT_I))));
-        }),
-        CHR_CRR !== CHR_DEF
-            ? scrollCharUni(1, 'swing')
-            : (updateScrollBtnState(), updateCharCtrlBtnState(), $(charSelBox).show());
-}
+    // show the logout button
+    $('.btn_logout').show();
+
+    // clear the units and hide the scroll
+    $(charSelBox + ' .units').html('');
+    $(charSelBox + ' .scroll').hide();
+
+    // get character information and convert it
+    const characterInfo = $('<div>').html(
+        getCharacterInfo()
+            .replace(/'/g, '"')
+            .replace(/&apos;/g, "'")
+    );
+
+    // set CHR_DEF to the default character index
+    const defaultUid = $(characterInfo.find('CharacterInfo')[0]).attr('defaultUid');
+
+    characterInfo.find('Character').each(function (index, element) {
+        $(element).attr('uid') === defaultUid && (CHR_DEF = index);
+
+        // create a new character unit and append it to the character selection box
+        $(charSelBox + ' .units').append(
+            createCharUnit(
+                index + 1,
+                $(element).attr('name'),
+                $(element).attr('uid'),
+                parseInt($(element).attr('HR'), 10),
+                parseInt($(element).attr('GR'), 10),
+                $(element).attr('weapon'),
+                $(element).attr('sex'),
+                parseInt($(element).attr('lastLogin'), 10)
+            )
+        );
+    });
+
+    // For each character unit, remove the current character class, hide the unit, and set the z-index to 0
+/*     $(charSelUnit).each(function (index, element) {
+        $(element).removeClass('crr');
+        $(element).css('display', 'none');
+        $(element).css('z-index', '0');
+        // Calculate the new position of the unit based on the current character index
+        var newPos = index - currentCharIndex + CHR_UNIT_I;
+
+        // If the new position is out of bounds, set the position to the top or bottom of the character selection box
+        if (newPos < 0) {
+            $(element).css('top', CHR_UNIT_Y[0] + 'px');
+        } else if (CHR_UNIT_Y.length <= newPos) {
+            $(element).css('top', CHR_UNIT_Y[CHR_UNIT_Y.length - 1] + 'px');
+        } else {
+            // Otherwise, set the new position and show the unit
+            $(element).css('top', CHR_UNIT_Y[newPos] + 'px');
+            $(element).css('display', 'block');
+
+            // Set the z-index based on the position of the unit
+            $(element).css('z-index', convTop2Z(element));
+
+            // If the unit is the current character, add the current character class and fade in the cover
+            if (newPos === CHR_UNIT_I) {
+                $(element).addClass('crr');
+                $($(element).children('.cover')[0]).stop().fadeTo(0, 1);
+            } else {
+                // Otherwise, fade in the cover with a reduced opacity
+                $($(element).children('.cover')[0])
+                    .stop()
+                    .fadeTo(0, Math.min(0.75, 0.45 * Math.abs(newPos - CHR_UNIT_I)));
+            }
+        }
+    });
+
+    // If the current character is not the default character, scroll the character selection box
+    if (currentCharIndex !== CHR_DEF) {
+        scrollCharUni(1, 'swing');
+    } else {
+        // Otherwise, update the scroll and control button states, and show the character selection box
+        updateScrollBtnState();
+        updateCharCtrlBtnState();
+        $(charSelBox).show();
+    } */
+};
 
 function charDelPolling() {
     // get the auth result to check whether the deletion was successful or not
@@ -602,28 +653,40 @@ function charDelete() {
         }, 1000);
 }
 
-function initializing() {
-    'use strict';
-    DoSelectCharacter(CHR_UID, CHR_UID),
-        DoPlaySound('IDR_WAV_LOGIN'),
-        $('#launcher_game_start_wait').show(),
-        hideModalDialog(),
-        setTimeout(function () {
-            DoExitLauncher();
-        }, 500);
+function initializing(uid) {
+    // select the specified character
+    selectCharacter(uid, uid);
+
+    // play a login sound
+    playSound('IDR_WAV_LOGIN');
+
+    // show initializing overlay
+    $('#launcher_game_start_wait').show();
+
+    // hidethe dialog
+    hideModalDialog();
+
+    // exit the launcher after a delay of 500 milliseconds
+    setTimeout(function () {
+        exitLauncher();
+    }, 500);
 }
 
 function gameStart() {
-    'use strict';
-    DoPlaySound('IDR_WAV_OK');
-    var e = getCrrChar();
-    (CHR_UID = e.attr('uid')),
-        (CHR_HR = parseInt(e.attr('hr'), 10)),
-        showGameStartDialog(e.attr('name'), e.attr('uid'));
+    // play a sound
+    playSound('IDR_WAV_OK');
+
+    // get the current character, and set its uid and name to variables respectively
+    const currentCharData = getCurrentCharData();
+    const currentCharUid = currentCharData.attr('uid');
+    const currentCharName = currentCharData.attr('name');
+
+    // show a dialog box with the character's name and uid
+    showGameStartDialog(currentCharName, currentCharUid);
 }
 
-function checkDelID(name, id) {
-    id === $('.del_uid').val() ? showWaitDelCharDialog(name, id) : showWaitdelCharUidErrorDialog(name, id);
+function checkDelID(name, uid) {
+    uid === $('.del_uid').val() ? showWaitDelCharDialog(name, uid) : showWaitdelCharUidErrorDialog(name, uid);
 }
 
 var UPD_ANIM_SEQ = { loop: [] };
@@ -686,7 +749,7 @@ function updateProgressAnimationFinish() {
         (UPD_ANIM_TimerID = setTimeout(function () {
             UPD_FRM_FINI++,
                 UPD_ANIM_SEQ.fini.length > UPD_FRM_FINI
-                    ? (UPD_ANIM_SEQ.fini.length === UPD_FRM_FINI + 1 && DoPlaySound('IDR_NIKU'),
+                    ? (UPD_ANIM_SEQ.fini.length === UPD_FRM_FINI + 1 && playSound('IDR_NIKU'),
                       updateProgressAnimationFinish())
                     : (clearAnimSq(), finishUpdateProcess());
         }, E.delay));
@@ -701,7 +764,7 @@ function switchUpdateAfterState() {
                     return void (UPD_POLLING = !1);
                 case 'SELFUP':
                     return void setTimeout(function () {
-                        DoExitLauncher();
+                        exitLauncher();
                     }, EXIT_WAIT);
                 case 'ERR':
                     return void switchAuthMode();
@@ -726,7 +789,7 @@ function progressUpdatePercentage() {
                         return void (UPD_POLLING = !1);
                     case 'SELFUP':
                         return void setTimeout(function () {
-                            DoExitLauncher();
+                            exitLauncher();
                         }, EXIT_WAIT);
                 }
                 break;
@@ -967,22 +1030,22 @@ function initSrvSelList() {
 
     // the mouseover event to sever select button to play a sound when hovering
     $(serverSelBtn).mouseover(function () {
-        DoPlaySound('IDR_WAV_SEL');
+        playSound('IDR_WAV_SEL');
     });
 
     // add the server selection button to the focus elements and bind the mousedown event to it
     $(serverSelBtn).mousedown(function () {
-        DoPlaySound('IDR_WAV_OK'), serverListOpen ? hideSrvSelList() : showSrvSelList();
+        playSound('IDR_WAV_OK'), serverListOpen ? hideSrvSelList() : showSrvSelList();
     });
 
     // the mouseover event to each server element to play a sound when hovering
     $(srvListEachItem).mouseover(function () {
-        DoPlaySound('IDR_WAV_SEL');
+        playSound('IDR_WAV_SEL');
     });
 
     // the mousedown event to each server element to select it as the active server, and hide the server selection list
     $(srvListEachItem).mousedown(function () {
-        DoPlaySound('IDR_WAV_OK');
+        playSound('IDR_WAV_OK');
         switchAuthSrv($(this));
         const index = parseInt($(this).attr('idx'), 10);
         DoSetIniLastServerIndex(String(index));
@@ -1023,9 +1086,9 @@ function beginAuthProcess() {
 
     '' === userId || '' === password
         ? // if credentials are not entered, return error
-          (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r'))
+          (playSound('IDR_WAV_OK'), onAuthError(textOutput('noUseridPass'), 'r'))
         : // if credentials are entered, proceed to auth process
-          (DoPlaySound('IDR_WAV_PRE_LOGIN'), showAuthProgress(), createShortLifeAuthKeyDone());
+          (playSound('IDR_WAV_PRE_LOGIN'), showAuthProgress(), createShortLifeAuthKeyDone());
 }
 
 function switchAuthMode() {
@@ -1055,7 +1118,7 @@ function initAuth() {
     // login button click event
     $(loginBtn).click(function () {
         serverNotSelected
-            ? (DoPlaySound('IDR_WAV_OK'), onAuthError(textOutput('noSrvSelected'), 'r'))
+            ? (playSound('IDR_WAV_OK'), onAuthError(textOutput('noSrvSelected'), 'r'))
             : beginAuthProcess();
     });
 
@@ -1063,14 +1126,14 @@ function initAuth() {
     userId = localStorage.getItem('UserID');
     $(inputUserId).val(userId);
     $(inputUserId).focus(function () {
-        DoPlaySound('IDR_WAV_OK');
+        playSound('IDR_WAV_OK');
     });
 
     // set password and focus event
     password = localStorage.getItem('Password');
     $(inputPassword).val(password);
     $(inputPassword).focus(function () {
-        DoPlaySound('IDR_WAV_OK');
+        playSound('IDR_WAV_OK');
     });
 
     // set check state for saveUserIdCheck
@@ -1201,12 +1264,12 @@ function showModalDialog(text, options, standbyTime) {
             const button = $('<button></button>').addClass('md_btn');
 
             // default onclick sound is IDR_WAV_OK, but if noSound is true, set no sound
-            const sound = option.noSound === true ? '' : 'DoPlaySound("IDR_WAV_OK");';
+            const sound = option.noSound === true ? '' : 'playSound("IDR_WAV_OK");';
 
             // add click and hover event to button
             button.attr({
                 onclick: sound + ' ' + option.cmd,
-                onMouseOver: "DoPlaySound('IDR_WAV_SEL')",
+                onMouseOver: "playSound('IDR_WAV_SEL')",
             });
 
             // if button is set as standby, disable hover and click events
@@ -1281,28 +1344,28 @@ function showWaitCharAddDialog() {
     ]);
 }
 
-function showDelCharDialog(name, id) {
+function showDelCharDialog(name, uid) {
     showModalDialog(
         '<p>' +
             dialogTextOutput('delCharPrefix') +
             ' "' +
             name +
             '"<span class="uid">（ID: ' +
-            id +
+            uid +
             '）</span>?</p>' +
             dialogTextOutput('delCharFirstConf'),
         [
-            { label: 'Delete', cmd: 'showDelCharDialog2("' + name + '", "' + id + '");', isStandby: true },
+            { label: 'Delete', cmd: 'showDelCharDialog2("' + name + '", "' + uid + '");', isStandby: true },
             { label: 'Cancel', cmd: 'charDelReset();' },
         ],
         1000
     );
 }
 
-function showDelCharDialog2(name, id) {
+function showDelCharDialog2(name, uid) {
     if (1 < $(charSelUnit).length) {
         // if user still has more than one character, skip this function
-        showDelCharDialog3(name, id);
+        showDelCharDialog3(name, uid);
     } else {
         showModalDialog(
             '<p>' +
@@ -1310,13 +1373,13 @@ function showDelCharDialog2(name, id) {
                 ' "' +
                 name +
                 '"<span class="uid">（ID: ' +
-                id +
+                uid +
                 '）</span>?</p>' +
                 dialogTextOutput('delLastChar'),
             [
                 {
                     label: 'Delete',
-                    cmd: 'showDelCharDialog3("' + name + '", "' + id + '");',
+                    cmd: 'showDelCharDialog3("' + name + '", "' + uid + '");',
                     isStandby: true,
                 },
                 { label: 'Cancel', cmd: 'charDelReset();' },
@@ -1326,44 +1389,44 @@ function showDelCharDialog2(name, id) {
     }
 }
 
-function showDelCharDialog3(name, id) {
+function showDelCharDialog3(name, uid) {
     showModalDialog(
         '<p>' +
             dialogTextOutput('delCharPrefix') +
             ' "' +
             name +
             '"<span class="uid">（ID: ' +
-            id +
+            uid +
             '）</span>?</p>' +
             dialogTextOutput('delCharFinalConf') +
             dialogTextOutput('delCharUidInput'),
         [
-            { label: 'Delete', cmd: 'checkDelID("' + name + '", "' + id + '");', isStandby: true },
+            { label: 'Delete', cmd: 'checkDelID("' + name + '", "' + uid + '");', isStandby: true },
             { label: 'Cancel', cmd: 'charDelReset();' },
         ],
         1000
     );
 }
 
-function showWaitdelCharUidErrorDialog(name, id) {
+function showWaitdelCharUidErrorDialog(name, uid) {
     showModalDialog(
         '<p>Could not delete character' +
             ' "' +
             name +
             '"<span class="uid">（ID: ' +
-            id +
+            uid +
             '）</span>.</p>' +
             dialogTextOutput('delCharErrMatch'),
         [{ label: 'Close', cmd: 'charDelReset();' }]
     );
 }
 
-function showWaitDelCharDialog(name, id) {
+function showWaitDelCharDialog(name, uid) {
     showModalDialog(
         '<p>"' +
             name +
             '"<span class="uid">（ID: ' +
-            id +
+            uid +
             '）</span>' +
             'is being deleted.</p><p>Please wait a moment.</p>'
     ),
@@ -1376,20 +1439,20 @@ function showFailDelCharDialog(numOwnedChars) {
     ]);
 }
 
-function showDoneDelNormCharDialog(name, id) {
+function showDoneDelNormCharDialog(name, uid) {
     showModalDialog(
-        '<p>Character' + ' "' + name + '"<span class="uid">（ID: ' + id + '）</span>' + 'has been deleted.</p>',
+        '<p>Character' + ' "' + name + '"<span class="uid">（ID: ' + uid + '）</span>' + 'has been deleted.</p>',
         [{ label: 'Close', cmd: 'beginAuthProcess(); charDelReset();' }]
     );
 }
 
-function showDoneDelLastCharDialog(name, id) {
+function showDoneDelLastCharDialog(name, uid) {
     showModalDialog(
         '<p>The last character' +
             ' "' +
             name +
             '"<span class="uid">（ID: ' +
-            id +
+            uid +
             '）</span>' +
             'has been deleted,<br>' +
             dialogTextOutput('delLastCharDone'),
@@ -1397,18 +1460,18 @@ function showDoneDelLastCharDialog(name, id) {
     );
 }
 
-function showGameStartDialog(name, id) {
+function showGameStartDialog(name, uid) {
     showModalDialog(
         dialogTextOutput('startTheGame') +
             '<p style="font-size: 2.1rem;">"' +
             name +
             '"<span class="uid">（ID: ' +
-            id +
+            uid +
             '）</span>',
         [
             {
                 label: 'Yes',
-                cmd: 'initializing();',
+                cmd: 'initializing("' + uid + '");',
                 noSound: true,
             },
             {
@@ -1422,17 +1485,17 @@ function showGameStartDialog(name, id) {
 $(function () {
     // play a sound when hovering logout button
     $('.btn_logout').mouseover(function () {
-        DoPlaySound('IDR_WAV_SEL');
+        playSound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking logout button
     $('.btn_logout').click(function () {
-        DoPlaySound('IDR_WAV_OK');
+        playSound('IDR_WAV_OK');
     });
 
     // play a sound when hovering preferences button
     $('.btn_preferences_text').mouseover(function () {
-        DoPlaySound('IDR_WAV_SEL');
+        playSound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking preferences button
@@ -1442,27 +1505,27 @@ $(function () {
 
     // play a sound when hovering the element with sound_on class
     $('.sound_on').mouseover(function () {
-        DoPlaySound('IDR_WAV_SEL');
+        playSound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking the element with sound_on class except for login btn
     $('.sound_on').click(function (e) {
-        e.target !== $(loginBtn).get(0) && DoPlaySound('IDR_WAV_OK');
+        e.target !== $(loginBtn).get(0) && playSound('IDR_WAV_OK');
     });
 
     // play a sound when clicking up arrow on character selection, and move a unit
     $(charSelUpArrow).click(function () {
-        DoPlaySound('IDR_WAV_OK'), scrollCharUni(-1);
+        playSound('IDR_WAV_OK'), scrollCharUni(-1);
     });
 
     // play a sound when clicking down arrow on character selection, and move a unit
     $(charSelDownArrow).click(function () {
-        DoPlaySound('IDR_WAV_OK'), scrollCharUni(1);
+        playSound('IDR_WAV_OK'), scrollCharUni(1);
     });
 
     // add a character
     $(charAddButton).click(function () {
-        $(this).hasClass('disabled') || (DoPlaySound('IDR_WAV_OK'), showAddCharDialog());
+        $(this).hasClass('disabled') || (playSound('IDR_WAV_OK'), showAddCharDialog());
     });
 
     // delete a character
@@ -1470,14 +1533,14 @@ $(function () {
         // check if the clicked element is not disabled and a character is not already being deleted
         if (!$(this).hasClass('disabled') && !delCharUid && !delCharName) {
             // play a sound
-            DoPlaySound('IDR_WAV_OK');
+            playSound('IDR_WAV_OK');
 
             // get the user data of the currently selected character
-            const userData = getCrrChar();
+            const currentCharData = getCurrentCharData();
 
             // set the name and UID of the character to be deleted
-            delCharName = userData.attr('name');
-            delCharUid = userData.attr('uid');
+            delCharName = currentCharData.attr('name');
+            delCharUid = currentCharData.attr('uid');
 
             // show a confirmation dialog for deleting the character
             showDelCharDialog(delCharName, delCharUid);
@@ -1528,6 +1591,8 @@ $(function () {
 
     // by default, launcher window can't be moved
     DoBeginDrag(false);
+
+    
 });
 
 $(function () {

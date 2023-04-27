@@ -380,7 +380,9 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
     weaponStyle = weaponStyle.toLowerCase().charAt(0) + weaponStyle.slice(1);
 
     // generate a new div element with the given attributes
-    const $charUnit = $('<div class="unit" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>');
+    const $charUnit = $(
+        '<div class="unit swiper-slide" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>'
+    );
 
     // add a number element, a sign element, and a name element to the div
     $charUnit.append($('<div class="num n' + index + '"></div>'));
@@ -389,7 +391,24 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
 
     hr === 0
         ? // if the character is new (HR is 0), add a new class and a new element to the div
-          ($charUnit.addClass('new'), $charUnit.append($('<p class="new">' + textOutput('readyNewChara') + '</p>')))
+          ($charUnit.addClass('new'),
+          $charUnit.append($('<p class="new">' + textOutput('readyNewChara') + '</p>')),
+          $charUnit.append(
+              $(
+                  '<p class="data">HR' +
+                      hr +
+                      (gr ? '　GR' + gr : '') +
+                      '　' +
+                      (gender === 'M' ? '♂' : '♀') +
+                      '<br>ID:<span class="data_uid">' +
+                      uid +
+                      '</span><br>' +
+                      'Last Login' +
+                      ':' +
+                      convLastLoginDate(lastLogin) +
+                      '</p>'
+              )
+          ))
         : // if not, add an icon element, a weapon element, and a data element to the div
           ($charUnit.addClass(weaponStyle),
           $charUnit.append($('<div class="icon' + (weaponStyle ? ' ' + weaponStyle : '') + '"></div>')),
@@ -401,9 +420,9 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
                       (gr ? '　GR' + gr : '') +
                       '　' +
                       (gender === 'M' ? '♂' : '♀') +
-                      '<br>ID:' +
+                      '<br>ID:<span class="data_uid">' +
                       uid +
-                      '<br>' +
+                      '</span><br>' +
                       'Last Login' +
                       ':' +
                       convLastLoginDate(lastLogin) +
@@ -534,9 +553,8 @@ const showCharSelector = function () {
     // show the logout button
     $('.btn_logout').show();
 
-    // clear the units and hide the scroll
-    $(charSelBox + ' .units').html('');
-    $(charSelBox + ' .scroll').hide();
+    // clear the character unit to init state
+    $(charSelBox + ' .char_units_wrapper' + ' .units' + ' .swiper-wrapper').empty();
 
     // get character information and convert it
     const characterInfo = $('<div>').html(
@@ -552,7 +570,7 @@ const showCharSelector = function () {
         $(element).attr('uid') === defaultUid && (CHR_DEF = index);
 
         // create a new character unit and append it to the character selection box
-        $(charSelBox + ' .units').append(
+        $(charSelBox + ' .char_units_wrapper' + ' .units' + ' .swiper-wrapper').append(
             createCharUnit(
                 index + 1,
                 $(element).attr('name'),
@@ -565,50 +583,6 @@ const showCharSelector = function () {
             )
         );
     });
-
-    // For each character unit, remove the current character class, hide the unit, and set the z-index to 0
-/*     $(charSelUnit).each(function (index, element) {
-        $(element).removeClass('crr');
-        $(element).css('display', 'none');
-        $(element).css('z-index', '0');
-        // Calculate the new position of the unit based on the current character index
-        var newPos = index - currentCharIndex + CHR_UNIT_I;
-
-        // If the new position is out of bounds, set the position to the top or bottom of the character selection box
-        if (newPos < 0) {
-            $(element).css('top', CHR_UNIT_Y[0] + 'px');
-        } else if (CHR_UNIT_Y.length <= newPos) {
-            $(element).css('top', CHR_UNIT_Y[CHR_UNIT_Y.length - 1] + 'px');
-        } else {
-            // Otherwise, set the new position and show the unit
-            $(element).css('top', CHR_UNIT_Y[newPos] + 'px');
-            $(element).css('display', 'block');
-
-            // Set the z-index based on the position of the unit
-            $(element).css('z-index', convTop2Z(element));
-
-            // If the unit is the current character, add the current character class and fade in the cover
-            if (newPos === CHR_UNIT_I) {
-                $(element).addClass('crr');
-                $($(element).children('.cover')[0]).stop().fadeTo(0, 1);
-            } else {
-                // Otherwise, fade in the cover with a reduced opacity
-                $($(element).children('.cover')[0])
-                    .stop()
-                    .fadeTo(0, Math.min(0.75, 0.45 * Math.abs(newPos - CHR_UNIT_I)));
-            }
-        }
-    });
-
-    // If the current character is not the default character, scroll the character selection box
-    if (currentCharIndex !== CHR_DEF) {
-        scrollCharUni(1, 'swing');
-    } else {
-        // Otherwise, update the scroll and control button states, and show the character selection box
-        updateScrollBtnState();
-        updateCharCtrlBtnState();
-        $(charSelBox).show();
-    } */
 };
 
 function charDelPolling() {
@@ -655,6 +629,7 @@ function charDelete() {
 
 function initializing(uid) {
     // select the specified character
+    alert(uid);
     selectCharacter(uid, uid);
 
     // play a login sound
@@ -677,9 +652,12 @@ function gameStart() {
     playSound('IDR_WAV_OK');
 
     // get the current character, and set its uid and name to variables respectively
-    const currentCharData = getCurrentCharData();
-    const currentCharUid = currentCharData.attr('uid');
-    const currentCharName = currentCharData.attr('name');
+    //const currentCharData = getCurrentCharData();
+    //const currentCharUid = currentCharData.attr('uid');
+    //const currentCharName = currentCharData.attr('name');
+
+    const currentCharName = $('.swiper-slide-active .name').text();
+    const currentCharUid = $('.swiper-slide-active .data .data_uid').text();
 
     // show a dialog box with the character's name and uid
     showGameStartDialog(currentCharName, currentCharUid);
@@ -1525,16 +1503,13 @@ $(function () {
 
     // add a character
     $(charAddButton).click(function () {
-        $(this).hasClass('disabled') || (playSound('IDR_WAV_OK'), showAddCharDialog());
+        $(this).hasClass('disabled') || showAddCharDialog();
     });
 
     // delete a character
     $(charDelButton).click(function () {
         // check if the clicked element is not disabled and a character is not already being deleted
         if (!$(this).hasClass('disabled') && !delCharUid && !delCharName) {
-            // play a sound
-            playSound('IDR_WAV_OK');
-
             // get the user data of the currently selected character
             const currentCharData = getCurrentCharData();
 
@@ -1592,7 +1567,9 @@ $(function () {
     // by default, launcher window can't be moved
     DoBeginDrag(false);
 
-    
+    /* $(charSelBox + ' .swiper-wrapper').append(createCharUnit(1, 'name1', '123451', 1, 0, 'Great Sword', 'M', 1));
+    $(charSelBox + ' .swiper-wrapper').append(createCharUnit(2, 'name2', '123452', 1, 0, 'Great Sword', 'M', 1));
+    $(charSelBox + ' .swiper-wrapper').append(createCharUnit(3, 'name3', '123453', 0, 0, 'Great Sword', 'M', 1)); */
 });
 
 $(function () {

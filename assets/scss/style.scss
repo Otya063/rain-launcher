@@ -752,7 +752,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 520px;
     height: 378px;
     margin-top: 1%;
@@ -877,153 +877,166 @@ h1 {
         }
     }
 
-    // character group units
-    .units {
-        width: 520px;
-        height: 150px;
+    .char_units_wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 200px;
+        justify-content: space-between;
 
-        // character individual unit
-        .unit {
+        // character group units
+        .units {
             width: 520px;
-            height: 143px;
-            position: absolute;
-            left: 0;
-            top: 60px;
-            background: url(#{$img}/char/background.png) no-repeat 0px 0px;
-            cursor: default;
+            height: 210px;
+            overflow: hidden;
 
-            // loop through weapon names and set corresponding image and class
-            $weaponNames: $weaponNamesArray;
-            @each $weapon in $weaponNames {
-                &.#{$weapon} {
-                    @include char_sel_unit(#{$weapon});
+            // character individual unit
+            .unit {
+                //width: 520px;
+                //height: 143px;
+                //position: absolute;
+                //left: 0;
+                //top: 60px;
+                background: url(#{$img}/char/background.png) no-repeat 0px 0px;
+                cursor: default;
+
+                // loop through weapon names and set corresponding image and class
+                $weaponNames: $weaponNamesArray;
+                @each $weapon in $weaponNames {
+                    &.#{$weapon} {
+                        @include char_sel_unit(#{$weapon});
+                    }
                 }
-            }
 
-            // current character
-            &.crr {
-                cursor: pointer;
+                // current character
+                &.crr {
+                    cursor: pointer;
 
-                .sign {
-                    width: 134px;
-                    height: 124px;
+                    .sign {
+                        width: 134px;
+                        height: 124px;
+                        position: absolute;
+                        right: 9px;
+                        top: 9px;
+                        background: no-repeat 0px 0px;
+
+                        &.down {
+                            background-position: 0px -124px;
+                        }
+                    }
+
+                    .cover {
+                        width: 520px;
+                        height: 143px;
+                        left: 0;
+                        top: 0;
+                        background: none;
+                    }
+                }
+
+                // new character
+                &.new {
+                    .name {
+                        font-weight: normal;
+                    }
+
+                    .new {
+                        display: block;
+                        width: 100%;
+                        position: absolute;
+                        left: 0;
+                        top: 66px;
+                        color: #313131;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                        line-height: 18px;
+
+                        &:first-line {
+                            font-size: 26px;
+                            line-height: 32px;
+                            color: #3169f0;
+                        }
+                    }
+
+                    .data {
+                        display: none;
+                    }
+                }
+
+                // character index img
+                .num {
+                    width: 81px;
+                    height: 77px;
                     position: absolute;
-                    right: 9px;
-                    top: 9px;
+                    left: 11px;
+                    top: 11px;
                     background: no-repeat 0px 0px;
-
-                    &.down {
-                        background-position: 0px -124px;
-                    }
                 }
 
-                .cover {
-                    width: 520px;
-                    height: 143px;
-                    left: 0;
-                    top: 0;
-                    background: none;
-                }
-            }
-
-            // new character
-            &.new {
-                .name {
-                    font-weight: normal;
-                }
-
-                .new {
-                    display: block;
-                    width: 100%;
+                // weapon icon
+                .icon {
+                    width: 48px;
+                    height: 47px;
                     position: absolute;
-                    left: 0;
-                    top: 66px;
-                    color: #313131;
-                    font-size: 14px;
-                    font-weight: bold;
-                    text-align: center;
-                    line-height: 18px;
+                    left: 31px;
+                    top: 69px;
+                    background: no-repeat 0px 0px;
+                }
 
+                // character name
+                .name {
+                    font-size: 30px;
+                    line-height: 30px;
+                    letter-spacing: 0.25;
+                    text-align: center;
+                    font-weight: bold;
+                    position: absolute;
+                    top: 23px;
+                    left: 0;
+                    width: 100%;
+                }
+
+                // character weapon
+                .wp {
+                    font-size: 18px;
+                    line-height: 20px;
+                    text-align: center;
+                    font-weight: bold;
+                    display: block;
+                    position: absolute;
+                    left: 90px;
+                    top: 73px;
+                    white-space: nowrap;
+
+                    // weapon text adjustment
                     &:first-line {
-                        font-size: 26px;
-                        line-height: 32px;
-                        color: #3169f0;
+                        font-size: 14px;
+                        letter-spacing: 0;
                     }
                 }
-            }
 
-            // character index img
-            .num {
-                width: 81px;
-                height: 77px;
-                position: absolute;
-                left: 11px;
-                top: 11px;
-                background: no-repeat 0px 0px;
-            }
-
-            // weapon icon
-            .icon {
-                width: 48px;
-                height: 47px;
-                position: absolute;
-                left: 31px;
-                top: 69px;
-                background: no-repeat 0px 0px;
-            }
-
-            // character name
-            .name {
-                font-size: 30px;
-                line-height: 30px;
-                letter-spacing: 0.25;
-                text-align: center;
-                font-weight: bold;
-                position: absolute;
-                top: 23px;
-                left: 0;
-                width: 100%;
-            }
-
-            // character weapon
-            .wp {
-                font-size: 18px;
-                line-height: 20px;
-                text-align: center;
-                font-weight: bold;
-                display: block;
-                position: absolute;
-                left: 90px;
-                top: 73px;
-                white-space: nowrap;
-
-                // weapon text adjustment
-                &:first-line {
-                    font-size: 14px;
-                    letter-spacing: 0;
+                // character data
+                .data {
+                    text-align: left;
+                    font-size: 16px;
+                    line-height: 18px;
+                    display: block;
+                    white-space: nowrap;
+                    position: absolute;
+                    left: 252px;
+                    top: 65px;
                 }
-            }
 
-            // character data
-            .data {
-                text-align: left;
-                font-size: 16px;
-                line-height: 18px;
-                display: block;
-                white-space: nowrap;
-                position: absolute;
-                left: 252px;
-                top: 65px;
-            }
-
-            // character cover
-            .cover {
-                width: 504px;
-                height: 127px;
-                position: absolute;
-                left: 8px;
-                top: 8px;
-                background: #000;
+                // character cover
+                .cover {
+                    width: 504px;
+                    height: 127px;
+                    position: absolute;
+                    left: 8px;
+                    top: 8px;
+                    background: #000;
+                }
             }
         }
     }
@@ -1283,116 +1296,40 @@ h1 {
     }
 }
 
-%transition_all_03s {
-    transition: all 0.3s ease;
+.swiper {
+    overflow: hidden;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 400px !important;
 }
-%backface_visibility_hidden {
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-
-*,
-*:before,
-*:after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.swiper-wrapper {
+    //width: 300px !important;
+    //height: 300px !important;
+    margin: 0 auto;
 }
 
-.swiper-container {
-    width: 50%;
-    height: 28vw;
-    transition: opacity 0.6s ease;
-    &.swiper-container-coverflow {
-        padding-top: 2%;
-    }
-    &.loading {
-        opacity: 0;
-        visibility: hidden;
-    }
-    &:hover {
-        .swiper-button-prev,
-        .swiper-button-next {
-            transform: translateX(0);
-            opacity: 1;
-            visibility: visible;
-        }
-    }
+.swiper-pagination {
+    right: 7% !important;
 }
 
-.swiper-slide {
-    background-position: center;
-    background-size: cover;
-    @extend %backface_visibility_hidden;
-    transform: none !important;
-
-    .slide-inner {
-    }
-    .entity-img {
-        display: none;
-    }
-    .content {
-        position: absolute;
-        top: 40%;
-        left: 0;
-        width: 50%;
-        padding-left: 5%;
-        color: #fff;
-        .title {
-            font-size: 2.6em;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-        .caption {
-            display: block;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-    }
-}
-[class^='swiper-button-'] {
-    width: 44px;
-    opacity: 0;
-    visibility: hidden;
-    @extend %transition_all_03s;
+.swiper img {
+    width: 100%;
+    height: auto;
 }
 .swiper-button-prev {
-    transform: translateX(50px);
+    margin-top: auto !important;
+
+    position: static !important;
+    transform: rotate(90deg);
 }
 .swiper-button-next {
-    transform: translateX(-50px);
+    position: static !important;
+    margin-top: auto !important;
+    transform: rotate(90deg);
 }
-.swiper-container-horizontal {
-    > .swiper-pagination-bullets {
-        .swiper-pagination-bullet {
-            margin: 0 9px;
-            position: relative;
-            width: 12px;
-            height: 12px;
-            background-color: #fff;
-            opacity: 0.4;
-            @extend %transition_all_03s;
-            &::before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 18px;
-                height: 18px;
-                transform: translate(-50%, -50%);
-                border: 0px solid #fff;
-                border-radius: 50%;
-                @extend %transition_all_03s;
-            }
-            &:hover,
-            &.swiper-pagination-bullet-active {
-                opacity: 1;
-            }
-            &.swiper-pagination-bullet-active {
-                &::before {
-                    border-width: 1px;
-                }
-            }
-        }
-    }
+.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: auto;
+    pointer-events: none;
 }

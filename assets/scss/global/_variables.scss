@@ -9,6 +9,17 @@ $font_title_en: 'Noto Serif', serif;
 // Images - File Path
 $img: '/launcher/assets/img';
 
-// Array Weapon Name
+// Weapon Name
 $weaponNamesArray: swordAndShield, dualSwords, greatSword, longSword, huntingHorn, hammer, lance, gunlance, tonfa,
     switchAxeF, magnetSpike, lightBowgun, heavyBowgun, bow;
+
+// Update Animation
+$updateAnimMap: (
+    f1: 0px -91px,
+    f2: 0px -182px,
+    f3: 0px -273px,
+    f4: 0px -364px,
+    f5: 0px -455px,
+    f6: 0px -546px,
+    f7: 0px -637px,
+);

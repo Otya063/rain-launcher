@@ -2,11 +2,6 @@
 
 /* Images
 ====================================================*/
-// Background
-@mixin launcher_bg {
-    background: url(#{$img}/common/background.jpg) center center no-repeat;
-}
-
 // Move Icon
 @mixin move_icon($bg_color: rgba(0, 0, 0, 0.5), $stroke_color: white) {
     background: $bg_color
@@ -36,11 +31,6 @@
     border: 1px #f1f1f1 solid;
 }
 
-// Down Arrow Icon
-@mixin down_arrow_icon {
-    background: url('#{$img}/common/down_arrow.png') center / 14px no-repeat;
-}
-
 // Main Button Background
 @mixin main_btn_bg {
     background: url(#{$img}/common/main_btn_bg.png) no-repeat;
@@ -68,12 +58,17 @@
 
 // Character Selector Background
 @mixin char_sel_unit($weapon_name) {
-    background: url(#{$img}/char/#{$weapon_name}.png);
+    background: url(#{$img}/character_selection/background/#{$weapon_name}.png);
 }
 
-// Character Miscellaneous Button Background
-@mixin character_misc_btn_bg {
-    background: url(#{$img}/common/character_misc_btn_bg.png) no-repeat;
+// Character Index Number
+@mixin char_index_num($num) {
+    background: url(#{$img}/character_selection/char_index_num/#{$num}.png);
+}
+
+// Character Weapon Icon
+@mixin char_wpn_icon($weapon_name){
+    background: url(#{$img}/character_selection/char_wpn_icon/#{$weapon_name}.png);
 }
 
 // Dialog Button Background

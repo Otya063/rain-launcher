@@ -18,77 +18,6 @@
                 background: no-repeat 0px 0px;
                 display: none;
             }
-            #launcher_update_progress {
-                position: absolute;
-                left: 115px;
-                top: 168px;
-                width: 320px;
-                height: 179px;
-            }
-            #launcher_update_progress .bar_area {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                width: 320px;
-                height: 33px;
-                background: no-repeat 0px 0px;
-            }
-            #launcher_update_progress .bar_area .file_progress {
-                position: absolute;
-                left: 9px;
-                top: 5px;
-                width: 0px;
-                max-width: 302px;
-                height: 2px;
-                background: repeat-y 0px 0px;
-            }
-            #launcher_update_progress .bar_area .total_progress {
-                position: absolute;
-                left: 9px;
-                top: 22px;
-                width: 0px;
-                max-width: 302px;
-                height: 6px;
-                background: repeat-y 0px 0px;
-            }
-            #launcher_update_progress .anim {
-                position: absolute;
-                left: 120px;
-                top: 16px;
-                width: 85px;
-                height: 91px;
-                background: no-repeat 0px 0px;
-            }
-            #launcher_update_progress .anim.f1 {
-                background-position: 0px -91px;
-            }
-            #launcher_update_progress .anim.f2 {
-                background-position: 0px -182px;
-            }
-            #launcher_update_progress .anim.f3 {
-                background-position: 0px -273px;
-            }
-            #launcher_update_progress .anim.f4 {
-                background-position: 0px -364px;
-            }
-            #launcher_update_progress .anim.f5 {
-                background-position: 0px -455px;
-            }
-            #launcher_update_progress .anim.f6 {
-                background-position: 0px -546px;
-            }
-            #launcher_update_progress .anim.f7 {
-                background-position: 0px -637px;
-            }
-            #launcher_update_progress .msg {
-                position: absolute;
-                left: 99px;
-                top: 0;
-                width: 142px;
-                height: 21px;
-                background: no-repeat 0px 0px;
-            }
-
             #launcher_menu {
                 height: 86px;
                 position: absolute;
@@ -210,7 +139,6 @@
         />
         <!-- js -->
         <script type="text/javascript" src="/launcher/assets/js/jquery.js"></script>
-        <script type="text/javascript" src="/launcher/assets/js/launcher.js"></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.js"
             integrity="sha512-L//aO28w7RJys2swn6PxCmVFbPQdcdxJFuLQg3LHGzu17lbj5dMXcFOW2jfNGyJZr2t8fvSgnaqM2cDS5qnsgw=="
@@ -229,6 +157,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
+        <script type="text/javascript" src="/launcher/assets/js/main.js"></script>
     </head>
 
     <body>
@@ -244,17 +173,17 @@
                 <button class="move sound_on"></button>
 
                 <!-- Minimize Button -->
-                <button class="min sound_on" onClick="addEvent('min_click'); DoMinimizeWindow();">ー</button>
+                <button class="min sound_on" onClick="minimizeWindow();">ー</button>
 
                 <!-- Close Button -->
-                <button class="close sound_on" onClick="addEvent('close_click'); DoCloseWindow();">×</button>
+                <button class="close sound_on" onClick="closeWindow();">×</button>
             </div>
 
             <!-- Launcher Header -->
             <header class="launcher_header">
                 <!-- Launcher Title / Logo -->
                 <h1 class="launcher_title">Monster Hunter<br />　Frontier Online<br />　　Rain Launcher</h1>
-                <img class="mhf_zz_logo" src="/launcher/assets/img/logo/000_z.png" alt="MHF-ZZ-logo" />
+                <img class="mhf_zz_logo" src="/launcher/assets/img/logo.png" alt="MHF-ZZ-logo" />
             </header>
 
             <!-- Log Out Container -->
@@ -263,7 +192,9 @@
                 <p class="id_srv_label"></p>
 
                 <!-- Log Out Button -->
-                <button class="btn_logout" onclick="switchAuthMode();" style="display: none">Log Out</button>
+                <button class="btn_logout sound_on" onclick="backToBeforeLogin();" style="display: none">
+                    Log Out
+                </button>
             </div>
 
             <!-- Log In Area -->
@@ -331,55 +262,37 @@
                 </div>
 
                 <!-- Message Logs -->
-                <section class="msg_logs_area">
+                <div class="msg_logs_area">
                     <div class="msg_contents"></div>
-                </section>
+                </div>
 
                 <!-- Preferences Button -->
-                <button class="btn_preferences">
-                    <p class="btn_preferences_text">In-Game Preferences</p>
-                </button>
+                <button class="btn_preferences sound_on" onclick="openPreferences();">In-Game Preferences</button>
             </main>
 
             <!-- Authenticating Display -->
-            <div class="progress" style="display: none">
-                <div class="progress_loader">
-                    <div class="progress_loader_core"></div>
+            <div class="authenticating" style="display: none">
+                <div class="authenticating_loader">
+                    <div class="authenticating_loader_core"></div>
                 </div>
-                <p class="progress_text">Authenticating...</p>
+                <p class="authenticating_text">Authenticating...</p>
             </div>
 
             <!-- Character Selection -->
             <section class="character_selection">
-                <!-- <div class="scroll up sound_on"></div> -->
-                <div class="char_units_wrapper">
-                    <div class="swiper-button-prev sound_on"></div>
-                    <div class="units char_swiper">
+                <div class="character_units">
+                    <div class="scroll scroll_up sound_on"></div>
+                    <div class="char_unit_wrapper">
                         <div class="swiper-wrapper"></div>
-                        <div class="swiper-pagination"></div>
                     </div>
-                    <div class="swiper-button-next sound_on"></div>
+                    <div class="scroll scroll_down sound_on"></div>
                 </div>
-                <!-- <div class="scroll down sound_on"></div> -->
                 <ul class="character_misc">
                     <li class="char_add sound_on"></li>
                     <li class="char_del sound_on"></li>
                 </ul>
-                <div class="btn_start sound_on"></div>
+                <button class="btn_start sound_on"></button>
             </section>
-
-            <!--メンテor認証不可状態時表示枠-->
-            <div id="launcher_auth_maintenance"></div>
-
-            <!--アップデート-->
-            <div id="launcher_update_progress" style="display: none">
-                <div class="bar_area">
-                    <div class="file_progress"></div>
-                    <div class="total_progress"></div>
-                </div>
-                <div class="anim f0"></div>
-                <div class="msg"></div>
-            </div>
 
             <!-- Banner -->
             <ul class="launcher_bnr">
@@ -416,6 +329,28 @@
                 <p class="launcher_version">Launcher Version: 1.0</p>
             </div>
 
+            <!--メンテor認証不可状態時表示枠-->
+            <div id="launcher_auth_maintenance"></div>
+
+            <!-- Update -->
+            <ul class="launcher_update_process" style="display: none">
+                <li class="anim f0"></li>
+                <li class="progress_area">
+                    <div class="bar_area">
+                        <div class="file_progress"></div>
+                        <div class="total_progress"></div>
+                    </div>
+                    <div class="pct_area">
+                        <p>File: <span class="file_pct">0</span>%</p>
+                        <p>Total: <span class="total_pct">0</span>%</p>
+                    </div>
+                </li>
+                <li class="update_msg">
+                    <p class="progress_state">Updating...</p>
+                    <p class="next_action">Please wait a moment.</p>
+                </li>
+            </ul>
+
             <!-- Dialog -->
             <div class="launcher_dialog">
                 <ul class="dialog_contents">
@@ -426,49 +361,5 @@
 
             <div id="launcher_game_start_wait"></div>
         </div>
-
-        <script>
-            const swiper = new Swiper('.char_swiper', {
-                centeredSlides: true,
-                effect: 'coverflow',
-                coverflowEffect: {
-                    slideShadows: false,
-                },
-                mousewheel: true,
-                direction: 'vertical',
-                speed: 500,
-                centeredSlides: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                observer: true,
-                observeParents: true,
-                spaceBetween: 50,
-            });
-            /* const swiper = new Swiper('.swiper', {
-                centeredSlides: true,
-                effect: 'coverflow',
-                coverflowEffect: {
-                    slideShadows: false,
-                },
-                mousewheel: true,
-                direction: 'vertical',
-                speed: 500,
-                centeredSlides: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            }); */
-        </script>
     </body>
 </html>

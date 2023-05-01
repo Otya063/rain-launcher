@@ -101,7 +101,7 @@ h1 {
     position: absolute;
     left: 0;
     top: 0;
-    @include launcher_bg;
+    background: url(#{$img}/common/bg.jpg) center center / 1124px 600px no-repeat;
 }
 
 /* Scrollbar
@@ -317,14 +317,6 @@ h1 {
                 color: white;
             }
         }
-
-        // ???
-        &.disabled {
-            &:hover {
-                background-position: 0px 0px;
-                cursor: default;
-            }
-        }
     }
 
     // authentication section
@@ -443,7 +435,7 @@ h1 {
                 right: 4%;
                 width: 15px;
                 height: 15px;
-                @include down_arrow_icon;
+                background: url('#{$img}/common/down_arrow.png') center / 14px no-repeat;
                 transition: all 0.3s;
             }
 
@@ -625,6 +617,9 @@ h1 {
         position: relative;
         border: gray solid 2px;
         border-radius: 20px;
+        color: #d1c0a5;
+        font-size: 1.6rem;
+        line-height: 31px;
         cursor: pointer;
         background: rgba(0, 0, 0, 0.5);
         transition: all 0.2s;
@@ -634,8 +629,8 @@ h1 {
         &::before {
             content: '';
             position: absolute;
-            width: 2.4em;
-            height: 2.4em;
+            width: 32px;
+            height: 32px;
             top: 0;
             left: 7%;
             @include gear_icon;
@@ -698,7 +693,7 @@ h1 {
 /*=========================================================
 　　　　　Authenticating Display
 =======================================================*/
-.progress {
+.authenticating {
     position: absolute;
     width: 470px;
     height: 424px;
@@ -708,8 +703,8 @@ h1 {
     text-shadow: 3px 0 3px #757575, 0 3px 3px #757575, -3px 0 3px #757575, 0 -3px 3px #757575;
     z-index: 200;
 
-    // progress animation
-    .progress_loader {
+    // authenticating animation
+    .authenticating_loader {
         position: absolute;
         top: 25%;
         left: 27%;
@@ -724,7 +719,7 @@ h1 {
         @include authProgKey;
         animation: authProgAni 0.8s linear 0s infinite;
 
-        .progress_loader_core {
+        .authenticating_loader_core {
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
@@ -733,7 +728,7 @@ h1 {
     }
 
     // authenticating text
-    .progress_text {
+    .authenticating_text {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -761,25 +756,177 @@ h1 {
     top: 134px;
     color: #313131;
 
-    // arrows
-    .scroll {
-        width: 131px;
-        height: 39px;
-        background: no-repeat 0px 0px;
-        cursor: pointer;
-        z-index: 1000;
+    // character selection units wrapper
+    .character_units {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 225px;
+        justify-content: space-between;
 
-        &.disabled {
-            cursor: default;
+        // scroll arrows
+        .scroll {
+            position: static !important;
+            width: 131px;
+            height: 65px;
+            margin-top: auto !important;
+            background: no-repeat 0px 0px;
+            cursor: pointer;
+            z-index: 1000;
 
+            // up arrow
+            &.scroll_up {
+                background: url(#{$img}/character_selection/char_sel_scroll.png) !important;
+            }
+
+            // down arrow
+            &.scroll_down {
+                background: url(#{$img}/character_selection/char_sel_scroll.png) !important;
+                transform: rotate(180deg);
+            }
+
+            // when hovering
             &:hover {
-                background-position: 0px 0px;
+                background-position: 0px -39px !important;
+            }
+
+            // when disabled
+            &.swiper-button-disabled {
+                opacity: 0.35;
+                pointer-events: none;
+                cursor: default;
             }
         }
 
-        // when hovering
-        &:hover {
-            background-position: 0px -39px;
+        // character group units
+        .char_unit_wrapper {
+            width: 520px;
+            height: 225px;
+            overflow: hidden;
+
+            // character individual unit
+            .unit {
+                background: url(#{$img}/character_selection/background/new.png) no-repeat 0px 0px;
+                cursor: default;
+
+                // loop through weapon names and set corresponding image and class
+                $weaponNames: $weaponNamesArray;
+                @each $weapon in $weaponNames {
+                    &.#{$weapon} {
+                        @include char_sel_unit(#{$weapon});
+                    }
+                }
+
+                // current character
+                &.swiper-slide-active {
+                    cursor: pointer;
+                }
+
+                // new character
+                &.new {
+                    .name {
+                        font-weight: normal;
+                    }
+
+                    .new {
+                        display: block;
+                        width: 100%;
+                        position: absolute;
+                        left: 0;
+                        top: 66px;
+                        color: #313131;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                        line-height: 18px;
+
+                        &:first-line {
+                            font-size: 26px;
+                            line-height: 32px;
+                            color: #3169f0;
+                        }
+                    }
+                }
+
+                // character index img
+                .num {
+                    width: 81px;
+                    height: 77px;
+                    position: absolute;
+                    left: 11px;
+                    top: 11px;
+                    background: no-repeat 0px 0px;
+
+                    // loop through numbers and set corresponding index number
+                    $indexNumbers: n1, n2, n3;
+                    @each $num in $indexNumbers {
+                        &.#{$num} {
+                            @include char_index_num(#{$num});
+                        }
+                    }
+                }
+
+                // weapon icon
+                .icon {
+                    width: 48px;
+                    height: 47px;
+                    position: absolute;
+                    left: 31px;
+                    top: 69px;
+                    background: no-repeat 0px 0px;
+
+                    // loop through weapon names and set corresponding weapon icon
+                    @each $weapon in $weaponNames {
+                        &.#{$weapon} {
+                            @include char_wpn_icon(#{$weapon});
+                        }
+                    }
+                }
+
+                // character name
+                .name {
+                    font-size: 30px;
+                    line-height: 30px;
+                    letter-spacing: 0.25;
+                    text-align: center;
+                    font-weight: bold;
+                    position: absolute;
+                    top: 23px;
+                    left: 0;
+                    width: 100%;
+                }
+
+                // character weapon
+                .wp {
+                    font-size: 18px;
+                    line-height: 20px;
+                    text-align: center;
+                    font-weight: bold;
+                    display: block;
+                    position: absolute;
+                    left: 90px;
+                    top: 73px;
+                    white-space: nowrap;
+
+                    // weapon text adjustment
+                    &:first-line {
+                        font-size: 14px;
+                        letter-spacing: 0;
+                    }
+                }
+
+                // character data
+                .data {
+                    text-align: left;
+                    font-size: 16px;
+                    line-height: 18px;
+                    display: block;
+                    white-space: nowrap;
+                    position: absolute;
+                    left: 252px;
+                    top: 65px;
+                }
+            }
         }
     }
 
@@ -794,9 +941,10 @@ h1 {
             position: relative;
             width: 210px;
             height: 30px;
-            @include character_misc_btn_bg;
+            background: url(#{$img}/character_selection/character_misc_btn_bg.png) no-repeat;
             cursor: pointer;
 
+            // text initial settings
             &::before {
                 color: #e6e6e6;
                 font-size: 1.5rem;
@@ -812,6 +960,7 @@ h1 {
                 transition: all 0.2s;
             }
 
+            // when hovering
             &:hover {
                 background-position: 0px -46px;
 
@@ -820,6 +969,7 @@ h1 {
                 }
             }
 
+            // when disabled
             &.disabled {
                 pointer-events: none;
             }
@@ -873,170 +1023,6 @@ h1 {
 
             &::before {
                 color: white;
-            }
-        }
-    }
-
-    .char_units_wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 200px;
-        justify-content: space-between;
-
-        // character group units
-        .units {
-            width: 520px;
-            height: 210px;
-            overflow: hidden;
-
-            // character individual unit
-            .unit {
-                //width: 520px;
-                //height: 143px;
-                //position: absolute;
-                //left: 0;
-                //top: 60px;
-                background: url(#{$img}/char/background.png) no-repeat 0px 0px;
-                cursor: default;
-
-                // loop through weapon names and set corresponding image and class
-                $weaponNames: $weaponNamesArray;
-                @each $weapon in $weaponNames {
-                    &.#{$weapon} {
-                        @include char_sel_unit(#{$weapon});
-                    }
-                }
-
-                // current character
-                &.crr {
-                    cursor: pointer;
-
-                    .sign {
-                        width: 134px;
-                        height: 124px;
-                        position: absolute;
-                        right: 9px;
-                        top: 9px;
-                        background: no-repeat 0px 0px;
-
-                        &.down {
-                            background-position: 0px -124px;
-                        }
-                    }
-
-                    .cover {
-                        width: 520px;
-                        height: 143px;
-                        left: 0;
-                        top: 0;
-                        background: none;
-                    }
-                }
-
-                // new character
-                &.new {
-                    .name {
-                        font-weight: normal;
-                    }
-
-                    .new {
-                        display: block;
-                        width: 100%;
-                        position: absolute;
-                        left: 0;
-                        top: 66px;
-                        color: #313131;
-                        font-size: 14px;
-                        font-weight: bold;
-                        text-align: center;
-                        line-height: 18px;
-
-                        &:first-line {
-                            font-size: 26px;
-                            line-height: 32px;
-                            color: #3169f0;
-                        }
-                    }
-
-                    .data {
-                        display: none;
-                    }
-                }
-
-                // character index img
-                .num {
-                    width: 81px;
-                    height: 77px;
-                    position: absolute;
-                    left: 11px;
-                    top: 11px;
-                    background: no-repeat 0px 0px;
-                }
-
-                // weapon icon
-                .icon {
-                    width: 48px;
-                    height: 47px;
-                    position: absolute;
-                    left: 31px;
-                    top: 69px;
-                    background: no-repeat 0px 0px;
-                }
-
-                // character name
-                .name {
-                    font-size: 30px;
-                    line-height: 30px;
-                    letter-spacing: 0.25;
-                    text-align: center;
-                    font-weight: bold;
-                    position: absolute;
-                    top: 23px;
-                    left: 0;
-                    width: 100%;
-                }
-
-                // character weapon
-                .wp {
-                    font-size: 18px;
-                    line-height: 20px;
-                    text-align: center;
-                    font-weight: bold;
-                    display: block;
-                    position: absolute;
-                    left: 90px;
-                    top: 73px;
-                    white-space: nowrap;
-
-                    // weapon text adjustment
-                    &:first-line {
-                        font-size: 14px;
-                        letter-spacing: 0;
-                    }
-                }
-
-                // character data
-                .data {
-                    text-align: left;
-                    font-size: 16px;
-                    line-height: 18px;
-                    display: block;
-                    white-space: nowrap;
-                    position: absolute;
-                    left: 252px;
-                    top: 65px;
-                }
-
-                // character cover
-                .cover {
-                    width: 504px;
-                    height: 127px;
-                    position: absolute;
-                    left: 8px;
-                    top: 8px;
-                    background: #000;
-                }
             }
         }
     }
@@ -1159,6 +1145,92 @@ h1 {
 }
 
 /*=========================================================
+　　　　　Update
+=======================================================*/
+.launcher_update_process {
+    position: absolute;
+    top: 30%;
+    left: 6.5%;
+    width: 420px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    // animation area
+    .anim {
+        width: 85px;
+        height: 91px;
+        background: url(#{$img}/update/animation_frame.png);
+
+        @each $frameClass, $background-position in $updateAnimMap {
+            &.#{$frameClass} {
+                background-position: $background-position;
+            }
+        }
+    }
+
+    // progress bar & percent area
+    .progress_area {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+
+        // progress bar area
+        .bar_area {
+            position: relative;
+            width: 320px;
+            height: 33px;
+            background: url(#{$img}/update/bar_area.png);
+
+            // file update progress bar
+            .file_progress {
+                position: absolute;
+                left: 9px;
+                top: 5px;
+                width: 0px;
+                max-width: 302px;
+                height: 2px;
+                background: url(#{$img}/update/bar_body.png);
+            }
+
+            // total update progress bar
+            .total_progress {
+                position: absolute;
+                left: 9px;
+                top: 22px;
+                width: 0px;
+                max-width: 302px;
+                height: 6px;
+                background: url(#{$img}/update/bar_body.png);
+            }
+        }
+
+        // percent area
+        .pct_area {
+            width: 100px;
+            text-align: center;
+            color: white;
+            font-size: 1.4rem;
+            font-family: $font_title_en;
+        }
+    }
+
+    // update message
+    .update_msg {
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+        line-height: 1.6;
+
+        .next_action {
+            font-size: 1.5rem;
+        }
+    }
+}
+
+/*=========================================================
 　　　　　Dialog
 =======================================================*/
 .launcher_dialog {
@@ -1170,13 +1242,14 @@ h1 {
     display: none;
     z-index: 1000;
 
+    // dialog body
     .dialog_contents {
         position: absolute;
         left: 282px;
         top: 140px;
         width: 560px;
         height: 320px;
-        background: url(#{$img}/dialog/bg.jpg) no-repeat 0px 0px;
+        background: url(#{$img}/common/dialog_bg.jpg) no-repeat 0px 0px;
 
         // dialog text contents
         .dialog_text_contents {
@@ -1294,42 +1367,4 @@ h1 {
     &::-ms-clear {
         display: none;
     }
-}
-
-.swiper {
-    overflow: hidden;
-    position: absolute;
-    top: 20%;
-    left: 10%;
-    width: 400px !important;
-}
-.swiper-wrapper {
-    //width: 300px !important;
-    //height: 300px !important;
-    margin: 0 auto;
-}
-
-.swiper-pagination {
-    right: 7% !important;
-}
-
-.swiper img {
-    width: 100%;
-    height: auto;
-}
-.swiper-button-prev {
-    margin-top: auto !important;
-
-    position: static !important;
-    transform: rotate(90deg);
-}
-.swiper-button-next {
-    position: static !important;
-    margin-top: auto !important;
-    transform: rotate(90deg);
-}
-.swiper-button-disabled {
-    opacity: 0.35;
-    cursor: auto;
-    pointer-events: none;
 }

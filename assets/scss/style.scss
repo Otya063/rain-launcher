@@ -67,9 +67,9 @@ h1 {
     }
 }
 
-/* Launcher Overlay
+/* Launcher Movable Overlay
 ====================================================*/
-.overlay {
+.movable_overlay {
     position: relative;
     left: 0;
     top: 0;
@@ -79,7 +79,7 @@ h1 {
     display: none;
     z-index: 1001;
 
-    .overlay_text {
+    .movable_overlay_text {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -88,6 +88,39 @@ h1 {
         font-family: $font_title_en;
         color: white;
         text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Start the Game Overlay
+====================================================*/
+.game_start_overlay {
+    /*     position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: center center;
+    display: none;
+    z-index: 2000; */
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    z-index: 1002;
+
+    .game_start_overlay_text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 2rem;
+        font-weight: 700;
+        font-family: $font_title_en;
+        color: #ecd142fc;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 1), 0 0 10px rgba(0, 0, 0, 1);
         transform: translate(-50%, -50%);
     }
 }
@@ -691,7 +724,7 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Authenticating Display
+　　　　　Authenticating
 =======================================================*/
 .authenticating {
     position: absolute;
@@ -1029,6 +1062,110 @@ h1 {
 }
 
 /*=========================================================
+　　　　　Maintenance
+=======================================================*/
+.maintenance {
+    width: 426px;
+    height: 169px;
+    position: absolute;
+    left: 63px;
+    top: 171px;
+    background: no-repeat 0px 0px;
+    display: none;
+}
+
+/*=========================================================
+　　　　　Update
+=======================================================*/
+.launcher_update_process {
+    position: absolute;
+    top: 30%;
+    left: 6.5%;
+    width: 420px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    // animation area
+    .anim {
+        width: 85px;
+        height: 91px;
+        background: url(#{$img}/update/animation_frame.png);
+
+        @each $frameClass, $background-position in $updateAnimMap {
+            &.#{$frameClass} {
+                background-position: $background-position;
+            }
+        }
+    }
+
+    // progress bar & percent area
+    .progress_area {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+
+        // progress bar area
+        .bar_area {
+            position: relative;
+            width: 320px;
+            height: 33px;
+            background: url(#{$img}/update/bar_area.png);
+
+            // file update progress bar
+            .file_progress {
+                position: absolute;
+                left: 9px;
+                top: 5px;
+                width: 0px;
+                max-width: 302px;
+                height: 2px;
+                background: url(#{$img}/update/bar_body.png);
+            }
+
+            // total update progress bar
+            .total_progress {
+                position: absolute;
+                left: 9px;
+                top: 22px;
+                width: 0px;
+                max-width: 302px;
+                height: 6px;
+                background: url(#{$img}/update/bar_body.png);
+            }
+        }
+
+        // percent area
+        .pct_area {
+            width: 100px;
+            text-align: center;
+            color: white;
+            font-size: 1.4rem;
+            font-family: $font_title_en;
+        }
+    }
+
+    // update message
+    .update_msg {
+        color: white;
+        text-align: center;
+        line-height: 2.2;
+
+        .progress_state {
+            font-size: 2.2rem;
+            color: rgba(200, 200, 200, 0.8);
+            text-shadow: 2px 0 2px #757575, 0 2px 2px #757575, -2px 0 2px #757575, 0 -2px 2px #757575;
+        }
+
+        .next_action {
+            font-size: 1.4rem;
+        }
+    }
+}
+
+/*=========================================================
 　　　　　Banner
 =======================================================*/
 .launcher_bnr {
@@ -1046,7 +1183,7 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Launcher Information
+　　　　　Information
 =======================================================*/
 .info_list {
     width: 535px;
@@ -1145,87 +1282,27 @@ h1 {
 }
 
 /*=========================================================
-　　　　　Update
+　　　　　Menu
 =======================================================*/
-.launcher_update_process {
+.launcher_menu {
+    height: 86px;
     position: absolute;
-    top: 30%;
-    left: 6.5%;
-    width: 420px;
-    height: 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    right: 14px;
+    top: 467px;
+    overflow: hidden;
 
-    // animation area
-    .anim {
-        width: 85px;
-        height: 91px;
-        background: url(#{$img}/update/animation_frame.png);
+    // each button
+    .btn {
+        width: 82px;
+        height: 86px;
+        background: no-repeat 0px 0px;
+        float: right;
+        margin: 0 8px;
+        cursor: pointer;
 
-        @each $frameClass, $background-position in $updateAnimMap {
-            &.#{$frameClass} {
-                background-position: $background-position;
-            }
-        }
-    }
-
-    // progress bar & percent area
-    .progress_area {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-around;
-
-        // progress bar area
-        .bar_area {
-            position: relative;
-            width: 320px;
-            height: 33px;
-            background: url(#{$img}/update/bar_area.png);
-
-            // file update progress bar
-            .file_progress {
-                position: absolute;
-                left: 9px;
-                top: 5px;
-                width: 0px;
-                max-width: 302px;
-                height: 2px;
-                background: url(#{$img}/update/bar_body.png);
-            }
-
-            // total update progress bar
-            .total_progress {
-                position: absolute;
-                left: 9px;
-                top: 22px;
-                width: 0px;
-                max-width: 302px;
-                height: 6px;
-                background: url(#{$img}/update/bar_body.png);
-            }
-        }
-
-        // percent area
-        .pct_area {
-            width: 100px;
-            text-align: center;
-            color: white;
-            font-size: 1.4rem;
-            font-family: $font_title_en;
-        }
-    }
-
-    // update message
-    .update_msg {
-        color: white;
-        font-size: 2rem;
-        text-align: center;
-        line-height: 1.6;
-
-        .next_action {
-            font-size: 1.5rem;
+        // when hovering
+        &:hover {
+            background-position: 0px -86px;
         }
     }
 }
@@ -1292,9 +1369,31 @@ h1 {
                 }
             }
 
-            // character's id
+            // character's uid
             .uid {
                 font-size: 1.4rem;
+            }
+
+            // input for checking uid of deleting character
+            .del_uid {
+                width: 150px;
+                height: 20px;
+                color: black;
+                background: rgb(240, 240, 240);
+                padding-left: 1%;
+                font-size: 1.4rem;
+                border: 2px rgba(0, 0, 0, 0.5) solid;
+                margin: 2% 0 3% 0;
+
+                // input placeholder
+                &:-ms-input-placeholder {
+                    color: #7f8095;
+                }
+
+                // disable clear button on IE
+                &::-ms-clear {
+                    display: none;
+                }
             }
         }
 
@@ -1347,24 +1446,23 @@ h1 {
     }
 }
 
-// 後で調整
-.del_uid {
-    width: 150px;
-    height: 20px;
-    color: black;
-    background: rgb(240, 240, 240);
-    padding-left: 1%;
-    font-size: 1.4rem;
-    border: 2px rgba(0, 0, 0, 0.5) solid;
-    margin: 2% 0 3% 0;
+/*=========================================================
+　　　　　Footer
+=======================================================*/
+.launcher_footer {
+    width: 100%;
+    height: 39px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
 
-    // input placeholder
-    &:-ms-input-placeholder {
-        color: #7f8095;
-    }
-
-    // disable clear button on IE
-    &::-ms-clear {
-        display: none;
+    // disclaimer
+    .disclaimer {
+        color: #a0a0a0;
+        font-size: 12px;
+        position: absolute;
+        left: 2%;
+        top: 30%;
     }
 }

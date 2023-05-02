@@ -78,11 +78,11 @@ const launcherMovingHandler = function () {
     $('.move')
         .hover(function () {
             // when the mouse button is hovering and pressed within the area
-            $('.overlay').fadeIn(200), DoBeginDrag(true);
+            $('.movable_overlay').fadeIn(200), enableDrag(true);
         })
         .mouseout(function () {
             // when the mouse button is released within the area
-            $('.overlay').fadeOut(200), DoBeginDrag(false);
+            $('.movable_overlay').fadeOut(200), enableDrag(false);
         });
 };
 
@@ -108,6 +108,10 @@ const getServerList = function () {
     }
 };
 
+const restartLauncher = function () {
+    window.external.restartMhf();
+};
+
 const minimizeWindow = function () {
     playSound('IDR_WAV_OK');
     try {
@@ -129,13 +133,13 @@ const openPreferences = function () {
     } catch (error) {}
 };
 
-const DoOpenBrowser = function (url) {
+const openBrowser = function (url) {
     try {
         playSound('IDR_WAV_OK'), window.external.openBrowser(url);
     } catch (error) {}
 };
 
-const DoBeginDrag = function (boolean) {
+const enableDrag = function (boolean) {
     try {
         window.external.beginDrag(boolean);
     } catch (error) {
@@ -191,7 +195,7 @@ const getAllCharData = function () {
     return window.external.getCharacterInfo();
 };
 
-const DoDeleteCharacter = function (uid) {
+const deleteCharacter = function (uid) {
     return window.external.deleteCharacter(uid);
 };
 
@@ -218,7 +222,7 @@ const overrideAnker = function (selector) {
         .find('a')
         .each(function () {
             const originalURL = $(this).attr('href');
-            $(this).attr('href', "javascript:DoOpenBrowser('" + originalURL + "');");
+            $(this).attr('href', "javascript:openBrowser('" + originalURL + "');");
         });
 };
 
@@ -502,16 +506,18 @@ const startLoginPolling = function () {
                   localStorage.removeItem('Password'),
                   localStorage.removeItem('IsChecked'));
 
-            // maintenance handling
             const maintSrvName = $(serverSelBtn)
                 .text()
                 .replace(/[\s()]/g, '');
+
             maintenanceMode[maintSrvName]
-                ? (showMaintenanceDialog(),
+                ? // if maintenance mode is enabled, show maint dialog
+                  (showMaintenanceDialog(),
                   $('.launcher_login_panel').hide(),
                   $('.btn_logout').show(),
                   $('.launcher_update_process').hide())
-                : showCharSelector();
+                : // if not, proceed to character selection
+                  showCharSelector();
             break;
 
         // if there is a network error during auth, stop login polling and output error msg
@@ -593,7 +599,7 @@ const backToBeforeLogin = function () {
     $('.btn_logout').hide();
 
     // hide maintenance display
-    $('#launcher_auth_maintenance').hide();
+    $('.maintenance').hide();
 };
 
 const startUpLauncher = function () {
@@ -806,7 +812,7 @@ const charDelReset = function () {
 };
 
 const charDelete = function () {
-    DoDeleteCharacter(delCharUid),
+    deleteCharacter(delCharUid),
         setTimeout(function () {
             charDelPolling();
         }, 1000);
@@ -829,15 +835,15 @@ const prepareStartGame = function () {
     showStartGameDialog(currentCharName, currentCharUid);
 };
 
-const initializing = function (uid) {
+const startTheGame = function (uid) {
     // select the specified character
     selectCharacter(uid, uid);
 
     // play a login sound
     playSound('IDR_WAV_LOGIN');
 
-    // show initializing overlay
-    $('#launcher_game_start_wait').show();
+    // show game start overlay
+    $('.game_start_overlay').show();
 
     // hidethe dialog
     hideDialog();
@@ -849,25 +855,6 @@ const initializing = function (uid) {
 };
 
 /*=========================================================
-　　　　　Information List Function
-=======================================================*/
-const infoList = '.info_list';
-
-const beginLoadInfo = function () {
-    $.ajax({
-        type: 'GET',
-        url: '/launcher/en/info_list.html',
-        dataType: 'text',
-        cache: false,
-        success: function (infoListData) {
-            $(infoList).html(infoListData);
-            overrideAnker(infoList);
-            new scrollBarHandler(infoList);
-        },
-    });
-};
-
-/*=========================================================
 　　　　　Update Functions
 =======================================================*/
 const updateMode = true,
@@ -876,7 +863,7 @@ const updateMode = true,
     totalProgressBar = '.bar_area .total_progress',
     progressStateMessage = '.update_msg .progress_state',
     nextActionMessage = '.update_msg .next_action',
-    exitDelayTime = 3000,
+    delayTime = 3000,
     progressBarWidth = 302,
     progressBarPercent = 0.01 * progressBarWidth;
 
@@ -903,7 +890,7 @@ const animSequence = {
     ],
 };
 
-const prepareStartUpdate = function (uid) {
+const prepareBeginUpdate = function (uid) {
     // initial settings on update display
     $(fileProgressBar).width(0);
     $(totalProgressBar).width(0);
@@ -918,9 +905,9 @@ const prepareStartUpdate = function (uid) {
           setTimeout(function () {
               updateProcessPct();
           }, 50))
-        : // if not needed, directly proceed to initializing
+        : // if not needed, directly proceed to start game
           setTimeout(function () {
-              initializing(uid);
+              startTheGame(uid);
           }, 410);
 };
 
@@ -985,7 +972,7 @@ const finishUpdateProcess = function (uid) {
             // initialize after animation is completed
             clearAnimSq();
             setTimeout(function () {
-                initializing(uid);
+                startTheGame(uid);
             }, 1100);
         }
     }, currentFrame.delay);
@@ -1005,23 +992,27 @@ const switchUpdateAfterState = function () {
                     updatePolling = false;
                     break;
 
-                // if the launcher need to be restarted, wait for exitDelayTime, then exit launcher
+                // if the launcher need to be restarted, wait for delayTime, then exit launcher
                 case 'SELFUP':
                     $(progressStateMessage).text('Restart the Launcher');
                     $(nextActionMessage).text('Please log in to the server again.');
-                    setTimeout(exitLauncher, exitDelayTime);
+                    setTimeout(exitLauncher, delayTime);
                     break;
 
-                // if an error occurs, go back to before login display
+                // if an error occurs, restart the launcher
                 case 'ERR':
-                    backToBeforeLogin();
+                    $(progressStateMessage).text('Error Occurred');
+                    $(nextActionMessage).html('Quit the launcher.');
+                    setTimeout(closeWindow, delayTime);
                     break;
             }
             break;
 
-        // if update failed, go back to before login page
+        // if update failed, restart the launcher
         case 'UM_UPDATE_NG':
-            backToBeforeLogin();
+            $(progressStateMessage).text('Error Occurred');
+            $(nextActionMessage).html('Quit the launcher.');
+            setTimeout(closeWindow, delayTime);
             break;
     }
 
@@ -1051,18 +1042,20 @@ const updateProcessPct = function () {
                         updatePolling = false;
                         break;
 
-                    // if the launcher need to be restarted, wait for exitDelayTime, then exit launcher
+                    // if the launcher need to be restarted, wait for delayTime, then exit launcher
                     case 'SELFUP':
                         $(progressStateMessage).text('Restart the Launcher');
                         $(nextActionMessage).text('Please log in to the server again.');
-                        setTimeout(exitLauncher, exitDelayTime);
+                        setTimeout(exitLauncher, delayTime);
                         break;
                 }
                 break;
 
-            // if update failed, go back to before login page
+            // if update failed, restart the launcher
             case 'UM_UPDATE_NG':
-                backToBeforeLogin();
+                $(progressStateMessage).text('Error Occurred');
+                $(nextActionMessage).html('Quit the launcher.');
+                setTimeout(closeWindow, delayTime);
                 break;
         }
     }
@@ -1085,6 +1078,25 @@ const updateProcessPct = function () {
 
 const clearAnimSq = function () {
     animTimerId && clearTimeout(animTimerId);
+};
+
+/*=========================================================
+　　　　　Information List Function
+=======================================================*/
+const infoList = '.info_list';
+
+const beginLoadInfo = function () {
+    $.ajax({
+        type: 'GET',
+        url: '/launcher/en/info_list.html',
+        dataType: 'text',
+        cache: false,
+        success: function (infoListData) {
+            $(infoList).html(infoListData);
+            overrideAnker(infoList);
+            new scrollBarHandler(infoList);
+        },
+    });
 };
 
 /*=========================================================
@@ -1163,7 +1175,7 @@ const hideDialog = function () {
 
 const showMaintenanceDialog = function () {
     // show maintenance display
-    $('#launcher_auth_maintenance').show();
+    $('.maintenance').show();
 
     showDialog(dialogTextOutput('serverMaint'), [{ label: 'Close', cmd: 'hideDialog();' }]);
 };
@@ -1182,7 +1194,7 @@ const showAddCharDialog = function () {
                 $(inputPassword).val() +
                 '","' +
                 $(inputPassword).val() +
-                '"); DoOpenBrowser("' +
+                '"); openBrowser("' +
                 createCharURL +
                 '"); showWaitCharAddDialog();',
         },
@@ -1321,7 +1333,7 @@ const showStartGameDialog = function (name, uid) {
         [
             {
                 label: 'Yes',
-                cmd: 'prepareStartUpdate("' + uid + '"); hideDialog();',
+                cmd: 'prepareBeginUpdate("' + uid + '"); hideDialog();',
                 //noSound: true,
             },
             {
@@ -1407,7 +1419,7 @@ $(function () {
     });
 
     // by default, launcher window can't be moved
-    DoBeginDrag(false);
+    enableDrag(false);
 
     // prevent user from selecting all texts in the launcher
     $(document).on('selectstart', function (e) {

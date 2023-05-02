@@ -8,92 +8,6 @@
         <meta name="robots" content="none" />
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
         <title>Monster Hunter Frontier Online Launcher</title>
-        <style type="text/css">
-            #launcher_auth_maintenance {
-                width: 426px;
-                height: 169px;
-                position: absolute;
-                left: 63px;
-                top: 171px;
-                background: no-repeat 0px 0px;
-                display: none;
-            }
-            #launcher_menu {
-                height: 86px;
-                position: absolute;
-                right: 14px;
-                top: 467px;
-                overflow: hidden;
-            }
-            #launcher_menu .btn {
-                width: 82px;
-                height: 86px;
-                background: no-repeat 0px 0px;
-                float: right;
-                margin: 0 8px;
-                cursor: pointer;
-            }
-            #launcher_menu .btn:hover {
-                background-position: 0px -86px;
-            }
-
-            #launcher_footer {
-                width: 100%;
-                height: 39px;
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                overflow: hidden;
-            }
-            #launcher_footer .btn {
-                display: block;
-                position: absolute;
-                z-index: 1000;
-                cursor: pointer;
-            }
-            #launcher_footer .btn.capcom {
-                width: 101px;
-                height: 26px;
-                background: no-repeat 0px 0px;
-                left: 31px;
-                top: 6px;
-            }
-            #launcher_footer .btn.cog {
-                width: 76px;
-                height: 21px;
-                background: no-repeat 0px 0px;
-                left: 142px;
-                top: 9px;
-            }
-            #launcher_footer .btn.hangame,
-            #launcher_footer .btn.dmm {
-                display: none;
-            }
-            #launcher_footer .disclaimer {
-                color: #a0a0a0;
-                font-size: 12px;
-                position: absolute;
-                left: 2%;
-                top: 30%;
-            }
-            #launcher_footer .launcher_version {
-                color: white;
-                font-size: 1em;
-                position: absolute;
-                top: 30%;
-                right: 1.5%;
-            }
-            #launcher_game_start_wait {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background: center center;
-                display: none;
-                z-index: 2000;
-            }
-        </style>
         <!-- css -->
         <link rel="stylesheet" href="/launcher/assets/css/img.css" />
         <link rel="stylesheet" href="/launcher/assets/css/style.css" />
@@ -162,9 +76,14 @@
 
     <body>
         <div class="wrapper">
-            <!-- Launcher Overlay -->
-            <div class="overlay">
-                <p class="overlay_text">Launcher Window Movable</p>
+            <!-- Launcher Movable Overlay -->
+            <div class="movable_overlay">
+                <p class="movable_overlay_text">Launcher Window Movable</p>
+            </div>
+
+            <!-- Start the Game Overlay -->
+            <div class="game_start_overlay">
+                <p class="game_start_overlay_text">Start the Game</p>
             </div>
 
             <!-- Window Controls -->
@@ -270,7 +189,7 @@
                 <button class="btn_preferences sound_on" onclick="openPreferences();">In-Game Preferences</button>
             </main>
 
-            <!-- Authenticating Display -->
+            <!-- Authenticating -->
             <div class="authenticating" style="display: none">
                 <div class="authenticating_loader">
                     <div class="authenticating_loader_core"></div>
@@ -294,43 +213,8 @@
                 <button class="btn_start sound_on"></button>
             </section>
 
-            <!-- Banner -->
-            <ul class="launcher_bnr">
-                <li class="bnr"><img src="/launcher/assets/img/bnr/0705_3.jpg" alt="" /></li>
-                <li class="bnr"><img src="/launcher/assets/img/bnr/0801_3.jpg" alt="" /></li>
-                <li class="bnr"><img src="/launcher/assets/img/bnr/1030_0.jpg" alt="" /></li>
-                <li class="bnr"><img src="/launcher/assets/img/bnr/1211_11.jpg" alt="" /></li>
-                <li class="bnr"><img src="/launcher/assets/img/bnr/reg_mezefes.jpg" alt="" /></li>
-            </ul>
-
-            <!-- Launcher Information -->
-            <section class="info_list"></section>
-
-            <!-- Menu -->
-            <div id="launcher_menu">
-                <!-- Member Site -->
-                <div class="cogb btn" onClick=""></div>
-
-                <!-- Online Manual -->
-                <div class="manual btn" onClick=""></div>
-
-                <!-- Inquiry -->
-                <div class="inquiry btn" onClick=""></div>
-
-                <!-- My Page -->
-                <div class="cogOnly mypage btn" onClick=""></div>
-            </div>
-
-            <!-- Footer -->
-            <div id="launcher_footer">
-                <p class="disclaimer">
-                    * Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.
-                </p>
-                <p class="launcher_version">Launcher Version: 1.0</p>
-            </div>
-
-            <!--メンテor認証不可状態時表示枠-->
-            <div id="launcher_auth_maintenance"></div>
+            <!-- Maintenance -->
+            <div class="maintenance"></div>
 
             <!-- Update -->
             <ul class="launcher_update_process" style="display: none">
@@ -351,6 +235,33 @@
                 </li>
             </ul>
 
+            <!-- Banner -->
+            <ul class="launcher_bnr">
+                <li class="bnr"><img src="/launcher/assets/img/bnr/0705_3.jpg" alt="" /></li>
+                <li class="bnr"><img src="/launcher/assets/img/bnr/0801_3.jpg" alt="" /></li>
+                <li class="bnr"><img src="/launcher/assets/img/bnr/1030_0.jpg" alt="" /></li>
+                <li class="bnr"><img src="/launcher/assets/img/bnr/1211_11.jpg" alt="" /></li>
+                <li class="bnr"><img src="/launcher/assets/img/bnr/reg_mezefes.jpg" alt="" /></li>
+            </ul>
+
+            <!-- Information -->
+            <section class="info_list"></section>
+
+            <!-- Menu -->
+            <div class="launcher_menu">
+                <!-- Member Site -->
+                <div class="member btn" onClick=""></div>
+
+                <!-- Online Manual -->
+                <div class="manual btn" onClick=""></div>
+
+                <!-- Inquiry -->
+                <div class="inquiry btn" onClick=""></div>
+
+                <!-- My Page -->
+                <div class="mypage btn" onClick=""></div>
+            </div>
+
             <!-- Dialog -->
             <div class="launcher_dialog">
                 <ul class="dialog_contents">
@@ -359,7 +270,12 @@
                 </ul>
             </div>
 
-            <div id="launcher_game_start_wait"></div>
+            <!-- Footer -->
+            <div class="launcher_footer">
+                <p class="disclaimer">
+                    * Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.
+                </p>
+            </div>
         </div>
     </body>
 </html>

@@ -11,6 +11,12 @@
 a {
     border: none;
     outline: none;
+    text-decoration: none;
+    color: #000000;
+
+    &:active {
+        color: #000000;
+    }
 }
 
 li {
@@ -95,14 +101,6 @@ h1 {
 /* Start the Game Overlay
 ====================================================*/
 .game_start_overlay {
-    /*     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: center center;
-    display: none;
-    z-index: 2000; */
     position: relative;
     left: 0;
     top: 0;
@@ -159,9 +157,9 @@ h1 {
 ====================================================*/
 .slick-dots {
     width: 28% !important;
-    height: 80%;
-    top: 10%;
-    right: -10%;
+    height: 20%;
+    top: 41%;
+    right: -17%;
     bottom: 0 !important;
     transform: rotate(90deg);
 
@@ -1144,6 +1142,17 @@ h1 {
             color: white;
             font-size: 1.4rem;
             font-family: $font_title_en;
+
+            p {
+                width: 90px;
+                display: flex;
+                justify-content: flex-end;
+
+                span {
+                    width: 23px;
+                    padding: 0 4% 0 7%;
+                }
+            }
         }
     }
 
@@ -1176,9 +1185,14 @@ h1 {
     top: 5%;
 
     // banner img
-    .bnr img {
-        border-radius: 20px;
+    .bnr {
+        position: relative;
+        z-index: 100;
         cursor: pointer;
+
+        img {
+            border-radius: 20px;
+        }
     }
 }
 
@@ -1193,89 +1207,82 @@ h1 {
     top: 163px;
     overflow: hidden;
 
-    .important_info,
-    .normal_info {
+    // each info list
+    .info_list_item {
         margin-bottom: 5px;
-    }
 
-    .head {
-        width: 513px;
-        height: 23px;
-        position: relative;
-
-        .lbl {
-            position: absolute;
-            left: 0;
-            top: 0;
+        // title
+        .info_title {
+            position: relative;
             width: 513px;
             height: 23px;
-        }
+            padding-left: 4%;
+            line-height: 23px;
+            font-size: 1.9rem;
+            font-family: $font_info_title_en;
 
-        a {
-            position: absolute;
-            right: 10px;
-            top: 6px;
-            display: block;
-            width: 35px;
-            height: 13px;
-            background: no-repeat 0px 0px;
-
-            &:hover {
-                background-position: 0px -13px;
+            &::after {
+                content: '';
+                position: absolute;
+                width: 290px;
+                height: 2px;
+                bottom: 0;
+                background-color: #605a21e9;
+                box-shadow: 0 0 8px gray;
             }
         }
-    }
 
-    .important_info {
-        .body a,
-        .date {
-            color: #f4c833;
-        }
+        // contents
+        .list_contents {
+            margin-left: 4%;
 
-        a {
-            &:hover {
-                color: #f8dd81;
-            }
-        }
-    }
+            .list_contents_item {
+                overflow: hidden;
+                padding: 1.4% 0;
+                display: flex;
 
-    ul.article {
-        margin-left: 18px;
-        width: 517px;
-        position: relative;
-
-        li {
-            width: 517px;
-            position: relative;
-            overflow: hidden;
-            padding: 5px 0;
-
-            div {
-                position: relative;
-                float: left;
-            }
-
-            .date {
-                width: 110px;
-            }
-
-            .body {
-                width: 340px;
+                .date {
+                    width: 110px;
+                    cursor: default;
+                }
 
                 a {
+                    width: 340px;
                     color: #d1c0a5;
-                    text-decoration: none;
 
                     &:hover {
                         color: #efddc2;
                     }
                 }
+
+                .icon {
+                    width: 30px;
+                    height: 14px;
+                    background: no-repeat center center;
+                }
+            }
+        }
+
+        // important info only
+        &:first-child {
+            .info_title {
+                color: #f7d53fff;
             }
 
-            .icon {
-                width: 30px;
-                height: 14px;
-                background: no-repeat center center;
+            .list_contents {
+                .list_contents_item {
+                    .date {
+                        color: #f4c833;
+                    }
+
+                    a {
+                        color: #f4c833;
+
+                        &:hover {
+                            color: #f8dd81;
+                        }
+                    }
+                }
             }
         }
     }

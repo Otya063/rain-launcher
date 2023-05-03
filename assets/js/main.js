@@ -108,10 +108,6 @@ const getServerList = function () {
     }
 };
 
-const restartLauncher = function () {
-    window.external.restartMhf();
-};
-
 const minimizeWindow = function () {
     playSound('IDR_WAV_OK');
     try {
@@ -1003,7 +999,7 @@ const switchUpdateAfterState = function () {
                 case 'ERR':
                     $(progressStateMessage).text('Error Occurred');
                     $(nextActionMessage).html('Quit the launcher.');
-                    setTimeout(closeWindow, delayTime);
+                    setTimeout(exitLauncher, delayTime);
                     break;
             }
             break;
@@ -1012,7 +1008,7 @@ const switchUpdateAfterState = function () {
         case 'UM_UPDATE_NG':
             $(progressStateMessage).text('Error Occurred');
             $(nextActionMessage).html('Quit the launcher.');
-            setTimeout(closeWindow, delayTime);
+            setTimeout(exitLauncher, delayTime);
             break;
     }
 
@@ -1055,7 +1051,7 @@ const updateProcessPct = function () {
             case 'UM_UPDATE_NG':
                 $(progressStateMessage).text('Error Occurred');
                 $(nextActionMessage).html('Quit the launcher.');
-                setTimeout(closeWindow, delayTime);
+                setTimeout(exitLauncher, delayTime);
                 break;
         }
     }

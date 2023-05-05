@@ -1398,6 +1398,8 @@ $(function () {
     // load moving function
     launcherMovingHandler();
 
+    overrideAnker('.wrapper');
+
     // rotate banner
     $('.launcher_bnr').slick({
         fade: true,
@@ -1448,26 +1450,5 @@ $(document).ready(function () {
         observer: true,
         observeParents: true,
         spaceBetween: 50,
-    });
-});
-
-$(function () {
-    const url = 'https://www.jma.go.jp/bosai/forecast/data/overview_forecast/130000.json';
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-        // 取得に成功したときの処理
-        success: function (data) {
-            console.log(JSON.stringify(data, null, 2));
-        },
-        // 完了したときの処理
-        complete: function () {
-            console.log('通信が完了しました。');
-        },
-        // 失敗したときの処理
-        error: function () {
-            console.log('通信に失敗しました。');
-        },
     });
 });

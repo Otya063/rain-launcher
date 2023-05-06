@@ -437,7 +437,7 @@ const inputUserId = '.userid_input',
         RainJP: false,
         RainUS: false,
         RainEU: false,
-        RainLocalhost: false,
+        RainLocalhost: true,
     };
 
 let loginPollingTimerId = '',

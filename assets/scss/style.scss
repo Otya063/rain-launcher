@@ -28,6 +28,7 @@ ul {
 }
 
 img {
+    width: 100%;
     border-style: none;
 }
 
@@ -132,7 +133,7 @@ h1 {
     position: absolute;
     left: 0;
     top: 0;
-    background: url(#{$img}/common/bg.jpg) center center / 1124px 600px no-repeat;
+    background: url(#{$img}/common/launcher_body_bg.png) center center / 1124px 600px no-repeat;
 }
 
 /* Scrollbar
@@ -1065,13 +1066,40 @@ h1 {
 　　　　　Maintenance
 =======================================================*/
 .maintenance {
-    width: 426px;
-    height: 169px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    left: 63px;
-    top: 171px;
-    background: no-repeat 0px 0px;
-    display: none;
+    width: 450px;
+    height: 414px;
+    left: 5%;
+    top: 25%;
+
+    // maintenance text
+    .maint_text {
+        width: 450px;
+        height: 150px;
+        color: #f7e14cff;
+        background: rgba(0, 0, 0, 0.5);
+        font-size: 2rem;
+        font-family: $font_title_en;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+
+        p {
+            max-width: 427px;
+        }
+    }
+
+    // maintenance image
+    .maint_img {
+        width: 60%;
+        height: 60%;
+    }
 }
 
 /*=========================================================
@@ -1435,7 +1463,7 @@ h1 {
         top: 140px;
         width: 560px;
         height: 320px;
-        background: url(#{$img}/common/dialog_bg.jpg) no-repeat 0px 0px;
+        background: url(#{$img}/common/dialog_bg.png) no-repeat 0px 0px;
 
         // dialog text contents
         .dialog_text_contents {

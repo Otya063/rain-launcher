@@ -107,8 +107,8 @@
 
             <!-- Log Out Container -->
             <div class="logout_container">
-                <!-- User ID / Server Name Label -->
-                <p class="id_srv_label"></p>
+                <!-- Username / Server Name Label -->
+                <p class="name_srv_label"></p>
 
                 <!-- Log Out Button -->
                 <button class="btn_logout sound_on" onclick="backToBeforeLogin();" style="display: none">
@@ -119,19 +119,19 @@
             <!-- Log In Area -->
             <main class="launcher_login_panel">
                 <form class="auth_section">
-                    <!-- User ID -->
+                    <!-- Username -->
                     <div class="auth_group">
-                        <label for="user_id">Username</label>
-                        <div class="auth_userid">
+                        <label for="username">Username</label>
+                        <div class="auth_username">
                             <span class="user_icon"></span>
                             <input
-                                class="userid_input"
+                                class="username_input"
                                 type="text"
-                                id="user_id"
+                                id="username"
                                 placeholder="Username"
                                 autocomplete="off"
                                 autocapitalize="off"
-                                aria-label="UserID"
+                                aria-label="Username"
                                 aria-invalid="false"
                             />
                         </div>
@@ -171,8 +171,8 @@
                 <!-- Log In Alternative -->
                 <div class="auth_alternative">
                     <!-- Remember Checkbox -->
-                    <label class="checkbox sound_on" for="check_save_id">
-                        <input type="checkbox" class="check_save_id" id="check_save_id" />
+                    <label class="checkbox sound_on" for="remember_me">
+                        <input type="checkbox" class="remember_me" id="remember_me" />
                         <span class="indicator"></span>
                         Remember Me
                     </label>
@@ -216,14 +216,14 @@
             <!-- Maintenance -->
             <ul class="maintenance">
                 <li class="maint_text">
-                    <p>Rain Server is temporarily down due to maintenance.</p>
+                    <p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p>
                     <p>Please wait for a while until the maintenance is completed.</p>
                 </li>
-                <li class="maint_img"><img src="/launcher/assets/img/common/cat.png" alt="maint_cat"></li>
+                <li class="maint_img"><img src="/launcher/assets/img/common/cat.png" alt="maint_cat" /></li>
             </ul>
 
             <!-- Update -->
-            <ul class="launcher_update_process" style="display: none">
+            <ul class="launcher_update_process">
                 <li class="anim f0"></li>
                 <li class="progress_area">
                     <div class="bar_area">
@@ -254,7 +254,7 @@
                     <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/1211_11.jpg" alt="" /></li>
                     <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/reg_mezefes.jpg" alt="" /></li> -->
                 </ul>
-                
+
                 <!-- Information -->
                 <ul class="info_list"></ul>
 
@@ -262,25 +262,25 @@
                 <aside class="launcher_menu">
                     <!-- Member Site -->
                     <a class="menu_contents_anchor" href="">
-                        <div class="member menu_contents_icon sound_on" onClick=""></div>
+                        <div class="member menu_contents_icon sound_on"></div>
                         <p class="menu_contents_text">Member Site</p>
                     </a>
 
                     <!-- Online Manual -->
                     <a class="menu_contents_anchor" href="https://development.rain-server.workers.dev/">
-                        <div class="manual menu_contents_icon sound_on" onClick=""></div>
+                        <div class="manual menu_contents_icon sound_on"></div>
                         <p class="menu_contents_text">Online Manual</p>
                     </a>
 
                     <!-- Inquiry -->
                     <a class="menu_contents_anchor" href="">
-                        <div class="inquiry menu_contents_icon sound_on" onClick=""></div>
+                        <div class="inquiry menu_contents_icon sound_on"></div>
                         <p class="menu_contents_text">Inquiry</p>
                     </a>
 
                     <!-- My Page -->
                     <a class="menu_contents_anchor" href="">
-                        <div class="mypage menu_contents_icon sound_on" onClick=""></div>
+                        <div class="mypage menu_contents_icon sound_on"></div>
                         <p class="menu_contents_text">My Page</p>
                     </a>
 

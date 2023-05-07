@@ -1,6 +1,6 @@
 const msgLogTextData = {
     noSrvSelected: 'No server is currently selected. Please select one from the list.',
-    noUserIdPass: 'First, please enter both your User ID and Password.',
+    noUsernamePass: 'First, please enter both your Username and Password.',
     serverMaint: 'The server is currently under maintenance and cannot be joined.<br>Please try again later.',
     SIGN_EFAILED: 'Failed to connect to authentication server.',
     SIGN_EILLEGAL: 'Authentication cancelled due to wrong input.',
@@ -143,9 +143,9 @@ const enableDrag = function (boolean) {
     }
 };
 
-const loginRain = function (userId, pass1, pass2) {
+const loginRain = function (username, pass1, pass2) {
     try {
-        return window.external.loginCog(userId, pass1, pass2);
+        return window.external.loginCog(username, pass1, pass2);
     } catch (error) {
         return false;
     }
@@ -211,6 +211,16 @@ const extractInitialLogs = function () {
     } catch (error) {
         return '';
     }
+};
+
+const disableElement = function (elm, fadeTime) {
+    $(elm).fadeTo(fadeTime, 0.6);
+    $(elm).css('pointer-events', 'none');
+};
+
+const enableElement = function (elm, fadeTime) {
+    $(elm).fadeTo(fadeTime, 1);
+    $(elm).css('pointer-events', 'auto');
 };
 
 const overrideAnker = function (selector) {
@@ -428,38 +438,38 @@ const clearOnlyLog = function () {
 /*=========================================================
 　　　　　Login and Authentication Functions
 =======================================================*/
-const inputUserId = '.userid_input',
+const inputUsername = '.username_input',
     inputPassword = '.password_input',
     loginBtn = '.btn_login',
-    saveUserIdCheck = '.check_save_id',
+    rememberMeCheck = '.remember_me',
     credsForgot = '.btn_forgot',
     maintenanceMode = {
         RainJP: false,
         RainUS: false,
         RainEU: false,
-        RainLocalhost: true,
+        RainLocalhost: false,
     };
 
 let loginPollingTimerId = '',
-    userId = '',
+    username = '',
     password = '',
     isChecked = false;
 
 const beginAuthProcess = function () {
-    const userId = $(inputUserId).val();
+    const username = $(inputUsername).val();
     const password = $(inputPassword).val();
 
     $(charSelBox).is(':visible') && backToBeforeLogin();
 
-    '' === userId || '' === password
+    '' === username || '' === password
         ? // if credentials are not entered, return error
-          (playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noUserIdPass'), 'r'))
+          (playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noUsernamePass'), 'r'))
         : // if credentials are entered, proceed to auth process
           (playSound('IDR_WAV_PRE_LOGIN'), showAuthenticating(), requestAuthentication());
 };
 
 const requestAuthentication = function () {
-    const loginSuccess = loginRain($(inputUserId).val(), $(inputPassword).val(), $(inputPassword).val());
+    const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
 
     loginSuccess
         ? // if loginSuccess is true, login polling will be run
@@ -488,17 +498,17 @@ const startLoginPolling = function () {
             stopLoginPolling();
             hideAuthenticating();
 
-            // set user_id and server name label
-            const idSrvNameText = $(inputUserId).val() + '@' + $(serverSelBtn).text();
-            $('.id_srv_label').text(idSrvNameText);
+            // set username and server name label
+            const idSrvNameLabel = $(inputUsername).val() + '@' + $(serverSelBtn).text();
+            $('.name_srv_label').text(idSrvNameLabel);
 
-            $(saveUserIdCheck).is(':checked')
-                ? // if checked, save user_id and password in the local storage
-                  (localStorage.setItem('UserID', $(inputUserId).val()),
+            $(rememberMeCheck).is(':checked')
+                ? // if checked, save username and password in the local storage
+                  (localStorage.setItem('Username', $(inputUsername).val()),
                   localStorage.setItem('Password', $(inputPassword).val()),
                   localStorage.setItem('IsChecked', 'true'))
                 : // if not, delete them
-                  (localStorage.removeItem('UserID'),
+                  (localStorage.removeItem('Username'),
                   localStorage.removeItem('Password'),
                   localStorage.removeItem('IsChecked'));
 
@@ -558,8 +568,7 @@ const stopLoginPolling = function () {
 
 const showAuthenticating = function () {
     // diabled login button
-    $(loginBtn).addClass('disabled');
-    $(loginBtn).fadeTo(1, 0.6);
+    disableElement(loginBtn, 1);
 
     // show auth progress display
     $('.authenticating').fadeIn(200);
@@ -567,8 +576,7 @@ const showAuthenticating = function () {
 
 const hideAuthenticating = function () {
     // enabled login button
-    $(loginBtn).fadeTo(1, 1);
-    $(loginBtn).removeClass('disabled');
+    enableElement(loginBtn, 1);
 
     // hide auth progress display
     $('.authenticating').fadeOut(200);
@@ -589,7 +597,7 @@ const backToBeforeLogin = function () {
     $('.launcher_login_panel').show();
 
     // reset server name label
-    $('.id_srv_label').text('');
+    $('.name_srv_label').text('');
 
     // hide logout button
     $('.btn_logout').hide();
@@ -612,10 +620,10 @@ const startUpLauncher = function () {
             : beginAuthProcess();
     });
 
-    // set user_id and focus event
-    userId = localStorage.getItem('UserID');
-    $(inputUserId).val(userId);
-    $(inputUserId).focus(function () {
+    // set username and focus event
+    username = localStorage.getItem('Username');
+    $(inputUsername).val(username);
+    $(inputUsername).focus(function () {
         playSound('IDR_WAV_OK');
     });
 
@@ -626,9 +634,9 @@ const startUpLauncher = function () {
         playSound('IDR_WAV_OK');
     });
 
-    // set check state for saveUserIdCheck
+    // set check state for rememberMeCheck
     isChecked = localStorage.getItem('IsChecked') === 'true';
-    isChecked === true ? $(saveUserIdCheck).prop('checked', true) : $(saveUserIdCheck).prop('checked', false);
+    isChecked === true ? $(rememberMeCheck).prop('checked', true) : $(rememberMeCheck).prop('checked', false);
 
     // set launcher display to initial state
     backToBeforeLogin();
@@ -688,9 +696,8 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
         '<div class="unit swiper-slide" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>'
     );
 
-    // add a number element, a sign element, and a name element to the div
+    // add a number element, and a name element to the div
     charUnit.append($('<div class="num n' + index + '"></div>'));
-    charUnit.append($('<div class="sign"></div>'));
     charUnit.append($('<p class="name">' + convEntities(name) + '</p>'));
 
     hr === 0
@@ -770,6 +777,10 @@ const showCharSelector = function () {
             )
         );
     });
+
+    $(charSelUnitBox).find('.unit').length === 0
+        ? (disableElement(charDelButton, 1), disableElement('.btn_start', 1))
+        : (enableElement(charDelButton, 1), enableElement('.btn_start'), 1);
 };
 
 const charDelPolling = function () {
@@ -853,7 +864,7 @@ const startTheGame = function (uid) {
 /*=========================================================
 　　　　　Update Functions
 =======================================================*/
-const updateMode = true,
+const updateMode = false,
     updateAnim = '.launcher_update_process .anim',
     fileProgressBar = '.bar_area .file_progress',
     totalProgressBar = '.bar_area .total_progress',
@@ -894,7 +905,7 @@ const prepareBeginUpdate = function (uid) {
     isUpdateEnabled()
         ? // if update is needed, start update process
           ($('.character_selection').hide(),
-          $('.id_srv_label').text(''),
+          $('.name_srv_label').text(''),
           $('.btn_logout').hide(),
           $('.launcher_update_process').show(),
           beginUpdateProcess(uid),
@@ -904,7 +915,7 @@ const prepareBeginUpdate = function (uid) {
         : // if not needed, directly proceed to start game
           setTimeout(function () {
               startTheGame(uid);
-          }, 410);
+          }, 420);
 };
 
 const beginUpdateProcess = function (uid) {
@@ -1129,8 +1140,8 @@ const showDialog = function (text, options, standbyTime) {
                 onMouseOver: "playSound('IDR_WAV_SEL')",
             });
 
-            // if button is set as standby, disable hover and click events
-            option.isStandby && button.addClass('standby').css('pointer-events', 'none');
+            // if button is set as standby, set stanby class
+            option.isStandby && button.addClass('standby');
 
             // set the text for each button
             button.text(option.label);
@@ -1146,16 +1157,13 @@ const showDialog = function (text, options, standbyTime) {
     });
 
     // set opacity of standby buttons
-    $(dialogStandbyBtn).fadeTo(10, 0.4);
+    disableElement(dialogStandbyBtn, 10);
 
     // enable standby button
-    if (standbyTime) {
+    standbyTime &&
         setTimeout(function () {
-            $(dialogStandbyBtn).fadeTo(200, 1, function () {
-                $(dialogStandbyBtn).css('pointer-events', 'auto').removeClass('standby');
-            });
+            enableElement(dialogStandbyBtn, 200);
         }, standbyTime);
-    }
 };
 
 const hideDialog = function () {
@@ -1173,6 +1181,9 @@ const showMaintenanceDialog = function () {
     // show maintenance display
     $('.maintenance').show();
 
+    // append maintenance server name
+    $('.maint_server_name').text($(serverSelBtn).text());
+
     showDialog(dialogTextOutput('serverMaint'), [{ label: 'Close', cmd: 'hideDialog();' }]);
 };
 
@@ -1184,7 +1195,7 @@ const showAddCharDialog = function () {
             label: 'Add Now',
             cmd:
                 'loginRain("' +
-                $(inputUserId).val() +
+                $(inputUsername).val() +
                 '+' +
                 '", "' +
                 $(inputPassword).val() +

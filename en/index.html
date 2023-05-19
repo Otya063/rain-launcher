@@ -31,6 +31,13 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css"
+            integrity="sha512-nSomje7hTV0g6A5X/lEZq8koYb5XZtrWD7GU2+aIJD35CePx89oxSM+S7k3hqNSpHajFbtmrjavZFxSEfl6pQA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
@@ -43,13 +50,7 @@
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap"
         />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.5.1/css/swiper.min.css"
-            integrity="sha512-nSomje7hTV0g6A5X/lEZq8koYb5XZtrWD7GU2+aIJD35CePx89oxSM+S7k3hqNSpHajFbtmrjavZFxSEfl6pQA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        />
+
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
         <!-- js -->
         <script type="text/javascript" src="/launcher/assets/js/jquery.js"></script>
@@ -75,6 +76,8 @@
     </head>
 
     <body>
+        <iframe id="databridge" src="http://localhost:5173/launcher" style="display: none"></iframe>
+
         <div class="wrapper">
             <!-- Launcher Movable Overlay -->
             <div class="movable_overlay">
@@ -88,7 +91,7 @@
 
             <!-- Window Controls -->
             <div class="win_ctrls">
-                <!-- Grab Area -->
+                <!-- Moving Button -->
                 <button class="move sound_on"></button>
 
                 <!-- Minimize Button -->
@@ -251,11 +254,9 @@
                     <li class="bnr sound_on">
                         <img src="/launcher/assets/img/bnr/g_slaying_quest.png" alt="g_slaying_quest" />
                     </li>
-                    <!-- <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/0705_3.jpg" alt="" /></li>
-                    <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/0801_3.jpg" alt="" /></li>
-                    <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/1030_0.jpg" alt="" /></li>
-                    <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/1211_11.jpg" alt="" /></li>
-                    <li class="bnr sound_on"><img src="/launcher/assets/img/bnr/reg_mezefes.jpg" alt="" /></li> -->
+                    <li class="bnr sound_on">
+                        <img src="/launcher/assets/img/bnr/hunting_road.png" alt="hunting_road" />
+                    </li>
                 </ul>
 
                 <!-- Information -->

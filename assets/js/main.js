@@ -778,9 +778,18 @@ const showCharSelector = function () {
         );
     });
 
-    $(charSelUnitBox).find('.unit').length === 0
-        ? (disableElement(charDelButton, 1), disableElement('.btn_start', 1))
-        : (enableElement(charDelButton, 1), enableElement('.btn_start'), 1);
+    // if there is no character, disable delete and start game button
+    if ($(charSelUnitBox).find('.unit').length === 0) {
+        disableElement(charDelButton, 1), disableElement('.btn_start', 1);
+    } else {
+        // if there is one character and a new hunter, disable delete button, and enable start game button
+        if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
+            disableElement(charDelButton, 1), enableElement('.btn_start', 1);
+            // normally, all buttons are enabled
+        } else {
+            enableElement(charDelButton, 1), enableElement('.btn_start', 1);
+        }
+    }
 };
 
 const charDelPolling = function () {
@@ -1463,3 +1472,16 @@ $(document).ready(function () {
         spaceBetween: 50,
     });
 });
+
+const receiveMessage = function (event) {
+    /* if (event.origin === 'http://localhost:5173') {
+    } */
+        console.log(event.origin === 'https://development.rain-server.workers.dev');
+        const data = event.data;
+        addLogMsg('RainJP: ' + data['RainJP'], "y");
+        addLogMsg('RainEU: ' + data['RainEU'], "y");
+        addLogMsg('RainUS: ' + data['RainUS'], "y");
+        console.log('RainJP: ' + data['RainJP'], 'RainEU: ' + data['RainEU'], 'RainUS: ' + data['RainUS']);
+};
+
+window.addEventListener('message', receiveMessage);

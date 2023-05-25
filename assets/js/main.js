@@ -232,6 +232,15 @@ const overrideAnker = function (selector) {
         });
 };
 
+const connectRainWeb = function () {
+    return $.ajax({
+        // url is localhost for cors measures temporarily
+        url: 'http://localhost:5173/admin/',
+        dataType: 'html',
+        cache: false,
+    });
+};
+
 /*=========================================================
 　　　　　Server Selection Functions
 =======================================================*/
@@ -442,15 +451,10 @@ const inputUsername = '.username_input',
     inputPassword = '.password_input',
     loginBtn = '.btn_login',
     rememberMeCheck = '.remember_me',
-    credsForgot = '.btn_forgot',
-    maintenanceMode = {
-        RainJP: false,
-        RainUS: false,
-        RainEU: false,
-        RainLocalhost: false,
-    };
+    credsForgot = '.btn_forgot';
 
-let loginPollingTimerId = '',
+let maintenanceData = {},
+    loginPollingTimerId = '',
     username = '',
     password = '',
     isChecked = false;
@@ -496,34 +500,37 @@ const startLoginPolling = function () {
         // if the auth is successful, stop login polling, hide the auth progress display
         case 'AUTH_SUCCESS':
             stopLoginPolling();
-            hideAuthenticating();
 
-            // set username and server name label
-            const idSrvNameLabel = $(inputUsername).val() + '@' + $(serverSelBtn).text();
-            $('.name_srv_label').text(idSrvNameLabel);
-
-            $(rememberMeCheck).is(':checked')
-                ? // if checked, save username and password in the local storage
-                  (localStorage.setItem('Username', $(inputUsername).val()),
-                  localStorage.setItem('Password', $(inputPassword).val()),
-                  localStorage.setItem('IsChecked', 'true'))
-                : // if not, delete them
-                  (localStorage.removeItem('Username'),
-                  localStorage.removeItem('Password'),
-                  localStorage.removeItem('IsChecked'));
-
-            const maintSrvName = $(serverSelBtn)
+            const serverName = $(serverSelBtn)
                 .text()
                 .replace(/[\s()]/g, '');
 
-            maintenanceMode[maintSrvName]
-                ? // if maintenance mode is enabled, show maint dialog
-                  (showMaintenanceDialog(),
-                  $('.launcher_login_panel').hide(),
-                  $('.btn_logout').show(),
-                  $('.launcher_update_process').hide())
-                : // if not, proceed to character selection
-                  showCharSelector();
+            connectRainWeb()
+                .done(function (result) {
+                    $(result)
+                        .find('.data_transfer_section .maintenance dt')
+                        .each(function () {
+                            const key = $(this).text();
+                            let value = $(this).next('dd').text().replace(/\s+/g, '');
+
+                            // covert string to boolean
+                            value = JSON.parse(value.toLowerCase());
+
+                            maintenanceData[key] = value;
+                        });
+                    $('.rain_web_offline').css({
+                        visibility: 'hidden',
+                    });
+                })
+                .fail(function () {
+                    maintenanceData = { RainJP: false, RainUS: false, RainEU: false, RainLocalhost: false };
+                    $('.rain_web_offline').css({
+                        visibility: 'visible',
+                    });
+                })
+                .always(function () {
+                    afterLoginProcess(serverName);
+                });
             break;
 
         // if there is a network error during auth, stop login polling and output error msg
@@ -564,6 +571,30 @@ const startLoginPolling = function () {
 
 const stopLoginPolling = function () {
     loginPollingTimerId && clearInterval(loginPollingTimerId);
+};
+
+const afterLoginProcess = function (serverName) {
+    hideAuthenticating();
+
+    maintenanceData[serverName]
+        ? (showMaintenanceDialog(),
+          $('.launcher_login_panel').hide(),
+          $('.btn_logout').show(),
+          $('.launcher_update_process').hide())
+        : showCharSelector();
+
+    $(rememberMeCheck).is(':checked')
+        ? // if checked, save username and password in the local storage
+          (localStorage.setItem('Username', $(inputUsername).val()),
+          localStorage.setItem('Password', $(inputPassword).val()),
+          localStorage.setItem('IsChecked', 'true'))
+        : // if not, delete them
+          (localStorage.removeItem('Username'),
+          localStorage.removeItem('Password'),
+          localStorage.removeItem('IsChecked'));
+    // set username and server name label
+    const idSrvNameLabel = $(inputUsername).val() + '@' + $(serverSelBtn).text();
+    $('.name_srv_label').text(idSrvNameLabel);
 };
 
 const showAuthenticating = function () {
@@ -1472,16 +1503,3 @@ $(document).ready(function () {
         spaceBetween: 50,
     });
 });
-
-const receiveMessage = function (event) {
-    /* if (event.origin === 'http://localhost:5173') {
-    } */
-        console.log(event.origin === 'https://development.rain-server.workers.dev');
-        const data = event.data;
-        addLogMsg('RainJP: ' + data['RainJP'], "y");
-        addLogMsg('RainEU: ' + data['RainEU'], "y");
-        addLogMsg('RainUS: ' + data['RainUS'], "y");
-        console.log('RainJP: ' + data['RainJP'], 'RainEU: ' + data['RainEU'], 'RainUS: ' + data['RainUS']);
-};
-
-window.addEventListener('message', receiveMessage);

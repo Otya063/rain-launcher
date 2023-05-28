@@ -159,10 +159,6 @@ const getSignResult = function () {
     return window.external.getSignResult();
 };
 
-const isUpdateEnabled = function () {
-    return updateMode ? window.external.startUpdate() : false;
-};
-
 const getTotalPctOnUpdate = function () {
     return window.external.getUpdatePercentageTotal();
 };
@@ -529,7 +525,7 @@ const startLoginPolling = function () {
                     });
                 })
                 .always(function () {
-                    afterLoginProcess(serverName);
+                    afterLoginSuccess(serverName);
                 });
             break;
 
@@ -573,7 +569,7 @@ const stopLoginPolling = function () {
     loginPollingTimerId && clearInterval(loginPollingTimerId);
 };
 
-const afterLoginProcess = function (serverName) {
+const afterLoginSuccess = function (serverName) {
     hideAuthenticating();
 
     maintenanceData[serverName]
@@ -914,7 +910,8 @@ const updateMode = false,
     progressBarWidth = 302,
     progressBarPercent = 0.01 * progressBarWidth;
 
-let updatePolling = true,
+let updateData = {},
+    updatePolling = true,
     animTimerId = '',
     frameClass = 'f0',
     normAnimSeqIndex = 0,
@@ -942,7 +939,35 @@ const prepareBeginUpdate = function (uid) {
     $(fileProgressBar).width(0);
     $(totalProgressBar).width(0);
 
-    isUpdateEnabled()
+    $('.connecting_overlay').show();
+
+    connectRainWeb()
+        .done(function (result) {
+            $(result)
+                .find('.data_transfer_section .update dt')
+                .each(function () {
+                    const key = $(this).text();
+                    let value = $(this).next('dd').text().replace(/\s+/g, '');
+
+                    // covert string to boolean
+                    value = JSON.parse(value.toLowerCase());
+
+                    updateData[key] = value;
+                });
+        })
+        .fail(function () {
+            updateData = { UpdateMode: false };
+        })
+        .always(function () {
+            const update = updateData['UpdateMode'] ? window.external.startUpdate() : false;
+            afterCheckUpdateMode(uid, update);
+        });
+};
+
+const afterCheckUpdateMode = function (uid, update) {
+    $('.connecting_overlay').hide();
+
+    update
         ? // if update is needed, start update process
           ($('.character_selection').hide(),
           $('.name_srv_label').text(''),

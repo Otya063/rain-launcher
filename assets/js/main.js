@@ -504,7 +504,7 @@ const startLoginPolling = function () {
             connectRainWeb()
                 .done(function (result) {
                     $(result)
-                        .find('.data_transfer_section .maintenance dt')
+                        .find('.maintenance dt')
                         .each(function () {
                             const key = $(this).text();
                             let value = $(this).next('dd').text().replace(/\s+/g, '');
@@ -944,7 +944,7 @@ const prepareBeginUpdate = function (uid) {
     connectRainWeb()
         .done(function (result) {
             $(result)
-                .find('.data_transfer_section .update dt')
+                .find('.update dt')
                 .each(function () {
                     const key = $(this).text();
                     let value = $(this).next('dd').text().replace(/\s+/g, '');

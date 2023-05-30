@@ -504,10 +504,10 @@ const startLoginPolling = function () {
             connectRainWeb()
                 .done(function (result) {
                     $(result)
-                        .find('.maintenance dt')
+                        .find('.maintenance li p')
                         .each(function () {
-                            const key = $(this).text();
-                            let value = $(this).next('dd').text().replace(/\s+/g, '');
+                            const key = $(this).text().replace(/[\s()]/g, '');;
+                            let value = $(this).next('span').text().replace(/\s+/g, '');
 
                             // covert string to boolean
                             value = JSON.parse(value.toLowerCase());

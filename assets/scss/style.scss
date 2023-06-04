@@ -1264,6 +1264,32 @@ h1 {
         padding: 2% 1%;
         background: rgba(0, 0, 0, 0.3);
 
+        // info 404 not found
+        .info_not_found {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: 700;
+            color: red;
+            white-space:nowrap;
+            display: none;
+        }
+
+        // getting info
+        .info_getting {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ecd142fc;
+            white-space:nowrap;
+            display: none;
+        }
+
         // each info list
         .info_list_item {
             margin-bottom: 5px;

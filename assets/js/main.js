@@ -231,10 +231,17 @@ const overrideAnker = function (selector) {
 const connectRainWeb = function () {
     return $.ajax({
         // url is localhost for cors measures temporarily
-        url: 'http://localhost:5173/admin/',
+        url: 'http://localhost:5173/admin',
         dataType: 'html',
         cache: false,
     });
+};
+
+const getDataFromRainWeb = function (html_data, data_name) {
+    const regex = /const data = (\[.*?\]);/g;
+    const raw_data = regex.exec(html_data)[1];
+    const obj_data = new Function('return ' + raw_data)()[1]['data'];
+    return (rerutn_data = obj_data[data_name]);
 };
 
 /*=========================================================
@@ -503,19 +510,7 @@ const startLoginPolling = function () {
 
             connectRainWeb()
                 .done(function (result) {
-                    $(result)
-                        .find('.maintenance li p')
-                        .each(function () {
-                            const key = $(this)
-                                .text()
-                                .replace(/[\s()]/g, '');
-                            let value = $(this).next('span').text().replace(/\s+/g, '');
-
-                            // covert string to boolean
-                            value = JSON.parse(value.toLowerCase());
-
-                            maintenanceData[key] = value;
-                        });
+                    maintenanceData = getDataFromRainWeb(result, 'launcher_system');
                     $('.rain_web_offline').css({
                         visibility: 'hidden',
                     });
@@ -902,8 +897,7 @@ const startTheGame = function (uid) {
 /*=========================================================
 　　　　　Update Functions
 =======================================================*/
-const updateMode = false,
-    updateAnim = '.launcher_update_process .anim',
+const updateAnim = '.launcher_update_process .anim',
     fileProgressBar = '.bar_area .file_progress',
     totalProgressBar = '.bar_area .total_progress',
     progressStateMessage = '.update_msg .progress_state',
@@ -941,35 +935,23 @@ const prepareBeginUpdate = function (uid) {
     $(fileProgressBar).width(0);
     $(totalProgressBar).width(0);
 
-    $('.connecting_overlay').show();
+    $('.connecting_overlay').fadeIn(200);
 
-    connectRainWeb()
+    connectRainWeb('system')
         .done(function (result) {
-            $(result)
-                .find('.update li p')
-                .each(function () {
-                    const key = $(this)
-                        .text()
-                        .replace(/[\s()]/g, '');
-                    let value = $(this).next('span').text().replace(/\s+/g, '');
-
-                    // covert string to boolean
-                    value = JSON.parse(value.toLowerCase());
-
-                    updateData[key] = value;
-                });
+            updateData = getDataFromRainWeb(result, 'launcher_system');
         })
         .fail(function () {
-            updateData = { UpdateMode: false };
+            updateData = { update: false };
         })
         .always(function () {
-            const update = updateData['UpdateMode'] ? window.external.startUpdate() : false;
+            const update = updateData['update'] ? window.external.startUpdate() : false;
             afterCheckUpdateMode(uid, update);
         });
 };
 
 const afterCheckUpdateMode = function (uid, update) {
-    $('.connecting_overlay').hide();
+    $('.connecting_overlay').fadeOut(200);
 
     update
         ? // if update is needed, start update process
@@ -1161,8 +1143,48 @@ const clearAnimSq = function () {
 =======================================================*/
 const infoList = '.info_list';
 
+let importantInfoData = {},
+    defectsAndTroublesInfoData = {},
+    managementAndServiceInfoData = {},
+    inGameEventsInfoData = {},
+    updatesAndMaintenanceInfoData = {};
+
 const beginLoadInfo = function () {
-    $.ajax({
+    $('.info_getting').show();
+
+    connectRainWeb('system')
+        .done(function (result) {
+            importantInfoData = getDataFromRainWeb(result, 'important');
+            defectsAndTroublesInfoData = getDataFromRainWeb(result, 'defects_and_troubles');
+            managementAndServiceInfoData = getDataFromRainWeb(result, 'management_and_service');
+            inGameEventsInfoData = getDataFromRainWeb(result, 'ingame_events');
+            updatesAndMaintenanceInfoData = getDataFromRainWeb(result, 'updates_and_maintenance');
+
+            console.log(inGameEventsInfoData);
+            $(infoList).html(
+                '<li class="info_list_item defects"><div class="info_title">Defects and Troubles Info</div><ul class="info_list_contents"><li class="info_list_contents_item"><span class="date">Jan 1, 2023</span><p class="info_list_contents_text"><a href="">Defects and Troubles.</a></p></li></ul></li>'
+            );
+
+            /* $(result)
+                .find('.console_contents_list_item .info li p')
+                .each(function () {
+                    const key = $(this)
+                        .text()
+                        .replace(/[\s()]/g, '');
+                    const value = $(this).next('span').text().replace(/:/g, '');
+
+                    infoData[key] = value;
+                }); */
+        })
+        .fail(function () {
+            $('.info_getting').hide();
+            $('.info_not_found').show();
+        });
+    /* .always(function () {
+            const update = updateData['UpdateMode'] ? window.external.startUpdate() : false;
+            afterCheckUpdateMode(uid, update);
+        }); */
+    /* $.ajax({
         type: 'GET',
         url: '/launcher/en/info_list.html',
         dataType: 'text',
@@ -1172,7 +1194,7 @@ const beginLoadInfo = function () {
             overrideAnker(infoList);
             new scrollBarHandler(infoList);
         },
-    });
+    }); */
 };
 
 /*=========================================================

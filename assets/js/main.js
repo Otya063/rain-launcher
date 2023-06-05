@@ -1,3 +1,12 @@
+const normTextData = {
+    important: 'Important Info',
+    defects: 'Defects and Troubles Info',
+    management: 'Management and Service Info',
+    event: 'In-Game Events Info',
+    update: 'Updates and Maintenance Info',
+    noInfoFound: '<p class="no_info_found">No Information Found</p>',
+};
+
 const msgLogTextData = {
     noSrvSelected: 'No server is currently selected. Please select one from the list.',
     noUsernamePass: 'First, please enter both your Username and Password.',
@@ -64,6 +73,10 @@ scrollBarHandler.prototype.appendScrollBar = function () {
             autoScrollOnFocus: true,
         },
     });
+};
+
+const normTextOutput = function (textType) {
+    return decodeURIComponent(normTextData[textType]);
 };
 
 const msgLogTextOutput = function (textType) {
@@ -678,7 +691,7 @@ const charSelBox = '.character_selection',
 let delCharName = '',
     delCharUid = '';
 
-const convLastLoginDate = function (date) {
+const convUnixToDate = function (date) {
     // convert unix timestamp to a date object
     const convDate = new Date(1000 * date);
 
@@ -750,7 +763,7 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
                       '<br>' +
                       'Last Login' +
                       ':' +
-                      convLastLoginDate(lastLogin) +
+                      convUnixToDate(lastLogin) +
                       '</p>'
               )
           ));
@@ -1141,7 +1154,8 @@ const clearAnimSq = function () {
 /*=========================================================
 　　　　　Information List Function
 =======================================================*/
-const infoList = '.info_list';
+const infoList = '.info_list',
+    infoListContents = '.info_list_contents';
 
 let importantInfoData = {},
     defectsAndTroublesInfoData = {},
@@ -1160,41 +1174,49 @@ const beginLoadInfo = function () {
             inGameEventsInfoData = getDataFromRainWeb(result, 'ingame_events');
             updatesAndMaintenanceInfoData = getDataFromRainWeb(result, 'updates_and_maintenance');
 
-            console.log(inGameEventsInfoData);
-            $(infoList).html(
-                '<li class="info_list_item defects"><div class="info_title">Defects and Troubles Info</div><ul class="info_list_contents"><li class="info_list_contents_item"><span class="date">Jan 1, 2023</span><p class="info_list_contents_text"><a href="">Defects and Troubles.</a></p></li></ul></li>'
-            );
+            const infoData = {
+                important: { name: normTextOutput("important"), data: importantInfoData },
+                defects: { name: normTextOutput("defects"), data: defectsAndTroublesInfoData },
+                management: { name: normTextOutput("management"), data: managementAndServiceInfoData },
+                event: { name: normTextOutput("event"), data: inGameEventsInfoData },
+                update: { name: normTextOutput("update"), data: updatesAndMaintenanceInfoData },
+            };
 
-            /* $(result)
-                .find('.console_contents_list_item .info li p')
-                .each(function () {
-                    const key = $(this)
-                        .text()
-                        .replace(/[\s()]/g, '');
-                    const value = $(this).next('span').text().replace(/:/g, '');
+            let infoUlElm;
+            let infoLiElm;
+            Object.keys(infoData).forEach(function (infoType) {
+                infoUlElm = $('<li>', {
+                    class: 'info_list_item ' + infoType,
+                    html:
+                        '<div class="info_title">' +
+                        infoData[infoType].name +
+                        '</div><ul class="info_list_contents"></ul>',
+                });
+                $(infoList).append(infoUlElm);
+                infoData[infoType].data.length === 0 &&
+                    $('.' + infoType + ' .info_list_contents').append(normTextOutput("noInfoFound"));
 
-                    infoData[key] = value;
-                }); */
+                Object.keys(infoData[infoType].data).forEach(function (dataIndex) {
+                    infoLiElm = $(
+                        '<li class="info_list_contents_item"><span class="date">' +
+                            convUnixToDate(infoData[infoType].data[dataIndex].created_at) +
+                            '</span><p class="info_list_contents_text"><a href="' +
+                            infoData[infoType].data[dataIndex].url +
+                            '">' +
+                            infoData[infoType].data[dataIndex].title +
+                            '</a></p></li>'
+                    );
+                    $('.' + infoType + ' .info_list_contents').append(infoLiElm);
+                });
+            });
+            $('.info_getting').hide();
+            overrideAnker(infoList);
+            new scrollBarHandler(infoList);
         })
         .fail(function () {
             $('.info_getting').hide();
-            $('.info_not_found').show();
+            $('.failed_get_info').show();
         });
-    /* .always(function () {
-            const update = updateData['UpdateMode'] ? window.external.startUpdate() : false;
-            afterCheckUpdateMode(uid, update);
-        }); */
-    /* $.ajax({
-        type: 'GET',
-        url: '/launcher/en/info_list.html',
-        dataType: 'text',
-        cache: false,
-        success: function (infoListData) {
-            $(infoList).html(infoListData);
-            overrideAnker(infoList);
-            new scrollBarHandler(infoList);
-        },
-    }); */
 };
 
 /*=========================================================

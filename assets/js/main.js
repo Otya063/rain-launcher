@@ -1165,6 +1165,7 @@ let importantInfoData = {},
 
 const beginLoadInfo = function () {
     $('.info_getting').show();
+    $('.info_getting_loader').show();
 
     connectRainWeb('system')
         .done(function (result) {
@@ -1175,11 +1176,11 @@ const beginLoadInfo = function () {
             updatesAndMaintenanceInfoData = getDataFromRainWeb(result, 'updates_and_maintenance');
 
             const infoData = {
-                important: { name: normTextOutput("important"), data: importantInfoData },
-                defects: { name: normTextOutput("defects"), data: defectsAndTroublesInfoData },
-                management: { name: normTextOutput("management"), data: managementAndServiceInfoData },
-                event: { name: normTextOutput("event"), data: inGameEventsInfoData },
-                update: { name: normTextOutput("update"), data: updatesAndMaintenanceInfoData },
+                important: { name: normTextOutput('important'), data: importantInfoData },
+                defects: { name: normTextOutput('defects'), data: defectsAndTroublesInfoData },
+                management: { name: normTextOutput('management'), data: managementAndServiceInfoData },
+                event: { name: normTextOutput('event'), data: inGameEventsInfoData },
+                update: { name: normTextOutput('update'), data: updatesAndMaintenanceInfoData },
             };
 
             let infoUlElm;
@@ -1194,7 +1195,7 @@ const beginLoadInfo = function () {
                 });
                 $(infoList).append(infoUlElm);
                 infoData[infoType].data.length === 0 &&
-                    $('.' + infoType + ' .info_list_contents').append(normTextOutput("noInfoFound"));
+                    $('.' + infoType + ' .info_list_contents').append(normTextOutput('noInfoFound'));
 
                 Object.keys(infoData[infoType].data).forEach(function (dataIndex) {
                     infoLiElm = $(
@@ -1210,11 +1211,13 @@ const beginLoadInfo = function () {
                 });
             });
             $('.info_getting').hide();
+            $('.info_getting_loader').hide();
             overrideAnker(infoList);
             new scrollBarHandler(infoList);
         })
         .fail(function () {
             $('.info_getting').hide();
+            $('.info_getting_loader').hide();
             $('.failed_get_info').show();
         });
 };

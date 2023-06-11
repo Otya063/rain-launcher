@@ -1167,7 +1167,7 @@ const beginLoadInfo = function () {
     $('.info_getting').show();
     $('.info_getting_loader').show();
 
-    connectRainWeb('system')
+    connectRainWeb()
         .done(function (result) {
             importantInfoData = getDataFromRainWeb(result, 'important');
             defectsAndTroublesInfoData = getDataFromRainWeb(result, 'defects_and_troubles');

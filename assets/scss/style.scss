@@ -85,7 +85,7 @@ h1 {
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     display: none;
-    z-index: 1001;
+    z-index: 1000;
 
     .movable_overlay_text {
         position: absolute;
@@ -213,10 +213,10 @@ h1 {
         font-size: 1.5em;
         transition: all 0.2s;
 
-        // grab icon
+        // movable icon
         &.move {
             @include move_icon;
-            z-index: 1002;
+            z-index: 1001;
             cursor: move;
 
             // when hovering

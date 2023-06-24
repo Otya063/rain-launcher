@@ -243,8 +243,9 @@ const overrideAnker = function (selector) {
 
 const connectRainWeb = function () {
     return $.ajax({
-        // url is localhost for cors measures temporarily
+        //url: 'https://cors.rain-server.workers.dev/about',
         url: 'http://localhost:5173/admin',
+        type: 'GET',
         dataType: 'html',
         cache: false,
     });
@@ -1552,6 +1553,10 @@ $(function () {
     });
     $(document).on('mousedown', function (e) {
         !$(e.target).is('input') && e.preventDefault();
+    });
+
+    connectRainWeb().done(function (result) {
+        console.log(result);
     });
 });
 

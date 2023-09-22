@@ -241,21 +241,15 @@ const overrideAnker = function (selector) {
         });
 };
 
-const connectRainWeb = function () {
+const ReqDataFromRainWeb = function (data1, data2) {
+    const data = JSON.stringify({ 1: data1, 2: data2 });
     return $.ajax({
-        //url: 'https://cors.rain-server.workers.dev/about',
         url: 'http://localhost:5173/admin',
-        type: 'GET',
-        dataType: 'html',
-        cache: false,
+        type: 'POST',
+        data: data,
+        contentType: 'application/json',
+        dataType: 'json',
     });
-};
-
-const getDataFromRainWeb = function (html_data, data_name) {
-    const regex = /const data = (\[.*?\]);/g;
-    const raw_data = regex.exec(html_data)[1];
-    const obj_data = new Function('return ' + raw_data)()[1]['data'];
-    return (rerutn_data = obj_data[data_name]);
 };
 
 /*=========================================================
@@ -522,9 +516,13 @@ const startLoginPolling = function () {
                 .text()
                 .replace(/[\s()]/g, '');
 
-            connectRainWeb()
+            ReqDataFromRainWeb('launcherSystem')
                 .done(function (result) {
-                    maintenanceData = getDataFromRainWeb(result, 'launcher_system');
+                    if (!result['success']) {
+                        maintenanceData = { RainJP: false, RainUS: false, RainEU: false, RainLocalhost: false };
+                    } else {
+                        maintenanceData = result['data'];
+                    }
                     $('.rain_web_offline').css({
                         visibility: 'hidden',
                     });
@@ -920,7 +918,7 @@ const updateAnim = '.launcher_update_process .anim',
     progressBarWidth = 302,
     progressBarPercent = 0.01 * progressBarWidth;
 
-let updateData = {},
+let updateEnabled,
     updatePolling = true,
     animTimerId = '',
     frameClass = 'f0',
@@ -946,20 +944,25 @@ const animSequence = {
 
 const prepareBeginUpdate = function (uid) {
     // initial settings on update display
+    disableElement('.btn_logout', 1);
     $(fileProgressBar).width(0);
     $(totalProgressBar).width(0);
 
     $('.connecting_overlay').fadeIn(200);
 
-    connectRainWeb('system')
+    ReqDataFromRainWeb('launcherSystem')
         .done(function (result) {
-            updateData = getDataFromRainWeb(result, 'launcher_system');
+            if (!result['success']) {
+                updateEnabled = false;
+            } else {
+                updateEnabled = result['data'].update;
+            }
         })
         .fail(function () {
-            updateData = { update: false };
+            updateEnabled = false;
         })
         .always(function () {
-            const update = updateData['update'] ? window.external.startUpdate() : false;
+            const update = updateEnabled ? window.external.startUpdate() : false;
             afterCheckUpdateMode(uid, update);
         });
 };
@@ -1071,7 +1074,7 @@ const switchUpdateAfterState = function () {
                     setTimeout(exitLauncher, delayTime);
                     break;
 
-                // if an error occurs, restart the launcher
+                // if an error occurs, quit the launcher
                 case 'ERR':
                     $(progressStateMessage).text('Error Occurred');
                     $(nextActionMessage).html('Quit the launcher.');
@@ -1168,53 +1171,55 @@ const beginLoadInfo = function () {
     $('.info_getting').show();
     $('.info_getting_loader').show();
 
-    connectRainWeb()
+    ReqDataFromRainWeb('information', 'all')
         .done(function (result) {
-            importantInfoData = getDataFromRainWeb(result, 'important');
-            defectsAndTroublesInfoData = getDataFromRainWeb(result, 'defects_and_troubles');
-            managementAndServiceInfoData = getDataFromRainWeb(result, 'management_and_service');
-            inGameEventsInfoData = getDataFromRainWeb(result, 'ingame_events');
-            updatesAndMaintenanceInfoData = getDataFromRainWeb(result, 'updates_and_maintenance');
+            if (!result['success']) {
+                $('.info_getting').hide();
+                $('.info_getting_loader').hide();
+                $('.failed_get_info').show();
+            } else {
+                delete result['success'];
 
-            const infoData = {
-                important: { name: normTextOutput('important'), data: importantInfoData },
-                defects: { name: normTextOutput('defects'), data: defectsAndTroublesInfoData },
-                management: { name: normTextOutput('management'), data: managementAndServiceInfoData },
-                event: { name: normTextOutput('event'), data: inGameEventsInfoData },
-                update: { name: normTextOutput('update'), data: updatesAndMaintenanceInfoData },
-            };
+                const infoData = {
+                    important: { name: normTextOutput('important'), data: result['data1'] },
+                    defects: { name: normTextOutput('defects'), data: result['data2'] },
+                    management: { name: normTextOutput('management'), data: result['data3'] },
+                    event: { name: normTextOutput('event'), data: result['data4'] },
+                    update: { name: normTextOutput('update'), data: result['data5'] },
+                };
 
-            let infoUlElm;
-            let infoLiElm;
-            Object.keys(infoData).forEach(function (infoType) {
-                infoUlElm = $('<li>', {
-                    class: 'info_list_item ' + infoType,
-                    html:
-                        '<div class="info_title">' +
-                        infoData[infoType].name +
-                        '</div><ul class="info_list_contents"></ul>',
+                let infoUlElm;
+                let infoLiElm;
+                Object.keys(infoData).forEach(function (infoType) {
+                    infoUlElm = $('<li>', {
+                        class: 'info_list_item ' + infoType,
+                        html:
+                            '<div class="info_title">' +
+                            infoData[infoType].name +
+                            '</div><ul class="info_list_contents"></ul>',
+                    });
+                    $(infoList).append(infoUlElm);
+                    infoData[infoType].data.length === 0 &&
+                        $('.' + infoType + ' .info_list_contents').append(normTextOutput('noInfoFound'));
+
+                    Object.keys(infoData[infoType].data).forEach(function (dataIndex) {
+                        infoLiElm = $(
+                            '<li class="info_list_contents_item"><span class="date">' +
+                                convUnixToDate(infoData[infoType].data[dataIndex].created_at) +
+                                '</span><p class="info_list_contents_text"><a href="' +
+                                infoData[infoType].data[dataIndex].url +
+                                '">' +
+                                infoData[infoType].data[dataIndex].title +
+                                '</a></p></li>'
+                        );
+                        $('.' + infoType + ' .info_list_contents').append(infoLiElm);
+                    });
                 });
-                $(infoList).append(infoUlElm);
-                infoData[infoType].data.length === 0 &&
-                    $('.' + infoType + ' .info_list_contents').append(normTextOutput('noInfoFound'));
-
-                Object.keys(infoData[infoType].data).forEach(function (dataIndex) {
-                    infoLiElm = $(
-                        '<li class="info_list_contents_item"><span class="date">' +
-                            convUnixToDate(infoData[infoType].data[dataIndex].created_at) +
-                            '</span><p class="info_list_contents_text"><a href="' +
-                            infoData[infoType].data[dataIndex].url +
-                            '">' +
-                            infoData[infoType].data[dataIndex].title +
-                            '</a></p></li>'
-                    );
-                    $('.' + infoType + ' .info_list_contents').append(infoLiElm);
-                });
-            });
-            $('.info_getting').hide();
-            $('.info_getting_loader').hide();
-            overrideAnker(infoList);
-            new scrollBarHandler(infoList);
+                $('.info_getting').hide();
+                $('.info_getting_loader').hide();
+                overrideAnker(infoList);
+                new scrollBarHandler(infoList);
+            }
         })
         .fail(function () {
             $('.info_getting').hide();
@@ -1555,9 +1560,7 @@ $(function () {
         !$(e.target).is('input') && e.preventDefault();
     });
 
-    connectRainWeb().done(function (result) {
-        console.log(result);
-    });
+    $(charSelUnitBox).append(createCharUnit(1, 'otya', 1, 1, 0, 'Tonfa', 'M', 0));
 });
 
 /*=========================================================

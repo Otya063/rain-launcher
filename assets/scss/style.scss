@@ -1374,11 +1374,11 @@ h1 {
                     }
 
                     // new info icon
-                    .icon {
+                    /* .icon {
                         width: 30px;
                         height: 14px;
-                        //background: no-repeat center center;
-                    }
+                        background: no-repeat center center;
+                    } */
                 }
             }
 
@@ -1421,43 +1421,91 @@ h1 {
         width: 100%;
 
         .menu_contents_anchor {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 60px;
+            width: 65px;
             height: 100px;
             margin: 0px 3%;
+            text-align: center;
+            justify-content: flex-end;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #f5f5f5;
+            cursor: pointer;
 
-            // each icon
-            .menu_contents_icon {
-                width: 60px;
-                height: 60px;
-                border-radius: 50px;
-                margin-bottom: 10%;
-                cursor: pointer;
-
-                // member site
-                &.member {
+            // member site
+            &.member {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 60px;
+                    height: 60px;
+                    top: 0;
+                    left: 4%;
+                    border-radius: 50px;
+                    margin-bottom: 10%;
                     @include member_icon;
                 }
+            }
 
-                // manual
-                &.manual {
+            // manual
+            &.manual {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 60px;
+                    height: 60px;
+                    top: 0;
+                    left: 4%;
+                    border-radius: 50px;
+                    margin-bottom: 10%;
                     @include manual_icon;
                 }
+            }
 
-                // inquiry
-                &.inquiry {
+            // inquiry
+            &.inquiry {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 60px;
+                    height: 60px;
+                    top: 0;
+                    left: 4%;
+                    border-radius: 50px;
+                    margin-bottom: 10%;
                     @include inquiry_icon;
                 }
+            }
 
-                // my page
-                &.mypage {
+            // my page
+            &.mypage {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 60px;
+                    height: 60px;
+                    top: 0;
+                    left: 4%;
+                    border-radius: 50px;
+                    margin-bottom: 10%;
                     @include mypage_icon;
                 }
+            }
 
-                // discord
-                &.discord {
+            // discord
+            &.discord {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 60px;
+                    height: 60px;
+                    top: 0;
+                    left: 4%;
+                    border-radius: 50px;
+                    margin-bottom: 10%;
                     @include discord_icon;
                 }
             }
@@ -1482,29 +1530,36 @@ h1 {
 
             // when hovering
             &:hover {
-                .menu_contents_icon {
-                    &.member {
+                color: #c4c6ca;
+
+                &.member {
+                    &::before {
                         @include member_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
                     }
+                }
 
-                    &.manual {
+                &.manual {
+                    &::before {
                         @include manual_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
                     }
+                }
 
-                    &.inquiry {
+                &.inquiry {
+                    &::before {
                         @include inquiry_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
                     }
+                }
 
-                    &.mypage {
+                &.mypage {
+                    &::before {
                         @include mypage_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
                     }
+                }
 
-                    &.discord {
+                &.discord {
+                    &::before {
                         @include discord_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
                     }
-                }
-                .menu_contents_text {
-                    color: #c4c6ca;
                 }
             }
         }

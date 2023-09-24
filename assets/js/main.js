@@ -520,8 +520,10 @@ const startLoginPolling = function () {
                 .done(function (result) {
                     if (!result['success']) {
                         maintenanceData = { RainJP: false, RainUS: false, RainEU: false, RainLocalhost: false };
+                        console.error("Successfully accessed RainWeb, but failed to get data.")
                     } else {
                         maintenanceData = result['data'];
+                        console.log("Successfully accessed RainWeb and get data.")
                     }
                     $('.rain_web_offline').css({
                         visibility: 'hidden',
@@ -532,6 +534,7 @@ const startLoginPolling = function () {
                     $('.rain_web_offline').css({
                         visibility: 'visible',
                     });
+                    console.error("Failed to access RainWeb and get data.")
                 })
                 .always(function () {
                     afterLoginSuccess(serverName);
@@ -954,12 +957,15 @@ const prepareBeginUpdate = function (uid) {
         .done(function (result) {
             if (!result['success']) {
                 updateEnabled = false;
+                console.error("Successfully accessed RainWeb, but failed to get data.")
             } else {
                 updateEnabled = result['data'].update;
+                console.log("Successfully accessed RainWeb and get data.")
             }
         })
         .fail(function () {
             updateEnabled = false;
+            console.error("Failed to access RainWeb and get data.")
         })
         .always(function () {
             const update = updateEnabled ? window.external.startUpdate() : false;
@@ -1177,6 +1183,7 @@ const beginLoadInfo = function () {
                 $('.info_getting').hide();
                 $('.info_getting_loader').hide();
                 $('.failed_get_info').show();
+                console.error("Successfully accessed RainWeb, but failed to get data.")
             } else {
                 delete result['success'];
 
@@ -1219,12 +1226,14 @@ const beginLoadInfo = function () {
                 $('.info_getting_loader').hide();
                 overrideAnker(infoList);
                 new scrollBarHandler(infoList);
+                console.log("Successfully accessed RainWeb and get data.")
             }
         })
         .fail(function () {
             $('.info_getting').hide();
             $('.info_getting_loader').hide();
             $('.failed_get_info').show();
+            console.error("Failed to access RainWeb and get data.")
         });
 };
 

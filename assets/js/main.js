@@ -1,10 +1,83 @@
 const normTextData = {
-    important: 'Important Info',
-    defects: 'Defects and Troubles Info',
-    management: 'Management and Service Info',
-    event: 'In-Game Events Info',
-    update: 'Updates and Maintenance Info',
-    noInfoFound: '<p class="no_info_found">No Information Found</p>',
+    ja: {
+        title: 'モンスターハンター フロンティア オンライン ランチャー',
+        movableOlay: 'ランチャーウィンドウ移動可能',
+        connectingOlay: '接続中...',
+        gameStartOlay: 'ゲームを開始します',
+        launcherTitle: 'モンスターハンター<br />フロンティア オンライン<br />レインランチャー',
+        logoutBtn: 'ログアウト',
+        labelUsername: 'ユーザー名',
+        labelPassword: 'パスワード',
+        labelSrvSel: 'サーバー選択',
+        serverNotSelected: '接続先サーバーを選択',
+        loginBtnText: 'ログイン',
+        rememberMeBtn: '認証情報を記憶する',
+        forgetCredsBtn: 'ユーザー名/パスワードを忘れたら',
+        preferencesBtn: 'ゲーム内環境設定',
+        authText: '認証中...',
+        rainWebOffline: '※現在、レイン公式サイトがオフラインとなっているため、全てのデータを取得できませんでした。',
+        maintenanceText:
+            '<p>メンテナンス実施中ため、<span class="maint_server_name"></span>へは一時的に接続できません。</p><p>メンテナンス終了まで、しばらくお待ちください。</p>',
+        gettingInfo: '<p class="info_getting">インフォメーションを取得中...</p>',
+        failedGetInfo: '<p class="failed_get_info">インフォメーション取得に失敗</p>',
+        important: '重要なお知らせ',
+        defects: '不具合・トラブル情報',
+        management: '運営・サービス情報',
+        event: 'ゲーム内イベント情報',
+        update: 'アップデート。メンテナンス情報',
+        noInfoFound: '<p class="no_info_found">お知らせはありません。</p>',
+        memberSite: 'メンバー<br />サイト',
+        onlineManual: 'オンライン<br />マニュアル',
+        inquiry: 'お問い合わせ',
+        myPage: 'マイページ',
+        discord: 'ディスコード',
+        disclaimer: '※レインサーバーは株式会社カプコンおよびその子会社とは一切関係ありません。',
+    },
+
+    en: {
+        title: 'Monster Hunter Frontier Online Launcher',
+        movableOlay: 'Launcher Window Movable',
+        connectingOlay: 'Connecting...',
+        gameStartOlay: 'Start the Game',
+        launcherTitle: 'Monster Hunter<br />　Frontier Online<br />　　Rain Launcher',
+        logoutBtn: 'Log Out',
+        labelUsername: 'Username',
+        labelPassword: 'Password',
+        labelSrvSel: 'Server Selection',
+        serverNotSelected: 'Select Your Server',
+        loginBtnText: 'LOG IN',
+        rememberMeBtn: 'Remember Me',
+        forgetCredsBtn: 'Forgot your credentials?',
+        preferencesBtn: 'In-Game Preferences',
+        authText: 'Authenticating...',
+        rainWebOffline: 'Note: Failed to get all data because the Rain website is offline for some reason.',
+        maintenanceText:
+            '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
+        gettingInfo: '<p class="info_getting">Getting Info Data...</p>',
+        failedGetInfo: '<p class="failed_get_info">Failed to Get Information</p>',
+        important: 'Important Info',
+        defects: 'Defects and Troubles Info',
+        management: 'Management and Service Info',
+        event: 'In-Game Events Info',
+        update: 'Updates and Maintenance Info',
+        noInfoFound: '<p class="no_info_found">No Information Found</p>',
+        memberSite: 'Member<br />Site',
+        onlineManual: 'Online<br />Manual',
+        inquiry: 'Inquiry',
+        myPage: 'MyPage',
+        discord: 'Discord',
+        disclaimer: '* Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.',
+    },
+};
+
+const updateTextData = {
+    progressState: ['Updating...', 'Update Completed!', 'Restart the Launcher', 'Error Occurred'],
+    nextActions: [
+        'Please wait a moment.',
+        'Start the game.',
+        'Please log in to the server again.',
+        'Quit the launcher.',
+    ],
 };
 
 const msgLogTextData = {
@@ -76,7 +149,9 @@ scrollBarHandler.prototype.appendScrollBar = function () {
 };
 
 const normTextOutput = function (textType) {
-    return decodeURIComponent(normTextData[textType]);
+    const lang = getQueryParams('l');
+
+    return normTextData[lang][textType];
 };
 
 const msgLogTextOutput = function (textType) {
@@ -241,6 +316,37 @@ const overrideAnker = function (selector) {
         });
 };
 
+const getQueryParams = function (key) {
+    const uri = new URI(window.location);
+    const params = uri.query(true);
+    return params[key];
+};
+
+const initNormTextData = function () {
+    $('title').text(normTextOutput('title'));
+    $('.movable_overlay_text').text(normTextOutput('movableOlay'));
+    $('.connecting_overlay p').text(normTextOutput('connectingOlay'));
+    $('.game_start_overlay p').text(normTextOutput('gameStartOlay'));
+    $('.launcher_title').html(normTextOutput('launcherTitle'));
+    $('.btn_logout').text(normTextOutput('logoutBtn'));
+    $('.auth_username').prev().text(normTextOutput('labelUsername'));
+    $('.auth_password').prev().text(normTextOutput('labelPassword'));
+    $('.server_selector_group label').text(normTextOutput('labelSrvSel'));
+    $('.btn_login').attr('data-btn', normTextOutput('loginBtnText'));
+    $('.remember_me').text(normTextOutput('rememberMeBtn'));
+    $('.forgot_creds').text(normTextOutput('forgetCredsBtn'));
+    $('.btn_preferences').text(normTextOutput('preferencesBtn'));
+    $('.authenticating_text').text(normTextOutput('authText'));
+    $('.rain_web_offline').text(normTextOutput('rainWebOffline'));
+    $('.maint_text').html(normTextOutput('maintenanceText'));
+    $('.member').html(normTextOutput('memberSite'));
+    $('.manual').html(normTextOutput('onlineManual'));
+    $('.inquiry').text(normTextOutput('inquiry'));
+    $('.mypage').text(normTextOutput('myPage'));
+    $('.discord').text(normTextOutput('discord'));
+    $('.disclaimer').text(normTextOutput('disclaimer'));
+};
+
 const ReqDataFromRainWeb = function (data1, data2) {
     const data = JSON.stringify({ 1: data1, 2: data2 });
     return $.ajax({
@@ -291,7 +397,7 @@ const initSrvSelList = function () {
 
     // if user have previously selected a server, set auth server and assign class to the target server
     serverNotSelected
-        ? $(serverSelBtn).text('Select Your Server')
+        ? $(serverSelBtn).text(normTextOutput('serverNotSelected'))
         : (switchAuthSrv($(srvListEachItem)[lastSelectedSrvIndex]),
           $('.srv').eq(lastSelectedSrvIndex).addClass('selected_srv'));
 
@@ -461,7 +567,7 @@ const clearOnlyLog = function () {
 const inputUsername = '.username_input',
     inputPassword = '.password_input',
     loginBtn = '.btn_login',
-    rememberMeCheck = '.remember_me',
+    rememberMeCheck = '.remember_me_check',
     credsForgot = '.btn_forgot';
 
 let maintenanceData = {},
@@ -520,10 +626,10 @@ const startLoginPolling = function () {
                 .done(function (result) {
                     if (!result['success']) {
                         maintenanceData = { RainJP: false, RainUS: false, RainEU: false, RainLocalhost: false };
-                        console.error("Successfully accessed RainWeb, but failed to get data.")
+                        console.error('Successfully accessed RainWeb, but failed to get data.');
                     } else {
                         maintenanceData = result['data'];
-                        console.log("Successfully accessed RainWeb and get data.")
+                        console.log('Successfully accessed RainWeb and get data.');
                     }
                     $('.rain_web_offline').css({
                         visibility: 'hidden',
@@ -534,7 +640,7 @@ const startLoginPolling = function () {
                     $('.rain_web_offline').css({
                         visibility: 'visible',
                     });
-                    console.error("Failed to access RainWeb and get data.")
+                    console.error('Failed to access RainWeb and get data.');
                 })
                 .always(function () {
                     afterLoginSuccess(serverName);
@@ -957,15 +1063,15 @@ const prepareBeginUpdate = function (uid) {
         .done(function (result) {
             if (!result['success']) {
                 updateEnabled = false;
-                console.error("Successfully accessed RainWeb, but failed to get data.")
+                console.error('Successfully accessed RainWeb, but failed to get data.');
             } else {
                 updateEnabled = result['data'].update;
-                console.log("Successfully accessed RainWeb and get data.")
+                console.log('Successfully accessed RainWeb and get data.');
             }
         })
         .fail(function () {
             updateEnabled = false;
-            console.error("Failed to access RainWeb and get data.")
+            console.error('Failed to access RainWeb and get data.');
         })
         .always(function () {
             const update = updateEnabled ? window.external.startUpdate() : false;
@@ -981,6 +1087,8 @@ const afterCheckUpdateMode = function (uid, update) {
           ($('.character_selection').hide(),
           $('.name_srv_label').text(''),
           $('.btn_logout').hide(),
+          $(progressStateMessage).text(updateTextData['progressState'][0]),
+          $(nextActionMessage).text(updateTextData['nextActions'][0]),
           $('.launcher_update_process').show(),
           beginUpdateProcess(uid),
           setTimeout(function () {
@@ -1015,8 +1123,8 @@ const beginUpdateProcess = function (uid) {
             }
             beginUpdateProcess(uid);
         } else {
-            $(progressStateMessage).text('Update Completed!');
-            $(nextActionMessage).text('Start the game.');
+            $(progressStateMessage).text(updateTextData['progressState'][1]);
+            $(nextActionMessage).text(updateTextData['nextActions'][1]);
             if (animSequence.loop.length <= normAnimSeqIndex) {
                 finAnimSeqIndex = 0;
                 finishUpdateProcess(uid);
@@ -1075,15 +1183,15 @@ const switchUpdateAfterState = function () {
 
                 // if the launcher need to be restarted, wait for delayTime, then exit launcher
                 case 'SELFUP':
-                    $(progressStateMessage).text('Restart the Launcher');
-                    $(nextActionMessage).text('Please log in to the server again.');
+                    $(progressStateMessage).text(updateTextData['progressState'][2]);
+                    $(nextActionMessage).text(updateTextData['nextActions'][2]);
                     setTimeout(exitLauncher, delayTime);
                     break;
 
                 // if an error occurs, quit the launcher
                 case 'ERR':
-                    $(progressStateMessage).text('Error Occurred');
-                    $(nextActionMessage).html('Quit the launcher.');
+                    $(progressStateMessage).text(updateTextData['progressState'][3]);
+                    $(nextActionMessage).text(updateTextData['progressState'][3]);
                     setTimeout(exitLauncher, delayTime);
                     break;
             }
@@ -1091,8 +1199,8 @@ const switchUpdateAfterState = function () {
 
         // if update failed, restart the launcher
         case 'UM_UPDATE_NG':
-            $(progressStateMessage).text('Error Occurred');
-            $(nextActionMessage).html('Quit the launcher.');
+            $(progressStateMessage).text(updateTextData['progressState'][3]);
+            $(nextActionMessage).text(updateTextData['progressState'][3]);
             setTimeout(exitLauncher, delayTime);
             break;
     }
@@ -1125,8 +1233,8 @@ const updateProcessPct = function () {
 
                     // if the launcher need to be restarted, wait for delayTime, then exit launcher
                     case 'SELFUP':
-                        $(progressStateMessage).text('Restart the Launcher');
-                        $(nextActionMessage).text('Please log in to the server again.');
+                        $(progressStateMessage).text(updateTextData['progressState'][2]);
+                        $(nextActionMessage).text(updateTextData['nextActions'][2]);
                         setTimeout(exitLauncher, delayTime);
                         break;
                 }
@@ -1134,8 +1242,8 @@ const updateProcessPct = function () {
 
             // if update failed, restart the launcher
             case 'UM_UPDATE_NG':
-                $(progressStateMessage).text('Error Occurred');
-                $(nextActionMessage).html('Quit the launcher.');
+                $(progressStateMessage).text(updateTextData['progressState'][3]);
+                $(nextActionMessage).text(updateTextData['progressState'][3]);
                 setTimeout(exitLauncher, delayTime);
                 break;
         }
@@ -1174,7 +1282,9 @@ let importantInfoData = {},
     updatesAndMaintenanceInfoData = {};
 
 const beginLoadInfo = function () {
-    $('.info_getting').show();
+    $(infoList).append(normTextOutput('gettingInfo'));
+    $(infoList).append('<div class="info_getting_loader"></div>');
+
     $('.info_getting_loader').show();
 
     ReqDataFromRainWeb('information', 'all')
@@ -1182,8 +1292,8 @@ const beginLoadInfo = function () {
             if (!result['success']) {
                 $('.info_getting').hide();
                 $('.info_getting_loader').hide();
-                $('.failed_get_info').show();
-                console.error("Successfully accessed RainWeb, but failed to get data.")
+                $(infoList).append(normTextOutput('failedGetInfo'));
+                console.error('Successfully accessed RainWeb, but failed to get data.');
             } else {
                 delete result['success'];
 
@@ -1226,14 +1336,14 @@ const beginLoadInfo = function () {
                 $('.info_getting_loader').hide();
                 overrideAnker(infoList);
                 new scrollBarHandler(infoList);
-                console.log("Successfully accessed RainWeb and get data.")
+                console.log('Successfully accessed RainWeb and get data.');
             }
         })
         .fail(function () {
             $('.info_getting').hide();
             $('.info_getting_loader').hide();
-            $('.failed_get_info').show();
-            console.error("Failed to access RainWeb and get data.")
+            $(infoList).append(normTextOutput('failedGetInfo'));
+            console.error('Failed to access RainWeb and get data.');
         });
 };
 
@@ -1486,6 +1596,13 @@ const showStartGameDialog = function (name, uid) {
 　　　　　IIFE on the Launcher
 =======================================================*/
 $(function () {
+    // init language
+    const lang = getQueryParams('l');
+    document.documentElement.setAttribute('lang', lang ? lang : 'en');
+
+    // init normal text
+    initNormTextData();
+
     /* Click or Mouseover Event
 ====================================================*/
     // play a sound when hovering the element with sound_on class

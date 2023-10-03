@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -7,9 +7,9 @@
         <meta http-equiv="content-script-type" content="text/javascript" />
         <meta name="robots" content="none" />
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
-        <title>モンスターハンター フロンティア オンライン ランチャー</title>
+        <title></title>
         <!-- css -->
-        <link rel="stylesheet" href="/launcher/assets/css/style.css" />
+        <link rel="stylesheet" href="/launcher/assets/css/style.css?t=1695135882" />
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css"
@@ -41,6 +41,7 @@
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
+        <!-- ja -->
         <link
             rel="preload"
             as="style"
@@ -50,9 +51,26 @@
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;500;700&display=swap"
         />
-        <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap" rel="stylesheet">
+        <!-- en -->
+        <link
+            rel="preload"
+            as="style"
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Open+Sans:wght@400;700;800&family=Roboto:wght@400;700;900&display=swap"
+        />
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
         <!-- js -->
         <script type="text/javascript" src="/launcher/assets/js/jquery.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.11/URI.min.js"
+            integrity="sha512-HBrZaiSIpZkFPGkutbgouEKsfM+HCrfyioscGYbNPPWb7kvMQcfKzMo35yXb+X+eaOOzpu6UkppcJXfKKO/UqQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.js"
             integrity="sha512-L//aO28w7RJys2swn6PxCmVFbPQdcdxJFuLQg3LHGzu17lbj5dMXcFOW2jfNGyJZr2t8fvSgnaqM2cDS5qnsgw=="
@@ -71,24 +89,24 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
-        <script type="text/javascript" src="/launcher/assets/js/main.js"></script>
+        <script type="text/javascript" src="/launcher/assets/js/main.js?t=1696306074"></script>
     </head>
 
     <body>
         <div class="wrapper">
             <!-- Launcher Movable Overlay -->
             <div class="movable_overlay">
-                <p class="movable_overlay_text">Launcher Window Movable</p>
-            </div>
-
-            <!-- Start the Game Overlay -->
-            <div class="game_start_overlay start_and_connect_overlay">
-                <p class="start_and_connect_overlay_text">Start the Game</p>
+                <p class="movable_overlay_text"></p>
             </div>
 
             <!-- Connecting Overlay -->
             <div class="connecting_overlay start_and_connect_overlay">
-                <p class="start_and_connect_overlay_text">Connecting...</p>
+                <p class="start_and_connect_overlay_text"></p>
+            </div>
+
+            <!-- Start the Game Overlay -->
+            <div class="game_start_overlay start_and_connect_overlay">
+                <p class="start_and_connect_overlay_text"></p>
             </div>
 
             <!-- Window Controls -->
@@ -106,7 +124,7 @@
             <!-- Launcher Header -->
             <header class="launcher_header">
                 <!-- Launcher Title / Logo -->
-                <h1 class="launcher_title">Monster Hunter<br />　Frontier Online<br />　　Rain Launcher</h1>
+                <h1 class="launcher_title"></h1>
                 <img class="mhf_zz_logo" src="/launcher/assets/img/logo.png" alt="MHF-ZZ-logo" />
             </header>
 
@@ -116,9 +134,7 @@
                 <p class="name_srv_label"></p>
 
                 <!-- Log Out Button -->
-                <button class="btn_logout sound_on" onclick="backToBeforeLogin();" style="display: none">
-                    Log Out
-                </button>
+                <button class="btn_logout sound_on" onclick="backToBeforeLogin();" style="display: none"></button>
             </div>
 
             <!-- Log In Area -->
@@ -126,7 +142,7 @@
                 <form class="auth_section">
                     <!-- Username -->
                     <div class="auth_group">
-                        <label for="username">Username</label>
+                        <label for="username"></label>
                         <div class="auth_username">
                             <span class="user_icon"></span>
                             <input
@@ -144,7 +160,7 @@
 
                     <!-- Password -->
                     <div class="auth_group">
-                        <label for="password">Password</label>
+                        <label for="password"></label>
                         <div class="auth_password">
                             <span class="password_icon"></span>
                             <input
@@ -163,7 +179,7 @@
 
                 <!-- Server Group -->
                 <ul class="server_selector_group">
-                    <label for="server_sel">Server Selection</label>
+                    <label for="server_sel"></label>
                     <li>
                         <button class="srv_sel_btn" id="server_sel"></button>
                         <ul class="srv_sel_box"></ul>
@@ -177,12 +193,12 @@
                 <div class="auth_alternative">
                     <!-- Remember Checkbox -->
                     <label class="checkbox sound_on" for="remember_me">
-                        <input type="checkbox" class="remember_me" id="remember_me" />
+                        <input type="checkbox" class="remember_me_check" id="remember_me" />
                         <span class="indicator"></span>
-                        Remember Me
+                        <span class="remember_me"></span>
                     </label>
                     <!-- Reset Credentials Link -->
-                    <a class="forgot_creds sound_on" href="">Forgot your credentials?</a>
+                    <a class="forgot_creds sound_on" style="cursor: not-allowed"></a>
                 </div>
 
                 <!-- Message Logs -->
@@ -191,7 +207,7 @@
                 </div>
 
                 <!-- Preferences Button -->
-                <button class="btn_preferences sound_on" onclick="openPreferences();">In-Game Preferences</button>
+                <button class="btn_preferences sound_on" onclick="openPreferences();"></button>
             </main>
 
             <!-- Authenticating -->
@@ -199,7 +215,7 @@
                 <div class="authenticating_loader">
                     <div class="authenticating_loader_core"></div>
                 </div>
-                <p class="authenticating_text">Authenticating...</p>
+                <p class="authenticating_text"></p>
             </div>
 
             <!-- Character Selection -->
@@ -216,18 +232,12 @@
                     <li class="char_del sound_on"></li>
                 </ul>
                 <button class="btn_start sound_on"></button>
-                <p class="rain_web_offline">
-                    Note: The Rain website is currently offline for some reason and could not get the latest
-                    information.
-                </p>
+                <p class="rain_web_offline"></p>
             </section>
 
             <!-- Maintenance -->
             <ul class="maintenance">
-                <li class="maint_text">
-                    <p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p>
-                    <p>Please wait for a while until the maintenance is completed.</p>
-                </li>
+                <li class="maint_text"></li>
                 <li class="maint_img"><img src="/launcher/assets/img/common/cat.png" alt="maint_cat" /></li>
             </ul>
 
@@ -245,8 +255,8 @@
                     </div>
                 </li>
                 <li class="update_msg">
-                    <p class="progress_state">Updating...</p>
-                    <p class="next_action">Please wait a moment.</p>
+                    <p class="progress_state"></p>
+                    <p class="next_action"></p>
                 </li>
             </ul>
 
@@ -266,43 +276,27 @@
                 </ul>
 
                 <!-- Information -->
-                <ul class="info_list">
-                    <p class="failed_get_info">Failed to Get Information</p>
-                    <p class="info_getting">Getting Info Data</p>
-                    <div class="info_getting_loader"></div>
-                </ul>
+                <ul class="info_list"></ul>
 
                 <!-- Menu -->
                 <aside class="launcher_menu">
                     <!-- Member Site -->
-                    <a class="menu_contents_anchor" href="">
-                        <div class="member menu_contents_icon sound_on"></div>
-                        <p class="menu_contents_text">Member Site</p>
-                    </a>
+                    <a class="menu_contents_anchor sound_on member" style="cursor: not-allowed"></a>
 
                     <!-- Online Manual -->
-                    <a class="menu_contents_anchor" href="https://development.rain-server.workers.dev/">
-                        <div class="manual menu_contents_icon sound_on"></div>
-                        <p class="menu_contents_text">Online Manual</p>
-                    </a>
+                    <a
+                        class="menu_contents_anchor sound_on manual"
+                        href="https://development.rain-server.workers.dev/"
+                    ></a>
 
                     <!-- Inquiry -->
-                    <a class="menu_contents_anchor" href="">
-                        <div class="inquiry menu_contents_icon sound_on"></div>
-                        <p class="menu_contents_text">Inquiry</p>
-                    </a>
+                    <a class="menu_contents_anchor sound_on inquiry" style="cursor: not-allowed"></a>
 
                     <!-- My Page -->
-                    <a class="menu_contents_anchor" href="">
-                        <div class="mypage menu_contents_icon sound_on"></div>
-                        <p class="menu_contents_text">My Page</p>
-                    </a>
+                    <a class="menu_contents_anchor sound_on mypage" style="cursor: not-allowed"></a>
 
                     <!-- Discord -->
-                    <a class="menu_contents_anchor" href="">
-                        <div class="discord menu_contents_icon sound_on"></div>
-                        <p class="menu_contents_text">Discord</p>
-                    </a>
+                    <a class="menu_contents_anchor sound_on discord" href="https://discord.gg/TcpkpUpeGw"></a>
                 </aside>
             </section>
 
@@ -316,9 +310,7 @@
 
             <!-- Footer -->
             <div class="launcher_footer">
-                <p class="disclaimer">
-                    * Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.
-                </p>
+                <p class="disclaimer"></p>
             </div>
         </div>
     </body>

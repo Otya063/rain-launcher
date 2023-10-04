@@ -15,16 +15,16 @@ const normTextData = {
         forgetCredsBtn: 'ユーザー名/パスワードを忘れたら',
         preferencesBtn: 'ゲーム内環境設定',
         authText: '認証中...',
-        rainWebOffline: '※現在、レイン公式サイトがオフラインとなっているため、全てのデータを取得できませんでした。',
+        debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。全ての処理がスキップされます。</p>',
         maintenanceText:
-            '<p>メンテナンス実施中ため、<span class="maint_server_name"></span>へは一時的に接続できません。</p><p>メンテナンス終了まで、しばらくお待ちください。</p>',
+            '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
         gettingInfo: '<p class="info_getting">インフォメーションを取得中...</p>',
         failedGetInfo: '<p class="failed_get_info">インフォメーション取得に失敗</p>',
         important: '重要なお知らせ',
         defects: '不具合・トラブル情報',
         management: '運営・サービス情報',
         event: 'ゲーム内イベント情報',
-        update: 'アップデート。メンテナンス情報',
+        update: 'アップデート・メンテナンス情報',
         noInfoFound: '<p class="no_info_found">お知らせはありません。</p>',
         memberSite: 'メンバー<br />サイト',
         onlineManual: 'オンライン<br />マニュアル',
@@ -50,7 +50,7 @@ const normTextData = {
         forgetCredsBtn: 'Forgot your credentials?',
         preferencesBtn: 'In-Game Preferences',
         authText: 'Authenticating...',
-        rainWebOffline: 'Note: Failed to get all data because the Rain website is offline for some reason.',
+        debugMode: '<p class="debug_mode">Note: Running in debug mode. All processes will be skipped.</p>',
         maintenanceText:
             '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
         gettingInfo: '<p class="info_getting">Getting Info Data...</p>',
@@ -71,13 +71,30 @@ const normTextData = {
 };
 
 const updateTextData = {
-    progressState: ['Updating...', 'Update Completed!', 'Restart the Launcher', 'Error Occurred'],
-    nextActions: [
-        'Please wait a moment.',
-        'Start the game.',
-        'Please log in to the server again.',
-        'Quit the launcher.',
-    ],
+    ja: {
+        progressState: [
+            'アップデート中...',
+            'アップデートが完了しました！',
+            'ランチャーを再起動します',
+            'エラーが発生しました',
+        ],
+        nextActions: [
+            'しばらくお待ちください。',
+            '間もなくゲームを開始します。',
+            '再度サーバーへログインしてください。',
+            'ランチャーを終了します。',
+        ],
+    },
+
+    en: {
+        progressState: ['Updating...', 'Update Completed!', 'Restart the Launcher', 'Error Occurred'],
+        nextActions: [
+            'Please wait a moment.',
+            'The game will start soon.',
+            'Please log in to the server again.',
+            'Quit the launcher.',
+        ],
+    },
 };
 
 const msgLogTextData = {
@@ -154,6 +171,12 @@ const normTextOutput = function (textType) {
     return normTextData[lang][textType];
 };
 
+const updateTextOutput = function (textType, index) {
+    const lang = getQueryParams('l');
+
+    return updateTextData[lang][textType][index];
+};
+
 const msgLogTextOutput = function (textType) {
     return decodeURIComponent(msgLogTextData[textType]);
 };
@@ -176,7 +199,7 @@ const launcherMovingHandler = function () {
 
 const getLastSelectedSrvIndex = function () {
     try {
-        return window.external.getIniLastServerIndex();
+        return window.external.getLastSelectedSrvIndex();
     } catch (error) {
         return 0;
     }
@@ -184,7 +207,7 @@ const getLastSelectedSrvIndex = function () {
 
 const setLastSelectedSrvIndex = function (index) {
     try {
-        window.external.setIniLastServerIndex(index);
+        window.external.setLastSelectedSrvIndex(index);
     } catch (error) {}
 };
 
@@ -213,7 +236,7 @@ const closeWindow = function () {
 const openPreferences = function () {
     playSound('IDR_WAV_OK');
     try {
-        window.external.openMhlConfig();
+        window.external.openPreferences();
     } catch (error) {}
 };
 
@@ -225,22 +248,46 @@ const openBrowser = function (url) {
 
 const enableDrag = function (boolean) {
     try {
-        window.external.beginDrag(boolean);
+        window.external.enableDrag(boolean);
     } catch (error) {
         return false;
     }
 };
 
+const checkDebugMode = function () {
+    ReqDataFromRainWeb('launcherSystem')
+        .done(function (result) {
+            if (!result['success']) {
+                console.error('Successfully accessed RainWeb, but failed to get data.');
+                debugMode = false;
+            } else {
+                console.log('Successfully accessed RainWeb and get data.');
+                debugMode = result['data'].debug;
+                // check if debug mode is enabled
+                debugMode && $('.launcher_footer').append(normTextOutput('debugMode'));
+            }
+        })
+        .fail(function () {
+            console.error('Failed to access RainWeb and get data.');
+            if (window.location.origin.indexOf('192.168') !== -1) {
+                debugMode = true;
+                $('.launcher_footer').append(normTextOutput('debugMode'));
+            } else {
+                debugMode = false;
+            }
+        });
+};
+
 const loginRain = function (username, pass1, pass2) {
     try {
-        return window.external.loginCog(username, pass1, pass2);
+        return window.external.loginRain(username, pass1, pass2);
     } catch (error) {
         return false;
     }
 };
 
 const getAuthResult = function () {
-    return window.external.getLastAuthResult();
+    return window.external.getAuthResult();
 };
 
 const getSignResult = function () {
@@ -248,11 +295,11 @@ const getSignResult = function () {
 };
 
 const getTotalPctOnUpdate = function () {
-    return window.external.getUpdatePercentageTotal();
+    return window.external.getTotalPctOnUpdate();
 };
 
 const getFilePctOnUpdate = function () {
-    return window.external.getUpdatePercentageFile();
+    return window.external.getFilePctOnUpdate();
 };
 
 const getUpdateStatus = function () {
@@ -267,12 +314,8 @@ const exitLauncher = function () {
     window.external.exitLauncher();
 };
 
-const isSrvAvailable = function () {
-    return window.external.isEnableSessionId();
-};
-
 const getAllCharData = function () {
-    return window.external.getCharacterInfo();
+    return window.external.getAllCharData();
 };
 
 const deleteCharacter = function (uid) {
@@ -289,9 +332,9 @@ const playSound = function (soundType) {
     } catch (e) {}
 };
 
-const extractInitialLogs = function () {
+const extractLogs = function () {
     try {
-        return window.external.extractLog();
+        return window.external.extractLogs();
     } catch (error) {
         return '';
     }
@@ -337,7 +380,6 @@ const initNormTextData = function () {
     $('.forgot_creds').text(normTextOutput('forgetCredsBtn'));
     $('.btn_preferences').text(normTextOutput('preferencesBtn'));
     $('.authenticating_text').text(normTextOutput('authText'));
-    $('.rain_web_offline').text(normTextOutput('rainWebOffline'));
     $('.maint_text').html(normTextOutput('maintenanceText'));
     $('.member').html(normTextOutput('memberSite'));
     $('.manual').html(normTextOutput('onlineManual'));
@@ -516,7 +558,7 @@ const addLogMsg = function (message, colorType, isOnlyOneMsg) {
 
 const getExtractedLog = function () {
     // extract logs and sanitize them for display
-    const extractedLog = extractInitialLogs();
+    const extractedLog = extractLogs();
     if (extractedLog) {
         // split logs into individual messages
         const messages = extractedLog
@@ -571,6 +613,7 @@ const inputUsername = '.username_input',
     credsForgot = '.btn_forgot';
 
 let maintenanceData = {},
+    debugMode,
     loginPollingTimerId = '',
     username = '',
     password = '',
@@ -631,15 +674,9 @@ const startLoginPolling = function () {
                         maintenanceData = result['data'];
                         console.log('Successfully accessed RainWeb and get data.');
                     }
-                    $('.rain_web_offline').css({
-                        visibility: 'hidden',
-                    });
                 })
                 .fail(function () {
                     maintenanceData = { RainJP: false, RainUS: false, RainEU: false, RainLocalhost: false };
-                    $('.rain_web_offline').css({
-                        visibility: 'visible',
-                    });
                     console.error('Failed to access RainWeb and get data.');
                 })
                 .always(function () {
@@ -1087,8 +1124,8 @@ const afterCheckUpdateMode = function (uid, update) {
           ($('.character_selection').hide(),
           $('.name_srv_label').text(''),
           $('.btn_logout').hide(),
-          $(progressStateMessage).text(updateTextData['progressState'][0]),
-          $(nextActionMessage).text(updateTextData['nextActions'][0]),
+          $(progressStateMessage).text(updateTextOutput('progressState', 0)),
+          $(nextActionMessage).text(updateTextOutput('nextActions', 0)),
           $('.launcher_update_process').show(),
           beginUpdateProcess(uid),
           setTimeout(function () {
@@ -1123,8 +1160,8 @@ const beginUpdateProcess = function (uid) {
             }
             beginUpdateProcess(uid);
         } else {
-            $(progressStateMessage).text(updateTextData['progressState'][1]);
-            $(nextActionMessage).text(updateTextData['nextActions'][1]);
+            $(progressStateMessage).text(updateTextOutput('progressState', 1));
+            $(nextActionMessage).text(updateTextOutput('nextActions', 1));
             if (animSequence.loop.length <= normAnimSeqIndex) {
                 finAnimSeqIndex = 0;
                 finishUpdateProcess(uid);
@@ -1183,15 +1220,15 @@ const switchUpdateAfterState = function () {
 
                 // if the launcher need to be restarted, wait for delayTime, then exit launcher
                 case 'SELFUP':
-                    $(progressStateMessage).text(updateTextData['progressState'][2]);
-                    $(nextActionMessage).text(updateTextData['nextActions'][2]);
+                    $(progressStateMessage).text(updateTextOutput('progressState', 2));
+                    $(nextActionMessage).text(updateTextOutput('nextActions', 2));
                     setTimeout(exitLauncher, delayTime);
                     break;
 
                 // if an error occurs, quit the launcher
                 case 'ERR':
-                    $(progressStateMessage).text(updateTextData['progressState'][3]);
-                    $(nextActionMessage).text(updateTextData['progressState'][3]);
+                    $(progressStateMessage).text(updateTextOutput('progressState', 3));
+                    $(nextActionMessage).text(updateTextOutput('nextActions', 3));
                     setTimeout(exitLauncher, delayTime);
                     break;
             }
@@ -1199,8 +1236,8 @@ const switchUpdateAfterState = function () {
 
         // if update failed, restart the launcher
         case 'UM_UPDATE_NG':
-            $(progressStateMessage).text(updateTextData['progressState'][3]);
-            $(nextActionMessage).text(updateTextData['progressState'][3]);
+            $(progressStateMessage).text(updateTextOutput('progressState', 3));
+            $(nextActionMessage).text(updateTextOutput('nextActions', 3));
             setTimeout(exitLauncher, delayTime);
             break;
     }
@@ -1233,8 +1270,8 @@ const updateProcessPct = function () {
 
                     // if the launcher need to be restarted, wait for delayTime, then exit launcher
                     case 'SELFUP':
-                        $(progressStateMessage).text(updateTextData['progressState'][2]);
-                        $(nextActionMessage).text(updateTextData['nextActions'][2]);
+                        $(progressStateMessage).text(updateTextOutput('progressState', 2));
+                        $(nextActionMessage).text(updateTextOutput('nextActions', 2));
                         setTimeout(exitLauncher, delayTime);
                         break;
                 }
@@ -1242,8 +1279,8 @@ const updateProcessPct = function () {
 
             // if update failed, restart the launcher
             case 'UM_UPDATE_NG':
-                $(progressStateMessage).text(updateTextData['progressState'][3]);
-                $(nextActionMessage).text(updateTextData['progressState'][3]);
+                $(progressStateMessage).text(updateTextOutput('progressState', 3));
+                $(nextActionMessage).text(updateTextOutput('nextActions', 3));
                 setTimeout(exitLauncher, delayTime);
                 break;
         }
@@ -1596,6 +1633,8 @@ const showStartGameDialog = function (name, uid) {
 　　　　　IIFE on the Launcher
 =======================================================*/
 $(function () {
+    checkDebugMode();
+    
     // init language
     const lang = getQueryParams('l');
     document.documentElement.setAttribute('lang', lang ? lang : 'en');

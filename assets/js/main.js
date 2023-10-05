@@ -26,11 +26,6 @@ const normTextData = {
         event: 'ゲーム内イベント情報',
         update: 'アップデート・メンテナンス情報',
         noInfoFound: '<p class="no_info_found">お知らせはありません。</p>',
-        memberSite: 'メンバー<br />サイト',
-        onlineManual: 'オンライン<br />マニュアル',
-        inquiry: 'お問い合わせ',
-        myPage: 'マイページ',
-        discord: 'ディスコード',
         disclaimer: '※レインサーバーは株式会社カプコンおよびその子会社とは一切関係ありません。',
     },
 
@@ -61,12 +56,25 @@ const normTextData = {
         event: 'In-Game Events Info',
         update: 'Updates and Maintenance Info',
         noInfoFound: '<p class="no_info_found">No Information Found</p>',
-        memberSite: 'Member<br />Site',
-        onlineManual: 'Online<br />Manual',
-        inquiry: 'Inquiry',
-        myPage: 'MyPage',
-        discord: 'Discord',
         disclaimer: '* Rain Server is not affiliated with Capcom Co., Ltd. or any of its subsidiaries.',
+    },
+};
+
+const asideMenuData = {
+    ja: {
+        member: { name: 'メンバーサイト', url: '', iconName: 'home' },
+        manual: { name: 'マニュアル', url: '', iconName: 'book_3' },
+        inquiry: { name: 'お問い合わせ', url: '', iconName: 'forum' },
+        mypage: { name: 'マイページ', url: '', iconName: 'badge' },
+        discord: { name: 'ディスコード', url: 'https://discord.gg/TcpkpUpeGw', iconName: 'diversity_1' },
+    },
+
+    en: {
+        member: { name: 'Member Site', url: '', iconName: 'home' },
+        manual: { name: 'Manual', url: '', iconName: 'book_3' },
+        inquiry: { name: 'Inquiry', url: '', iconName: 'forum' },
+        mypage: { name: 'My Page', url: '', iconName: 'badge' },
+        discord: { name: 'Discord', url: 'https://discord.gg/TcpkpUpeGw', iconName: 'diversity_1' },
     },
 };
 
@@ -220,29 +228,30 @@ const getServerList = function () {
 };
 
 const minimizeWindow = function () {
-    playSound('IDR_WAV_OK');
     try {
+        soundMode && playSound('IDR_WAV_OK');
         window.external.minimizeWindow();
     } catch (error) {}
 };
 
 const closeWindow = function () {
-    playSound('IDR_WAV_OK');
     try {
+        soundMode && playSound('IDR_WAV_OK');
         window.external.closeWindow();
     } catch (error) {}
 };
 
 const openPreferences = function () {
-    playSound('IDR_WAV_OK');
     try {
+        soundMode && playSound('IDR_WAV_OK');
         window.external.openPreferences();
     } catch (error) {}
 };
 
 const openBrowser = function (url) {
     try {
-        playSound('IDR_WAV_OK'), window.external.openBrowser(url);
+        soundMode && playSound('IDR_WAV_OK');
+        window.external.openBrowser(url);
     } catch (error) {}
 };
 
@@ -327,6 +336,7 @@ const selectCharacter = function (name, uid) {
 };
 
 const playSound = function (soundType) {
+    console.log('Sound');
     try {
         window.external.playSound(soundType);
     } catch (e) {}
@@ -371,21 +381,18 @@ const initNormTextData = function () {
     $('.connecting_overlay p').text(normTextOutput('connectingOlay'));
     $('.game_start_overlay p').text(normTextOutput('gameStartOlay'));
     $('.launcher_title').html(normTextOutput('launcherTitle'));
-    $('.btn_logout').text(normTextOutput('logoutBtn'));
+    $(logoutBtn).text(normTextOutput('logoutBtn'));
     $('.auth_username').prev().text(normTextOutput('labelUsername'));
+    $(inputUsername).attr('placeholder', normTextOutput('labelUsername'));
     $('.auth_password').prev().text(normTextOutput('labelPassword'));
+    $(inputPassword).attr('placeholder', normTextOutput('labelPassword'));
     $('.server_selector_group label').text(normTextOutput('labelSrvSel'));
-    $('.btn_login').attr('data-btn', normTextOutput('loginBtnText'));
+    $(loginBtn).attr('data-btn', normTextOutput('loginBtnText'));
     $('.remember_me').text(normTextOutput('rememberMeBtn'));
     $('.forgot_creds').text(normTextOutput('forgetCredsBtn'));
     $('.btn_preferences').text(normTextOutput('preferencesBtn'));
     $('.authenticating_text').text(normTextOutput('authText'));
     $('.maint_text').html(normTextOutput('maintenanceText'));
-    $('.member').html(normTextOutput('memberSite'));
-    $('.manual').html(normTextOutput('onlineManual'));
-    $('.inquiry').text(normTextOutput('inquiry'));
-    $('.mypage').text(normTextOutput('myPage'));
-    $('.discord').text(normTextOutput('discord'));
     $('.disclaimer').text(normTextOutput('disclaimer'));
 };
 
@@ -400,10 +407,55 @@ const ReqDataFromRainWeb = function (data1, data2) {
     });
 };
 
+const toggleSound = function () {
+    if (soundMode) {
+        $(
+            '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+                serverSelBtn +
+                ', ' +
+                srvListEachItem +
+                ', ' +
+                logoutBtn +
+                ', ' +
+                loginBtn +
+                ', ' +
+                charAddButton +
+                ', ' +
+                charDelButton +
+                ', ' +
+                ' .btn_start, .bnr'
+        ).removeClass('sound_on');
+
+        $('.sound_handle').html('<span class="material-symbols-outlined">volume_off</span>');
+        soundMode = false;
+    } else {
+        $(
+            '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+                serverSelBtn +
+                ', ' +
+                srvListEachItem +
+                ', ' +
+                logoutBtn +
+                ', ' +
+                loginBtn +
+                ', ' +
+                charAddButton +
+                ', ' +
+                charDelButton +
+                ', ' +
+                ' .btn_start, .bnr'
+        ).addClass('sound_on');
+
+        $('.sound_handle').html('<span class="material-symbols-outlined">volume_up</span>');
+        soundMode = true;
+    }
+};
+
 /*=========================================================
 　　　　　Server Selection Functions
 =======================================================*/
-const serverSelBtn = '.srv_sel_btn',
+const serverSelGroup = '.server_sel_group',
+    serverSelBtn = '.srv_sel_btn',
     serverListBox = '.srv_sel_box',
     srvListEachItem = '.srv_sel_box .srv';
 
@@ -431,7 +483,7 @@ const initSrvSelList = function () {
             const name = $(srvItem).attr('nam');
 
             // create and append the server element to the server selection list
-            $(serverListBox).append($('<li class="srv" idx="' + index + '">' + name + '</li>'));
+            $(serverListBox).append($('<li class="srv sound_on" idx="' + index + '">' + name + '</li>'));
         });
 
     // if the last selected index is out of bounds, set true to the variable for initializing
@@ -446,24 +498,13 @@ const initSrvSelList = function () {
     // hide the server selection list
     $(serverListBox).hide();
 
-    // the mouseover event to sever select button to play a sound when hovering
-    $(serverSelBtn).mouseover(function () {
-        playSound('IDR_WAV_SEL');
-    });
-
     // add the server selection button to the focus elements and bind the mousedown event to it
     $(serverSelBtn).mousedown(function () {
-        playSound('IDR_WAV_OK'), serverListOpen ? hideSrvSelList() : showSrvSelList();
-    });
-
-    // the mouseover event to each server element to play a sound when hovering
-    $(srvListEachItem).mouseover(function () {
-        playSound('IDR_WAV_SEL');
+        serverListOpen ? hideSrvSelList() : showSrvSelList();
     });
 
     // the mousedown event to each server element to select it as the active server, and hide the server selection list
     $(srvListEachItem).mousedown(function () {
-        playSound('IDR_WAV_OK');
         switchAuthSrv($(this));
         const index = parseInt($(this).attr('idx'), 10);
         setLastSelectedSrvIndex(String(index));
@@ -494,7 +535,7 @@ const showSrvSelList = function () {
         // re-enable the button after the animation is complete
         $(serverSelBtn).prop('disabled', false);
     }),
-        $(serverSelBtn).addClass('opened_svr_list'),
+        $(serverSelGroup).addClass('opened_svr_list'),
         (serverListOpen = true);
 };
 
@@ -506,7 +547,7 @@ const hideSrvSelList = function () {
         // re-enable the button after the animation is complete
         $(serverSelBtn).prop('disabled', false);
     }),
-        $(serverSelBtn).removeClass('opened_svr_list'),
+        $(serverSelGroup).removeClass('opened_svr_list'),
         (serverListOpen = false);
 };
 
@@ -609,6 +650,7 @@ const clearOnlyLog = function () {
 const inputUsername = '.username_input',
     inputPassword = '.password_input',
     loginBtn = '.btn_login',
+    logoutBtn = '.btn_logout',
     rememberMeCheck = '.remember_me_check',
     credsForgot = '.btn_forgot';
 
@@ -627,9 +669,9 @@ const beginAuthProcess = function () {
 
     '' === username || '' === password
         ? // if credentials are not entered, return error
-          (playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noUsernamePass'), 'r'))
+          (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noUsernamePass'), 'r'))
         : // if credentials are entered, proceed to auth process
-          (playSound('IDR_WAV_PRE_LOGIN'), showAuthenticating(), requestAuthentication());
+          (soundMode && playSound('IDR_WAV_PRE_LOGIN'), showAuthenticating(), requestAuthentication());
 };
 
 const requestAuthentication = function () {
@@ -730,7 +772,7 @@ const afterLoginSuccess = function (serverName) {
     maintenanceData[serverName]
         ? (showMaintenanceDialog(),
           $('.launcher_login_panel').hide(),
-          $('.btn_logout').show(),
+          $(logoutBtn).show(),
           $('.launcher_update_process').hide())
         : showCharSelector();
 
@@ -782,7 +824,7 @@ const backToBeforeLogin = function () {
     $('.name_srv_label').text('');
 
     // hide logout button
-    $('.btn_logout').hide();
+    $(logoutBtn).hide();
 
     // hide maintenance display
     $('.maintenance').hide();
@@ -798,7 +840,7 @@ const startUpLauncher = function () {
     // login button click event
     $(loginBtn).click(function () {
         serverNotSelected
-            ? (playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noSrvSelected'), 'r'))
+            ? (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noSrvSelected'), 'r'))
             : beginAuthProcess();
     });
 
@@ -806,14 +848,14 @@ const startUpLauncher = function () {
     username = localStorage.getItem('Username');
     $(inputUsername).val(username);
     $(inputUsername).focus(function () {
-        playSound('IDR_WAV_OK');
+        soundMode && playSound('IDR_WAV_OK');
     });
 
     // set password and focus event
     password = localStorage.getItem('Password');
     $(inputPassword).val(password);
     $(inputPassword).focus(function () {
-        playSound('IDR_WAV_OK');
+        soundMode && playSound('IDR_WAV_OK');
     });
 
     // set check state for rememberMeCheck
@@ -932,7 +974,7 @@ const showCharSelector = function () {
     $(charSelBox).show();
 
     // show the logout button
-    $('.btn_logout').show();
+    $(logoutBtn).show();
 
     // clear the character unit box to init state
     $(charSelUnitBox).empty();
@@ -1022,7 +1064,7 @@ const checkDelID = function (name, uid) {
 
 const prepareStartGame = function () {
     // play a sound
-    playSound('IDR_WAV_OK');
+    soundMode && playSound('IDR_WAV_OK');
 
     // get the current character, and set its uid and name to variables respectively
     const currentCharData = getCurrentCharData();
@@ -1038,7 +1080,7 @@ const startTheGame = function (uid) {
     selectCharacter(uid, uid);
 
     // play a login sound
-    playSound('IDR_WAV_LOGIN');
+    soundMode && playSound('IDR_WAV_LOGIN');
 
     // show game start overlay
     $('.game_start_overlay').show();
@@ -1090,7 +1132,7 @@ const animSequence = {
 
 const prepareBeginUpdate = function (uid) {
     // initial settings on update display
-    disableElement('.btn_logout', 1);
+    disableElement(logoutBtn, 1);
     $(fileProgressBar).width(0);
     $(totalProgressBar).width(0);
 
@@ -1123,7 +1165,7 @@ const afterCheckUpdateMode = function (uid, update) {
         ? // if update is needed, start update process
           ($('.character_selection').hide(),
           $('.name_srv_label').text(''),
-          $('.btn_logout').hide(),
+          $(logoutBtn).hide(),
           $(progressStateMessage).text(updateTextOutput('progressState', 0)),
           $(nextActionMessage).text(updateTextOutput('nextActions', 0)),
           $('.launcher_update_process').show(),
@@ -1191,7 +1233,7 @@ const finishUpdateProcess = function (uid) {
         if (animSequence.fini.length > finAnimSeqIndex) {
             if (animSequence.fini.length === finAnimSeqIndex + 1) {
                 // play sound effect if next sequence is the last one
-                playSound('IDR_NIKU');
+                soundMode && playSound('IDR_NIKU');
             }
             finishUpdateProcess(uid);
         } else {
@@ -1310,7 +1352,8 @@ const clearAnimSq = function () {
 　　　　　Information List Function
 =======================================================*/
 const infoList = '.info_list',
-    infoListContents = '.info_list_contents';
+    infoListContents = '.info_list_contents',
+    asideMenu = '.launcher_menu';
 
 let importantInfoData = {},
     defectsAndTroublesInfoData = {},
@@ -1384,6 +1427,27 @@ const beginLoadInfo = function () {
         });
 };
 
+const initAsideMenu = function () {
+    const lang = getQueryParams('l');
+    const menuData = asideMenuData[lang];
+
+    Object.keys(menuData).forEach(function (className) {
+        const menuItem = menuData[className];
+        const anchor = $('<a>', {
+            class: 'menu_contents_anchor sound_on ' + className,
+            href: menuItem.url || '#',
+            style: menuItem.url ? '' : 'cursor: not-allowed',
+        });
+        const iconSpan = $('<span>', {
+            class: 'material-symbols-outlined',
+            text: menuItem.iconName,
+        });
+
+        anchor.append(iconSpan).append(menuItem.name);
+        $(asideMenu).append(anchor);
+    });
+};
+
 /*=========================================================
 　　　　　Dialog Functions
 =======================================================*/
@@ -1410,12 +1474,12 @@ const showDialog = function (text, options, standbyTime) {
             const button = $('<button></button>').addClass('md_btn');
 
             // default onclick sound is IDR_WAV_OK, but if noSound is true, set no sound
-            const sound = option.noSound === true ? '' : 'playSound("IDR_WAV_OK");';
+            const sound = option.noSound === true ? '' : 'soundMode && playSound("IDR_WAV_OK");';
 
             // add click and hover event to button
             button.attr({
                 onclick: sound + ' ' + option.cmd,
-                onMouseOver: "playSound('IDR_WAV_SEL')",
+                onMouseOver: "soundMode && playSound('IDR_WAV_SEL')",
             });
 
             // if button is set as standby, set stanby class
@@ -1632,27 +1696,25 @@ const showStartGameDialog = function (name, uid) {
 /*=========================================================
 　　　　　IIFE on the Launcher
 =======================================================*/
+let soundMode = true;
 $(function () {
     checkDebugMode();
-    
+
     // init language
     const lang = getQueryParams('l');
     document.documentElement.setAttribute('lang', lang ? lang : 'en');
 
-    // init normal text
-    initNormTextData();
-
     /* Click or Mouseover Event
 ====================================================*/
-    // play a sound when hovering the element with sound_on class
-    $('.sound_on').mouseover(function () {
+// play a sound when hovering the element with sound_on class
+    $(document).on('mouseover', '.sound_on', function () {
         playSound('IDR_WAV_SEL');
     });
 
     // play a sound when clicking the element with sound_on class except for login btn
-    $('.sound_on').click(function (e) {
+    $(document).on('mousedown', '.sound_on', function (e) {
         e.target !== $(loginBtn).get(0) && playSound('IDR_WAV_OK');
-    });
+    }); 
 
     // start the game when clicking button
     $(charSelBox + ' .btn_start').click(function () {
@@ -1682,13 +1744,15 @@ $(function () {
 
     /* Launcher Initialization Functions
 ====================================================*/
+    // init normal text
+    initNormTextData();
+
+    initAsideMenu();
     // initial authentication, including server and id or password setup
     startUpLauncher();
 
     // initial display of msg log
-    setTimeout(function () {
-        getExtractedLog();
-    }, 100);
+    getExtractedLog();
 
     // set information section
     beginLoadInfo();

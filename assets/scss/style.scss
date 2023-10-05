@@ -75,6 +75,13 @@ h1 {
     }
 }
 
+// centering icons
+.material-symbols-outlined {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Launcher Movable Overlay
 ====================================================*/
 .movable_overlay {
@@ -202,7 +209,7 @@ h1 {
 　　　　　Window Controls
 =======================================================*/
 .win_ctrls {
-    width: 170px;
+    width: 23%;
     height: 20px;
     position: absolute;
     right: 10px;
@@ -213,24 +220,24 @@ h1 {
     // init win_ctrls
     button {
         width: 50px;
-        height: 20px;
+        height: 25px;
         color: white;
         background: rgba(0, 0, 0, 0.5);
         cursor: pointer;
         border: none;
         font-size: 1.5em;
-        transition: all 0.2s;
+        transition: all 0.4s;
+
+        // icon
+        span {
+            font-size: 2rem;
+            pointer-events: none
+        }
 
         // movable icon
         &.move {
-            @include move_icon;
             z-index: 1001;
             cursor: move;
-
-            // when hovering
-            &:hover {
-                @include move_icon(white, black);
-            }
         }
 
         // when hovering each button
@@ -255,8 +262,8 @@ h1 {
     background: rgba(0, 0, 0, 0.5);
     pointer-events: none;
 
-    // mhfzz logo
-    .mhf_zz_logo {
+    // zz logo
+    .game_logo {
         position: absolute;
         width: 360px;
         top: -50%;
@@ -404,7 +411,7 @@ h1 {
                 width: 150px;
                 height: 40px;
                 background: #00000099;
-                padding-left: 5%;
+                padding: 0 5%;
                 font-size: 1.4rem;
                 cursor: text;
 
@@ -433,12 +440,14 @@ h1 {
 
                     // username
                     &.user_icon {
-                        @include user_icon;
+                        color: white;
+                        background: #00000099;
                     }
 
                     // password
                     &.password_icon {
-                        @include password_icon;
+                        color: white;
+                        background: #00000099;
                     }
                 }
             }
@@ -458,99 +467,125 @@ h1 {
             padding-bottom: 2%;
         }
 
-        // server selection
-        .srv_sel_btn {
-            position: relative;
-            background: rgba(0, 0, 0, 0.8);
-            font-size: 1.4rem;
-            font-weight: 700;
-            white-space: nowrap;
-            padding: 0 11% 0 16%;
-            width: 250px;
-            height: 40px;
-            color: #fff;
-            cursor: pointer;
-            border: 1px white solid;
-            transition: border 0.3s ease-in-out;
+        // server selection group
+        .server_sel_group {
+            display: flex;
 
             // server icon
-            &::before {
-                content: '';
-                position: absolute;
+            .server_icon {
+                color: #fff;
+                background: #757575;
+                border: 1px #f1f1f1 solid;
                 width: 38px;
                 height: 38px;
-                top: -3%;
-                left: -1px;
-                @include server_icon;
+                border-right: none;
                 transition: border 0.3s ease-in-out;
             }
 
-            // arrow icon on closing server list box
-            &::after {
-                content: '';
-                position: absolute;
-                margin: auto 0;
-                top: 0;
-                bottom: 0;
-                right: 4%;
-                width: 15px;
-                height: 15px;
-                background: url('#{$img}/common/down_arrow.png') center / 14px no-repeat;
-                transition: all 0.3s;
+            // server selection
+            .srv_sel_btn {
+                position: relative;
+                background: rgba(0, 0, 0, 0.8);
+                font-size: 1.4rem;
+                font-weight: 700;
+                white-space: nowrap;
+                width: 200px;
+                height: 40px;
+                color: #fff;
+                cursor: pointer;
+                border: 1px #fff solid;
+                transition: border 0.3s ease-in-out;
+
+                // arrow icon on opening server list box
+                &.opened_svr_list {
+                    &::after {
+                        transform: rotate(-180deg);
+                    }
+                }
             }
 
-            // arrow icon on opening server list box
-            &.opened_svr_list {
-                &::after {
-                    transform: rotate(-180deg);
+            // arrow icon background
+            .srv_sel_arrow_bg {
+                position: relative;
+                width: 30px;
+                height: 38px;
+                background: rgba(0, 0, 0, 0.6);
+                border: 1px #fff solid;
+                border-left: none;
+                transition: border 0.3s ease-in-out;
+
+                // expand arrow
+                .srv_sel_arrow {
+                    width: 100%;
+                    height: 100%;
+                    color: whitesmoke;
+                    transition: all 0.3s;
                 }
             }
 
             // border color when hovering
             &:hover {
-                border: 1px rgb(255, 123, 47) solid;
+                .server_icon {
+                    border: 1px rgb(255, 123, 47) solid;
+                    border-right: none;
+                }
 
+                .srv_sel_btn {
+                    border: 1px rgb(255, 123, 47) solid;
+                }
+
+                .srv_sel_arrow_bg {
+                    border: 1px rgb(255, 123, 47) solid;
+                    border-left: none;
+                }
                 &::before {
                     border: 1px rgb(255, 123, 47) solid;
                 }
             }
-        }
 
-        // sever list box
-        .srv_sel_box {
-            position: absolute;
-            top: 35.5%;
-            left: 30.9%;
-            width: 46.5%;
-            max-height: 115px;
-            border: 1px white solid;
-            border-top: none;
-            color: white;
-            overflow: hidden;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-
-            // each sever item
-            .srv {
-                display: block;
-                height: 20px;
-                padding: 7% 0;
-                white-space: nowrap;
-                font-size: 1.4rem;
-                cursor: pointer;
-                text-align: center;
-                line-height: 20px;
-                transition: all 0.3s;
-
-                // selected server name color
-                &.selected_srv {
-                    color: orange;
+            // arrow up when opening
+            &.opened_svr_list {
+                .srv_sel_arrow {
+                    transform: rotate(-180deg);
                 }
+            }
 
-                // server name color when hovering
-                &:hover {
-                    color: orange;
-                    background: rgba(255, 255, 255, 0.2);
+            // sever list box
+            .srv_sel_box {
+                position: absolute;
+                top: 35.5%;
+                left: 28.6%;
+                width: 198px;
+                max-height: 130px;
+                border: 1px #fff solid;
+                border-top: none;
+                color: #fff;
+                overflow: hidden;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 100;
+
+                // each sever item
+                .srv {
+                    display: block;
+                    height: 20px;
+                    padding: 7% 0;
+                    white-space: nowrap;
+                    font-size: 1.4rem;
+                    cursor: pointer;
+                    text-align: center;
+                    line-height: 20px;
+                    transition: all 0.3s;
+
+                    // selected server name color
+                    &.selected_srv {
+                        color: orange;
+                    }
+
+                    // server name color when hovering
+                    &:hover {
+                        color: orange;
+                        background: rgba(255, 255, 255, 0.2);
+                    }
                 }
             }
         }
@@ -1476,89 +1511,26 @@ h1 {
             flex-direction: column;
             align-items: center;
             width: 65px;
-            //width: 100%;
             height: 100px;
             margin: 0px 3%;
             text-align: center;
-            justify-content: flex-end;
+            justify-content: center;
             font-size: 1.4rem;
+            text-wrap: nowrap;
             font-weight: 700;
             color: #9da7b9;
             cursor: pointer;
 
-            // member site
-            &.member {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 60px;
-                    height: 60px;
-                    top: 0;
-                    left: 4%;
-                    border-radius: 50px;
-                    margin-bottom: 10%;
-                    @include member_icon;
-                }
-            }
-
-            // manual
-            &.manual {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 60px;
-                    height: 60px;
-                    top: 0;
-                    left: 4%;
-                    border-radius: 50px;
-                    margin-bottom: 10%;
-                    @include manual_icon;
-                }
-            }
-
-            // inquiry
-            &.inquiry {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 60px;
-                    height: 60px;
-                    top: 0;
-                    left: 4%;
-                    border-radius: 50px;
-                    margin-bottom: 10%;
-                    @include inquiry_icon;
-                }
-            }
-
-            // my page
-            &.mypage {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 60px;
-                    height: 60px;
-                    top: 0;
-                    left: 4%;
-                    border-radius: 50px;
-                    margin-bottom: 10%;
-                    @include mypage_icon;
-                }
-            }
-
-            // discord
-            &.discord {
-                &::before {
-                    content: '';
-                    position: absolute;
-                    width: 60px;
-                    height: 60px;
-                    top: 0;
-                    left: 4%;
-                    border-radius: 50px;
-                    margin-bottom: 10%;
-                    @include discord_icon;
-                }
+            // icons
+            span {
+                display: block;
+                width: 60px;
+                height: 60px;
+                border-radius: 50px;
+                background: #000;
+                font-size: 4rem;
+                margin-bottom: 15%;
+                pointer-events: none;
             }
 
             // each text
@@ -1583,34 +1555,8 @@ h1 {
             &:hover {
                 color: #c4c6ca;
 
-                &.member {
-                    &::before {
-                        @include member_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
-                    }
-                }
-
-                &.manual {
-                    &::before {
-                        @include manual_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
-                    }
-                }
-
-                &.inquiry {
-                    &::before {
-                        @include inquiry_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
-                    }
-                }
-
-                &.mypage {
-                    &::before {
-                        @include mypage_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
-                    }
-                }
-
-                &.discord {
-                    &::before {
-                        @include discord_icon(rgba(110, 110, 110, 0.1), 'c4c6ca');
-                    }
+                span {
+                    background: rgba(110, 110, 110, 0.1);
                 }
             }
         }

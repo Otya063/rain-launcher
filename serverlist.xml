@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<server_groups>
+  <group idx='1' nam='Rain (JP)' ip='103.150.191.107' port='53312'/>
+  <group idx='2' nam='Rain (US)' ip='206.189.225.228' port='53312'/>
+  <group idx='3' nam='Rain (EU)' ip='134.122.76.222' port='53312'/>
+  <group idx='4' nam='Rain (Localhost)' ip='192.168.11.10' port='53312'/>
+</server_groups>

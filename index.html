@@ -9,7 +9,7 @@
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
         <title></title>
         <!-- css -->
-        <link rel="stylesheet" href="/launcher/assets/css/style.css?t=1695135882" />
+        <link rel="stylesheet" href="/assets/css/style.css?t=1696473240" />
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css"
@@ -41,6 +41,10 @@
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+        />
         <!-- ja -->
         <link
             rel="preload"
@@ -64,7 +68,7 @@
         />
         <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
         <!-- js -->
-        <script type="text/javascript" src="/launcher/assets/js/jquery.js"></script>
+        <script type="text/javascript" src="/assets/js/jquery.js"></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/URI.js/1.19.11/URI.min.js"
             integrity="sha512-HBrZaiSIpZkFPGkutbgouEKsfM+HCrfyioscGYbNPPWb7kvMQcfKzMo35yXb+X+eaOOzpu6UkppcJXfKKO/UqQ=="
@@ -89,7 +93,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
-        <script type="text/javascript" src="/launcher/assets/js/main.js?t=1696306074"></script>
+        <script type="text/javascript" src="/assets/js/main.js?t=1696473240"></script>
     </head>
 
     <body>
@@ -111,21 +115,31 @@
 
             <!-- Window Controls -->
             <div class="win_ctrls">
+                <button class="sound_handle" onClick="toggleSound();">
+                    <span class="material-symbols-outlined">volume_up</span>
+                </button>
+
                 <!-- Moving Button -->
-                <button class="move sound_on"></button>
+                <button class="move sound_on">
+                    <span class="material-symbols-outlined">drag_pan</span>
+                </button>
 
                 <!-- Minimize Button -->
-                <button class="min sound_on" onClick="minimizeWindow();">ー</button>
+                <button class="minimize sound_on" onClick="minimizeWindow();">
+                    <span class="material-symbols-outlined">remove</span>
+                </button>
 
                 <!-- Close Button -->
-                <button class="close sound_on" onClick="closeWindow();">×</button>
+                <button class="close sound_on" onClick="closeWindow();">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
 
             <!-- Launcher Header -->
             <header class="launcher_header">
                 <!-- Launcher Title / Logo -->
                 <h1 class="launcher_title"></h1>
-                <img class="mhf_zz_logo" src="/launcher/assets/img/logo.png" alt="MHF-ZZ-logo" />
+                <img class="game_logo" src="/assets/img/logo/en.png" alt="zz_logo" />
             </header>
 
             <!-- Log Out Container -->
@@ -144,7 +158,7 @@
                     <div class="auth_group">
                         <label for="username"></label>
                         <div class="auth_username">
-                            <span class="user_icon"></span>
+                            <span class="user_icon material-symbols-outlined">person</span>
                             <input
                                 class="username_input"
                                 type="text"
@@ -162,7 +176,8 @@
                     <div class="auth_group">
                         <label for="password"></label>
                         <div class="auth_password">
-                            <span class="password_icon"></span>
+                            <!-- <span class="password_icon"></span> -->
+                            <span class="password_icon material-symbols-outlined">key</span>
                             <input
                                 class="password_input"
                                 type="password"
@@ -180,8 +195,13 @@
                 <!-- Server Group -->
                 <ul class="server_selector_group">
                     <label for="server_sel"></label>
-                    <li>
-                        <button class="srv_sel_btn" id="server_sel"></button>
+                    <li class="server_sel_group">
+                        <span class="server_icon material-symbols-outlined">rss_feed</span>
+                        <button class="srv_sel_btn sound_on" id="server_sel"></button>
+                        <span class="srv_sel_arrow_bg">
+                            <!-- <span class="srv_sel_arrow"></span> -->
+                            <span class="srv_sel_arrow material-symbols-outlined">expand_more</span>
+                        </span>
                         <ul class="srv_sel_box"></ul>
                     </li>
                 </ul>
@@ -237,7 +257,7 @@
             <!-- Maintenance -->
             <ul class="maintenance">
                 <li class="maint_text"></li>
-                <li class="maint_img"><img src="/launcher/assets/img/common/cat.png" alt="maint_cat" /></li>
+                <li class="maint_img"><img src="/assets/img/common/cat.png" alt="maint_cat" /></li>
             </ul>
 
             <!-- Update -->
@@ -264,13 +284,13 @@
                 <!-- Banner -->
                 <ul class="launcher_bnr">
                     <li class="bnr sound_on">
-                        <img src="/launcher/assets/img/bnr/diva_defence.png" alt="diva_defense" />
+                        <img src="/assets/img/bnr/diva_defence.png" alt="diva_defense" />
                     </li>
                     <li class="bnr sound_on">
-                        <img src="/launcher/assets/img/bnr/g_slaying_quest.png" alt="g_slaying_quest" />
+                        <img src="/assets/img/bnr/g_slaying_quest.png" alt="g_slaying_quest" />
                     </li>
                     <li class="bnr sound_on">
-                        <img src="/launcher/assets/img/bnr/hunting_road.png" alt="hunting_road" />
+                        <img src="/assets/img/bnr/hunting_road.png" alt="hunting_road" />
                     </li>
                 </ul>
 
@@ -278,25 +298,7 @@
                 <ul class="info_list"></ul>
 
                 <!-- Menu -->
-                <aside class="launcher_menu">
-                    <!-- Member Site -->
-                    <a class="menu_contents_anchor sound_on member" style="cursor: not-allowed"></a>
-
-                    <!-- Online Manual -->
-                    <a
-                        class="menu_contents_anchor sound_on manual"
-                        href="https://development.rain-server.workers.dev/"
-                    ></a>
-
-                    <!-- Inquiry -->
-                    <a class="menu_contents_anchor sound_on inquiry" style="cursor: not-allowed"></a>
-
-                    <!-- My Page -->
-                    <a class="menu_contents_anchor sound_on mypage" style="cursor: not-allowed"></a>
-
-                    <!-- Discord -->
-                    <a class="menu_contents_anchor sound_on discord" href="https://discord.gg/TcpkpUpeGw"></a>
-                </aside>
+                <aside class="launcher_menu"></aside>
             </section>
 
             <!-- Dialog -->

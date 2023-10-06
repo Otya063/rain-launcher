@@ -13,9 +13,11 @@ const normTextData = {
         loginBtnText: 'ログイン',
         rememberMeBtn: '認証情報を記憶する',
         forgetCredsBtn: 'ユーザー名/パスワードを忘れたら',
+        failedGetMsg:
+            'メッセージの取得に失敗しました。<br>キャッシュを削除したうえで、ランチャーを再起動してください。',
         preferencesBtn: 'ゲーム内環境設定',
         authText: '認証中...',
-        debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。全ての処理がスキップされます。</p>',
+        debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。認証処理が簡素化されます。</p>',
         maintenanceText:
             '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
         gettingInfo: '<p class="info_getting">インフォメーションを取得中...</p>',
@@ -43,9 +45,10 @@ const normTextData = {
         loginBtnText: 'LOG IN',
         rememberMeBtn: 'Remember Me',
         forgetCredsBtn: 'Forgot your credentials?',
+        failedGetMsg: 'Failed to get messages.<br>Please delete the cache and then restart the launcher.',
         preferencesBtn: 'In-Game Preferences',
         authText: 'Authenticating...',
-        debugMode: '<p class="debug_mode">Note: Running in debug mode. All processes will be skipped.</p>',
+        debugMode: '<p class="debug_mode">Note: Running in debug mode. The authentication process is simplified.</p>',
         maintenanceText:
             '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
         gettingInfo: '<p class="info_getting">Getting Info Data...</p>',
@@ -106,47 +109,103 @@ const updateTextData = {
 };
 
 const msgLogTextData = {
-    noSrvSelected: 'No server is currently selected. Please select one from the list.',
-    noUsernamePass: 'First, please enter both your Username and Password.',
-    serverMaint: 'The server is currently under maintenance and cannot be joined.<br>Please try again later.',
-    SIGN_EFAILED: 'Failed to connect to authentication server.',
-    SIGN_EILLEGAL: 'Authentication cancelled due to wrong input.',
-    SIGN_EABORT: 'Internal process at the authentication server has crashed.',
-    SIGN_ERESPONSE: 'Process terminated due to abnormal authentication response.',
-    SIGN_EDATABASE: 'Failed to access database.',
-    SIGN_EOTHER: 'ID authentication failed.',
-    SIGN_EPASS: 'Password is incorrect.',
-    SIGN_EAPP: 'Authentication failed due to an unexpected error in the application.',
-    SIGN_EUNK: 'Unknown error occurred.',
+    ja: {
+        noSrvSelected: '接続先サーバーが選択されていません。選択リストより、サーバーをご選択ください。',
+        noUsernamePass: 'まず、ユーザー名とパスワードをご入力ください。',
+        noExistingUser:
+            '入力されたユーザー名のアカウントが存在しません。入力されたユーザー名が正しいかもう一度ご確認ください。<br>まだ会員登録がお済みでない方は、まず新規会員登録を行ってください。',
+        suspendedAcc: 'このアカウントは凍結されています。',
+        SIGN_EFAILED: '認証サーバーとの通信に失敗しました。',
+        SIGN_EILLEGAL: '不正な入力により認証が中止されました。',
+        SIGN_EALERT: '認証サーバーの処理にエラーが発生しました。',
+        SIGN_EABORT: '認証サーバー内部処理が異常終了しました。',
+        SIGN_ERESPONSE: '認証レスポンスの異常により処理が終了しました。',
+        SIGN_EDATABASE: 'データベースへのアクセスに失敗しました。',
+        SIGN_EOTHER: 'IDの認証に失敗しました。',
+        SIGN_EPASS: 'パスワードが正しくありません。',
+        SIGN_EAPP: 'アプリ内の想定していないエラーで認証に失敗しました。',
+        SIGN_EUNK: '不明なエラーが発生しました。',
+    },
+
+    en: {
+        noSrvSelected: 'The accessed server is not selected. Please select a server from the selection list.',
+        noUsernamePass: 'First, please enter your username and password.',
+        noExistingUser:
+            'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
+        suspendedAcc: 'This account has been suspended.',
+        SIGN_EFAILED: 'Failed to connect to authentication server.',
+        SIGN_EILLEGAL: 'Authentication aborted due to invalid input.',
+        SIGN_EALERT: 'An error occurred in processing the authentication server.',
+        SIGN_EABORT: 'Internal process at the authentication server has crashed.',
+        SIGN_ERESPONSE: 'Process terminated due to abnormal authentication response.',
+        SIGN_EDATABASE: 'Failed to access database.',
+        SIGN_EOTHER: 'ID authentication failed.',
+        SIGN_EPASS: 'Password is incorrect.',
+        SIGN_EAPP: 'Authentication failed due to an unexpected error in the application.',
+        SIGN_EUNK: 'Unknown error occurred.',
+    },
 };
 
 const dialogTextData = {
-    // Start the Game
-    startGame: '<p class="caution">Are you sure to start the game with the following character?</p>',
+    ja: {
+        // Start the Game
+        startGame: '<p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p>',
 
-    // Add Character
-    createChar:
-        '<p>Add a new character to your account.<br>Click "Add Now" below, and your browser will open automatically.</p>',
-    createCharWait: '<p>Once you have finished adding a character,<br>click "Refresh" below.</p>',
+        // Add Character
+        createChar:
+            '<p>Add a new character to your account.<br>Click "Add Now" below, and your browser will open automatically.</p>',
+        createCharWait: '<p>Once you have finished adding a character,<br>click "Refresh" below.</p>',
 
-    // Delete Character
-    delCharPrefix: 'Do you really want to delete character',
-    delCharFirstConf: '<p class="caution">Once deleted, your character data cannot be restored.</p>',
-    delLastChar:
-        '<p class="warning">You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>',
-    delCharFinalConf: '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
-    delCharUidInput:
-        "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
-    delLastCharDone:
-        'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
-    delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
-    delCharErrUnk: '<p class="caution">Failed to delete the character.</p><p>Please try again later.</p>',
-    delCharErrNeedDays:
-        '<p class="caution">Failed to delete the character.</p><p>To delete the last character,<br>please try again at least 7 days after creation.</p>',
+        // Delete Character
+        delCharPrefix: 'Do you really want to delete character',
+        delCharFirstConf: '<p class="caution">Once deleted, your character data cannot be restored.</p>',
+        delLastChar:
+            '<p class="warning">You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>',
+        delCharFinalConf:
+            '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
+        delCharUidInput:
+            "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+        delLastCharDone:
+            'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
+        delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
+        delCharErrUnk: '<p class="caution">Failed to delete the character.</p><p>Please try again later.</p>',
+        delCharErrNeedDays:
+            '<p class="caution">Failed to delete the character.</p><p>To delete the last character,<br>please try again at least 7 days after creation.</p>',
 
-    // Server Maintenance
-    serverMaint:
-        '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
+        // Server Maintenance
+        serverMaint:
+            '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
+    },
+
+    en: {
+        // Start the Game
+        startGame: '<p class="caution">Are you sure to start the game with the following character?</p>',
+
+        // Add Character
+        createChar:
+            '<p>Add a new character to your account.<br>Click "Add Now" below, and your browser will open automatically.</p>',
+        createCharWait: '<p>Once you have finished adding a character,<br>click "Refresh" below.</p>',
+
+        // Delete Character
+        delCharPrefix: 'Do you really want to delete character',
+        delCharFirstConf: '<p class="caution">Once deleted, your character data cannot be restored.</p>',
+        delLastChar:
+            '<p class="warning">You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>',
+        delCharFinalConf:
+            '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
+        delCharUidInput:
+            "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+        delLastCharDone:
+            'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
+        delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
+        delCharErrUnk: '<p class="caution">Failed to delete the character.</p><p>Please try again later.</p>',
+        delCharErrNeedDays:
+            '<p class="caution">Failed to delete the character.</p><p>To delete the last character,<br>please try again at least 7 days after creation.</p>',
+
+        // Server Maintenance
+        serverMaint:
+            '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
+    },
 };
 
 /*=========================================================
@@ -186,11 +245,15 @@ const updateTextOutput = function (textType, index) {
 };
 
 const msgLogTextOutput = function (textType) {
-    return decodeURIComponent(msgLogTextData[textType]);
+    const lang = getQueryParams('l');
+
+    return msgLogTextData[lang][textType];
 };
 
 const dialogTextOutput = function (textType) {
-    return decodeURIComponent(dialogTextData[textType]);
+    const lang = getQueryParams('l');
+
+    return dialogTextData[lang][textType];
 };
 
 const launcherMovingHandler = function () {
@@ -336,7 +399,6 @@ const selectCharacter = function (name, uid) {
 };
 
 const playSound = function (soundType) {
-    console.log('Sound');
     try {
         window.external.playSound(soundType);
     } catch (e) {}
@@ -346,7 +408,7 @@ const extractLogs = function () {
     try {
         return window.external.extractLogs();
     } catch (error) {
-        return '';
+        return normTextOutput('failedGetMsg');
     }
 };
 
@@ -409,6 +471,8 @@ const ReqDataFromRainWeb = function (data1, data2) {
 
 const toggleSound = function () {
     if (soundMode) {
+        localStorage.setItem('SoundMode', 'false');
+
         $(
             '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
@@ -429,6 +493,8 @@ const toggleSound = function () {
         $('.sound_handle').html('<span class="material-symbols-outlined">volume_off</span>');
         soundMode = false;
     } else {
+        localStorage.setItem('SoundMode', 'true');
+
         $(
             '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
@@ -597,7 +663,7 @@ const addLogMsg = function (message, colorType, isOnlyOneMsg) {
     new scrollBarHandler(messageContents);
 };
 
-const getExtractedLog = function () {
+const setExtractedLog = function () {
     // extract logs and sanitize them for display
     const extractedLog = extractLogs();
     if (extractedLog) {
@@ -607,10 +673,6 @@ const getExtractedLog = function () {
             .join('&amp;')
             .split('"')
             .join('&quot;')
-            .split('<')
-            .join('&lt;')
-            .split('>')
-            .join('&gt;')
             .replace(/[\n\r]/g, '<br>')
             .replace(/[\r]/g, '<br>')
             .replace(/[\n]/g, '<br>')
@@ -618,12 +680,13 @@ const getExtractedLog = function () {
 
         // process each message and determine its type
         let isOnlyOneMsg = false;
+
         messages.forEach(function (message) {
             let colorType = '';
 
             // determine message type based on its contents
-            if (/再度お試しください|失敗|できませんでした/.test(message)) {
-                colorType = 'y'; // yellow
+            if (/再度お試しください|失敗|再起動|restart|できませんでした/.test(message)) {
+                colorType = 'r'; // red
             } else if (/^Launcher Ver/.test(message)) {
                 colorType = 'g'; // green
             } else if (/^AUTH_SUCCESS/.test(message)) {
@@ -636,6 +699,12 @@ const getExtractedLog = function () {
             // add message to log
             addLogMsg(message, colorType, isOnlyOneMsg);
             isOnlyOneMsg = false;
+        });
+    } else {
+        const messages = normTextOutput('failedGetMsg').split('<br>');
+        messages.forEach(function (message) {
+            // fail to get messages
+            addLogMsg(message, 'r', false);
         });
     }
 };
@@ -655,6 +724,7 @@ const inputUsername = '.username_input',
     credsForgot = '.btn_forgot';
 
 let maintenanceData = {},
+    soundMode,
     debugMode,
     loginPollingTimerId = '',
     username = '',
@@ -669,19 +739,32 @@ const beginAuthProcess = function () {
 
     '' === username || '' === password
         ? // if credentials are not entered, return error
-          (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noUsernamePass'), 'r'))
+          (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noUsernamePass')))
         : // if credentials are entered, proceed to auth process
-          (soundMode && playSound('IDR_WAV_PRE_LOGIN'), showAuthenticating(), requestAuthentication());
+          (soundMode && playSound('IDR_WAV_PRE_LOGIN'), showAuthenticating(), requestAuthentication(username));
 };
 
-const requestAuthentication = function () {
-    const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
+const requestAuthentication = function (username) {
+    ReqDataFromRainWeb('checkExistingUser', username).done(function (result) {
+        const isExistingUser = result['data'] !== null;
 
-    loginSuccess
-        ? // if loginSuccess is true, login polling will be run
-          (loginPollingTimerId = setInterval(startLoginPolling, 1000))
-        : //if false, error handling will be run with onAuthError
-          onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+        // if the user exists, or if the process is simplified in debug mode, go to the login process
+        if (isExistingUser || debugMode) {
+            const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
+
+            loginSuccess
+                ? // if loginSuccess is true, login polling will be run
+                  (loginPollingTimerId = setInterval(startLoginPolling, 1000))
+                : //if false, error handling will be run with onAuthError
+                  onAuthError(msgLogTextOutput('SIGN_EAPP'));
+        } else if (result === 'Invalid Input') {
+            // if there is an invalid operation for some reason
+            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+        } else {
+            // user doesn't exist
+            onAuthError(msgLogTextOutput('noExistingUser'));
+        }
+    });
 };
 
 const startLoginPolling = function () {
@@ -743,22 +826,26 @@ const startLoginPolling = function () {
                 // output the corresponding error msg
                 case 'SIGN_EFAILED':
                 case 'SIGN_EILLEGAL':
+                case 'SIGN_EALERT':
                 case 'SIGN_EABORT':
                 case 'SIGN_ERESPONSE':
                 case 'SIGN_EDATABASE':
-                case 'SIGN_EPASS':
                     onAuthError(msgLogTextOutput(signResult), 'r');
+                    break;
+
+                case 'SIGN_EPASS':
+                    onAuthError(msgLogTextOutput(signResult));
                     break;
 
                 // if it doesn't match any of the above errors, output other error msg
                 default:
-                    onAuthError(msgLogTextOutput('SIGN_EOTHER'));
+                    onAuthError(msgLogTextOutput('SIGN_EOTHER'), 'r');
             }
             break;
 
         // if there is an unknown error, stop the login polling and output unknown error msg
         default:
-            stopLoginPolling(), onAuthError(msgLogTextOutput('SIGN_EUNK'));
+            stopLoginPolling(), onAuthError(msgLogTextOutput('SIGN_EUNK'), 'r');
     }
 };
 
@@ -831,8 +918,20 @@ const backToBeforeLogin = function () {
 };
 
 const startUpLauncher = function () {
+    // initialize normal text
+    initNormTextData();
+
+    // initialize aside menu
+    initAsideMenu();
+
     // initialize server selector list
     initSrvSelList();
+
+    // initial display of msg log
+    setExtractedLog();
+
+    // set information section
+    beginLoadInfo();
 
     // enable scroll bar on server selector box
     new scrollBarHandler('.srv_sel_box');
@@ -840,7 +939,7 @@ const startUpLauncher = function () {
     // login button click event
     $(loginBtn).click(function () {
         serverNotSelected
-            ? (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noSrvSelected'), 'r'))
+            ? (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noSrvSelected')))
             : beginAuthProcess();
     });
 
@@ -857,6 +956,28 @@ const startUpLauncher = function () {
     $(inputPassword).focus(function () {
         soundMode && playSound('IDR_WAV_OK');
     });
+
+    // set soundMode and remove sound_on class if false
+    soundMode =
+        localStorage.getItem('SoundMode') === 'true' || localStorage.getItem('SoundMode') === null ? true : false;
+    !soundMode &&
+        ($(
+            '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+                serverSelBtn +
+                ', ' +
+                srvListEachItem +
+                ', ' +
+                logoutBtn +
+                ', ' +
+                loginBtn +
+                ', ' +
+                charAddButton +
+                ', ' +
+                charDelButton +
+                ', ' +
+                ' .btn_start, .bnr'
+        ).removeClass('sound_on'),
+        $('.sound_handle').html('<span class="material-symbols-outlined">volume_off</span>'));
 
     // set check state for rememberMeCheck
     isChecked = localStorage.getItem('IsChecked') === 'true';
@@ -911,6 +1032,8 @@ const getCurrentCharData = function () {
 };
 
 const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastLogin) {
+    // Japanese version requires processing to convert weaponStyle to English
+
     // convert weapon name for style usage
     let weaponStyle = weapon.replace(/\s+/g, '').replace(/&/g, 'And');
     weaponStyle = weaponStyle.toLowerCase().charAt(0) + weaponStyle.slice(1);
@@ -1696,7 +1819,6 @@ const showStartGameDialog = function (name, uid) {
 /*=========================================================
 　　　　　IIFE on the Launcher
 =======================================================*/
-let soundMode = true;
 $(function () {
     checkDebugMode();
 
@@ -1704,62 +1826,15 @@ $(function () {
     const lang = getQueryParams('l');
     document.documentElement.setAttribute('lang', lang ? lang : 'en');
 
-    /* Click or Mouseover Event
-====================================================*/
-// play a sound when hovering the element with sound_on class
-    $(document).on('mouseover', '.sound_on', function () {
-        playSound('IDR_WAV_SEL');
-    });
-
-    // play a sound when clicking the element with sound_on class except for login btn
-    $(document).on('mousedown', '.sound_on', function (e) {
-        e.target !== $(loginBtn).get(0) && playSound('IDR_WAV_OK');
-    }); 
-
-    // start the game when clicking button
-    $(charSelBox + ' .btn_start').click(function () {
-        prepareStartGame();
-    });
-
-    // add a character
-    $(charAddButton).click(function () {
-        $(this).hasClass('disabled') || showAddCharDialog();
-    });
-
-    // delete a character
-    $(charDelButton).click(function () {
-        // check if the clicked element is not disabled and a character is not already being deleted
-        if (!$(this).hasClass('disabled') && !delCharUid && !delCharName) {
-            // get the user data of the currently selected character
-            const currentCharData = getCurrentCharData();
-
-            // set the name and UID of the character to be deleted
-            delCharName = currentCharData.attr('name');
-            delCharUid = currentCharData.attr('uid');
-
-            // show a confirmation dialog for deleting the character
-            showDelCharDialog(delCharName, delCharUid);
-        }
-    });
-
     /* Launcher Initialization Functions
 ====================================================*/
-    // init normal text
-    initNormTextData();
-
-    initAsideMenu();
     // initial authentication, including server and id or password setup
     startUpLauncher();
-
-    // initial display of msg log
-    getExtractedLog();
-
-    // set information section
-    beginLoadInfo();
 
     // load moving function
     launcherMovingHandler();
 
+    // convert href on anchor tag to openBrowser function
     overrideAnker('.wrapper');
 
     // rotate banner
@@ -1789,7 +1864,40 @@ $(function () {
         !$(e.target).is('input') && e.preventDefault();
     });
 
-    $(charSelUnitBox).append(createCharUnit(1, 'otya', 1, 1, 0, 'Tonfa', 'M', 0));
+    //$(charSelUnitBox).append(createCharUnit(1, 'otya', 1, 1, 0, 'Tonfa', 'M', 0));
+
+    /* Click or Mouseover Event
+====================================================*/
+    // play a sound when hovering the element with sound_on class
+    $(document).on('mouseover', '.sound_on', function () {
+        playSound('IDR_WAV_SEL');
+    });
+
+    // play a sound when clicking the element with sound_on class except for login btn
+    $(document).on('mousedown', '.sound_on', function (e) {
+        e.target !== $(loginBtn).get(0) && playSound('IDR_WAV_OK');
+    });
+
+    // add a character
+    $(charAddButton).click(function () {
+        $(this).hasClass('disabled') || showAddCharDialog();
+    });
+
+    // delete a character
+    $(charDelButton).click(function () {
+        // check if the clicked element is not disabled and a character is not already being deleted
+        if (!$(this).hasClass('disabled') && !delCharUid && !delCharName) {
+            // get the user data of the currently selected character
+            const currentCharData = getCurrentCharData();
+
+            // set the name and UID of the character to be deleted
+            delCharName = currentCharData.attr('name');
+            delCharUid = currentCharData.attr('uid');
+
+            // show a confirmation dialog for deleting the character
+            showDelCharDialog(delCharName, delCharUid);
+        }
+    });
 });
 
 /*=========================================================

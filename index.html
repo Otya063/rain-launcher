@@ -115,7 +115,7 @@
 
             <!-- Window Controls -->
             <div class="win_ctrls">
-                <button class="sound_handle" onClick="toggleSound();">
+                <button class="sound_handle" onclick="toggleSound();">
                     <span class="material-symbols-outlined">volume_up</span>
                 </button>
 
@@ -125,12 +125,12 @@
                 </button>
 
                 <!-- Minimize Button -->
-                <button class="minimize sound_on" onClick="minimizeWindow();">
+                <button class="minimize sound_on" onclick="minimizeWindow();">
                     <span class="material-symbols-outlined">remove</span>
                 </button>
 
                 <!-- Close Button -->
-                <button class="close sound_on" onClick="closeWindow();">
+                <button class="close sound_on" onclick="closeWindow();">
                     <span class="material-symbols-outlined">close</span>
                 </button>
             </div>
@@ -168,6 +168,7 @@
                                 autocapitalize="off"
                                 aria-label="Username"
                                 aria-invalid="false"
+                                onkeydown="playSound('IDR_WAV_SEL')"
                             />
                         </div>
                     </div>
@@ -187,7 +188,14 @@
                                 autocapitalize="off"
                                 aria-label="Password"
                                 aria-invalid="false"
+                                onkeydown="playSound('IDR_WAV_SEL')"
                             />
+                            <span
+                                id="eye_btn"
+                                class="hide_password material-symbols-outlined sound_on"
+                                onclick="toggleHidePass();"
+                                >visibility</span
+                            >
                         </div>
                     </div>
                 </form>
@@ -227,7 +235,7 @@
                 </div>
 
                 <!-- Preferences Button -->
-                <button class="btn_preferences sound_on" onClick="openPreferences();"></button>
+                <button class="btn_preferences sound_on" onclick="openPreferences();"></button>
             </main>
 
             <!-- Authenticating -->
@@ -251,7 +259,7 @@
                     <li class="char_add sound_on"></li>
                     <li class="char_del sound_on"></li>
                 </ul>
-                <button class="btn_start sound_on" onClick="prepareStartGame();"></button>
+                <button class="btn_start sound_on" onclick="prepareStartGame();"></button>
             </section>
 
             <!-- Maintenance -->

@@ -13,11 +13,10 @@ const normTextData = {
         loginBtnText: 'ログイン',
         rememberMeBtn: '認証情報を記憶する',
         forgetCredsBtn: 'ユーザー名/パスワードを忘れたら',
-        failedGetMsg:
-            'メッセージの取得に失敗しました。<br>キャッシュを削除したうえで、ランチャーを再起動してください。',
         preferencesBtn: 'ゲーム内環境設定',
         authText: '認証中...',
-        debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。認証処理が簡素化されます。</p>',
+        debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。</p>',
+        charIdLabel: 'キャラクターID: ',
         maintenanceText:
             '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
         gettingInfo: '<p class="info_getting">インフォメーションを取得中...</p>',
@@ -45,10 +44,10 @@ const normTextData = {
         loginBtnText: 'LOG IN',
         rememberMeBtn: 'Remember Me',
         forgetCredsBtn: 'Forgot your credentials?',
-        failedGetMsg: 'Failed to get messages.<br>Please delete the cache and then restart the launcher.',
         preferencesBtn: 'In-Game Preferences',
         authText: 'Authenticating...',
-        debugMode: '<p class="debug_mode">Note: Running in debug mode. The authentication process is simplified.</p>',
+        debugMode: '<p class="debug_mode">Note: Running in debug mode.</p>',
+        charIdLabel: 'Character ID: ',
         maintenanceText:
             '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
         gettingInfo: '<p class="info_getting">Getting Info Data...</p>',
@@ -110,10 +109,18 @@ const updateTextData = {
 
 const msgLogTextData = {
     ja: {
+        gettingMsg: 'メッセージを取得中...',
+        failedGetMsg: 'メッセージの取得に失敗しました。',
+        initMsg: 'ユーザー名、パスワードを入力した後、<br>サーバーを選択して「ログイン」ボタンを押してください。',
+        authSuccess: '認証正常終了。<br>まもなくキャラクター選択画面が表示されます。',
+        webAccessErr:
+            'レイン公式ウェブサイトへのアクセスに失敗しました。<br>インターネットの接続状況に問題がない場合は、直ちにレイン管理者までご報告ください。',
         noSrvSelected: '接続先サーバーが選択されていません。選択リストより、サーバーをご選択ください。',
-        noUsernamePass: 'まず、ユーザー名とパスワードをご入力ください。',
+        noUsernamePass: '初めに、ユーザー名とパスワードをご入力ください。',
         noExistingUser:
-            '入力されたユーザー名のアカウントが存在しません。入力されたユーザー名が正しいかもう一度ご確認ください。<br>まだ会員登録がお済みでない方は、まず新規会員登録を行ってください。',
+            '入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度ご確認ください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。',
+        noLinkedAcc:
+            'レインディスコードとの連携が完了していないゲームアカウントです。<br>アカウント連携が完了してから、再度お試しください。',
         suspendedAcc: 'このアカウントは凍結されています。',
         SIGN_EFAILED: '認証サーバーとの通信に失敗しました。',
         SIGN_EILLEGAL: '不正な入力により認証が中止されました。',
@@ -128,10 +135,18 @@ const msgLogTextData = {
     },
 
     en: {
+        gettingMsg: 'Getting messages...',
+        failedGetMsg: 'Failed to get messages.',
+        initMsg: 'After entering your username and password,<br>please select a server and press the "Log In" button.',
+        authSuccess: 'Authenticated successfully.<br>The character selection screen will appear soon.',
+        webAccessErr:
+            'Failed to access to the official Rain website.<br>Please report to Rain Admins immediately if there is no problem with your Internet connection.',
         noSrvSelected: 'The accessed server is not selected. Please select a server from the selection list.',
         noUsernamePass: 'First, please enter your username and password.',
         noExistingUser:
             'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
+        noLinkedAcc:
+            'The game account has not been linked to Rain Discord.<br>Please try again after the account linking is completed.',
         suspendedAcc: 'This account has been suspended.',
         SIGN_EFAILED: 'Failed to connect to authentication server.',
         SIGN_EILLEGAL: 'Authentication aborted due to invalid input.',
@@ -209,7 +224,7 @@ const dialogTextData = {
 };
 
 /*=========================================================
-　　　　　Functions Needed Later
+　　　　　Misc Functions
 =======================================================*/
 const scrollBarHandler = function (selector) {
     this.$el = $(selector);
@@ -327,6 +342,8 @@ const enableDrag = function (boolean) {
 };
 
 const checkDebugMode = function () {
+    disableElement(loginBtn, 1);
+
     ReqDataFromRainWeb('launcherSystem')
         .done(function (result) {
             if (!result['success']) {
@@ -335,18 +352,22 @@ const checkDebugMode = function () {
             } else {
                 console.log('Successfully accessed RainWeb and get data.');
                 debugMode = result['data'].debug;
-                // check if debug mode is enabled
                 debugMode && $('.launcher_footer').append(normTextOutput('debugMode'));
             }
         })
         .fail(function () {
             console.error('Failed to access RainWeb and get data.');
             if (window.location.origin.indexOf('192.168') !== -1) {
+                // localhost env (for test)
                 debugMode = true;
                 $('.launcher_footer').append(normTextOutput('debugMode'));
             } else {
+                // non-localhost env
                 debugMode = false;
             }
+        })
+        .always(function () {
+            enableElement(loginBtn, 1);
         });
 };
 
@@ -404,14 +425,6 @@ const playSound = function (soundType) {
     } catch (e) {}
 };
 
-const extractLogs = function () {
-    try {
-        return window.external.extractLogs();
-    } catch (error) {
-        return normTextOutput('failedGetMsg');
-    }
-};
-
 const disableElement = function (elm, fadeTime) {
     $(elm).fadeTo(fadeTime, 0.6);
     $(elm).css('pointer-events', 'none');
@@ -458,8 +471,8 @@ const initNormTextData = function () {
     $('.disclaimer').text(normTextOutput('disclaimer'));
 };
 
-const ReqDataFromRainWeb = function (data1, data2) {
-    const data = JSON.stringify({ 1: data1, 2: data2 });
+const ReqDataFromRainWeb = function (data1, data2, data3) {
+    const data = JSON.stringify({ 1: data1, 2: data2, 3: data3 });
     return $.ajax({
         url: 'http://localhost:5173/admin',
         type: 'POST',
@@ -514,6 +527,29 @@ const toggleSound = function () {
 
         $('.sound_handle').html('<span class="material-symbols-outlined">volume_up</span>');
         soundMode = true;
+    }
+};
+
+const objectEntries = function (obj) {
+    let ownProps = Object.keys(obj),
+        i = ownProps.length,
+        resArray = new Array(i);
+    while (i--) resArray[i] = [ownProps[i], obj[ownProps[i]]];
+    return resArray;
+};
+
+const toggleHidePass = function () {
+    const passInput = document.getElementById('password');
+    const eyeBtn = document.getElementById('eye_btn');
+
+    if (passInput.type === 'text') {
+        // hide password
+        passInput.type = 'password';
+        eyeBtn.textContent = 'visibility';
+    } else {
+        // show password
+        passInput.type = 'text';
+        eyeBtn.textContent = 'visibility_off';
     }
 };
 
@@ -622,6 +658,22 @@ const hideSrvSelList = function () {
 =======================================================*/
 const messageContents = '.msg_contents';
 
+const initializeMsg = function () {
+    addLogMsg(msgLogTextOutput('gettingMsg'));
+
+    ReqDataFromRainWeb('launcherSystem')
+        .done(function (result) {
+            $(messageContents).text('');
+            const version = result['data'].launcher_ver;
+            addLogMsg('Launcher Version: ' + version, 'g');
+            addLogMsg(msgLogTextOutput('initMsg'));
+        })
+        .fail(function () {
+            $(messageContents).text('');
+            addLogMsg(msgLogTextOutput('failedGetMsg'), 'r');
+        });
+};
+
 const addLogMsg = function (message, colorType, isOnlyOneMsg) {
     let color = '';
 
@@ -663,52 +715,6 @@ const addLogMsg = function (message, colorType, isOnlyOneMsg) {
     new scrollBarHandler(messageContents);
 };
 
-const setExtractedLog = function () {
-    // extract logs and sanitize them for display
-    const extractedLog = extractLogs();
-    if (extractedLog) {
-        // split logs into individual messages
-        const messages = extractedLog
-            .split('&')
-            .join('&amp;')
-            .split('"')
-            .join('&quot;')
-            .replace(/[\n\r]/g, '<br>')
-            .replace(/[\r]/g, '<br>')
-            .replace(/[\n]/g, '<br>')
-            .split('<br>');
-
-        // process each message and determine its type
-        let isOnlyOneMsg = false;
-
-        messages.forEach(function (message) {
-            let colorType = '';
-
-            // determine message type based on its contents
-            if (/再度お試しください|失敗|再起動|restart|できませんでした/.test(message)) {
-                colorType = 'r'; // red
-            } else if (/^Launcher Ver/.test(message)) {
-                colorType = 'g'; // green
-            } else if (/^AUTH_SUCCESS/.test(message)) {
-                colorType = 'b'; // blue
-            } else if (/^\[.*%\]/.test(message)) {
-                colorType = 'y'; // yellow
-                isOnlyOneMsg = true;
-            }
-
-            // add message to log
-            addLogMsg(message, colorType, isOnlyOneMsg);
-            isOnlyOneMsg = false;
-        });
-    } else {
-        const messages = normTextOutput('failedGetMsg').split('<br>');
-        messages.forEach(function (message) {
-            // fail to get messages
-            addLogMsg(message, 'r', false);
-        });
-    }
-};
-
 const clearOnlyLog = function () {
     $(messageContents + ' ' + '.only').remove();
 };
@@ -745,26 +751,81 @@ const beginAuthProcess = function () {
 };
 
 const requestAuthentication = function (username) {
-    ReqDataFromRainWeb('checkExistingUser', username).done(function (result) {
-        const isExistingUser = result['data'] !== null;
+    ReqDataFromRainWeb('getExtgUserByUserName', username)
+        .done(function (result) {
+            if (!result['success']) {
+                console.error('Successfully accessed RainWeb, but failed to get data.');
+                onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+            } else {
+                console.log('Successfully accessed RainWeb and get data.');
+                const isExistingUser = result['data'] !== null;
 
-        // if the user exists, or if the process is simplified in debug mode, go to the login process
-        if (isExistingUser || debugMode) {
-            const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
+                if (isExistingUser) {
+                    // if the user exists, go to the process for checking if the account is linked with rain discord
+                    const userId = result['data'].id;
+                    loginUserId = userId;
 
-            loginSuccess
-                ? // if loginSuccess is true, login polling will be run
-                  (loginPollingTimerId = setInterval(startLoginPolling, 1000))
-                : //if false, error handling will be run with onAuthError
-                  onAuthError(msgLogTextOutput('SIGN_EAPP'));
-        } else if (result === 'Invalid Input') {
-            // if there is an invalid operation for some reason
-            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
-        } else {
-            // user doesn't exist
-            onAuthError(msgLogTextOutput('noExistingUser'));
-        }
-    });
+                    ReqDataFromRainWeb('getLinkedAccByUId', userId).done(function (result) {
+                        const isLinkedAcc = result['data'] !== null;
+
+                        if (isLinkedAcc) {
+                            // if the account is linked with rain discord, go to the login process
+                            const loginSuccess = loginRain(
+                                $(inputUsername).val(),
+                                $(inputPassword).val(),
+                                $(inputPassword).val()
+                            );
+
+                            loginSuccess
+                                ? // if loginSuccess is true, login polling will be run
+                                  (loginPollingTimerId = setInterval(startLoginPolling, 1000))
+                                : //if false, error handling will be run with onAuthError
+                                  onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+                        } else if (result === 'Invalid Input') {
+                            // if there is an invalid operation for some reason
+                            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                        } else {
+                            // user doesn't exist
+                            onAuthError(msgLogTextOutput('noLinkedAcc'));
+                        }
+                    });
+                } else if (debugMode) {
+                    const loginSuccess = loginRain(
+                        $(inputUsername).val(),
+                        $(inputPassword).val(),
+                        $(inputPassword).val()
+                    );
+
+                    loginSuccess
+                        ? // if loginSuccess is true, login polling will be run
+                          (loginPollingTimerId = setInterval(startLoginPolling, 1000))
+                        : //if false, error handling will be run with onAuthError
+                          onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+                } else if (result === 'Invalid Input') {
+                    // if there is an invalid operation for some reason
+                    onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                } else {
+                    // user doesn't exist
+                    onAuthError(msgLogTextOutput('noExistingUser'));
+                }
+            }
+        })
+        .fail(function () {
+            console.error('Failed to access RainWeb and get data.');
+            if (window.location.origin.indexOf('192.168') !== -1) {
+                // localhost env (for test)
+                const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
+
+                loginSuccess
+                    ? // if loginSuccess is true, login polling will be run
+                      (loginPollingTimerId = setInterval(startLoginPolling, 1000))
+                    : //if false, error handling will be run with onAuthError
+                      onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+            } else {
+                // non-localhost env
+                onAuthError(msgLogTextOutput('webAccessErr'), 'r');
+            }
+        });
 };
 
 const startLoginPolling = function () {
@@ -784,6 +845,7 @@ const startLoginPolling = function () {
 
         // if the auth is successful, stop login polling, hide the auth progress display
         case 'AUTH_SUCCESS':
+            addLogMsg(msgLogTextOutput('authSuccess'), 'g', true);
             stopLoginPolling();
 
             const serverName = $(serverSelBtn)
@@ -854,8 +916,6 @@ const stopLoginPolling = function () {
 };
 
 const afterLoginSuccess = function (serverName) {
-    hideAuthenticating();
-
     maintenanceData[serverName]
         ? (showMaintenanceDialog(),
           $('.launcher_login_panel').hide(),
@@ -872,9 +932,6 @@ const afterLoginSuccess = function (serverName) {
           (localStorage.removeItem('Username'),
           localStorage.removeItem('Password'),
           localStorage.removeItem('IsChecked'));
-    // set username and server name label
-    const idSrvNameLabel = $(inputUsername).val() + '@' + $(serverSelBtn).text();
-    $('.name_srv_label').text(idSrvNameLabel);
 };
 
 const showAuthenticating = function () {
@@ -928,7 +985,7 @@ const startUpLauncher = function () {
     initSrvSelList();
 
     // initial display of msg log
-    setExtractedLog();
+    initializeMsg();
 
     // set information section
     beginLoadInfo();
@@ -997,7 +1054,8 @@ const charSelBox = '.character_selection',
     charDelButton = charSelBox + ' .char_del';
 
 let delCharName = '',
-    delCharUid = '';
+    delCharUid = '',
+    loginUserId = '';
 
 const convUnixToDate = function (date) {
     // convert unix timestamp to a date object
@@ -1017,6 +1075,52 @@ const convUnixToDate = function (date) {
     return convDate.toLocaleDateString(locale, options);
 };
 
+const convHrpToHr = function (hrp) {
+    switch (hrp) {
+        case 999:
+            return 7;
+
+        case 998:
+            return 6;
+
+        case 299:
+            return 5;
+
+        case 99:
+            return 4;
+
+        case 50:
+            return 3;
+
+        case 30:
+            return 2;
+
+        case 1:
+            return 1;
+    }
+};
+
+const convWpnNameToEng = function (wpnJaName) {
+    const wpnJaObj = {
+        '大剣': 'greatSword',
+        'ヘビィボウガン': 'heavyBowgun',
+        'ハンマー': 'hammer',
+        'ランス': 'lance',
+        '片手剣': 'swordAndShield',
+        'ライトボウガン': 'lightBowgun',
+        '双剣': 'dualSwords',
+        '太刀': 'longSword',
+        '狩猟笛': 'huntingHorn',
+        'ガンランス': 'gunlance',
+        '弓': 'bow',
+        '穿龍棍': 'tonfa',
+        'スラッシュアックスF': 'switchAxeF',
+        'マグネットスパイク': 'magnetSpike',
+    };
+
+    return wpnJaObj[wpnJaName];
+};
+
 const convEntities = function (name) {
     // define an object of special characters and their corresponding entity references
     const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
@@ -1031,16 +1135,184 @@ const getCurrentCharData = function () {
     return $('.swiper-slide-active');
 };
 
-const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastLogin) {
-    // Japanese version requires processing to convert weaponStyle to English
+const showCharSelector = function () {
+    const lang = getQueryParams('l');
 
+    // clear the character unit box to init state
+    $(charSelUnitBox).empty();
+
+    const userId = loginUserId;
+
+    ReqDataFromRainWeb('getCharactersByUId', userId ? userId : 0, lang)
+        .done(function (result) {
+            if (!result['success']) {
+                console.error('Successfully accessed RainWeb, but failed to get data.');
+
+                $(charSelUnitBox).append(
+                    createCharUnit(
+                        1,
+                        'Failed to Get Character Data',
+                        'Unknown',
+                        1,
+                        '',
+                        'Unknown',
+                        'Unknown',
+                        false,
+                        'Unknown'
+                    )
+                );
+            } else {
+                console.log('Successfully accessed RainWeb and get data.');
+
+                const res = result['data'].sort(function (a, b) {
+                    return a.id - b.id;
+                });
+
+                if (res.length !== 0) {
+                    objectEntries(res).map(function (entry) {
+                        const index = entry[0];
+                        const character = entry[1];
+
+                        $(charSelUnitBox).append(
+                            createCharUnit(
+                                index + 1,
+                                character.name,
+                                character.id,
+                                convHrpToHr(character.hrp),
+                                character.gr,
+                                character.weapon_type_name,
+                                character.weapon_id_name,
+                                character.is_female,
+                                character.last_login
+                            )
+                        );
+                    });
+                } else if (debugMode) {
+                    // get characters via non-website mehtod and convert it
+                    const characterInfo = $('<div>').html(
+                        getAllCharData()
+                            .replace(/'/g, '"')
+                            .replace(/&apos;/g, "'")
+                    );
+
+                    // create a new character unit and append it to the character unit box
+                    characterInfo.find('Character').each(function (index, element) {
+                        $(charSelUnitBox).append(
+                            createCharUnit(
+                                index + 1,
+                                $(element).attr('name'),
+                                $(element).attr('uid'),
+                                parseInt($(element).attr('HR'), 10),
+                                parseInt($(element).attr('GR'), 10),
+                                $(element).attr('weapon'),
+                                'No Data',
+                                $(element).attr('sex'),
+                                parseInt($(element).attr('lastLogin'), 10)
+                            )
+                        );
+                    });
+                } else {
+                    $(charSelUnitBox).append(
+                        createCharUnit(
+                            1,
+                            'Failed to Get Character Data',
+                            'Unknown',
+                            1,
+                            '',
+                            'Unknown',
+                            'Unknown',
+                            false,
+                            'Unknown'
+                        )
+                    );
+                }
+            }
+        })
+        .fail(function () {
+            console.error('Failed to access RainWeb and get data.');
+
+            if (window.location.origin.indexOf('192.168') !== -1) {
+                // get characters via non-website mehtod and convert it
+                const characterInfo = $('<div>').html(
+                    getAllCharData()
+                        .replace(/'/g, '"')
+                        .replace(/&apos;/g, "'")
+                );
+
+                // create a new character unit and append it to the character unit box
+                characterInfo.find('Character').each(function (index, element) {
+                    $(charSelUnitBox).append(
+                        createCharUnit(
+                            index + 1,
+                            $(element).attr('name'),
+                            $(element).attr('uid'),
+                            parseInt($(element).attr('HR'), 10),
+                            parseInt($(element).attr('GR'), 10),
+                            $(element).attr('weapon'),
+                            'No Data',
+                            $(element).attr('sex'),
+                            parseInt($(element).attr('lastLogin'), 10)
+                        )
+                    );
+                });
+            } else {
+                $(charSelUnitBox).append(
+                    createCharUnit(
+                        1,
+                        'Failed to Get Character Data',
+                        'Unknown',
+                        1,
+                        '',
+                        'Unknown',
+                        'Unknown',
+                        false,
+                        'Unknown'
+                    )
+                );
+            }
+        })
+        .always(function () {
+            // hide authenticating screen, launcher_login_panel, launcher_update_process, and character selection box
+            hideAuthenticating();
+            $('.launcher_login_panel').hide();
+            $('.launcher_update_process').hide();
+            $(charSelBox).show();
+
+            // show logout container
+            $(logoutBtn).show();
+            const idSrvNameLabel = $(inputUsername).val() + '@' + $(serverSelBtn).text();
+            $('.name_srv_label').text(idSrvNameLabel);
+
+            // delete logs with class name "only"
+            clearOnlyLog();
+        });
+
+    // if there is no character, disable delete and start game button
+    if ($(charSelUnitBox).find('.unit').length === 0) {
+        disableElement(charDelButton, 1), disableElement('.btn_start', 1);
+    } else {
+        // if there is one character and a new hunter, disable delete button, and enable start game button
+        if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
+            disableElement(charDelButton, 1), enableElement('.btn_start', 1);
+            // normally, all buttons are enabled
+        } else {
+            enableElement(charDelButton, 1), enableElement('.btn_start', 1);
+        }
+    }
+};
+
+const createCharUnit = function (index, name, characterId, hr, gr, weaponType, weaponName, gender, lastLogin) {
     // convert weapon name for style usage
-    let weaponStyle = weapon.replace(/\s+/g, '').replace(/&/g, 'And');
+    let weaponStyle = weaponType.replace(/\s+/g, '').replace(/&/g, 'And');
     weaponStyle = weaponStyle.toLowerCase().charAt(0) + weaponStyle.slice(1);
+
+    // weapon name conversion
+    const lang = getQueryParams('l');
+    lang === 'ja' && (weaponStyle = convWpnNameToEng(weaponType));
 
     // generate a new div element with the given attributes
     const charUnit = $(
-        '<div class="unit swiper-slide" uid="' + uid + '" name="' + name + '" hr="' + hr + '" to="0"></div>'
+        '<div class="unit swiper-slide" uid="' + characterId + '" name="' + name + '" hr="' + hr + '" to="0"></div>'
     );
 
     // add a number element, and a name element to the div
@@ -1053,23 +1325,24 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
           charUnit.append(
               $(
                   '<p class="new">' +
-                      'You can create a new character. <br>Press "Start Game" to create your character.' +
+                      'You can create a new character.<br>Press "Start Game" to create your character.' +
                       '</p>'
               )
           ))
         : // if not, add an icon element, a weapon element, and a data element to the div
           (charUnit.addClass(weaponStyle),
           charUnit.append($('<div class="icon' + (weaponStyle ? ' ' + weaponStyle : '') + '"></div>')),
-          charUnit.append($('<p class="wp">' + 'Weapon' + '<br>' + weapon + '</p>')),
+          charUnit.append($('<p class="wp">' + weaponType + '<br>' + weaponName + '</p>')),
           charUnit.append(
               $(
-                  '<p class="data">HR' +
+                  '<p class="data">HR: ' +
                       hr +
-                      (gr ? '　GR' + gr : '') +
+                      (gr ? ' / GR: ' + gr : '') +
                       '　' +
-                      (gender === 'M' ? '♂' : '♀') +
-                      '<br>ID:' +
-                      uid +
+                      (!gender ? '♂' : '♀') +
+                      '<br>' +
+                      normTextOutput('charIdLabel') +
+                      characterId +
                       '<br>' +
                       'Last Login' +
                       ':' +
@@ -1085,58 +1358,6 @@ const createCharUnit = function (index, name, uid, hr, gr, weapon, gender, lastL
 
     // return the div
     return charUnit;
-};
-
-const showCharSelector = function () {
-    // delete logs with class name "only"
-    clearOnlyLog();
-
-    // hide launcher_login_panel, launcher_update_process, and character selection box
-    $('.launcher_login_panel').hide();
-    $('.launcher_update_process').hide();
-    $(charSelBox).show();
-
-    // show the logout button
-    $(logoutBtn).show();
-
-    // clear the character unit box to init state
-    $(charSelUnitBox).empty();
-
-    // get character information and convert it
-    const characterInfo = $('<div>').html(
-        getAllCharData()
-            .replace(/'/g, '"')
-            .replace(/&apos;/g, "'")
-    );
-
-    // create a new character unit and append it to the character unit box
-    characterInfo.find('Character').each(function (index, element) {
-        $(charSelUnitBox).append(
-            createCharUnit(
-                index + 1,
-                $(element).attr('name'),
-                $(element).attr('uid'),
-                parseInt($(element).attr('HR'), 10),
-                parseInt($(element).attr('GR'), 10),
-                $(element).attr('weapon'),
-                $(element).attr('sex'),
-                parseInt($(element).attr('lastLogin'), 10)
-            )
-        );
-    });
-
-    // if there is no character, disable delete and start game button
-    if ($(charSelUnitBox).find('.unit').length === 0) {
-        disableElement(charDelButton, 1), disableElement('.btn_start', 1);
-    } else {
-        // if there is one character and a new hunter, disable delete button, and enable start game button
-        if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
-            disableElement(charDelButton, 1), enableElement('.btn_start', 1);
-            // normally, all buttons are enabled
-        } else {
-            enableElement(charDelButton, 1), enableElement('.btn_start', 1);
-        }
-    }
 };
 
 const charDelPolling = function () {
@@ -1653,7 +1874,7 @@ const showMaintenanceDialog = function () {
 };
 
 const showAddCharDialog = function () {
-    const createCharURL = 'https://development.rain-server.workers.dev/en';
+    const createCharURL = '';
 
     showDialog(dialogTextOutput('createChar'), [
         {
@@ -1864,7 +2085,7 @@ $(function () {
         !$(e.target).is('input') && e.preventDefault();
     });
 
-    //$(charSelUnitBox).append(createCharUnit(1, 'otya', 1, 1, 0, 'Tonfa', 'M', 0));
+    //$(charSelUnitBox).append(createCharUnit(1, 'otya', 1, 1, 0, '穿龍棍', '穿龍棍', 'M', 0));
 
     /* Click or Mouseover Event
 ====================================================*/

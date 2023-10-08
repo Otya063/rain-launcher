@@ -231,7 +231,7 @@ h1 {
         // icon
         span {
             font-size: 2rem;
-            pointer-events: none
+            pointer-events: none;
         }
 
         // movable icon
@@ -296,7 +296,7 @@ h1 {
     width: 525px;
     color: white;
     font-size: 0.8rem;
-    z-index: 1000;
+    z-index: 999;
 
     // username & server_name
     .name_srv_label {
@@ -448,6 +448,15 @@ h1 {
                     &.password_icon {
                         color: white;
                         background: #00000099;
+                    }
+
+                    // hide password btn
+                    &.hide_password {
+                        position: absolute;
+                        right: -7%;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
                     }
                 }
             }
@@ -827,9 +836,9 @@ h1 {
 =======================================================*/
 .authenticating {
     position: absolute;
-    width: 470px;
+    width: 515px;
     height: 424px;
-    left: 4%;
+    left: 2%;
     top: 22%;
     background: rgba(0, 0, 0, 0.5);
     text-shadow: 3px 0 3px #757575, 0 3px 3px #757575, -3px 0 3px #757575, 0 -3px 3px #757575;
@@ -839,7 +848,7 @@ h1 {
     .authenticating_loader {
         position: absolute;
         top: 25%;
-        left: 27%;
+        left: 30%;
         width: 200px;
         height: 200px;
         padding: 3px;
@@ -863,12 +872,16 @@ h1 {
     .authenticating_text {
         position: absolute;
         top: 50%;
-        left: 50%;
+        left: 50.5%;
         transform: translateY(-50%) translateX(-50%);
         color: white;
         font-size: 1.8rem;
         font-weight: 700;
         pointer-events: none;
+
+        &:lang(ja) {
+            left: 51%;
+        }
     }
 }
 
@@ -1028,21 +1041,17 @@ h1 {
 
                 // character weapon
                 .wp {
-                    font-size: 18px;
-                    line-height: 20px;
-                    text-align: center;
-                    font-weight: bold;
-                    display: block;
                     position: absolute;
-                    left: 90px;
-                    top: 73px;
+                    font-weight: 700;
+                    font-size: 1.6rem;
+                    line-height: 23px;
+                    width: 160px;
+                    left: 17%;
+                    top: 49%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                     white-space: nowrap;
                     cursor: pointer;
-
-                    // weapon text adjustment
-                    &:first-line {
-                        font-size: 14px;
-                    }
                 }
 
                 // character data

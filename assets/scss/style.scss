@@ -102,6 +102,7 @@ h1 {
         font-weight: 700;
         font-family: $font_title_en;
         color: white;
+        text-align: center;
         text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
         transform: translate(-50%, -50%);
 
@@ -236,7 +237,7 @@ h1 {
 
         // movable icon
         &.move {
-            z-index: 1001;
+            z-index: 1000;
             cursor: move;
         }
 
@@ -318,6 +319,16 @@ h1 {
             background: rgba(255, 255, 255, 1);
             color: black;
         }
+    }
+
+    // login user id
+    .uid_label {
+        position: absolute;
+        bottom: -50px;
+        right: 0;
+        font-size: 1.6rem;
+        overflow: hidden;
+        white-space: nowrap;
     }
 }
 
@@ -1014,8 +1025,8 @@ h1 {
                     width: 48px;
                     height: 47px;
                     position: absolute;
-                    left: 31px;
-                    top: 69px;
+                    left: 6%;
+                    top: 9%;
                     cursor: pointer;
 
                     // loop through weapon names and set corresponding weapon icon
@@ -1039,32 +1050,47 @@ h1 {
                     cursor: pointer;
                 }
 
-                // character weapon
-                .wp {
+                // weapon type
+                .wpn_type {
                     position: absolute;
                     font-weight: 700;
                     font-size: 1.6rem;
-                    line-height: 23px;
-                    width: 160px;
-                    left: 17%;
-                    top: 49%;
+                    width: 180px;
+                    left: 40px;
+                    top: 69px;
+                    cursor: pointer;
+                    font-family: $font_title_en;
+
+                    &:lang(ja) {
+                        font-family: $font_title_ja;
+                    }
+                }
+
+                .wpn_name {
+                    position: absolute;
+                    font-weight: 700;
+                    font-size: 1.6rem;
+                    width: 180px;
+                    left: 40px;
+                    top: 95px;
                     overflow: hidden;
-                    text-overflow: ellipsis;
                     white-space: nowrap;
                     cursor: pointer;
                 }
 
                 // character data
                 .data {
-                    text-align: left;
-                    font-size: 16px;
-                    line-height: 18px;
-                    display: block;
-                    white-space: nowrap;
                     position: absolute;
-                    left: 252px;
-                    top: 65px;
+                    right: 15%;
+                    top: 46%;
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                    line-height: 18px;
                     cursor: pointer;
+
+                    &:lang(ja) {
+                        right: 10%;
+                    }
                 }
             }
         }
@@ -1582,7 +1608,8 @@ h1 {
     left: 0;
     top: 0;
     display: none;
-    z-index: 1000;
+    z-index: 1001;
+    background: rgb(0 0 0 / 40%);
 
     // dialog body
     .dialog_contents {
@@ -1633,13 +1660,13 @@ h1 {
                 }
             }
 
-            // character's uid
-            .uid {
+            // character id
+            .cid {
                 font-size: 1.4rem;
             }
 
-            // input for checking uid of deleting character
-            .del_uid {
+            // input for checking hid of deleting character
+            .del_cid {
                 width: 150px;
                 height: 20px;
                 color: black;

@@ -1,7 +1,7 @@
 const normTextData = {
     ja: {
         title: 'モンスターハンター フロンティア オンライン ランチャー',
-        movableOlay: 'ランチャーウィンドウ移動可能',
+        movableOlay: 'ランチャーウィンドウ移動可能<br>（マウス左ボタンをクリック＆ホールド）',
         connectingOlay: '接続中...',
         gameStartOlay: 'ゲームを開始します',
         launcherTitle: 'モンスターハンター<br />フロンティア オンライン<br />レインランチャー',
@@ -16,7 +16,10 @@ const normTextData = {
         preferencesBtn: 'ゲーム内環境設定',
         authText: '認証中...',
         debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。</p>',
-        charIdLabel: 'キャラクターID: ',
+        readyHunt: '狩人申請可能',
+        userIdLabel: 'ユーザーID：',
+        charIdLabel: 'キャラクターID：',
+        lastOnlineLabel: '最終ログイン：',
         maintenanceText:
             '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
         gettingInfo: '<p class="info_getting">インフォメーションを取得中...</p>',
@@ -32,7 +35,7 @@ const normTextData = {
 
     en: {
         title: 'Monster Hunter Frontier Online Launcher',
-        movableOlay: 'Launcher Window Movable',
+        movableOlay: 'Launcher Window Movable<br>(By Grabbing)',
         connectingOlay: 'Connecting...',
         gameStartOlay: 'Start the Game',
         launcherTitle: 'Monster Hunter<br />　Frontier Online<br />　　Rain Launcher',
@@ -47,7 +50,10 @@ const normTextData = {
         preferencesBtn: 'In-Game Preferences',
         authText: 'Authenticating...',
         debugMode: '<p class="debug_mode">Note: Running in debug mode.</p>',
+        readyHunt: 'Ready to Hunt',
+        userIdLabel: 'User ID: ',
         charIdLabel: 'Character ID: ',
+        lastOnlineLabel: 'Last Online: ',
         maintenanceText:
             '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
         gettingInfo: '<p class="info_getting">Getting Info Data...</p>',
@@ -163,13 +169,18 @@ const msgLogTextData = {
 
 const dialogTextData = {
     ja: {
+        closeLabel: '閉じる',
+
         // Start the Game
         startGame: '<p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p>',
 
         // Add Character
-        createChar:
-            '<p>Add a new character to your account.<br>Click "Add Now" below, and your browser will open automatically.</p>',
-        createCharWait: '<p>Once you have finished adding a character,<br>click "Refresh" below.</p>',
+        cantCreateChar: '<p>これ以上キャラクターを追加することはできません。</p>',
+        //createChar: '<p>新規キャラクターをアカウント追加します。<br>下記「今すぐ追加」を押してください。（ブラウザが自動的に開きます。）</p>',
+        createChar: '<p>新規キャラクターをアカウントへ追加します。<br>下記の「今すぐ追加」を押してください。</p>',
+        createCharLabel1: '今すぐ追加',
+        createCharWait: '<p>キャラクターの追加が完了したら、<br>下記の「再ログイン」を押してください。</p>',
+        createCharLabel2: '再ログイン',
 
         // Delete Character
         delCharPrefix: 'Do you really want to delete character',
@@ -179,7 +190,7 @@ const dialogTextData = {
         delCharFinalConf:
             '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
         delCharUidInput:
-            "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+            "<input class='del_cid' type='text' name='del_cid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
         delLastCharDone:
             'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
         delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
@@ -193,13 +204,19 @@ const dialogTextData = {
     },
 
     en: {
+        closeLabel: 'Close',
+
         // Start the Game
         startGame: '<p class="caution">Are you sure to start the game with the following character?</p>',
 
         // Add Character
-        createChar:
-            '<p>Add a new character to your account.<br>Click "Add Now" below, and your browser will open automatically.</p>',
-        createCharWait: '<p>Once you have finished adding a character,<br>click "Refresh" below.</p>',
+        cantCreateChar: '<p>No more characters can be added.</p>',
+        //createChar: '<p>Add a new character to your account.<br>Click "Add Now" below. (Your browser will open automatically.)</p>',
+        createChar: '<p>Add a new character to your account.<br>Click "Add Now" below.</p>',
+        createCharLabel1: 'Add Now',
+        //createCharWait: '<p>Once you have finished purchasing a character,<br>click "Re-Login" below.</p>',
+        createCharWait: '<p>Once you have finished adding a character,<br>click "Re-Login" below.</p>',
+        createCharLabel2: 'Re-Login',
 
         // Delete Character
         delCharPrefix: 'Do you really want to delete character',
@@ -209,7 +226,7 @@ const dialogTextData = {
         delCharFinalConf:
             '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
         delCharUidInput:
-            "<input class='del_uid' type='text' name='del_uid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+            "<input class='del_cid' type='text' name='del_cid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
         delLastCharDone:
             'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
         delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
@@ -411,12 +428,12 @@ const getAllCharData = function () {
     return window.external.getAllCharData();
 };
 
-const deleteCharacter = function (uid) {
-    return window.external.deleteCharacter(uid);
+const deleteCharacter = function (hid) {
+    return window.external.deleteCharacter(hid);
 };
 
-const selectCharacter = function (name, uid) {
-    window.external.selectCharacter(name, uid);
+const selectCharacter = function (name, hid) {
+    window.external.selectCharacter(name, hid);
 };
 
 const playSound = function (soundType) {
@@ -452,7 +469,7 @@ const getQueryParams = function (key) {
 
 const initNormTextData = function () {
     $('title').text(normTextOutput('title'));
-    $('.movable_overlay_text').text(normTextOutput('movableOlay'));
+    $('.movable_overlay_text').html(normTextOutput('movableOlay'));
     $('.connecting_overlay p').text(normTextOutput('connectingOlay'));
     $('.game_start_overlay p').text(normTextOutput('gameStartOlay'));
     $('.launcher_title').html(normTextOutput('launcherTitle'));
@@ -487,7 +504,7 @@ const toggleSound = function () {
         localStorage.setItem('SoundMode', 'false');
 
         $(
-            '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+            '.minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
                 ', ' +
                 srvListEachItem +
@@ -500,8 +517,10 @@ const toggleSound = function () {
                 ', ' +
                 charDelButton +
                 ', ' +
-                ' .btn_start, .bnr'
+                ' .btn_start, .bnr, .hide_password'
         ).removeClass('sound_on');
+        $('.username_input').removeAttr('onkeydown');
+        $('.password_input').removeAttr('onkeydown');
 
         $('.sound_handle').html('<span class="material-symbols-outlined">volume_off</span>');
         soundMode = false;
@@ -509,7 +528,7 @@ const toggleSound = function () {
         localStorage.setItem('SoundMode', 'true');
 
         $(
-            '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+            '.minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
                 ', ' +
                 srvListEachItem +
@@ -522,8 +541,10 @@ const toggleSound = function () {
                 ', ' +
                 charDelButton +
                 ', ' +
-                ' .btn_start, .bnr'
+                ' .btn_start, .bnr, .hide_password'
         ).addClass('sound_on');
+        $('.username_input').attr('onkeydown', "playSound('IDR_WAV_SEL')");
+        $('.password_input').attr('onkeydown', "playSound('IDR_WAV_SEL')");
 
         $('.sound_handle').html('<span class="material-symbols-outlined">volume_up</span>');
         soundMode = true;
@@ -762,10 +783,10 @@ const requestAuthentication = function (username) {
 
                 if (isExistingUser) {
                     // if the user exists, go to the process for checking if the account is linked with rain discord
-                    const userId = result['data'].id;
-                    loginUserId = userId;
+                    const uid = result['data'].id;
+                    loginUserId = uid;
 
-                    ReqDataFromRainWeb('getLinkedAccByUId', userId).done(function (result) {
+                    ReqDataFromRainWeb('getLinkedAccByUId', uid).done(function (result) {
                         const isLinkedAcc = result['data'] !== null;
 
                         if (isLinkedAcc) {
@@ -918,8 +939,10 @@ const stopLoginPolling = function () {
 const afterLoginSuccess = function (serverName) {
     maintenanceData[serverName]
         ? (showMaintenanceDialog(),
+          hideAuthenticating(),
           $('.launcher_login_panel').hide(),
           $(logoutBtn).show(),
+          $('.name_srv_label').text($(inputUsername).val() + '@' + $(serverSelBtn).text()),
           $('.launcher_update_process').hide())
         : showCharSelector();
 
@@ -955,6 +978,9 @@ const onAuthError = function (message, colorType) {
 };
 
 const backToBeforeLogin = function () {
+    // refresh logs
+    clearOnlyLog();
+
     // hide update display
     $('.launcher_update_process').hide();
 
@@ -972,6 +998,12 @@ const backToBeforeLogin = function () {
 
     // hide maintenance display
     $('.maintenance').hide();
+
+    // reset user id label
+    $('.uid_label').text('');
+
+    // reset variable
+    loginUserId = '';
 };
 
 const startUpLauncher = function () {
@@ -992,6 +1024,9 @@ const startUpLauncher = function () {
 
     // enable scroll bar on server selector box
     new scrollBarHandler('.srv_sel_box');
+
+    const lang = getQueryParams('l');
+    $('.game_logo').attr('src', '/assets/img/logo/' + lang + '.png');
 
     // login button click event
     $(loginBtn).click(function () {
@@ -1019,7 +1054,7 @@ const startUpLauncher = function () {
         localStorage.getItem('SoundMode') === 'true' || localStorage.getItem('SoundMode') === null ? true : false;
     !soundMode &&
         ($(
-            '.move, .minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+            '.minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
                 ', ' +
                 srvListEachItem +
@@ -1032,8 +1067,10 @@ const startUpLauncher = function () {
                 ', ' +
                 charDelButton +
                 ', ' +
-                ' .btn_start, .bnr'
+                ' .btn_start, .bnr, .hide_password'
         ).removeClass('sound_on'),
+        $('.username_input').removeAttr('onkeydown'),
+        $('.password_input').removeAttr('onkeydown'),
         $('.sound_handle').html('<span class="material-symbols-outlined">volume_off</span>'));
 
     // set check state for rememberMeCheck
@@ -1054,8 +1091,10 @@ const charSelBox = '.character_selection',
     charDelButton = charSelBox + ' .char_del';
 
 let delCharName = '',
-    delCharUid = '',
-    loginUserId = '';
+    delCharHid = '',
+    delCharId = '',
+    loginUserId = '',
+    hunterIds = [];
 
 const convUnixToDate = function (date) {
     // convert unix timestamp to a date object
@@ -1097,6 +1136,9 @@ const convHrpToHr = function (hrp) {
 
         case 1:
             return 1;
+
+        default:
+            return 0;
     }
 };
 
@@ -1122,11 +1164,13 @@ const convWpnNameToEng = function (wpnJaName) {
 };
 
 const convEntities = function (name) {
+    const characterName = String(name);
+
     // define an object of special characters and their corresponding entity references
     const entities = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
 
     // replace special characters with their entity references using regex and the entities object
-    return name.replace(/[&<>"]/g, function (m) {
+    return characterName.replace(/[&<>"]/g, function (m) {
         return entities[m];
     });
 };
@@ -1141,17 +1185,17 @@ const showCharSelector = function () {
     // clear the character unit box to init state
     $(charSelUnitBox).empty();
 
-    const userId = loginUserId;
+    const uid = loginUserId;
 
-    ReqDataFromRainWeb('getCharactersByUId', userId ? userId : 0, lang)
+    ReqDataFromRainWeb('getCharactersByUId', uid ? uid : 0, lang)
         .done(function (result) {
             if (!result['success']) {
                 console.error('Successfully accessed RainWeb, but failed to get data.');
 
                 $(charSelUnitBox).append(
                     createCharUnit(
-                        1,
                         'Failed to Get Character Data',
+                        'Unknown',
                         'Unknown',
                         1,
                         '',
@@ -1164,19 +1208,33 @@ const showCharSelector = function () {
             } else {
                 console.log('Successfully accessed RainWeb and get data.');
 
+                const characterInfo = $('<div>').html(
+                    getAllCharData()
+                        .replace(/'/g, '"')
+                        .replace(/&apos;/g, "'")
+                );
+                characterInfo.find('Character').each(function (index, element) {
+                    hunterIds.push($(element).attr('hid'));
+                });
                 const res = result['data'].sort(function (a, b) {
                     return a.id - b.id;
                 });
 
+                // add hunter id to characters data from rainweb
+                res.forEach(function (character, index) {
+                    if (hunterIds[index] !== undefined) {
+                        character.hunterId = hunterIds[index];
+                    }
+                });
+
                 if (res.length !== 0) {
                     objectEntries(res).map(function (entry) {
-                        const index = entry[0];
                         const character = entry[1];
 
                         $(charSelUnitBox).append(
                             createCharUnit(
-                                index + 1,
                                 character.name,
+                                character.hunterId,
                                 character.id,
                                 convHrpToHr(character.hrp),
                                 character.gr,
@@ -1199,9 +1257,9 @@ const showCharSelector = function () {
                     characterInfo.find('Character').each(function (index, element) {
                         $(charSelUnitBox).append(
                             createCharUnit(
-                                index + 1,
                                 $(element).attr('name'),
-                                $(element).attr('uid'),
+                                $(element).attr('hid'),
+                                'No Data',
                                 parseInt($(element).attr('HR'), 10),
                                 parseInt($(element).attr('GR'), 10),
                                 $(element).attr('weapon'),
@@ -1214,8 +1272,8 @@ const showCharSelector = function () {
                 } else {
                     $(charSelUnitBox).append(
                         createCharUnit(
-                            1,
                             'Failed to Get Character Data',
+                            'Unknown',
                             'Unknown',
                             1,
                             '',
@@ -1243,9 +1301,9 @@ const showCharSelector = function () {
                 characterInfo.find('Character').each(function (index, element) {
                     $(charSelUnitBox).append(
                         createCharUnit(
-                            index + 1,
                             $(element).attr('name'),
-                            $(element).attr('uid'),
+                            $(element).attr('hid'),
+                            'No Data',
                             parseInt($(element).attr('HR'), 10),
                             parseInt($(element).attr('GR'), 10),
                             $(element).attr('weapon'),
@@ -1258,8 +1316,8 @@ const showCharSelector = function () {
             } else {
                 $(charSelUnitBox).append(
                     createCharUnit(
-                        1,
                         'Failed to Get Character Data',
+                        'Unknown',
                         'Unknown',
                         1,
                         '',
@@ -1279,45 +1337,53 @@ const showCharSelector = function () {
             $(charSelBox).show();
 
             // show logout container
+            $('.uid_label').text(normTextOutput('userIdLabel') + loginUserId);
             $(logoutBtn).show();
-            const idSrvNameLabel = $(inputUsername).val() + '@' + $(serverSelBtn).text();
-            $('.name_srv_label').text(idSrvNameLabel);
+            $('.name_srv_label').text($(inputUsername).val() + '@' + $(serverSelBtn).text());
 
             // delete logs with class name "only"
             clearOnlyLog();
-        });
 
-    // if there is no character, disable delete and start game button
-    if ($(charSelUnitBox).find('.unit').length === 0) {
-        disableElement(charDelButton, 1), disableElement('.btn_start', 1);
-    } else {
-        // if there is one character and a new hunter, disable delete button, and enable start game button
-        if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
-            disableElement(charDelButton, 1), enableElement('.btn_start', 1);
-            // normally, all buttons are enabled
-        } else {
-            enableElement(charDelButton, 1), enableElement('.btn_start', 1);
-        }
-    }
+            // if there is no character, disable delete and start game button
+            if ($(charSelUnitBox).find('.unit').length === 0) {
+                disableElement(charDelButton, 1), disableElement('.btn_start', 1);
+            } else {
+                // if there is one character and a new hunter, disable delete button, and enable start game button
+                if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
+                    disableElement(charDelButton, 1), enableElement('.btn_start', 1);
+                    // normally, all buttons are enabled
+                } else {
+                    enableElement(charDelButton, 1), enableElement('.btn_start', 1);
+                }
+            }
+        });
 };
 
-const createCharUnit = function (index, name, characterId, hr, gr, weaponType, weaponName, gender, lastLogin) {
+const createCharUnit = function (name, hunterId, characterId, hr, gr, weaponType, weaponName, gender, lastLogin) {
+    const charName = convEntities(name) === '' ? normTextOutput('readyHunt') : convEntities(name);
+
+    let wpnClass = String(weaponType);
     // convert weapon name for style usage
-    let weaponStyle = weaponType.replace(/\s+/g, '').replace(/&/g, 'And');
-    weaponStyle = weaponStyle.toLowerCase().charAt(0) + weaponStyle.slice(1);
+    wpnClass = wpnClass.replace(/\s+/g, '').replace(/&/g, 'And');
+    wpnClass = wpnClass.toLowerCase().charAt(0) + wpnClass.slice(1);
 
     // weapon name conversion
     const lang = getQueryParams('l');
-    lang === 'ja' && (weaponStyle = convWpnNameToEng(weaponType));
+    lang === 'ja' && (wpnClass = convWpnNameToEng(weaponType));
 
     // generate a new div element with the given attributes
     const charUnit = $(
-        '<div class="unit swiper-slide" uid="' + characterId + '" name="' + name + '" hr="' + hr + '" to="0"></div>'
+        '<div class="unit swiper-slide" hid="' +
+            hunterId +
+            '" cid="' +
+            characterId +
+            '" name="' +
+            name +
+            '" to="0"></div>'
     );
 
-    // add a number element, and a name element to the div
-    charUnit.append($('<div class="num n' + index + '"></div>'));
-    charUnit.append($('<p class="name">' + convEntities(name) + '</p>'));
+    // character name
+    charUnit.append($('<p class="name">' + charName + '</p>'));
 
     hr === 0
         ? // if the character is new (HR is 0), add a new class and a new element to the div
@@ -1329,10 +1395,12 @@ const createCharUnit = function (index, name, characterId, hr, gr, weaponType, w
                       '</p>'
               )
           ))
-        : // if not, add an icon element, a weapon element, and a data element to the div
-          (charUnit.addClass(weaponStyle),
-          charUnit.append($('<div class="icon' + (weaponStyle ? ' ' + weaponStyle : '') + '"></div>')),
-          charUnit.append($('<p class="wp">' + weaponType + '<br>' + weaponName + '</p>')),
+        : (charUnit.addClass(wpnClass), // add weapon class for background
+          charUnit.append($('<div class="icon' + (wpnClass ? ' ' + wpnClass : '') + '"></div>')), // weapon icon
+          charUnit.append(
+              // weapon type and name
+              $('<p class="wpn_type">≪ ' + weaponType + ' ≫</p><p class="wpn_name">' + weaponName + '</p>')
+          ),
           charUnit.append(
               $(
                   '<p class="data">HR: ' +
@@ -1344,8 +1412,7 @@ const createCharUnit = function (index, name, characterId, hr, gr, weaponType, w
                       normTextOutput('charIdLabel') +
                       characterId +
                       '<br>' +
-                      'Last Login' +
-                      ':' +
+                      normTextOutput('lastOnlineLabel') +
                       convUnixToDate(lastLogin) +
                       '</p>'
               )
@@ -1378,8 +1445,8 @@ const charDelPolling = function () {
         case 'DEL_SUCCESS':
             // switch the dialog display according to the number of characters owned
             1 < $(charSelUnit).length
-                ? showDelNormCharDoneDialog(delCharName, delCharUid)
-                : showDelLastCharDoneDialog(delCharName, delCharUid);
+                ? showDelNormCharDoneDialog(delCharName, delCharId)
+                : showDelLastCharDoneDialog(delCharName, delCharId);
             break;
 
         case 'DEL_ERROR_NET':
@@ -1392,36 +1459,37 @@ const charDelPolling = function () {
 };
 
 const charDelReset = function () {
-    ((delCharName = ''), (delCharUid = '')), hideDialog();
+    ((delCharName = ''), (delCharHid = '')), hideDialog();
 };
 
 const charDelete = function () {
-    deleteCharacter(delCharUid),
+    deleteCharacter(delCharHid),
         setTimeout(function () {
             charDelPolling();
         }, 1000);
 };
 
-const checkDelID = function (name, uid) {
-    uid === $('.del_uid').val() ? showWaitDelCharDialog(name, uid) : showWaitDelCharUidErrDialog(name, uid);
+const checkDelID = function (name, cid) {
+    cid === $('.del_cid').val() ? showWaitDelCharDialog(name, cid) : showWaitDelCharUidErrDialog(name, cid);
 };
 
 const prepareStartGame = function () {
     // play a sound
     soundMode && playSound('IDR_WAV_OK');
 
-    // get the current character, and set its uid and name to variables respectively
+    // get the current character, and set its hid and name to variables respectively
     const currentCharData = getCurrentCharData();
-    const currentCharUid = currentCharData.attr('uid');
+    const currentCharHid = currentCharData.attr('hid');
+    const currentCharId = currentCharData.attr('cid');
     const currentCharName = currentCharData.attr('name');
 
-    // show a dialog box with the character's name and uid
-    showStartGameDialog(currentCharName, currentCharUid);
+    // show a dialog box with the character's name and hid
+    showStartGameDialog(currentCharName, currentCharHid, currentCharId);
 };
 
-const startTheGame = function (uid) {
+const startTheGame = function (hid) {
     // select the specified character
-    selectCharacter(uid, uid);
+    selectCharacter(hid, hid);
 
     // play a login sound
     soundMode && playSound('IDR_WAV_LOGIN');
@@ -1474,7 +1542,7 @@ const animSequence = {
     ],
 };
 
-const prepareBeginUpdate = function (uid) {
+const prepareBeginUpdate = function (hid) {
     // initial settings on update display
     disableElement(logoutBtn, 1);
     $(fileProgressBar).width(0);
@@ -1498,11 +1566,11 @@ const prepareBeginUpdate = function (uid) {
         })
         .always(function () {
             const update = updateEnabled ? window.external.startUpdate() : false;
-            afterCheckUpdateMode(uid, update);
+            afterCheckUpdateMode(hid, update);
         });
 };
 
-const afterCheckUpdateMode = function (uid, update) {
+const afterCheckUpdateMode = function (hid, update) {
     $('.connecting_overlay').fadeOut(200);
 
     update
@@ -1513,17 +1581,17 @@ const afterCheckUpdateMode = function (uid, update) {
           $(progressStateMessage).text(updateTextOutput('progressState', 0)),
           $(nextActionMessage).text(updateTextOutput('nextActions', 0)),
           $('.launcher_update_process').show(),
-          beginUpdateProcess(uid),
+          beginUpdateProcess(hid),
           setTimeout(function () {
               updateProcessPct();
           }, 50))
         : // if not needed, directly proceed to start game
           setTimeout(function () {
-              startTheGame(uid);
+              startTheGame(hid);
           }, 420);
 };
 
-const beginUpdateProcess = function (uid) {
+const beginUpdateProcess = function (hid) {
     // clear any existing animation sequence
     clearAnimSq();
 
@@ -1544,21 +1612,21 @@ const beginUpdateProcess = function (uid) {
             if (animSequence.loop.length <= normAnimSeqIndex) {
                 normAnimSeqIndex = 0;
             }
-            beginUpdateProcess(uid);
+            beginUpdateProcess(hid);
         } else {
             $(progressStateMessage).text(updateTextOutput('progressState', 1));
             $(nextActionMessage).text(updateTextOutput('nextActions', 1));
             if (animSequence.loop.length <= normAnimSeqIndex) {
                 finAnimSeqIndex = 0;
-                finishUpdateProcess(uid);
+                finishUpdateProcess(hid);
             } else {
-                beginUpdateProcess(uid);
+                beginUpdateProcess(hid);
             }
         }
     }, currentFrame.delay);
 };
 
-const finishUpdateProcess = function (uid) {
+const finishUpdateProcess = function (hid) {
     // clear any existing animation sequence
     clearAnimSq();
 
@@ -1579,12 +1647,12 @@ const finishUpdateProcess = function (uid) {
                 // play sound effect if next sequence is the last one
                 soundMode && playSound('IDR_NIKU');
             }
-            finishUpdateProcess(uid);
+            finishUpdateProcess(hid);
         } else {
             // initialize after animation is completed
             clearAnimSq();
             setTimeout(function () {
-                startTheGame(uid);
+                startTheGame(hid);
             }, 1100);
         }
     }, currentFrame.delay);
@@ -1873,12 +1941,16 @@ const showMaintenanceDialog = function () {
     showDialog(dialogTextOutput('serverMaint'), [{ label: 'Close', cmd: 'hideDialog();' }]);
 };
 
+const showCantAddCharDialog = function () {
+    showDialog(dialogTextOutput('cantCreateChar'), [{ label: 'OK', cmd: 'hideDialog();' }]);
+};
+
 const showAddCharDialog = function () {
-    const createCharURL = '';
+    const createCharURL = '#';
 
     showDialog(dialogTextOutput('createChar'), [
         {
-            label: 'Add Now',
+            label: dialogTextOutput('createCharLabel1'),
             cmd:
                 'loginRain("' +
                 $(inputUsername).val() +
@@ -1891,50 +1963,52 @@ const showAddCharDialog = function () {
                 createCharURL +
                 '"); showWaitCharAddDialog();',
         },
-        { label: 'Not Add', cmd: 'hideDialog();' },
+        { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
     ]);
 };
 
 const showWaitCharAddDialog = function () {
-    showDialog(dialogTextOutput('createCharWait'), [{ label: 'Refresh', cmd: 'beginAuthProcess(); hideDialog();' }]);
+    showDialog(dialogTextOutput('createCharWait'), [
+        { label: dialogTextOutput('createCharLabel2'), cmd: 'beginAuthProcess(); hideDialog();' },
+    ]);
 };
 
-const showDelCharDialog = function (name, uid) {
+const showDelCharDialog = function (name, cid) {
     showDialog(
         '<p>' +
             dialogTextOutput('delCharPrefix') +
             ' "' +
             name +
-            '"<span class="uid">（ID: ' +
-            uid +
+            '"<span class="cid">（ID: ' +
+            cid +
             '）</span>?</p>' +
             dialogTextOutput('delCharFirstConf'),
         [
-            { label: 'Delete', cmd: 'showDelCharDialog2("' + name + '", "' + uid + '");', isStandby: true },
+            { label: 'Delete', cmd: 'showDelCharDialog2("' + name + '", "' + cid + '");', isStandby: true },
             { label: 'Cancel', cmd: 'charDelReset();' },
         ],
         1000
     );
 };
 
-const showDelCharDialog2 = function (name, uid) {
+const showDelCharDialog2 = function (name, cid) {
     if (1 < $(charSelUnit).length) {
         // if user still has more than one character, skip this function
-        showDelCharDialog3(name, uid);
+        showDelCharDialog3(name, cid);
     } else {
         showDialog(
             '<p>' +
                 dialogTextOutput('delCharPrefix') +
                 ' "' +
                 name +
-                '"<span class="uid">（ID: ' +
-                uid +
+                '"<span class="cid">（ID: ' +
+                cid +
                 '）</span>?</p>' +
                 dialogTextOutput('delLastChar'),
             [
                 {
                     label: 'Delete',
-                    cmd: 'showDelCharDialog3("' + name + '", "' + uid + '");',
+                    cmd: 'showDelCharDialog3("' + name + '", "' + cid + '");',
                     isStandby: true,
                 },
                 { label: 'Cancel', cmd: 'charDelReset();' },
@@ -1944,44 +2018,44 @@ const showDelCharDialog2 = function (name, uid) {
     }
 };
 
-const showDelCharDialog3 = function (name, uid) {
+const showDelCharDialog3 = function (name, cid) {
     showDialog(
         '<p>' +
             dialogTextOutput('delCharPrefix') +
             ' "' +
             name +
-            '"<span class="uid">（ID: ' +
-            uid +
+            '"<span class="cid">（ID: ' +
+            cid +
             '）</span>?</p>' +
             dialogTextOutput('delCharFinalConf') +
             dialogTextOutput('delCharUidInput'),
         [
-            { label: 'Delete', cmd: 'checkDelID("' + name + '", "' + uid + '");', isStandby: true },
+            { label: 'Delete', cmd: 'checkDelID("' + name + '", "' + cid + '");', isStandby: true },
             { label: 'Cancel', cmd: 'charDelReset();' },
         ],
         1000
     );
 };
 
-const showWaitDelCharUidErrDialog = function (name, uid) {
+const showWaitDelCharUidErrDialog = function (name, cid) {
     showDialog(
         '<p>Could not delete character' +
             ' "' +
             name +
-            '"<span class="uid">（ID: ' +
-            uid +
+            '"<span class="cid">（ID: ' +
+            cid +
             '）</span>.</p>' +
             dialogTextOutput('delCharErrMatch'),
         [{ label: 'Close', cmd: 'charDelReset();' }]
     );
 };
 
-const showWaitDelCharDialog = function (name, uid) {
+const showWaitDelCharDialog = function (name, cid) {
     showDialog(
         '<p>"' +
             name +
-            '"<span class="uid">（ID: ' +
-            uid +
+            '"<span class="hid">（ID: ' +
+            cid +
             '）</span>' +
             'is being deleted.</p><p>Please wait a moment.</p>'
     ),
@@ -1994,20 +2068,20 @@ const showFailDelCharDialog = function (numOwnedChars) {
     ]);
 };
 
-const showDelNormCharDoneDialog = function (name, uid) {
+const showDelNormCharDoneDialog = function (name, cid) {
     showDialog(
-        '<p>Character' + ' "' + name + '"<span class="uid">（ID: ' + uid + '）</span>' + 'has been deleted.</p>',
+        '<p>Character' + ' "' + name + '"<span class="cid">（ID: ' + cid + '）</span>' + 'has been deleted.</p>',
         [{ label: 'Close', cmd: 'beginAuthProcess(); charDelReset();' }]
     );
 };
 
-const showDelLastCharDoneDialog = function (name, uid) {
+const showDelLastCharDoneDialog = function (name, cid) {
     showDialog(
         '<p>The last character' +
             ' "' +
             name +
-            '"<span class="uid">（ID: ' +
-            uid +
+            '"<span class="hid">（ID: ' +
+            cid +
             '）</span>' +
             'has been deleted,<br>' +
             dialogTextOutput('delLastCharDone'),
@@ -2015,18 +2089,18 @@ const showDelLastCharDoneDialog = function (name, uid) {
     );
 };
 
-const showStartGameDialog = function (name, uid) {
+const showStartGameDialog = function (name, hid, cid) {
     showDialog(
         dialogTextOutput('startGame') +
             '<p style="font-size: 2.1rem;">"' +
             name +
-            '"<span class="uid">（ID: ' +
-            uid +
+            '"<span class="cid">（ID: ' +
+            cid +
             '）</span>',
         [
             {
                 label: 'Yes',
-                cmd: 'prepareBeginUpdate("' + uid + '"); hideDialog();',
+                cmd: 'prepareBeginUpdate("' + hid + '"); hideDialog();',
                 //noSound: true,
             },
             {
@@ -2085,7 +2159,7 @@ $(function () {
         !$(e.target).is('input') && e.preventDefault();
     });
 
-    //$(charSelUnitBox).append(createCharUnit(1, 'otya', 1, 1, 0, '穿龍棍', '穿龍棍', 'M', 0));
+    //$(charSelUnitBox).append(createCharUnit('otya', 1, 1, 1, 0, 'Tonfa', 'Tonfa', 'M', 0));
 
     /* Click or Mouseover Event
 ====================================================*/
@@ -2101,22 +2175,27 @@ $(function () {
 
     // add a character
     $(charAddButton).click(function () {
-        $(this).hasClass('disabled') || showAddCharDialog();
+        if ($(charSelUnitBox).find('.unit').length >= 3) {
+            showCantAddCharDialog();
+        } else {
+            $(this).hasClass('disabled') || showAddCharDialog();
+        }
     });
 
     // delete a character
     $(charDelButton).click(function () {
         // check if the clicked element is not disabled and a character is not already being deleted
-        if (!$(this).hasClass('disabled') && !delCharUid && !delCharName) {
+        if (!$(this).hasClass('disabled') && !delCharHid && !delCharName) {
             // get the user data of the currently selected character
             const currentCharData = getCurrentCharData();
 
             // set the name and UID of the character to be deleted
             delCharName = currentCharData.attr('name');
-            delCharUid = currentCharData.attr('uid');
+            delCharHid = currentCharData.attr('hid');
+            delCharId = currentCharData.attr('cid');
 
             // show a confirmation dialog for deleting the character
-            showDelCharDialog(delCharName, delCharUid);
+            showDelCharDialog(delCharName, delCharId);
         }
     });
 });

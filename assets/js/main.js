@@ -13,17 +13,25 @@ const normTextData = {
         loginBtnText: 'ログイン',
         rememberMeBtn: '認証情報を記憶する',
         forgetCredsBtn: 'ユーザー名/パスワードを忘れたら',
-        preferencesBtn: 'ゲーム内環境設定',
+        preferencesBtn: '環境設定',
         authText: '認証中...',
+        charAddBtnText: 'キャラクターを追加する',
+        charDelBtnText: 'キャラクターを削除する',
+        startGameBtnText: 'ゲームスタート',
         debugMode: '<p class="debug_mode">注意：デバッグモードで実行中。</p>',
         readyHunt: '狩人申請可能',
         userIdLabel: 'ユーザーID：',
         charIdLabel: 'キャラクターID：',
         lastOnlineLabel: '最終ログイン：',
+        genderLabelMale: '男性',
+        genderLabelFemale: '女性',
+        newMsg1: '<p class="new_msg1">キャラクターを新規作成可能です。</p>',
+        newMsg2: '<p class="new_msg2">「ゲームスタート」ボタンを押して、キャラクターを作成しましょう。</p>',
         maintenanceText:
             '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
-        gettingInfo: '<p class="info_getting">インフォメーションを取得中...</p>',
-        failedGetInfo: '<p class="failed_get_info">インフォメーション取得に失敗</p>',
+        gettingInfo: '<p class="info_getting">インフォメーションデータ取得中...</p>',
+        failedGetBnr: '<p class="failed_get_bnr">バナーデータ取得に失敗</p>',
+        failedGetInfo: '<p class="failed_get_info">インフォメーションデータ取得に失敗</p>',
         important: '重要なお知らせ',
         defects: '不具合・トラブル情報',
         management: '運営・サービス情報',
@@ -47,17 +55,25 @@ const normTextData = {
         loginBtnText: 'LOG IN',
         rememberMeBtn: 'Remember Me',
         forgetCredsBtn: 'Forgot your credentials?',
-        preferencesBtn: 'In-Game Preferences',
+        preferencesBtn: 'Preferences',
         authText: 'Authenticating...',
+        charAddBtnText: 'Add New Character',
+        charDelBtnText: 'Delete Character',
+        startGameBtnText: 'START GAME',
         debugMode: '<p class="debug_mode">Note: Running in debug mode.</p>',
         readyHunt: 'Ready to Hunt',
         userIdLabel: 'User ID: ',
         charIdLabel: 'Character ID: ',
         lastOnlineLabel: 'Last Online: ',
+        genderLabelMale: 'Male',
+        genderLabelFemale: 'Female',
+        newMsg1: '<p class="new_msg1">You can create a new character.</p>',
+        newMsg2: '<p class="new_msg2">Press "Start Game" to create your character.</p>',
         maintenanceText:
             '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
-        gettingInfo: '<p class="info_getting">Getting Info Data...</p>',
-        failedGetInfo: '<p class="failed_get_info">Failed to Get Information</p>',
+        gettingInfo: '<p class="info_getting">Getting Information Data...</p>',
+        failedGetBnr: '<p class="failed_get_bnr">Failed to Get Banner Data</p>',
+        failedGetInfo: '<p class="failed_get_info">Failed to Get Information Data</p>',
         important: 'Important Info',
         defects: 'Defects and Troubles Info',
         management: 'Management and Service Info',
@@ -72,7 +88,7 @@ const asideMenuData = {
     ja: {
         member: { name: 'メンバーサイト', url: '', iconName: 'home' },
         manual: { name: 'マニュアル', url: '', iconName: 'book_3' },
-        inquiry: { name: 'お問い合わせ', url: '', iconName: 'forum' },
+        //inquiry: { name: 'お問い合わせ', url: '', iconName: 'forum' },
         mypage: { name: 'マイページ', url: '', iconName: 'badge' },
         discord: { name: 'ディスコード', url: 'https://discord.gg/TcpkpUpeGw', iconName: 'diversity_1' },
     },
@@ -80,7 +96,7 @@ const asideMenuData = {
     en: {
         member: { name: 'Member Site', url: '', iconName: 'home' },
         manual: { name: 'Manual', url: '', iconName: 'book_3' },
-        inquiry: { name: 'Inquiry', url: '', iconName: 'forum' },
+        //inquiry: { name: 'Inquiry', url: '', iconName: 'forum' },
         mypage: { name: 'My Page', url: '', iconName: 'badge' },
         discord: { name: 'Discord', url: 'https://discord.gg/TcpkpUpeGw', iconName: 'diversity_1' },
     },
@@ -120,11 +136,11 @@ const msgLogTextData = {
         initMsg: 'ユーザー名、パスワードを入力した後、<br>サーバーを選択して「ログイン」ボタンを押してください。',
         authSuccess: '認証正常終了。<br>まもなくキャラクター選択画面が表示されます。',
         webAccessErr:
-            'レイン公式ウェブサイトへのアクセスに失敗しました。<br>インターネットの接続状況に問題がない場合は、直ちにレイン管理者までご報告ください。',
-        noSrvSelected: '接続先サーバーが選択されていません。選択リストより、サーバーをご選択ください。',
-        noUsernamePass: '初めに、ユーザー名とパスワードをご入力ください。',
+            'レイン公式サイトへのアクセスに失敗しました。<br>ご自身のインターネット接続状況に問題がない場合は、直ちにレイン管理者までご報告ください。',
+        noSrvSelected: '接続先サーバーが選択されていません。選択リストより、サーバーを選択してください。',
+        noUsernamePass: '初めに、ユーザー名とパスワードを入力してください。',
         noExistingUser:
-            '入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度ご確認ください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。',
+            '入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。',
         noLinkedAcc:
             'レインディスコードとの連携が完了していないゲームアカウントです。<br>アカウント連携が完了してから、再度お試しください。',
         suspendedAcc: 'このアカウントは凍結されています。',
@@ -146,7 +162,7 @@ const msgLogTextData = {
         initMsg: 'After entering your username and password,<br>please select a server and press the "Log In" button.',
         authSuccess: 'Authenticated successfully.<br>The character selection screen will appear soon.',
         webAccessErr:
-            'Failed to access to the official Rain website.<br>Please report to Rain Admins immediately if there is no problem with your Internet connection.',
+            'Failed to access to the Rain official website.<br>Please report to Rain Admins immediately if there is no problem with your Internet connection.',
         noSrvSelected: 'The accessed server is not selected. Please select a server from the selection list.',
         noUsernamePass: 'First, please enter your username and password.',
         noExistingUser:
@@ -169,74 +185,95 @@ const msgLogTextData = {
 
 const dialogTextData = {
     ja: {
+        charIdPart: '」<span class="cid">[キャラクターID：',
+
+        // dialog labels
+        yesLabel: 'はい',
+        noLabel: 'いいえ',
         closeLabel: '閉じる',
+        addLabel: '追加する',
+        restartLabel: '再起動する',
+        delCharLabel: '削除する',
 
-        // Start the Game
-        startGame: '<p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p>',
+        // start the game
+        startGame: '<p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p><p>「',
 
-        // Add Character
-        cantCreateChar: '<p>これ以上キャラクターを追加することはできません。</p>',
-        //createChar: '<p>新規キャラクターをアカウント追加します。<br>下記「今すぐ追加」を押してください。（ブラウザが自動的に開きます。）</p>',
-        createChar: '<p>新規キャラクターをアカウントへ追加します。<br>下記の「今すぐ追加」を押してください。</p>',
-        createCharLabel1: '今すぐ追加',
-        createCharWait: '<p>キャラクターの追加が完了したら、<br>下記の「再ログイン」を押してください。</p>',
-        createCharLabel2: '再ログイン',
+        // add Character
+        cantAddChar:
+            '<p>これ以上キャラクターを追加することはできません。</p><p class="caution">キャラクターの保有可能数は、３体が上限です。</p>',
+        addChar: '<p>新規キャラクターをアカウントへ追加します。<br>下記の「追加する」を押してください。</p>',
+        addCharWait: '<p>キャラクターを追加しています。</p><p>しばらくお待ちください。</p>',
+        addCharDone:
+            '<p>新規キャラクターの追加が完了しました。<br>下記の「再起動する」を押して、ランチャーを再起動してください。</p>',
+        addCharErrNorm:
+            '<p class="warning">キャラクターの追加に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>',
 
-        // Delete Character
-        delCharPrefix: 'Do you really want to delete character',
-        delCharFirstConf: '<p class="caution">Once deleted, your character data cannot be restored.</p>',
-        delLastChar:
-            '<p class="warning">You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>',
-        delCharFinalConf:
-            '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
-        delCharUidInput:
-            "<input class='del_cid' type='text' name='del_cid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
-        delLastCharDone:
-            'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
-        delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
-        delCharErrUnk: '<p class="caution">Failed to delete the character.</p><p>Please try again later.</p>',
-        delCharErrNeedDays:
-            '<p class="caution">Failed to delete the character.</p><p>To delete the last character,<br>please try again at least 7 days after creation.</p>',
+        // delete Character
+        cantDeleteChar1: '<p>新規キャラクターは削除できません。</p>',
+        cantDeleteChar2:
+            '<p>最後のキャラクターは削除できません。</p><p class="caution">アカウント内には、最低１体のキャラクターが必要です。</p>',
+        delCharPrefix: '本当にキャラクター「',
+        delCharConfirm: 'を削除しますか？</p><p class="warning">一度削除したキャラクターデータは復元できません。</p>',
+        delCharIdCheck: '<p>削除するキャラクターのIDを入力して、下記「削除する」を押してください。</p>',
+        delCharIdInputElm:
+            "<input class='del_cid' type='text' name='del_cid' placeholder='キャラクターIDを入力してください。' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+        delCharWait: 'を削除しています。</p><p>しばらくお待ちください。</p>',
+        delCharDone: 'の削除が完了しました。</p><p>下記の「再起動」を押して、ランチャーを再起動してください。</p>',
+        delCharErrPrefix: '<p class="warning">キャラクター「',
+        delCharErrNorm: 'の削除に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>',
+        delCharErrMatch:
+            'の削除に失敗しました。</p><p>入力されたIDと削除するキャラクターのIDが一致しませんでした。</p>',
 
-        // Server Maintenance
+        // others
         serverMaint:
-            '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
+            '<p class="caution">サーバーメンテナンスのためログインできません。</p><p>メンテナンス終了まで今しばらくお待ちください。</p>',
+        webInaccessible:
+            '<p>レイン公式サイトにアクセスできなかったため、要求された操作を完了できませんでした。</p><p class="caution">これが未確認の問題である場合は、直ちに管理者までご報告ください。</p>',
     },
 
     en: {
+        charIdPart: '"<span class="cid"> [Character ID: ',
+
+        // dialog labels
+        yesLabel: 'Yes',
+        noLabel: 'No',
         closeLabel: 'Close',
+        addLabel: 'Add',
+        restartLabel: 'Restart',
+        delCharLabel: 'Delete',
 
-        // Start the Game
-        startGame: '<p class="caution">Are you sure to start the game with the following character?</p>',
+        // start the game
+        startGame: '<p class="caution">Are you sure to start the game with the following character?</p><p>"',
 
-        // Add Character
-        cantCreateChar: '<p>No more characters can be added.</p>',
-        //createChar: '<p>Add a new character to your account.<br>Click "Add Now" below. (Your browser will open automatically.)</p>',
-        createChar: '<p>Add a new character to your account.<br>Click "Add Now" below.</p>',
-        createCharLabel1: 'Add Now',
-        //createCharWait: '<p>Once you have finished purchasing a character,<br>click "Re-Login" below.</p>',
-        createCharWait: '<p>Once you have finished adding a character,<br>click "Re-Login" below.</p>',
-        createCharLabel2: 'Re-Login',
+        // add Character
+        cantAddChar:
+            '<p>No more characters can be added.</p><p class="caution">The maximum number of characters which you can own is 3.</p>',
+        addChar: '<p>Add a new character to your account.<br>Click "Add" below.</p>',
+        addCharWait: '<p>A new character is being added.</p><p>Please wait for a while.</p>',
+        addCharDone: '<p>A new character has been added.<br>Click "Restart" below to restart the launcher.</p>',
+        addCharErrNorm:
+            '<p class="warning">Failed to add a character.</p><p>Please wait for a while and try again.</p>',
 
-        // Delete Character
-        delCharPrefix: 'Do you really want to delete character',
-        delCharFirstConf: '<p class="caution">Once deleted, your character data cannot be restored.</p>',
-        delLastChar:
-            '<p class="warning">You are trying to delete your last character. If all characters are deleted, only [Ready to Hunt] will be displayed as in the initial state.</p>',
-        delCharFinalConf:
-            '<p class="caution">Enter your ID of the selected character then click the [Delete] button.</p>',
-        delCharUidInput:
-            "<input class='del_cid' type='text' name='del_cid' placeholder='Enter your ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
-        delLastCharDone:
-            'so the character selection will return to its initial state.</p><p class="warning">If you want to delete the first character, you will be able to do so after 7 days from today.</p>',
-        delCharErrMatch: '<p class="caution">The specified character ID does not match the entered ID.</p>',
-        delCharErrUnk: '<p class="caution">Failed to delete the character.</p><p>Please try again later.</p>',
-        delCharErrNeedDays:
-            '<p class="caution">Failed to delete the character.</p><p>To delete the last character,<br>please try again at least 7 days after creation.</p>',
+        // delete Character
+        cantDeleteChar1: "<p>A new character can't be deleted.</p>",
+        cantDeleteChar2:
+            '<p>The last character can\'t be deleted.</p><p class="caution">There must be at least 1 character in your account.</p>',
+        delCharPrefix: 'Do you really want to delete character "',
+        delCharConfirm: '?</p><p class="warning">Once deleted, your character data can\'t be restored.</p>',
+        delCharIdCheck: '<p>Enter the ID of the character you want to delete and click the "Delete" below.</p>',
+        delCharIdInputElm:
+            "<input class='del_cid' type='text' name='del_cid' placeholder='Enter character ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+        delCharWait: 'is being deleted.</p><p>Please wait for a while.</p>',
+        delCharDone: 'has been deleted.</p><p>Click "Restart" below to restart the launcher.</p>',
+        delCharErrPrefix: '<p class="warning">Failed to delete the character "',
+        delCharErrNorm: '.</p><p>Please wait for a while and try again.</p>',
+        delCharErrMatch: ".</p><p>The ID entered didn't match the ID of the character to be deleted.</p>",
 
-        // Server Maintenance
+        // others
         serverMaint:
             '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
+        webInaccessible:
+            '<p>The requested operation couldn\'t be completed because the Rain official website is inaccessible.</p><p class="caution">If this is an unconfirmed problem, please report it to the administrators immediately.</p>',
     },
 };
 
@@ -303,7 +340,7 @@ const launcherMovingHandler = function () {
 const getLastSelectedSrvIndex = function () {
     try {
         return window.external.getLastSelectedSrvIndex();
-    } catch (error) {
+    } catch (err) {
         return 0;
     }
 };
@@ -311,13 +348,13 @@ const getLastSelectedSrvIndex = function () {
 const setLastSelectedSrvIndex = function (index) {
     try {
         window.external.setLastSelectedSrvIndex(index);
-    } catch (error) {}
+    } catch (err) {}
 };
 
 const getServerList = function () {
     try {
         return window.external.getServerList();
-    } catch (error) {
+    } catch (err) {
         return "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/></server_groups>";
     }
 };
@@ -326,34 +363,34 @@ const minimizeWindow = function () {
     try {
         soundMode && playSound('IDR_WAV_OK');
         window.external.minimizeWindow();
-    } catch (error) {}
+    } catch (err) {}
 };
 
 const closeWindow = function () {
     try {
         soundMode && playSound('IDR_WAV_OK');
         window.external.closeWindow();
-    } catch (error) {}
+    } catch (err) {}
 };
 
 const openPreferences = function () {
     try {
         soundMode && playSound('IDR_WAV_OK');
         window.external.openPreferences();
-    } catch (error) {}
+    } catch (err) {}
 };
 
 const openBrowser = function (url) {
     try {
         soundMode && playSound('IDR_WAV_OK');
         window.external.openBrowser(url);
-    } catch (error) {}
+    } catch (err) {}
 };
 
 const enableDrag = function (boolean) {
     try {
         window.external.enableDrag(boolean);
-    } catch (error) {
+    } catch (err) {
         return false;
     }
 };
@@ -361,7 +398,7 @@ const enableDrag = function (boolean) {
 const checkDebugMode = function () {
     disableElement(loginBtn, 1);
 
-    ReqDataFromRainWeb('launcherSystem')
+    ReqDataFromRainWeb(1, 'getLauncherSystem')
         .done(function (result) {
             if (!result['success']) {
                 console.error('Successfully accessed RainWeb, but failed to get data.');
@@ -391,17 +428,25 @@ const checkDebugMode = function () {
 const loginRain = function (username, pass1, pass2) {
     try {
         return window.external.loginRain(username, pass1, pass2);
-    } catch (error) {
+    } catch (err) {
         return false;
     }
 };
 
 const getAuthResult = function () {
-    return window.external.getAuthResult();
+    try {
+        return window.external.getAuthResult();
+    } catch (err) {
+        return 'AUTH_NULL';
+    }
 };
 
 const getSignResult = function () {
-    return window.external.getSignResult();
+    try {
+        return window.external.getSignResult();
+    } catch (err) {
+        return 'SIGN_EFAILED';
+    }
 };
 
 const getTotalPctOnUpdate = function () {
@@ -417,29 +462,41 @@ const getUpdateStatus = function () {
 };
 
 const getLauncherReturnCode = function () {
-    return String(window.external.getLauncherReturnCode());
+    try {
+        return String(window.external.getLauncherReturnCode());
+    } catch (err) {
+        return 'ERR';
+    }
+};
+
+const restartGame = function () {
+    try {
+        window.external.restartGame();
+    } catch (err) {}
 };
 
 const exitLauncher = function () {
-    window.external.exitLauncher();
+    try {
+        window.external.exitLauncher();
+    } catch (err) {}
 };
 
 const getAllCharData = function () {
-    return window.external.getAllCharData();
-};
-
-const deleteCharacter = function (hid) {
-    return window.external.deleteCharacter(hid);
+    try {
+        return window.external.getAllCharData();
+    } catch (err) {}
 };
 
 const selectCharacter = function (name, hid) {
-    window.external.selectCharacter(name, hid);
+    try {
+        window.external.selectCharacter(name, hid);
+    } catch (err) {}
 };
 
 const playSound = function (soundType) {
     try {
         window.external.playSound(soundType);
-    } catch (e) {}
+    } catch (err) {}
 };
 
 const disableElement = function (elm, fadeTime) {
@@ -484,12 +541,15 @@ const initNormTextData = function () {
     $('.forgot_creds').text(normTextOutput('forgetCredsBtn'));
     $('.btn_preferences').text(normTextOutput('preferencesBtn'));
     $('.authenticating_text').text(normTextOutput('authText'));
+    $(charAddButton).attr('data-btn', normTextOutput('charAddBtnText'));
+    $(charDelButton).attr('data-btn', normTextOutput('charDelBtnText'));
+    $('.btn_start').attr('data-btn', normTextOutput('startGameBtnText'));
     $('.maint_text').html(normTextOutput('maintenanceText'));
     $('.disclaimer').text(normTextOutput('disclaimer'));
 };
 
-const ReqDataFromRainWeb = function (data1, data2, data3) {
-    const data = JSON.stringify({ 1: data1, 2: data2, 3: data3 });
+const ReqDataFromRainWeb = function (data1, data2, data3, data4) {
+    const data = JSON.stringify({ 1: data1, 2: data2, 3: data3, 4: data4 });
     return $.ajax({
         url: 'http://localhost:5173/admin',
         type: 'POST',
@@ -609,7 +669,7 @@ const initSrvSelList = function () {
             $(serverListBox).append($('<li class="srv sound_on" idx="' + index + '">' + name + '</li>'));
         });
 
-    // if the last selected index is out of bounds, set true to the variable for initializing
+    // if the last selected index is out of range, set true to serverNotSelected for initializing
     (lastSelectedSrvIndex < 0 || lastSelectedSrvIndex > $(srvListEachItem).length) && (serverNotSelected = true);
 
     // if user have previously selected a server, set auth server and assign class to the target server
@@ -682,7 +742,7 @@ const messageContents = '.msg_contents';
 const initializeMsg = function () {
     addLogMsg(msgLogTextOutput('gettingMsg'));
 
-    ReqDataFromRainWeb('launcherSystem')
+    ReqDataFromRainWeb(1, 'getLauncherSystem')
         .done(function (result) {
             $(messageContents).text('');
             const version = result['data'].launcher_ver;
@@ -772,7 +832,10 @@ const beginAuthProcess = function () {
 };
 
 const requestAuthentication = function (username) {
-    ReqDataFromRainWeb('getExtgUserByUserName', username)
+    // in debugMode, all processes are skipped
+
+    // first, check if the user exists
+    ReqDataFromRainWeb(1, 'getExtgUserByUserName', username)
         .done(function (result) {
             if (!result['success']) {
                 console.error('Successfully accessed RainWeb, but failed to get data.');
@@ -781,36 +844,7 @@ const requestAuthentication = function (username) {
                 console.log('Successfully accessed RainWeb and get data.');
                 const isExistingUser = result['data'] !== null;
 
-                if (isExistingUser) {
-                    // if the user exists, go to the process for checking if the account is linked with rain discord
-                    const uid = result['data'].id;
-                    loginUserId = uid;
-
-                    ReqDataFromRainWeb('getLinkedAccByUId', uid).done(function (result) {
-                        const isLinkedAcc = result['data'] !== null;
-
-                        if (isLinkedAcc) {
-                            // if the account is linked with rain discord, go to the login process
-                            const loginSuccess = loginRain(
-                                $(inputUsername).val(),
-                                $(inputPassword).val(),
-                                $(inputPassword).val()
-                            );
-
-                            loginSuccess
-                                ? // if loginSuccess is true, login polling will be run
-                                  (loginPollingTimerId = setInterval(startLoginPolling, 1000))
-                                : //if false, error handling will be run with onAuthError
-                                  onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
-                        } else if (result === 'Invalid Input') {
-                            // if there is an invalid operation for some reason
-                            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
-                        } else {
-                            // user doesn't exist
-                            onAuthError(msgLogTextOutput('noLinkedAcc'));
-                        }
-                    });
-                } else if (debugMode) {
+                if (debugMode) {
                     const loginSuccess = loginRain(
                         $(inputUsername).val(),
                         $(inputPassword).val(),
@@ -822,6 +856,50 @@ const requestAuthentication = function (username) {
                           (loginPollingTimerId = setInterval(startLoginPolling, 1000))
                         : //if false, error handling will be run with onAuthError
                           onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+                } else if (isExistingUser) {
+                    // if the user exists, go to the process for checking if the account is linked with rain discord
+                    const uid = result['data'].id;
+                    loginUserId = uid;
+
+                    // second, check if the user has been banned
+                    ReqDataFromRainWeb(1, 'getBannedUserByUIdAndName', uid, $(inputUsername).val()).done(function (
+                        result
+                    ) {
+                        const isUserBanned = result['data'] !== null;
+
+                        if (isUserBanned) {
+                            onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
+                        } else if (result === 'Invalid Input') {
+                            // if there is an invalid operation for some reason
+                            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                        } else {
+                            // last, check if discord is linked to the user account
+                            ReqDataFromRainWeb(1, 'getLinkedAccByUId', uid).done(function (result) {
+                                const isLinkedAcc = result['data'] !== null;
+
+                                if (isLinkedAcc) {
+                                    // if the account is linked with rain discord, go to the login process
+                                    const loginSuccess = loginRain(
+                                        $(inputUsername).val(),
+                                        $(inputPassword).val(),
+                                        $(inputPassword).val()
+                                    );
+
+                                    loginSuccess
+                                        ? // if loginSuccess is true, login polling will be run
+                                          (loginPollingTimerId = setInterval(startLoginPolling, 1000))
+                                        : //if false, error handling will be run with onAuthError
+                                          onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+                                } else if (result === 'Invalid Input') {
+                                    // if there is an invalid operation for some reason
+                                    onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                                } else {
+                                    // user doesn't exist
+                                    onAuthError(msgLogTextOutput('noLinkedAcc'));
+                                }
+                            });
+                        }
+                    });
                 } else if (result === 'Invalid Input') {
                     // if there is an invalid operation for some reason
                     onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
@@ -873,7 +951,7 @@ const startLoginPolling = function () {
                 .text()
                 .replace(/[\s()]/g, '');
 
-            ReqDataFromRainWeb('launcherSystem')
+            ReqDataFromRainWeb(1, 'getLauncherSystem')
                 .done(function (result) {
                     if (!result['success']) {
                         maintenanceData = { RainJP: false, RainUS: false, RainEU: false, RainLocalhost: false };
@@ -1019,7 +1097,10 @@ const startUpLauncher = function () {
     // initial display of msg log
     initializeMsg();
 
-    // set information section
+    // get banner data
+    beginLoadBnr();
+
+    // get information data
     beginLoadInfo();
 
     // enable scroll bar on server selector box
@@ -1090,10 +1171,7 @@ const charSelBox = '.character_selection',
     charAddButton = charSelBox + ' .char_add',
     charDelButton = charSelBox + ' .char_del';
 
-let delCharName = '',
-    delCharHid = '',
-    delCharId = '',
-    loginUserId = '',
+let loginUserId = '',
     hunterIds = [];
 
 const convUnixToDate = function (date) {
@@ -1185,67 +1263,147 @@ const showCharSelector = function () {
     // clear the character unit box to init state
     $(charSelUnitBox).empty();
 
-    const uid = loginUserId;
+    const uid = loginUserId > 0 ? loginUserId : 'No Data';
 
-    ReqDataFromRainWeb('getCharactersByUId', uid ? uid : 0, lang)
-        .done(function (result) {
-            if (!result['success']) {
-                console.error('Successfully accessed RainWeb, but failed to get data.');
+    if (debugMode) {
+        // get characters via non-website mehtod and convert it
+        const characterInfo = $('<div>').html(
+            getAllCharData()
+                .replace(/'/g, '"')
+                .replace(/&apos;/g, "'")
+        );
 
-                $(charSelUnitBox).append(
-                    createCharUnit(
-                        'Failed to Get Character Data',
-                        'Unknown',
-                        'Unknown',
-                        1,
-                        '',
-                        'Unknown',
-                        'Unknown',
-                        false,
-                        'Unknown'
-                    )
-                );
+        // create a new character unit and append it to the character unit box
+        characterInfo.find('Character').each(function (_, element) {
+            $(charSelUnitBox).append(
+                createCharUnit(
+                    $(element).attr('name'),
+                    $(element).attr('hid'),
+                    'No Data',
+                    'No Data',
+                    parseInt($(element).attr('HR'), 10),
+                    parseInt($(element).attr('GR'), 10),
+                    $(element).attr('weapon'),
+                    'No Data',
+                    $(element).attr('sex'),
+                    parseInt($(element).attr('lastLogin'), 10)
+                )
+            );
+        });
+
+        // hide authenticating screen, launcher_login_panel, launcher_update_process, and character selection box
+        hideAuthenticating();
+        $('.launcher_login_panel').hide();
+        $('.launcher_update_process').hide();
+        $(charSelBox).show();
+
+        // show logout container
+        $('.uid_label').text(normTextOutput('userIdLabel') + uid);
+        $(logoutBtn).show();
+        $('.name_srv_label').text($(inputUsername).val() + '@' + $(serverSelBtn).text());
+
+        // delete logs with class name "only"
+        clearOnlyLog();
+
+        // if there is no character, disable delete and start game button
+        if ($(charSelUnitBox).find('.unit').length === 0) {
+            disableElement(charDelButton, 1), disableElement('.btn_start', 1);
+        } else {
+            // if there is one character and a new hunter, disable delete button, and enable start game button
+            if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
+                disableElement(charDelButton, 1), enableElement('.btn_start', 1);
+                // normally, all buttons are enabled
             } else {
-                console.log('Successfully accessed RainWeb and get data.');
+                enableElement(charDelButton, 1), enableElement('.btn_start', 1);
+            }
+        }
+    } else {
+        ReqDataFromRainWeb(1, 'getCharactersByUId', uid ? uid : 0, lang)
+            .done(function (result) {
+                if (!result['success']) {
+                    console.error('Successfully accessed RainWeb, but failed to get data.');
 
-                const characterInfo = $('<div>').html(
-                    getAllCharData()
-                        .replace(/'/g, '"')
-                        .replace(/&apos;/g, "'")
-                );
-                characterInfo.find('Character').each(function (index, element) {
-                    hunterIds.push($(element).attr('hid'));
-                });
-                const res = result['data'].sort(function (a, b) {
-                    return a.id - b.id;
-                });
+                    $(charSelUnitBox).append(
+                        createCharUnit(
+                            'Failed to Get Character Data',
+                            'Unknown',
+                            'Unknown',
+                            'Unknown',
+                            1,
+                            'Unknown',
+                            'Unknown',
+                            'Unknown',
+                            false,
+                            'Unknown'
+                        )
+                    );
+                } else {
+                    console.log('Successfully accessed RainWeb and get data.');
 
-                // add hunter id to characters data from rainweb
-                res.forEach(function (character, index) {
-                    if (hunterIds[index] !== undefined) {
-                        character.hunterId = hunterIds[index];
-                    }
-                });
+                    const characterInfo = $('<div>').html(
+                        getAllCharData()
+                            .replace(/'/g, '"')
+                            .replace(/&apos;/g, "'")
+                    );
+                    characterInfo.find('Character').each(function (_, element) {
+                        hunterIds.push($(element).attr('hid'));
+                    });
+                    const res = result['data'].sort(function (a, b) {
+                        return a.id - b.id;
+                    });
 
-                if (res.length !== 0) {
-                    objectEntries(res).map(function (entry) {
-                        const character = entry[1];
+                    // add hunter id to characters data from rainweb
+                    res.forEach(function (character, index) {
+                        if (hunterIds[index] !== undefined) {
+                            character.hunterId = hunterIds[index];
+                        }
+                    });
 
+                    if (res.length !== 0) {
+                        objectEntries(res).map(function (entry) {
+                            const character = entry[1];
+
+                            if (character.deleted) {
+                                return false;
+                            } else {
+                                $(charSelUnitBox).append(
+                                    createCharUnit(
+                                        character.name,
+                                        character.hunterId,
+                                        uid,
+                                        character.id,
+                                        convHrpToHr(character.hrp),
+                                        character.gr,
+                                        character.weapon_type_name,
+                                        character.weapon_id_name,
+                                        character.is_female,
+                                        character.last_login
+                                    )
+                                );
+                            }
+                        });
+                    } else {
                         $(charSelUnitBox).append(
                             createCharUnit(
-                                character.name,
-                                character.hunterId,
-                                character.id,
-                                convHrpToHr(character.hrp),
-                                character.gr,
-                                character.weapon_type_name,
-                                character.weapon_id_name,
-                                character.is_female,
-                                character.last_login
+                                'Failed to Get Character Data',
+                                'Unknown',
+                                'Unknown',
+                                'Unknown',
+                                1,
+                                'Unknown',
+                                'Unknown',
+                                'Unknown',
+                                false,
+                                'Unknown'
                             )
                         );
-                    });
-                } else if (debugMode) {
+                    }
+                }
+            })
+            .fail(function () {
+                console.error('Failed to access RainWeb and get data.');
+
+                if (window.location.origin.indexOf('192.168') !== -1) {
                     // get characters via non-website mehtod and convert it
                     const characterInfo = $('<div>').html(
                         getAllCharData()
@@ -1254,11 +1412,12 @@ const showCharSelector = function () {
                     );
 
                     // create a new character unit and append it to the character unit box
-                    characterInfo.find('Character').each(function (index, element) {
+                    characterInfo.find('Character').each(function (_, element) {
                         $(charSelUnitBox).append(
                             createCharUnit(
                                 $(element).attr('name'),
                                 $(element).attr('hid'),
+                                'No Data',
                                 'No Data',
                                 parseInt($(element).attr('HR'), 10),
                                 parseInt($(element).attr('GR'), 10),
@@ -1275,8 +1434,9 @@ const showCharSelector = function () {
                             'Failed to Get Character Data',
                             'Unknown',
                             'Unknown',
+                            'Unknown',
                             1,
-                            '',
+                            'Unknown',
                             'Unknown',
                             'Unknown',
                             false,
@@ -1284,83 +1444,52 @@ const showCharSelector = function () {
                         )
                     );
                 }
-            }
-        })
-        .fail(function () {
-            console.error('Failed to access RainWeb and get data.');
+            })
+            .always(function () {
+                // hide authenticating screen, launcher_login_panel, launcher_update_process, and character selection box
+                hideAuthenticating();
+                $('.launcher_login_panel').hide();
+                $('.launcher_update_process').hide();
+                $(charSelBox).show();
 
-            if (window.location.origin.indexOf('192.168') !== -1) {
-                // get characters via non-website mehtod and convert it
-                const characterInfo = $('<div>').html(
-                    getAllCharData()
-                        .replace(/'/g, '"')
-                        .replace(/&apos;/g, "'")
-                );
+                // show logout container
+                $('.uid_label').text(normTextOutput('userIdLabel') + uid);
+                $(logoutBtn).show();
+                $('.name_srv_label').text($(inputUsername).val() + '@' + $(serverSelBtn).text());
 
-                // create a new character unit and append it to the character unit box
-                characterInfo.find('Character').each(function (index, element) {
-                    $(charSelUnitBox).append(
-                        createCharUnit(
-                            $(element).attr('name'),
-                            $(element).attr('hid'),
-                            'No Data',
-                            parseInt($(element).attr('HR'), 10),
-                            parseInt($(element).attr('GR'), 10),
-                            $(element).attr('weapon'),
-                            'No Data',
-                            $(element).attr('sex'),
-                            parseInt($(element).attr('lastLogin'), 10)
-                        )
-                    );
-                });
-            } else {
-                $(charSelUnitBox).append(
-                    createCharUnit(
-                        'Failed to Get Character Data',
-                        'Unknown',
-                        'Unknown',
-                        1,
-                        '',
-                        'Unknown',
-                        'Unknown',
-                        false,
-                        'Unknown'
-                    )
-                );
-            }
-        })
-        .always(function () {
-            // hide authenticating screen, launcher_login_panel, launcher_update_process, and character selection box
-            hideAuthenticating();
-            $('.launcher_login_panel').hide();
-            $('.launcher_update_process').hide();
-            $(charSelBox).show();
+                // delete logs with class name "only"
+                clearOnlyLog();
 
-            // show logout container
-            $('.uid_label').text(normTextOutput('userIdLabel') + loginUserId);
-            $(logoutBtn).show();
-            $('.name_srv_label').text($(inputUsername).val() + '@' + $(serverSelBtn).text());
-
-            // delete logs with class name "only"
-            clearOnlyLog();
-
-            // if there is no character, disable delete and start game button
-            if ($(charSelUnitBox).find('.unit').length === 0) {
-                disableElement(charDelButton, 1), disableElement('.btn_start', 1);
-            } else {
-                // if there is one character and a new hunter, disable delete button, and enable start game button
-                if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
-                    disableElement(charDelButton, 1), enableElement('.btn_start', 1);
-                    // normally, all buttons are enabled
+                // if there is no character, disable delete and start game button
+                if ($(charSelUnitBox).find('.unit').length === 0) {
+                    disableElement(charDelButton, 1), disableElement('.btn_start', 1);
                 } else {
-                    enableElement(charDelButton, 1), enableElement('.btn_start', 1);
+                    // if there is one character and a new hunter, disable delete button, and enable start game button
+                    if ($(charSelUnitBox).find('.unit').length === 1 && $(charSelUnit).find('.new').length === 1) {
+                        disableElement(charDelButton, 1), enableElement('.btn_start', 1);
+                        // normally, all buttons are enabled
+                    } else {
+                        enableElement(charDelButton, 1), enableElement('.btn_start', 1);
+                    }
                 }
-            }
-        });
+            });
+    }
 };
 
-const createCharUnit = function (name, hunterId, characterId, hr, gr, weaponType, weaponName, gender, lastLogin) {
+const createCharUnit = function (
+    name,
+    hunterId,
+    userId,
+    characterId,
+    hr,
+    gr,
+    weaponType,
+    weaponName,
+    gender,
+    lastLogin
+) {
     const charName = convEntities(name) === '' ? normTextOutput('readyHunt') : convEntities(name);
+    const isFemale = typeof gender === 'string' ? gender !== 'M' : gender;
 
     let wpnClass = String(weaponType);
     // convert weapon name for style usage
@@ -1375,10 +1504,12 @@ const createCharUnit = function (name, hunterId, characterId, hr, gr, weaponType
     const charUnit = $(
         '<div class="unit swiper-slide" hid="' +
             hunterId +
+            '" uid="' +
+            userId +
             '" cid="' +
             characterId +
             '" name="' +
-            name +
+            charName +
             '" to="0"></div>'
     );
 
@@ -1387,14 +1518,7 @@ const createCharUnit = function (name, hunterId, characterId, hr, gr, weaponType
 
     hr === 0
         ? // if the character is new (HR is 0), add a new class and a new element to the div
-          (charUnit.addClass('new'),
-          charUnit.append(
-              $(
-                  '<p class="new">' +
-                      'You can create a new character.<br>Press "Start Game" to create your character.' +
-                      '</p>'
-              )
-          ))
+          (charUnit.addClass('new'), charUnit.append($(normTextOutput('newMsg1') + normTextOutput('newMsg2'))))
         : (charUnit.addClass(wpnClass), // add weapon class for background
           charUnit.append($('<div class="icon' + (wpnClass ? ' ' + wpnClass : '') + '"></div>')), // weapon icon
           charUnit.append(
@@ -1403,15 +1527,15 @@ const createCharUnit = function (name, hunterId, characterId, hr, gr, weaponType
           ),
           charUnit.append(
               $(
-                  '<p class="data">HR: ' +
+                  '<p class="rank">HR: ' +
                       hr +
                       (gr ? ' / GR: ' + gr : '') +
-                      '　' +
-                      (!gender ? '♂' : '♀') +
-                      '<br>' +
+                      '</p><p class="char_gender">' +
+                      (!isFemale ? normTextOutput('genderLabelMale') : normTextOutput('genderLabelFemale')) +
+                      '</p><p class="char_id">' +
                       normTextOutput('charIdLabel') +
                       characterId +
-                      '<br>' +
+                      '</p><p class="last_login">' +
                       normTextOutput('lastOnlineLabel') +
                       convUnixToDate(lastLogin) +
                       '</p>'
@@ -1427,50 +1551,60 @@ const createCharUnit = function (name, hunterId, characterId, hr, gr, weaponType
     return charUnit;
 };
 
-const charDelPolling = function () {
-    const authResult = getAuthResult();
+const addCharacter = function (uid) {
+    ReqDataFromRainWeb(2, 'addCharacter', uid)
+        .done(function (result) {
+            switch (result['status']) {
+                case 'Added_Character':
+                    showAddCharDoneDialog();
+                    break;
 
-    // check the authentication result and perform action accordingly.
-    switch (authResult) {
-        case 'AUTH_NULL':
-        case 'AUTH_PROGRESS':
-        case 'AUTH_SUCCESS':
-        case 'AUTH_ERROR_NET':
-        case 'AUTH_ERROR_ACC':
-        case 'AUTH_ERROR_PWD':
-        case 'DEL_PROGRESS':
-            // do nothing
-            break;
+                case 'Unexpected_Error':
+                    showFailAddCharErrNormDialog();
+                    break;
 
-        case 'DEL_SUCCESS':
-            // switch the dialog display according to the number of characters owned
-            1 < $(charSelUnit).length
-                ? showDelNormCharDoneDialog(delCharName, delCharId)
-                : showDelLastCharDoneDialog(delCharName, delCharId);
-            break;
+                case 'Invalid_Input':
+                    showInvalidInputDialog();
+                    break;
 
-        case 'DEL_ERROR_NET':
-        case 'DEL_ERROR_IVL':
-        case 'DEL_ERROR_MNC':
-            // show the fail dialog
-            showFailDelCharDialog($(charSelUnit).length);
-            break;
-    }
+                default:
+                    showFailAddCharErrNormDialog();
+                    alert(result['status']);
+            }
+        })
+        .fail(function () {
+            showWebInaccessibleDialog();
+        });
 };
 
-const charDelReset = function () {
-    ((delCharName = ''), (delCharHid = '')), hideDialog();
-};
+const deleteCharacter = function (name, cid) {
+    ReqDataFromRainWeb(2, 'deleteCharacter', cid)
+        .done(function (result) {
+            switch (result['status']) {
+                case 'Deleted_Character':
+                    showDelCharDoneDialog(name, cid);
+                    break;
 
-const charDelete = function () {
-    deleteCharacter(delCharHid),
-        setTimeout(function () {
-            charDelPolling();
-        }, 1000);
+                case 'Unexpected_Error':
+                    showFailDelCharErrNormDialog(name, cid);
+                    break;
+
+                case 'Invalid_Input':
+                    showInvalidInputDialog();
+                    break;
+
+                default:
+                    showFailDelCharErrNormDialog(name, cid);
+                    alert(result['status']);
+            }
+        })
+        .fail(function () {
+            showWebInaccessibleDialog();
+        });
 };
 
 const checkDelID = function (name, cid) {
-    cid === $('.del_cid').val() ? showWaitDelCharDialog(name, cid) : showWaitDelCharUidErrDialog(name, cid);
+    cid === $('.del_cid').val() ? showWaitDelCharDialog(name, cid) : showFailDelCharErrMatchDialog(name, cid);
 };
 
 const prepareStartGame = function () {
@@ -1550,7 +1684,7 @@ const prepareBeginUpdate = function (hid) {
 
     $('.connecting_overlay').fadeIn(200);
 
-    ReqDataFromRainWeb('launcherSystem')
+    ReqDataFromRainWeb(1, 'getLauncherSystem')
         .done(function (result) {
             if (!result['success']) {
                 updateEnabled = false;
@@ -1761,11 +1895,12 @@ const clearAnimSq = function () {
 };
 
 /*=========================================================
-　　　　　Information List Function
+　　　　　Banner and Information List Function
 =======================================================*/
 const infoList = '.info_list',
     infoListContents = '.info_list_contents',
-    asideMenu = '.launcher_menu';
+    asideMenu = '.launcher_menu',
+    launcherBanner = '.launcher_bnr';
 
 let importantInfoData = {},
     defectsAndTroublesInfoData = {},
@@ -1779,7 +1914,7 @@ const beginLoadInfo = function () {
 
     $('.info_getting_loader').show();
 
-    ReqDataFromRainWeb('information', 'all')
+    ReqDataFromRainWeb(1, 'getInformation', 'all')
         .done(function (result) {
             if (!result['success']) {
                 $('.info_getting').hide();
@@ -1800,7 +1935,7 @@ const beginLoadInfo = function () {
                 let infoUlElm;
                 let infoLiElm;
                 Object.keys(infoData).forEach(function (infoType) {
-                    infoUlElm = $('<li>', {
+                    infoUlElm = $('<ul>', {
                         class: 'info_list_item ' + infoType,
                         html:
                             '<div class="info_title">' +
@@ -1824,16 +1959,22 @@ const beginLoadInfo = function () {
                         $('.' + infoType + ' .info_list_contents').append(infoLiElm);
                     });
                 });
-                $('.info_getting').hide();
-                $('.info_getting_loader').hide();
+
+                // after getting info, hide loading stuff
+                $('.info_getting').remove();
+                $('.info_getting_loader').remove();
+
+                // replace href attr to openBrowser
                 overrideAnker(infoList);
+
+                // enable scrolling
                 new scrollBarHandler(infoList);
                 console.log('Successfully accessed RainWeb and get data.');
             }
         })
         .fail(function () {
-            $('.info_getting').hide();
-            $('.info_getting_loader').hide();
+            $('.info_getting').remove();
+            $('.info_getting_loader').remove();
             $(infoList).append(normTextOutput('failedGetInfo'));
             console.error('Failed to access RainWeb and get data.');
         });
@@ -1858,6 +1999,71 @@ const initAsideMenu = function () {
         anchor.append(iconSpan).append(menuItem.name);
         $(asideMenu).append(anchor);
     });
+};
+
+const beginLoadBnr = function () {
+    const lang = getQueryParams('l');
+    $(launcherBanner).append('<div class="bnr_getting_loader"></div>');
+
+    ReqDataFromRainWeb(1, 'getBannerData')
+        .done(function (result) {
+            if (!result['success']) {
+                $('.bnr_getting_loader').hide();
+                $(launcherBanner).append(normTextOutput('failedGetBnr'));
+                console.error('Successfully accessed RainWeb, but failed to get data.');
+            } else {
+                delete result['success'];
+
+                let bnrLiElm;
+                result['data'].forEach(function (bnr) {
+                    const siteURL = !bnr.bnr_url ? '#' : bnr.bnr_url;
+                    const imgSource = lang === 'ja' ? bnr.ja_img_src : bnr.en_img_src;
+                    const bnrStyle = !bnr.bnr_url ? 'cursor: not-allowed' : 'cursor: pointer';
+
+                    bnrLiElm = $('<li>', {
+                        class: 'bnr',
+                        html:
+                            '<a href="' +
+                            siteURL +
+                            '"><img src="' +
+                            imgSource +
+                            '" style="' +
+                            bnrStyle +
+                            '" alt="' +
+                            bnr.bnr_name +
+                            '" /></a>',
+                    });
+                    $(launcherBanner).append(bnrLiElm);
+                });
+            }
+
+            // after getting info, hide loading stuff
+            $('.bnr_getting_loader').remove();
+
+            // replace href attr to openBrowser
+            overrideAnker(launcherBanner);
+
+            // loading bnr
+            $(launcherBanner).slick({
+                fade: true,
+                autoplay: true,
+                autoplaySpeed: 5000,
+                speed: 800,
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                dots: true,
+                arrows: false,
+                pauseOnHover: true,
+                pauseOnDotsHover: false,
+                draggable: false,
+            });
+        })
+        .fail(function () {
+            $('.bnr_getting_loader').remove();
+            $(launcherBanner).append(normTextOutput('failedGetBnr'));
+            console.error('Failed to access RainWeb and get data.');
+        });
 };
 
 /*=========================================================
@@ -1931,6 +2137,17 @@ const hideDialog = function () {
     $(dialogButtons).empty();
 };
 
+// error
+const showInvalidInputDialog = function () {
+    showDialog('<p class="warning">Invalid Input.</p>', [
+        { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
+    ]);
+};
+
+const showWebInaccessibleDialog = function () {
+    showDialog(dialogTextOutput('webInaccessible'), [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
+};
+
 const showMaintenanceDialog = function () {
     // show maintenance display
     $('.maintenance').show();
@@ -1938,177 +2155,149 @@ const showMaintenanceDialog = function () {
     // append maintenance server name
     $('.maint_server_name').text($(serverSelBtn).text());
 
-    showDialog(dialogTextOutput('serverMaint'), [{ label: 'Close', cmd: 'hideDialog();' }]);
+    showDialog(dialogTextOutput('serverMaint'), [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
 };
 
+// add character
 const showCantAddCharDialog = function () {
-    showDialog(dialogTextOutput('cantCreateChar'), [{ label: 'OK', cmd: 'hideDialog();' }]);
+    showDialog(dialogTextOutput('cantAddChar'), [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
 };
 
-const showAddCharDialog = function () {
+const showAddCharDialog = function (uid) {
     const createCharURL = '#';
 
-    showDialog(dialogTextOutput('createChar'), [
+    showDialog(dialogTextOutput('addChar'), [
         {
-            label: dialogTextOutput('createCharLabel1'),
-            cmd:
-                'loginRain("' +
-                $(inputUsername).val() +
-                '+' +
-                '", "' +
-                $(inputPassword).val() +
-                '","' +
-                $(inputPassword).val() +
-                '"); openBrowser("' +
-                createCharURL +
-                '"); showWaitCharAddDialog();',
+            label: dialogTextOutput('addLabel'),
+            cmd: ' openBrowser("' + createCharURL + '"); showWaitAddCharDialog("' + uid + '");',
         },
         { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
     ]);
 };
 
-const showWaitCharAddDialog = function () {
-    showDialog(dialogTextOutput('createCharWait'), [
-        { label: dialogTextOutput('createCharLabel2'), cmd: 'beginAuthProcess(); hideDialog();' },
-    ]);
+const showWaitAddCharDialog = function (uid) {
+    showDialog(dialogTextOutput('addCharWait')), addCharacter(uid);
 };
 
-const showDelCharDialog = function (name, cid) {
+const showAddCharDoneDialog = function () {
+    showDialog(dialogTextOutput('addCharDone'), [{ label: dialogTextOutput('restartLabel'), cmd: 'restartGame();' }]);
+};
+
+const showFailAddCharErrNormDialog = function () {
+    showDialog(dialogTextOutput('addCharErrNorm'), [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
+};
+
+// delete character
+const showCantDelCharDialog1 = function () {
+    showDialog(dialogTextOutput('cantDeleteChar1'), [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
+};
+
+const showCantDelCharDialog2 = function () {
+    showDialog(dialogTextOutput('cantDeleteChar2'), [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
+};
+
+const showDelCharDialog1 = function (name, cid) {
     showDialog(
         '<p>' +
             dialogTextOutput('delCharPrefix') +
-            ' "' +
             name +
-            '"<span class="cid">（ID: ' +
+            dialogTextOutput('charIdPart') +
             cid +
-            '）</span>?</p>' +
-            dialogTextOutput('delCharFirstConf'),
+            '] </span>' +
+            dialogTextOutput('delCharConfirm'),
         [
-            { label: 'Delete', cmd: 'showDelCharDialog2("' + name + '", "' + cid + '");', isStandby: true },
-            { label: 'Cancel', cmd: 'charDelReset();' },
+            {
+                label: dialogTextOutput('delCharLabel'),
+                cmd: 'showDelCharDialog2("' + name + '", "' + cid + '");',
+                isStandby: true,
+            },
+            { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
         ],
         1000
     );
 };
 
 const showDelCharDialog2 = function (name, cid) {
-    if (1 < $(charSelUnit).length) {
-        // if user still has more than one character, skip this function
-        showDelCharDialog3(name, cid);
-    } else {
-        showDialog(
-            '<p>' +
-                dialogTextOutput('delCharPrefix') +
-                ' "' +
-                name +
-                '"<span class="cid">（ID: ' +
-                cid +
-                '）</span>?</p>' +
-                dialogTextOutput('delLastChar'),
-            [
-                {
-                    label: 'Delete',
-                    cmd: 'showDelCharDialog3("' + name + '", "' + cid + '");',
-                    isStandby: true,
-                },
-                { label: 'Cancel', cmd: 'charDelReset();' },
-            ],
-            1000
-        );
-    }
-};
-
-const showDelCharDialog3 = function (name, cid) {
     showDialog(
-        '<p>' +
-            dialogTextOutput('delCharPrefix') +
-            ' "' +
-            name +
-            '"<span class="cid">（ID: ' +
-            cid +
-            '）</span>?</p>' +
-            dialogTextOutput('delCharFinalConf') +
-            dialogTextOutput('delCharUidInput'),
+        dialogTextOutput('delCharIdCheck') + dialogTextOutput('delCharIdInputElm'),
         [
-            { label: 'Delete', cmd: 'checkDelID("' + name + '", "' + cid + '");', isStandby: true },
-            { label: 'Cancel', cmd: 'charDelReset();' },
+            {
+                label: dialogTextOutput('delCharLabel'),
+                cmd: 'checkDelID("' + name + '", "' + cid + '");',
+                isStandby: true,
+            },
+            { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
         ],
         1000
     );
 };
 
-const showWaitDelCharUidErrDialog = function (name, cid) {
-    showDialog(
-        '<p>Could not delete character' +
-            ' "' +
-            name +
-            '"<span class="cid">（ID: ' +
-            cid +
-            '）</span>.</p>' +
-            dialogTextOutput('delCharErrMatch'),
-        [{ label: 'Close', cmd: 'charDelReset();' }]
-    );
-};
-
 const showWaitDelCharDialog = function (name, cid) {
+    const lang = getQueryParams('l');
+
     showDialog(
-        '<p>"' +
+        '<p>' +
+            (lang === 'ja' ? '「' : '"') +
             name +
-            '"<span class="hid">（ID: ' +
+            dialogTextOutput('charIdPart') +
             cid +
-            '）</span>' +
-            'is being deleted.</p><p>Please wait a moment.</p>'
+            '] </span>' +
+            dialogTextOutput('delCharWait')
     ),
-        charDelete();
+        deleteCharacter(name, cid);
 };
 
-const showFailDelCharDialog = function (numOwnedChars) {
-    showDialog(dialogTextOutput(1 < numOwnedChars ? 'delCharErrUnk' : 'delCharErrNeedDays'), [
-        { label: 'Close', cmd: 'charDelReset();' },
-    ]);
-};
+const showDelCharDoneDialog = function (name, cid) {
+    const lang = getQueryParams('l');
 
-const showDelNormCharDoneDialog = function (name, cid) {
     showDialog(
-        '<p>Character' + ' "' + name + '"<span class="cid">（ID: ' + cid + '）</span>' + 'has been deleted.</p>',
-        [{ label: 'Close', cmd: 'beginAuthProcess(); charDelReset();' }]
-    );
-};
-
-const showDelLastCharDoneDialog = function (name, cid) {
-    showDialog(
-        '<p>The last character' +
-            ' "' +
+        '<p>' +
+            (lang === 'ja' ? '「' : '"') +
             name +
-            '"<span class="hid">（ID: ' +
+            dialogTextOutput('charIdPart') +
             cid +
-            '）</span>' +
-            'has been deleted,<br>' +
-            dialogTextOutput('delLastCharDone'),
-        [{ label: 'Close', cmd: 'charDelReset();' }]
+            '] </span>' +
+            dialogTextOutput('delCharDone'),
+        [{ label: dialogTextOutput('restartLabel'), cmd: 'restartGame();' }]
     );
 };
 
+const showFailDelCharErrNormDialog = function (name, cid) {
+    showDialog(
+        dialogTextOutput('delCharErrPrefix') +
+            name +
+            dialogTextOutput('charIdPart') +
+            cid +
+            '] </span>' +
+            dialogTextOutput('delCharErrNorm'),
+        [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
+    );
+};
+
+const showFailDelCharErrMatchDialog = function (name, cid) {
+    showDialog(
+        dialogTextOutput('delCharErrPrefix') +
+            name +
+            dialogTextOutput('charIdPart') +
+            cid +
+            '] </span>' +
+            dialogTextOutput('delCharErrMatch'),
+        [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
+    );
+};
+
+// start game
 const showStartGameDialog = function (name, hid, cid) {
-    showDialog(
-        dialogTextOutput('startGame') +
-            '<p style="font-size: 2.1rem;">"' +
-            name +
-            '"<span class="cid">（ID: ' +
-            cid +
-            '）</span>',
-        [
-            {
-                label: 'Yes',
-                cmd: 'prepareBeginUpdate("' + hid + '"); hideDialog();',
-                //noSound: true,
-            },
-            {
-                label: 'No',
-                cmd: 'hideDialog();',
-            },
-        ]
-    );
+    showDialog(dialogTextOutput('startGame') + name + dialogTextOutput('charIdPart') + cid + '] </span>', [
+        {
+            label: dialogTextOutput('yesLabel'),
+            cmd: 'prepareBeginUpdate("' + hid + '"); hideDialog();',
+        },
+        {
+            label: dialogTextOutput('noLabel'),
+            cmd: 'hideDialog();',
+        },
+    ]);
 };
 
 /*=========================================================
@@ -2132,22 +2321,6 @@ $(function () {
     // convert href on anchor tag to openBrowser function
     overrideAnker('.wrapper');
 
-    // rotate banner
-    $('.launcher_bnr').slick({
-        fade: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        speed: 800,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        arrows: false,
-        pauseOnHover: true,
-        pauseOnDotsHover: false,
-        draggable: false,
-    });
-
     // by default, launcher window can't be moved
     enableDrag(false);
 
@@ -2158,8 +2331,6 @@ $(function () {
     $(document).on('mousedown', function (e) {
         !$(e.target).is('input') && e.preventDefault();
     });
-
-    //$(charSelUnitBox).append(createCharUnit('otya', 1, 1, 1, 0, 'Tonfa', 'Tonfa', 'M', 0));
 
     /* Click or Mouseover Event
 ====================================================*/
@@ -2175,27 +2346,45 @@ $(function () {
 
     // add a character
     $(charAddButton).click(function () {
-        if ($(charSelUnitBox).find('.unit').length >= 3) {
-            showCantAddCharDialog();
-        } else {
-            $(this).hasClass('disabled') || showAddCharDialog();
+        // check if the clicked element is not disabled and a character is not already being deleted
+        if (!$(this).hasClass('disabled')) {
+            // get the user data of the currently selected character
+            const currentCharData = getCurrentCharData();
+
+            // set the name and cid to be deleted
+            const addUserId = currentCharData.attr('uid');
+
+            if ($(charSelUnitBox).find('.unit').length >= 3) {
+                // can't be added if user own more than 3 characters
+                showCantAddCharDialog();
+            } else {
+                // normally, show addCharDialog
+                showAddCharDialog(addUserId);
+            }
         }
     });
 
     // delete a character
     $(charDelButton).click(function () {
         // check if the clicked element is not disabled and a character is not already being deleted
-        if (!$(this).hasClass('disabled') && !delCharHid && !delCharName) {
+        if (!$(this).hasClass('disabled')) {
             // get the user data of the currently selected character
             const currentCharData = getCurrentCharData();
 
-            // set the name and UID of the character to be deleted
-            delCharName = currentCharData.attr('name');
-            delCharHid = currentCharData.attr('hid');
-            delCharId = currentCharData.attr('cid');
+            // set the name and cid to be deleted
+            const delCharName = currentCharData.attr('name');
+            const delCharId = currentCharData.attr('cid');
 
-            // show a confirmation dialog for deleting the character
-            showDelCharDialog(delCharName, delCharId);
+            if (delCharName === '狩人申請可能' || delCharName === 'Ready to Hunt') {
+                // new character can't be deleted
+                showCantDelCharDialog1();
+            } else if ($(charSelUnitBox).find('.unit').length === 1) {
+                // at least one character is required
+                showCantDelCharDialog2();
+            } else {
+                // show a confirmation dialog for deleting the character
+                showDelCharDialog1(delCharName, delCharId);
+            }
         }
     });
 });

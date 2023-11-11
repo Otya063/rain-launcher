@@ -1705,13 +1705,13 @@ const prepareBeginUpdate = function (hid) {
 };
 
 const afterCheckUpdateMode = function (hid, update) {
-    $('.connecting_overlay').fadeOut(200);
-
     update
         ? // if update is needed, start update process
           ($('.character_selection').hide(),
+          $('.connecting_overlay').hide(),
           $('.name_srv_label').text(''),
           $(logoutBtn).hide(),
+          $('.uid_label').hide(),
           $(progressStateMessage).text(updateTextOutput('progressState', 0)),
           $(nextActionMessage).text(updateTextOutput('nextActions', 0)),
           $('.launcher_update_process').show(),
@@ -1721,7 +1721,7 @@ const afterCheckUpdateMode = function (hid, update) {
           }, 50))
         : // if not needed, directly proceed to start game
           setTimeout(function () {
-              startTheGame(hid);
+              $('.connecting_overlay').hide(), startTheGame(hid);
           }, 420);
 };
 

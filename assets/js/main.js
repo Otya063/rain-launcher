@@ -171,8 +171,9 @@ const msgLogTextData = {
             'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
         noLinkedAcc:
             'The game account has not been linked to Rain Discord.<br>Please try again after the account linking is completed.',
-        permSuspendedAcc: 'This account has been permanently suspended.<br>This action won\'t be reversed.',
-        suspendedAcc: 'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
+        permSuspendedAcc: "This account has been permanently suspended.<br>This action won't be reversed.",
+        suspendedAcc:
+            'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
         SIGN_EFAILED: 'Failed to connect to authentication server.',
         SIGN_EILLEGAL: 'Authentication aborted due to invalid input.',
         SIGN_EALERT: 'An error occurred in processing the authentication server.',
@@ -837,15 +838,15 @@ const beginAuthProcess = function () {
 const requestAuthentication = function (username) {
     // in debugMode, all processes are skipped
 
-    // first, check if the user exists
-    ReqDataFromRainWeb(1, 'getExtgUserByUserName', username)
+    // first, check if the user has been banned
+    ReqDataFromRainWeb(1, 'getSuspendedUserByUIdAndName', username)
         .done(function (result) {
             if (!result['success']) {
                 console.error('Successfully accessed RainWeb, but failed to get data.');
                 onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
             } else {
                 console.log('Successfully accessed RainWeb and get data.');
-                const isExistingUser = result['data'] !== null;
+                const isUserSuspended = result['data'] !== null;
 
                 if (debugMode) {
                     const loginSuccess = loginRain(
@@ -859,27 +860,27 @@ const requestAuthentication = function (username) {
                           (loginPollingTimerId = setInterval(startLoginPolling, 1000))
                         : //if false, error handling will be run with onAuthError
                           onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
-                } else if (isExistingUser) {
-                    // if the user exists, go to the process for checking if the account is linked with rain discord
-                    const uid = result['data'].id;
-                    loginUserId = uid;
+                }
 
-                    // second, check if the user has been banned
-                    ReqDataFromRainWeb(1, 'getBannedUserByUIdAndName', uid, $(inputUsername).val()).done(function (
-                        result
-                    ) {
-                        const isUserBanned = result['data'] !== null;
+                if (isUserSuspended) {
+                    if (result['data'].permanent) {
+                        onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r');
+                    } else {
+                        onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
+                    }
+                } else if (result === 'Invalid Input') {
+                    // if there is an invalid operation for some reason
+                    onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                } else {
+                    // second, check if the user exists
+                    ReqDataFromRainWeb(1, 'getExtgUserByUserName', username).done(function (result) {
+                        const isExistingUser = result['data'] !== null;
 
-                        if (isUserBanned) {
-                            if (isUserBanned['permanent']) {
-                                onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r');
-                            } else {
-                                onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
-                            }
-                        } else if (result === 'Invalid Input') {
-                            // if there is an invalid operation for some reason
-                            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
-                        } else {
+                        if (isExistingUser) {
+                            // if the user exists, go to the process for checking if the account is linked with rain discord
+                            const uid = result['data'].id;
+                            loginUserId = uid;
+
                             // last, check if discord is linked to the user account
                             ReqDataFromRainWeb(1, 'getLinkedAccByUId', uid).done(function (result) {
                                 const isLinkedAcc = result['data'] !== null;
@@ -905,14 +906,14 @@ const requestAuthentication = function (username) {
                                     onAuthError(msgLogTextOutput('noLinkedAcc'));
                                 }
                             });
+                        } else if (result === 'Invalid Input') {
+                            // if there is an invalid operation for some reason
+                            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                        } else {
+                            // user doesn't exist
+                            onAuthError(msgLogTextOutput('noExistingUser'));
                         }
                     });
-                } else if (result === 'Invalid Input') {
-                    // if there is an invalid operation for some reason
-                    onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
-                } else {
-                    // user doesn't exist
-                    onAuthError(msgLogTextOutput('noExistingUser'));
                 }
             }
         })

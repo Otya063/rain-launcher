@@ -143,7 +143,9 @@ const msgLogTextData = {
             '入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。',
         noLinkedAcc:
             'レインディスコードとの連携が完了していないゲームアカウントです。<br>アカウント連携が完了してから、再度お試しください。',
-        suspendedAcc: 'このアカウントは凍結されています。',
+        permSuspendedAcc: 'このアカウントは永久凍結されています。<br>この措置が撤回されることはありません。',
+        suspendedAcc:
+            'このアカウントは一時的に凍結されています。<br>措置の解除後、アカウントへのアクセスが許可されます。',
         SIGN_EFAILED: '認証サーバーとの通信に失敗しました。',
         SIGN_EILLEGAL: '不正な入力により認証が中止されました。',
         SIGN_EALERT: '認証サーバーの処理にエラーが発生しました。',
@@ -169,7 +171,8 @@ const msgLogTextData = {
             'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
         noLinkedAcc:
             'The game account has not been linked to Rain Discord.<br>Please try again after the account linking is completed.',
-        suspendedAcc: 'This account has been suspended.',
+        permSuspendedAcc: 'This account has been permanently suspended.<br>This action won\'t be reversed.',
+        suspendedAcc: 'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
         SIGN_EFAILED: 'Failed to connect to authentication server.',
         SIGN_EILLEGAL: 'Authentication aborted due to invalid input.',
         SIGN_EALERT: 'An error occurred in processing the authentication server.',
@@ -487,9 +490,9 @@ const getAllCharData = function () {
     } catch (err) {}
 };
 
-const selectCharacter = function (name, hid) {
+const selectCharacter = function (hid, hid) {
     try {
-        window.external.selectCharacter(name, hid);
+        window.external.selectCharacter(hid, hid);
     } catch (err) {}
 };
 
@@ -868,7 +871,11 @@ const requestAuthentication = function (username) {
                         const isUserBanned = result['data'] !== null;
 
                         if (isUserBanned) {
-                            onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
+                            if (isUserBanned['permanent']) {
+                                onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r');
+                            } else {
+                                onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
+                            }
                         } else if (result === 'Invalid Input') {
                             // if there is an invalid operation for some reason
                             onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');

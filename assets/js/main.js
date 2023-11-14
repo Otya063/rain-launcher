@@ -860,60 +860,60 @@ const requestAuthentication = function (username) {
                           (loginPollingTimerId = setInterval(startLoginPolling, 1000))
                         : //if false, error handling will be run with onAuthError
                           onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
-                }
-
-                if (isUserSuspended) {
-                    if (result['data'].permanent) {
-                        onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r');
-                    } else {
-                        onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
-                    }
-                } else if (result === 'Invalid Input') {
-                    // if there is an invalid operation for some reason
-                    onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
                 } else {
-                    // second, check if the user exists
-                    ReqDataFromRainWeb(1, 'getExtgUserByUserName', username).done(function (result) {
-                        const isExistingUser = result['data'] !== null;
-
-                        if (isExistingUser) {
-                            // if the user exists, go to the process for checking if the account is linked with rain discord
-                            const uid = result['data'].id;
-                            loginUserId = uid;
-
-                            // last, check if discord is linked to the user account
-                            ReqDataFromRainWeb(1, 'getLinkedAccByUId', uid).done(function (result) {
-                                const isLinkedAcc = result['data'] !== null;
-
-                                if (isLinkedAcc) {
-                                    // if the account is linked with rain discord, go to the login process
-                                    const loginSuccess = loginRain(
-                                        $(inputUsername).val(),
-                                        $(inputPassword).val(),
-                                        $(inputPassword).val()
-                                    );
-
-                                    loginSuccess
-                                        ? // if loginSuccess is true, login polling will be run
-                                          (loginPollingTimerId = setInterval(startLoginPolling, 1000))
-                                        : //if false, error handling will be run with onAuthError
-                                          onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
-                                } else if (result === 'Invalid Input') {
-                                    // if there is an invalid operation for some reason
-                                    onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
-                                } else {
-                                    // user doesn't exist
-                                    onAuthError(msgLogTextOutput('noLinkedAcc'));
-                                }
-                            });
-                        } else if (result === 'Invalid Input') {
-                            // if there is an invalid operation for some reason
-                            onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                    if (isUserSuspended) {
+                        if (result['data'].permanent) {
+                            onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r');
                         } else {
-                            // user doesn't exist
-                            onAuthError(msgLogTextOutput('noExistingUser'));
+                            onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
                         }
-                    });
+                    } else if (result === 'Invalid Input') {
+                        // if there is an invalid operation for some reason
+                        onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                    } else {
+                        // second, check if the user exists
+                        ReqDataFromRainWeb(1, 'getExtgUserByUserName', username).done(function (result) {
+                            const isExistingUser = result['data'] !== null;
+
+                            if (isExistingUser) {
+                                // if the user exists, go to the process for checking if the account is linked with rain discord
+                                const uid = result['data'].id;
+                                loginUserId = uid;
+
+                                // last, check if discord is linked to the user account
+                                ReqDataFromRainWeb(1, 'getLinkedAccByUId', uid).done(function (result) {
+                                    const isLinkedAcc = result['data'] !== null;
+
+                                    if (isLinkedAcc) {
+                                        // if the account is linked with rain discord, go to the login process
+                                        const loginSuccess = loginRain(
+                                            $(inputUsername).val(),
+                                            $(inputPassword).val(),
+                                            $(inputPassword).val()
+                                        );
+
+                                        loginSuccess
+                                            ? // if loginSuccess is true, login polling will be run
+                                              (loginPollingTimerId = setInterval(startLoginPolling, 1000))
+                                            : //if false, error handling will be run with onAuthError
+                                              onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
+                                    } else if (result === 'Invalid Input') {
+                                        // if there is an invalid operation for some reason
+                                        onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                                    } else {
+                                        // user doesn't exist
+                                        onAuthError(msgLogTextOutput('noLinkedAcc'));
+                                    }
+                                });
+                            } else if (result === 'Invalid Input') {
+                                // if there is an invalid operation for some reason
+                                onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
+                            } else {
+                                // user doesn't exist
+                                onAuthError(msgLogTextOutput('noExistingUser'));
+                            }
+                        });
+                    }
                 }
             }
         })

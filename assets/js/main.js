@@ -230,9 +230,9 @@ const dialogTextData = {
 
         // suspend
         permSuspendedAcc:
-            '<p class="warning">このアカウントは永久凍結されています。</p><p>この措置が撤回されることはありません。</p>',
+            '<p class="warning">このアカウントは永久凍結されています。</p><p class="caution">この措置が撤回されることはありません。</p>',
         suspendedAcc:
-            '<p class="warning">このアカウントは一時的に凍結されています。</p><p>措置の解除後、アカウントへのアクセスが許可されます。</p>',
+            '<p class="warning">このアカウントは一時的に凍結されています。</p><p class="caution">措置の解除後、アカウントへのアクセスが許可されます。</p>',
         suspendedAt: 'アカウント停止日：',
         suspendedReason: '停止理由：',
         reason: {
@@ -890,9 +890,15 @@ const requestAuthentication = function (username) {
                           onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
                 } else {
                     if (isUserSuspended) {
-                        result['data'].permanent
-                            ? onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r')
-                            : onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
+                        const perm = result['data'].permanent;
+                        const date = result['data'].date;
+                        const reasonType = result['data'].reason;
+
+                        perm
+                            ? (onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r'),
+                              suspendedUserDialog(perm, date, reasonType))
+                            : (onAuthError(msgLogTextOutput('suspendedAcc'), 'r'),
+                              suspendedUserDialog(perm, date, reasonType));
                     } else if (result === 'Invalid Input') {
                         // if there is an invalid operation for some reason
                         onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');

@@ -162,7 +162,7 @@ const msgLogTextData = {
         gettingMsg: 'Getting messages...',
         failedGetMsg: 'Failed to get messages.',
         initMsg: 'After entering your username and password,<br>please select a server and press the "Log In" button.',
-        authSuccess: 'Authenticated successfully.<br>The character selection screen will appear soon.',
+        authSuccess: 'Authenticated successfully.<br>The character selection screen will be displayed soon.',
         webAccessErr:
             'Failed to access to the Rain official website.<br>Please report to Rain Admins immediately if there is no problem with your Internet connection.',
         noSrvSelected: 'The accessed server is not selected. Please select a server from the selection list.',
@@ -170,7 +170,7 @@ const msgLogTextData = {
         noExistingUser:
             'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
         noLinkedAcc:
-            'The game account has not been linked to Rain Discord.<br>Please try again after the account linking is completed.',
+            "This user account isn't linked to Rain Discord.<br>Please try again after your account has been linked.",
         permSuspendedAcc: "This account has been permanently suspended.<br>This action won't be reversed.",
         suspendedAcc:
             'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
@@ -228,6 +228,20 @@ const dialogTextData = {
         delCharErrMatch:
             'の削除に失敗しました。</p><p>入力されたIDと削除するキャラクターのIDが一致しませんでした。</p>',
 
+        // suspend
+        permSuspendedAcc:
+            '<p class="warning">このアカウントは永久凍結されています。</p><p>この措置が撤回されることはありません。</p>',
+        suspendedAcc:
+            '<p class="warning">このアカウントは一時的に凍結されています。</p><p>措置の解除後、アカウントへのアクセスが許可されます。</p>',
+        suspendedAt: 'アカウント停止日：',
+        suspendedReason: '停止理由：',
+        reason: {
+            1: '不正行為',
+            2: 'ゲームプレイの悪用',
+            3: '有害な言動',
+            4: 'サーバー利用規約違反',
+        },
+
         // others
         serverMaint:
             '<p class="caution">サーバーメンテナンスのためログインできません。</p><p>メンテナンス終了まで今しばらくお待ちください。</p>',
@@ -272,6 +286,20 @@ const dialogTextData = {
         delCharErrPrefix: '<p class="warning">Failed to delete the character "',
         delCharErrNorm: '.</p><p>Please wait for a while and try again.</p>',
         delCharErrMatch: ".</p><p>The ID entered didn't match the ID of the character to be deleted.</p>",
+
+        // suspend
+        permSuspendedAcc:
+            '<p class="warning">This account has been permanently suspended.</p><p class="caution">This action won\'t be reversed.</p>',
+        suspendedAcc:
+            '<p class="warning">This account has been temporarily suspended.</p><p class="caution">Access to your account will be allowed after the account to be unsuspended.</p>',
+        suspendedAt: 'Suspended At: ',
+        suspendedReason: 'Reason: ',
+        reason: {
+            1: 'Cheating',
+            2: 'Gameplay Exploit',
+            3: 'Toxic and Abusive Behavior',
+            4: 'Violation of Server Terms of Service',
+        },
 
         // others
         serverMaint:
@@ -839,7 +867,7 @@ const requestAuthentication = function (username) {
     // in debugMode, all processes are skipped
 
     // first, check if the user has been banned
-    ReqDataFromRainWeb(1, 'getSuspendedUserByUIdAndName', username)
+    ReqDataFromRainWeb(1, 'getSuspendedUserByUsername', username)
         .done(function (result) {
             if (!result['success']) {
                 console.error('Successfully accessed RainWeb, but failed to get data.');
@@ -862,11 +890,9 @@ const requestAuthentication = function (username) {
                           onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
                 } else {
                     if (isUserSuspended) {
-                        if (result['data'].permanent) {
-                            onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r');
-                        } else {
-                            onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
-                        }
+                        result['data'].permanent
+                            ? onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r')
+                            : onAuthError(msgLogTextOutput('suspendedAcc'), 'r');
                     } else if (result === 'Invalid Input') {
                         // if there is an invalid operation for some reason
                         onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
@@ -1191,9 +1217,9 @@ const convUnixToDate = function (date) {
 
     // set options for the date string and locale based on the language
     const options =
-        lang === 'en'
-            ? { year: 'numeric', month: 'short', day: 'numeric' }
-            : { year: 'numeric', month: 'long', day: 'numeric' };
+        lang === 'ja'
+            ? { year: 'numeric', month: 'long', day: 'numeric' }
+            : { year: 'numeric', month: 'short', day: 'numeric' };
     const locale = lang === 'en' ? 'en-US' : 'ja-JP';
 
     // return the localized date string
@@ -2143,6 +2169,36 @@ const hideDialog = function () {
 
     // reset dialog buttons
     $(dialogButtons).empty();
+};
+
+const suspendedUserDialog = function (permanent, date, reasonType) {
+    const lang = getQueryParams('l');
+
+    permanent
+        ? showDialog(
+              dialogTextOutput('permSuspendedAcc') +
+                  '<p>' +
+                  dialogTextOutput('suspendedAt') +
+                  convUnixToDate(date) +
+                  '</p>' +
+                  '<p>' +
+                  dialogTextOutput('suspendedReason') +
+                  dialogTextData[lang]['reason'][reasonType] +
+                  '</p>',
+              [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
+          )
+        : showDialog(
+              dialogTextOutput('suspendedAcc') +
+                  '<p>' +
+                  dialogTextOutput('suspendedAt') +
+                  convUnixToDate(date) +
+                  '</p>' +
+                  '<p>' +
+                  dialogTextOutput('suspendedReason') +
+                  dialogTextData[lang]['reason'][reasonType] +
+                  '</p>',
+              [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
+          );
 };
 
 // error

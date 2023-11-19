@@ -583,7 +583,7 @@ const initNormTextData = function () {
 const ReqDataFromRainWeb = function (data1, data2, data3, data4) {
     const data = JSON.stringify({ 1: data1, 2: data2, 3: data3, 4: data4 });
     return $.ajax({
-        url: 'http://localhost:5173/admin',
+        url: 'https://dev.rain-server.com/admin',
         type: 'POST',
         data: data,
         contentType: 'application/json',

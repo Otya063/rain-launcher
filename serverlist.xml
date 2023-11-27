@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<server_groups>
+  <group idx='1' nam='Rain (Test)' ip='111.111.111.111' port='53312'/>
+</server_groups>

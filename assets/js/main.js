@@ -27,8 +27,7 @@ const normTextData = {
         genderLabelFemale: '女性',
         newMsg1: '<p class="new_msg1">キャラクターを新規作成可能です。</p>',
         newMsg2: '<p class="new_msg2">「ゲームスタート」ボタンを押して、キャラクターを作成しましょう。</p>',
-        maintenanceText:
-            '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
+        maintenanceText: '<p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>',
         gettingInfo: '<p class="info_getting">インフォメーションデータ取得中...</p>',
         failedGetBnr: '<p class="failed_get_bnr">バナーデータ取得に失敗</p>',
         failedGetInfo: '<p class="failed_get_info">インフォメーションデータ取得に失敗</p>',
@@ -69,8 +68,7 @@ const normTextData = {
         genderLabelFemale: 'Female',
         newMsg1: '<p class="new_msg1">You can create a new character.</p>',
         newMsg2: '<p class="new_msg2">Press "Start Game" to create your character.</p>',
-        maintenanceText:
-            '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
+        maintenanceText: '<p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>',
         gettingInfo: '<p class="info_getting">Getting Information Data...</p>',
         failedGetBnr: '<p class="failed_get_bnr">Failed to Get Banner Data</p>',
         failedGetInfo: '<p class="failed_get_info">Failed to Get Information Data</p>',
@@ -104,28 +102,13 @@ const asideMenuData = {
 
 const updateTextData = {
     ja: {
-        progressState: [
-            'アップデート中...',
-            'アップデートが完了しました！',
-            'ランチャーを再起動します',
-            'エラーが発生しました',
-        ],
-        nextActions: [
-            'しばらくお待ちください。',
-            '間もなくゲームを開始します。',
-            '再度サーバーへログインしてください。',
-            'ランチャーを終了します。',
-        ],
+        progressState: ['アップデート中...', 'アップデートが完了しました！', 'ランチャーを再起動します', 'エラーが発生しました'],
+        nextActions: ['しばらくお待ちください。', '間もなくゲームを開始します。', '再度サーバーへログインしてください。', 'ランチャーを終了します。'],
     },
 
     en: {
         progressState: ['Updating...', 'Update Completed!', 'Restart the Launcher', 'Error Occurred'],
-        nextActions: [
-            'Please wait a moment.',
-            'The game will start soon.',
-            'Please log in to the server again.',
-            'Quit the launcher.',
-        ],
+        nextActions: ['Please wait a moment.', 'The game will start soon.', 'Please log in to the server again.', 'Quit the launcher.'],
     },
 };
 
@@ -135,17 +118,13 @@ const msgLogTextData = {
         failedGetMsg: 'メッセージの取得に失敗しました。',
         initMsg: 'ユーザー名、パスワードを入力した後、<br>サーバーを選択して「ログイン」ボタンを押してください。',
         authSuccess: '認証正常終了。<br>まもなくキャラクター選択画面が表示されます。',
-        webAccessErr:
-            'レイン公式サイトへのアクセスに失敗しました。<br>ご自身のインターネット接続状況に問題がない場合は、直ちにレイン管理者までご報告ください。',
+        webAccessErr: 'レイン公式サイトへのアクセスに失敗しました。<br>ご自身のインターネット接続状況に問題がない場合は、直ちにレイン管理者までご報告ください。',
         noSrvSelected: '接続先サーバーが選択されていません。選択リストより、サーバーを選択してください。',
         noUsernamePass: '初めに、ユーザー名とパスワードを入力してください。',
-        noExistingUser:
-            '入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。',
-        noLinkedAcc:
-            'レインディスコードとの連携が完了していないゲームアカウントです。<br>アカウント連携が完了してから、再度お試しください。',
+        noExistingUser: '入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。',
+        noLinkedAcc: 'レインディスコードとの連携が完了していないゲームアカウントです。<br>アカウント連携が完了してから、再度お試しください。',
         permSuspendedAcc: 'このアカウントは永久凍結されています。<br>この措置が撤回されることはありません。',
-        suspendedAcc:
-            'このアカウントは一時的に凍結されています。<br>措置の解除後、アカウントへのアクセスが許可されます。',
+        suspendedAcc: 'このアカウントは一時的に凍結されています。<br>措置の解除後、アカウントへのアクセスが許可されます。',
         SIGN_EFAILED: '認証サーバーとの通信に失敗しました。',
         SIGN_EILLEGAL: '不正な入力により認証が中止されました。',
         SIGN_EALERT: '認証サーバーの処理にエラーが発生しました。',
@@ -163,17 +142,14 @@ const msgLogTextData = {
         failedGetMsg: 'Failed to get messages.',
         initMsg: 'After entering your username and password,<br>please select a server and press the "Log In" button.',
         authSuccess: 'Authenticated successfully.<br>The character selection screen will be displayed soon.',
-        webAccessErr:
-            'Failed to access to the Rain official website.<br>Please report to Rain Admins immediately if there is no problem with your Internet connection.',
+        webAccessErr: 'Failed to access to the Rain official website.<br>Please report to Rain Admins immediately if there is no problem with your Internet connection.',
         noSrvSelected: 'The accessed server is not selected. Please select a server from the selection list.',
         noUsernamePass: 'First, please enter your username and password.',
         noExistingUser:
             'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
-        noLinkedAcc:
-            "This user account isn't linked to Rain Discord.<br>Please try again after your account has been linked.",
+        noLinkedAcc: "This user account isn't linked to Rain Discord.<br>Please try again after your account has been linked.",
         permSuspendedAcc: "This account has been permanently suspended.<br>This action won't be reversed.",
-        suspendedAcc:
-            'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
+        suspendedAcc: 'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
         SIGN_EFAILED: 'Failed to connect to authentication server.',
         SIGN_EILLEGAL: 'Authentication aborted due to invalid input.',
         SIGN_EALERT: 'An error occurred in processing the authentication server.',
@@ -203,19 +179,15 @@ const dialogTextData = {
         startGame: '<p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p><p>「',
 
         // add Character
-        cantAddChar:
-            '<p>これ以上キャラクターを追加することはできません。</p><p class="caution">キャラクターの保有可能数は、３体が上限です。</p>',
+        cantAddChar: '<p>これ以上キャラクターを追加することはできません。</p><p class="caution">キャラクターの保有可能数は、３体が上限です。</p>',
         addChar: '<p>新規キャラクターをアカウントへ追加します。<br>下記の「追加する」を押してください。</p>',
         addCharWait: '<p>キャラクターを追加しています。</p><p>しばらくお待ちください。</p>',
-        addCharDone:
-            '<p>新規キャラクターの追加が完了しました。<br>下記の「再起動する」を押して、ランチャーを再起動してください。</p>',
-        addCharErrNorm:
-            '<p class="warning">キャラクターの追加に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>',
+        addCharDone: '<p>新規キャラクターの追加が完了しました。<br>下記の「再起動する」を押して、ランチャーを再起動してください。</p>',
+        addCharErrNorm: '<p class="warning">キャラクターの追加に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>',
 
         // delete Character
         cantDeleteChar1: '<p>新規キャラクターは削除できません。</p>',
-        cantDeleteChar2:
-            '<p>最後のキャラクターは削除できません。</p><p class="caution">アカウント内には、最低１体のキャラクターが必要です。</p>',
+        cantDeleteChar2: '<p>最後のキャラクターは削除できません。</p><p class="caution">アカウント内には、最低１体のキャラクターが必要です。</p>',
         delCharPrefix: '本当にキャラクター「',
         delCharConfirm: 'を削除しますか？</p><p class="warning">一度削除したキャラクターデータは復元できません。</p>',
         delCharIdCheck: '<p>削除するキャラクターのIDを入力して、下記「削除する」を押してください。</p>',
@@ -225,14 +197,11 @@ const dialogTextData = {
         delCharDone: 'の削除が完了しました。</p><p>下記の「再起動」を押して、ランチャーを再起動してください。</p>',
         delCharErrPrefix: '<p class="warning">キャラクター「',
         delCharErrNorm: 'の削除に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>',
-        delCharErrMatch:
-            'の削除に失敗しました。</p><p>入力されたIDと削除するキャラクターのIDが一致しませんでした。</p>',
+        delCharErrMatch: 'の削除に失敗しました。</p><p>入力されたIDと削除するキャラクターのIDが一致しませんでした。</p>',
 
         // suspend
-        permSuspendedAcc:
-            '<p class="warning">このアカウントは永久凍結されています。</p><p class="caution">この措置が撤回されることはありません。</p>',
-        suspendedAcc:
-            '<p class="warning">このアカウントは一時的に凍結されています。</p><p class="caution">措置の解除後、アカウントへのアクセスが許可されます。</p>',
+        permSuspendedAcc: '<p class="warning">このアカウントは永久凍結されています。</p><p class="caution">この措置が撤回されることはありません。</p>',
+        suspendedAcc: '<p class="warning">このアカウントは一時的に凍結されています。</p><p class="caution">措置の解除後、アカウントへのアクセスが許可されます。</p>',
         suspendedAt: 'アカウント停止日：',
         suspendedReason: '停止理由：',
         reason: {
@@ -243,8 +212,7 @@ const dialogTextData = {
         },
 
         // others
-        serverMaint:
-            '<p class="caution">サーバーメンテナンスのためログインできません。</p><p>メンテナンス終了まで今しばらくお待ちください。</p>',
+        serverMaint: '<p class="caution">サーバーメンテナンスのためログインできません。</p><p>メンテナンス終了まで今しばらくお待ちください。</p>',
         webInaccessible:
             '<p>レイン公式サイトにアクセスできなかったため、要求された操作を完了できませんでした。</p><p class="caution">これが未確認の問題である場合は、直ちに管理者までご報告ください。</p>',
     },
@@ -264,23 +232,19 @@ const dialogTextData = {
         startGame: '<p class="caution">Are you sure to start the game with the following character?</p><p>"',
 
         // add Character
-        cantAddChar:
-            '<p>No more characters can be added.</p><p class="caution">The maximum number of characters which you can own is 3.</p>',
+        cantAddChar: '<p>No more characters can be added.</p><p class="caution">The maximum number of characters which you can own is 3.</p>',
         addChar: '<p>Add a new character to your account.<br>Click "Add" below.</p>',
         addCharWait: '<p>A new character is being added.</p><p>Please wait for a while.</p>',
         addCharDone: '<p>A new character has been added.<br>Click "Restart" below to restart the launcher.</p>',
-        addCharErrNorm:
-            '<p class="warning">Failed to add a character.</p><p>Please wait for a while and try again.</p>',
+        addCharErrNorm: '<p class="warning">Failed to add a character.</p><p>Please wait for a while and try again.</p>',
 
         // delete Character
         cantDeleteChar1: "<p>A new character can't be deleted.</p>",
-        cantDeleteChar2:
-            '<p>The last character can\'t be deleted.</p><p class="caution">There must be at least 1 character in your account.</p>',
+        cantDeleteChar2: '<p>The last character can\'t be deleted.</p><p class="caution">There must be at least 1 character in your account.</p>',
         delCharPrefix: 'Do you really want to delete character "',
         delCharConfirm: '?</p><p class="warning">Once deleted, your character data can\'t be restored.</p>',
         delCharIdCheck: '<p>Enter the ID of the character you want to delete and click the "Delete" below.</p>',
-        delCharIdInputElm:
-            "<input class='del_cid' type='text' name='del_cid' placeholder='Enter character ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
+        delCharIdInputElm: "<input class='del_cid' type='text' name='del_cid' placeholder='Enter character ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
         delCharWait: 'is being deleted.</p><p>Please wait for a while.</p>',
         delCharDone: 'has been deleted.</p><p>Click "Restart" below to restart the launcher.</p>',
         delCharErrPrefix: '<p class="warning">Failed to delete the character "',
@@ -288,10 +252,8 @@ const dialogTextData = {
         delCharErrMatch: ".</p><p>The ID entered didn't match the ID of the character to be deleted.</p>",
 
         // suspend
-        permSuspendedAcc:
-            '<p class="warning">This account has been permanently suspended.</p><p class="caution">This action won\'t be reversed.</p>',
-        suspendedAcc:
-            '<p class="warning">This account has been temporarily suspended.</p><p class="caution">Access to your account will be allowed after the account to be unsuspended.</p>',
+        permSuspendedAcc: '<p class="warning">This account has been permanently suspended.</p><p class="caution">This action won\'t be reversed.</p>',
+        suspendedAcc: '<p class="warning">This account has been temporarily suspended.</p><p class="caution">Access to your account will be allowed after the account to be unsuspended.</p>',
         suspendedAt: 'Suspended At: ',
         suspendedReason: 'Reason: ',
         reason: {
@@ -302,8 +264,7 @@ const dialogTextData = {
         },
 
         // others
-        serverMaint:
-            '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
+        serverMaint: '<p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>',
         webInaccessible:
             '<p>The requested operation couldn\'t be completed because the Rain official website is inaccessible.</p><p class="caution">If this is an unconfirmed problem, please report it to the administrators immediately.</p>',
     },
@@ -583,7 +544,7 @@ const initNormTextData = function () {
 const ReqDataFromRainWeb = function (data1, data2, data3, data4) {
     const data = JSON.stringify({ 1: data1, 2: data2, 3: data3, 4: data4 });
     return $.ajax({
-        url: 'https://dev.rain-server.com/admin',
+        url: 'http://localhost:5173/admin',
         type: 'POST',
         data: data,
         contentType: 'application/json',
@@ -707,8 +668,7 @@ const initSrvSelList = function () {
     // if user have previously selected a server, set auth server and assign class to the target server
     serverNotSelected
         ? $(serverSelBtn).text(normTextOutput('serverNotSelected'))
-        : (switchAuthSrv($(srvListEachItem)[lastSelectedSrvIndex]),
-          $('.srv').eq(lastSelectedSrvIndex).addClass('selected_srv'));
+        : (switchAuthSrv($(srvListEachItem)[lastSelectedSrvIndex]), $('.srv').eq(lastSelectedSrvIndex).addClass('selected_srv'));
 
     // hide the server selection list
     $(serverListBox).hide();
@@ -877,11 +837,7 @@ const requestAuthentication = function (username) {
                 const isUserSuspended = result['data'] !== null;
 
                 if (debugMode) {
-                    const loginSuccess = loginRain(
-                        $(inputUsername).val(),
-                        $(inputPassword).val(),
-                        $(inputPassword).val()
-                    );
+                    const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
 
                     loginSuccess
                         ? // if loginSuccess is true, login polling will be run
@@ -895,10 +851,8 @@ const requestAuthentication = function (username) {
                         const reasonType = result['data'].reason;
 
                         perm
-                            ? (onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r'),
-                              suspendedUserDialog(perm, date, reasonType))
-                            : (onAuthError(msgLogTextOutput('suspendedAcc'), 'r'),
-                              suspendedUserDialog(perm, date, reasonType));
+                            ? (onAuthError(msgLogTextOutput('permSuspendedAcc'), 'r'), suspendedUserDialog(perm, date, reasonType))
+                            : (onAuthError(msgLogTextOutput('suspendedAcc'), 'r'), suspendedUserDialog(perm, date, reasonType));
                     } else if (result === 'Invalid Input') {
                         // if there is an invalid operation for some reason
                         onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
@@ -918,11 +872,7 @@ const requestAuthentication = function (username) {
 
                                     if (isLinkedAcc) {
                                         // if the account is linked with rain discord, go to the login process
-                                        const loginSuccess = loginRain(
-                                            $(inputUsername).val(),
-                                            $(inputPassword).val(),
-                                            $(inputPassword).val()
-                                        );
+                                        const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
 
                                         loginSuccess
                                             ? // if loginSuccess is true, login polling will be run
@@ -1066,13 +1016,9 @@ const afterLoginSuccess = function (serverName) {
 
     $(rememberMeCheck).is(':checked')
         ? // if checked, save username and password in the local storage
-          (localStorage.setItem('Username', $(inputUsername).val()),
-          localStorage.setItem('Password', $(inputPassword).val()),
-          localStorage.setItem('IsChecked', 'true'))
+          (localStorage.setItem('Username', $(inputUsername).val()), localStorage.setItem('Password', $(inputPassword).val()), localStorage.setItem('IsChecked', 'true'))
         : // if not, delete them
-          (localStorage.removeItem('Username'),
-          localStorage.removeItem('Password'),
-          localStorage.removeItem('IsChecked'));
+          (localStorage.removeItem('Username'), localStorage.removeItem('Password'), localStorage.removeItem('IsChecked'));
 };
 
 const showAuthenticating = function () {
@@ -1151,9 +1097,7 @@ const startUpLauncher = function () {
 
     // login button click event
     $(loginBtn).click(function () {
-        serverNotSelected
-            ? (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noSrvSelected')))
-            : beginAuthProcess();
+        serverNotSelected ? (soundMode && playSound('IDR_WAV_OK'), onAuthError(msgLogTextOutput('noSrvSelected'))) : beginAuthProcess();
     });
 
     // set username and focus event
@@ -1171,8 +1115,7 @@ const startUpLauncher = function () {
     });
 
     // set soundMode and remove sound_on class if false
-    soundMode =
-        localStorage.getItem('SoundMode') === 'true' || localStorage.getItem('SoundMode') === null ? true : false;
+    soundMode = localStorage.getItem('SoundMode') === 'true' || localStorage.getItem('SoundMode') === null ? true : false;
     !soundMode &&
         ($(
             '.minimize, .close, .checkbox, .forgot_creds, .btn_preferences, .scroll, .menu_contents_anchor, ' +
@@ -1222,10 +1165,7 @@ const convUnixToDate = function (date) {
     const lang = $('html')[0].lang;
 
     // set options for the date string and locale based on the language
-    const options =
-        lang === 'ja'
-            ? { year: 'numeric', month: 'long', day: 'numeric' }
-            : { year: 'numeric', month: 'short', day: 'numeric' };
+    const options = lang === 'ja' ? { year: 'numeric', month: 'long', day: 'numeric' } : { year: 'numeric', month: 'short', day: 'numeric' };
     const locale = lang === 'en' ? 'en-US' : 'ja-JP';
 
     // return the localized date string
@@ -1363,20 +1303,7 @@ const showCharSelector = function () {
                 if (!result['success']) {
                     console.error('Successfully accessed RainWeb, but failed to get data.');
 
-                    $(charSelUnitBox).append(
-                        createCharUnit(
-                            'Failed to Get Character Data',
-                            'Unknown',
-                            'Unknown',
-                            'Unknown',
-                            1,
-                            'Unknown',
-                            'Unknown',
-                            'Unknown',
-                            false,
-                            'Unknown'
-                        )
-                    );
+                    $(charSelUnitBox).append(createCharUnit('Failed to Get Character Data', 'Unknown', 'Unknown', 'Unknown', 1, 'Unknown', 'Unknown', 'Unknown', false, 'Unknown'));
                 } else {
                     console.log('Successfully accessed RainWeb and get data.');
 
@@ -1423,20 +1350,7 @@ const showCharSelector = function () {
                             }
                         });
                     } else {
-                        $(charSelUnitBox).append(
-                            createCharUnit(
-                                'Failed to Get Character Data',
-                                'Unknown',
-                                'Unknown',
-                                'Unknown',
-                                1,
-                                'Unknown',
-                                'Unknown',
-                                'Unknown',
-                                false,
-                                'Unknown'
-                            )
-                        );
+                        $(charSelUnitBox).append(createCharUnit('Failed to Get Character Data', 'Unknown', 'Unknown', 'Unknown', 1, 'Unknown', 'Unknown', 'Unknown', false, 'Unknown'));
                     }
                 }
             })
@@ -1469,20 +1383,7 @@ const showCharSelector = function () {
                         );
                     });
                 } else {
-                    $(charSelUnitBox).append(
-                        createCharUnit(
-                            'Failed to Get Character Data',
-                            'Unknown',
-                            'Unknown',
-                            'Unknown',
-                            1,
-                            'Unknown',
-                            'Unknown',
-                            'Unknown',
-                            false,
-                            'Unknown'
-                        )
-                    );
+                    $(charSelUnitBox).append(createCharUnit('Failed to Get Character Data', 'Unknown', 'Unknown', 'Unknown', 1, 'Unknown', 'Unknown', 'Unknown', false, 'Unknown'));
                 }
             })
             .always(function () {
@@ -1516,18 +1417,7 @@ const showCharSelector = function () {
     }
 };
 
-const createCharUnit = function (
-    name,
-    hunterId,
-    userId,
-    characterId,
-    hr,
-    gr,
-    weaponType,
-    weaponName,
-    gender,
-    lastLogin
-) {
+const createCharUnit = function (name, hunterId, userId, characterId, hr, gr, weaponType, weaponName, gender, lastLogin) {
     const charName = convEntities(name) === '' ? normTextOutput('readyHunt') : convEntities(name);
     const isFemale = typeof gender === 'string' ? gender !== 'M' : gender;
 
@@ -1541,17 +1431,7 @@ const createCharUnit = function (
     lang === 'ja' && (wpnClass = convWpnNameToEng(weaponType));
 
     // generate a new div element with the given attributes
-    const charUnit = $(
-        '<div class="unit swiper-slide" hid="' +
-            hunterId +
-            '" uid="' +
-            userId +
-            '" cid="' +
-            characterId +
-            '" name="' +
-            charName +
-            '" to="0"></div>'
-    );
+    const charUnit = $('<div class="unit swiper-slide" hid="' + hunterId + '" uid="' + userId + '" cid="' + characterId + '" name="' + charName + '" to="0"></div>');
 
     // character name
     charUnit.append($('<p class="name">' + charName + '</p>'));
@@ -1925,9 +1805,7 @@ const updateProcessPct = function () {
                   switchUpdateAfterState();
               }))
         : // if not, update file progress bar
-          ($(fileProgressBar).width(Math.ceil(getFilePctOnUpdate() * progressBarPercent)),
-          $('.file_pct').text(getFilePctOnUpdate()),
-          switchUpdateAfterState());
+          ($(fileProgressBar).width(Math.ceil(getFilePctOnUpdate() * progressBarPercent)), $('.file_pct').text(getFilePctOnUpdate()), switchUpdateAfterState());
 };
 
 const clearAnimSq = function () {
@@ -1947,6 +1825,15 @@ let importantInfoData = {},
     managementAndServiceInfoData = {},
     inGameEventsInfoData = {},
     updatesAndMaintenanceInfoData = {};
+
+const isWithinOneWeek = function (timestamp) {
+    const oneWeekInSeconds = 7 * 24 * 60 * 60;
+    const today = Math.floor(Date.now() / 1000);
+    const differenceInSeconds = today - timestamp;
+
+    // check if the difference is less than one week
+    return differenceInSeconds < oneWeekInSeconds;
+};
 
 const beginLoadInfo = function () {
     $(infoList).append(normTextOutput('gettingInfo'));
@@ -1977,14 +1864,10 @@ const beginLoadInfo = function () {
                 Object.keys(infoData).forEach(function (infoType) {
                     infoUlElm = $('<ul>', {
                         class: 'info_list_item ' + infoType,
-                        html:
-                            '<div class="info_title">' +
-                            infoData[infoType].name +
-                            '</div><ul class="info_list_contents"></ul>',
+                        html: '<div class="info_title">' + infoData[infoType].name + '</div><ul class="info_list_contents"></ul>',
                     });
                     $(infoList).append(infoUlElm);
-                    infoData[infoType].data.length === 0 &&
-                        $('.' + infoType + ' .info_list_contents').append(normTextOutput('noInfoFound'));
+                    infoData[infoType].data.length === 0 && $('.' + infoType + ' .info_list_contents').append(normTextOutput('noInfoFound'));
 
                     Object.keys(infoData[infoType].data).forEach(function (dataIndex) {
                         infoLiElm = $(
@@ -1994,7 +1877,9 @@ const beginLoadInfo = function () {
                                 infoData[infoType].data[dataIndex].url +
                                 '">' +
                                 infoData[infoType].data[dataIndex].title +
-                                '</a></p></li>'
+                                '</a></p>' +
+                                (isWithinOneWeek(infoData[infoType].data[dataIndex].created_at) ? '<span class="new_mark"></span>' : '') +
+                                '</li>'
                         );
                         $('.' + infoType + ' .info_list_contents').append(infoLiElm);
                     });
@@ -2062,16 +1947,7 @@ const beginLoadBnr = function () {
 
                     bnrLiElm = $('<li>', {
                         class: 'bnr',
-                        html:
-                            '<a href="' +
-                            siteURL +
-                            '"><img src="' +
-                            imgSource +
-                            '" style="' +
-                            bnrStyle +
-                            '" alt="' +
-                            bnr.bnr_name +
-                            '" /></a>',
+                        html: '<a href="' + siteURL + '"><img src="' + imgSource + '" style="' + bnrStyle + '" alt="' + bnr.bnr_name + '" /></a>',
                     });
                     $(launcherBanner).append(bnrLiElm);
                 });
@@ -2209,9 +2085,7 @@ const suspendedUserDialog = function (permanent, date, reasonType) {
 
 // error
 const showInvalidInputDialog = function () {
-    showDialog('<p class="warning">Invalid Input.</p>', [
-        { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
-    ]);
+    showDialog('<p class="warning">Invalid Input.</p>', [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]);
 };
 
 const showWebInaccessibleDialog = function () {
@@ -2268,13 +2142,7 @@ const showCantDelCharDialog2 = function () {
 
 const showDelCharDialog1 = function (name, cid) {
     showDialog(
-        '<p>' +
-            dialogTextOutput('delCharPrefix') +
-            name +
-            dialogTextOutput('charIdPart') +
-            cid +
-            '] </span>' +
-            dialogTextOutput('delCharConfirm'),
+        '<p>' + dialogTextOutput('delCharPrefix') + name + dialogTextOutput('charIdPart') + cid + '] </span>' + dialogTextOutput('delCharConfirm'),
         [
             {
                 label: dialogTextOutput('delCharLabel'),
@@ -2305,55 +2173,27 @@ const showDelCharDialog2 = function (name, cid) {
 const showWaitDelCharDialog = function (name, cid) {
     const lang = getQueryParams('l');
 
-    showDialog(
-        '<p>' +
-            (lang === 'ja' ? '「' : '"') +
-            name +
-            dialogTextOutput('charIdPart') +
-            cid +
-            '] </span>' +
-            dialogTextOutput('delCharWait')
-    ),
-        deleteCharacter(name, cid);
+    showDialog('<p>' + (lang === 'ja' ? '「' : '"') + name + dialogTextOutput('charIdPart') + cid + '] </span>' + dialogTextOutput('delCharWait')), deleteCharacter(name, cid);
 };
 
 const showDelCharDoneDialog = function (name, cid) {
     const lang = getQueryParams('l');
 
-    showDialog(
-        '<p>' +
-            (lang === 'ja' ? '「' : '"') +
-            name +
-            dialogTextOutput('charIdPart') +
-            cid +
-            '] </span>' +
-            dialogTextOutput('delCharDone'),
-        [{ label: dialogTextOutput('restartLabel'), cmd: 'restartGame();' }]
-    );
+    showDialog('<p>' + (lang === 'ja' ? '「' : '"') + name + dialogTextOutput('charIdPart') + cid + '] </span>' + dialogTextOutput('delCharDone'), [
+        { label: dialogTextOutput('restartLabel'), cmd: 'restartGame();' },
+    ]);
 };
 
 const showFailDelCharErrNormDialog = function (name, cid) {
-    showDialog(
-        dialogTextOutput('delCharErrPrefix') +
-            name +
-            dialogTextOutput('charIdPart') +
-            cid +
-            '] </span>' +
-            dialogTextOutput('delCharErrNorm'),
-        [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
-    );
+    showDialog(dialogTextOutput('delCharErrPrefix') + name + dialogTextOutput('charIdPart') + cid + '] </span>' + dialogTextOutput('delCharErrNorm'), [
+        { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
+    ]);
 };
 
 const showFailDelCharErrMatchDialog = function (name, cid) {
-    showDialog(
-        dialogTextOutput('delCharErrPrefix') +
-            name +
-            dialogTextOutput('charIdPart') +
-            cid +
-            '] </span>' +
-            dialogTextOutput('delCharErrMatch'),
-        [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
-    );
+    showDialog(dialogTextOutput('delCharErrPrefix') + name + dialogTextOutput('charIdPart') + cid + '] </span>' + dialogTextOutput('delCharErrMatch'), [
+        { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
+    ]);
 };
 
 // start game

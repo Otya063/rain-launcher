@@ -1550,9 +1550,10 @@ h1 {
 
                 // each info list item
                 .info_list_contents_item {
-                    overflow: hidden;
-                    padding: 1.4% 0;
                     display: flex;
+                    align-items: center;
+                    padding: 1.4% 0;
+                    overflow: hidden;
 
                     // date
                     .date {
@@ -1566,6 +1567,7 @@ h1 {
                         a {
                             color: #d1c0a5;
                             cursor: pointer;
+                            overflow-wrap: break-word;
 
                             &:hover {
                                 color: #efddc2;
@@ -1573,12 +1575,14 @@ h1 {
                         }
                     }
 
-                    // new info icon
-                    /* .icon {
-                        width: 30px;
-                        height: 14px;
-                        background: no-repeat center center;
-                    } */
+                    // new info mark
+                    .new_mark {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 22px;
+                        margin-left: 2%;
+                        background-color: #f73521;
+                    }
                 }
             }
 

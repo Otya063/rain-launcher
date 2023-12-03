@@ -858,7 +858,7 @@ const requestAuthentication = function (username) {
                         onAuthError(msgLogTextOutput('SIGN_EILLEGAL'), 'r');
                     } else {
                         // second, check if the user exists
-                        ReqDataFromRainWeb(1, 'getExtgUserByUserName', username).done(function (result) {
+                        ReqDataFromRainWeb(1, 'getUserByUserName', username).done(function (result) {
                             const isExistingUser = result['data'] !== null;
 
                             if (isExistingUser) {

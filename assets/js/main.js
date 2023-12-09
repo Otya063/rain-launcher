@@ -12,7 +12,7 @@ const normTextData = {
         serverNotSelected: '接続先サーバーを選択',
         loginBtnText: 'ログイン',
         rememberMeBtn: '認証情報を記憶する',
-        forgetCredsBtn: 'ユーザー名/パスワードを忘れたら',
+        forgetCredsBtn: 'パスワードを忘れたら',
         preferencesBtn: '環境設定',
         authText: '認証中...',
         charAddBtnText: 'キャラクターを追加する',
@@ -146,7 +146,7 @@ const msgLogTextData = {
         noSrvSelected: 'The accessed server is not selected. Please select a server from the selection list.',
         noUsernamePass: 'First, please enter your username and password.',
         noExistingUser:
-            'The account with the entered username does not exist. Please check again that the username you entered is correct.<br>If you are not a registered member, please register as a new member first.',
+            "The account with the entered username doesn't exist. Please check again that the username is correct.<br>If you're not a registered member, please register as a new member first.",
         noLinkedAcc: "This user account isn't linked to Rain Discord.<br>Please try again after your account has been linked.",
         permSuspendedAcc: "This account has been permanently suspended.<br>This action won't be reversed.",
         suspendedAcc: 'This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.',
@@ -174,6 +174,12 @@ const dialogTextData = {
         addLabel: '追加する',
         restartLabel: '再起動する',
         delCharLabel: '削除する',
+        discordLabel: 'ディスコード',
+        websiteLabel: 'ウェブサイト',
+
+        // before logging in
+        register:
+            '<p class="caution">入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。</p><p>まだ会員登録がお済みでない方は、下記「ディスコード」もしくは「ウェブサイト」より新規会員登録を行ってください。</p>',
 
         // start the game
         startGame: '<p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p><p>「',
@@ -227,6 +233,12 @@ const dialogTextData = {
         addLabel: 'Add',
         restartLabel: 'Restart',
         delCharLabel: 'Delete',
+        discordLabel: 'Discord',
+        websiteLabel: 'Website',
+
+        // before logging in
+        register:
+            '<p class="caution">The account with the entered username doesn\'t exist. Please check again that the username is correct.</p><p>If you\'re not a registered member, please register as a new member by clicking the "discord" or "website" button below.</p>',
 
         // start the game
         startGame: '<p class="caution">Are you sure to start the game with the following character?</p><p>"',
@@ -243,7 +255,7 @@ const dialogTextData = {
         cantDeleteChar2: '<p>The last character can\'t be deleted.</p><p class="caution">There must be at least 1 character in your account.</p>',
         delCharPrefix: 'Do you really want to delete character "',
         delCharConfirm: '?</p><p class="warning">Once deleted, your character data can\'t be restored.</p>',
-        delCharIdCheck: '<p>Enter the ID of the character you want to delete and click the "Delete" below.</p>',
+        delCharIdCheck: '<p>Enter the ID of the character you want to delete and click "Delete" below.</p>',
         delCharIdInputElm: "<input class='del_cid' type='text' name='del_cid' placeholder='Enter character ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>",
         delCharWait: 'is being deleted.</p><p>Please wait for a while.</p>',
         delCharDone: 'has been deleted.</p><p>Click "Restart" below to restart the launcher.</p>',
@@ -404,6 +416,7 @@ const checkDebugMode = function () {
         })
         .fail(function () {
             console.error('Failed to access RainWeb and get data.');
+
             if (window.location.origin.indexOf('192.168') !== -1) {
                 // localhost env (for test)
                 debugMode = true;
@@ -544,7 +557,7 @@ const initNormTextData = function () {
 const ReqDataFromRainWeb = function (data1, data2, data3, data4) {
     const data = JSON.stringify({ 1: data1, 2: data2, 3: data3, 4: data4 });
     return $.ajax({
-        url: 'http://localhost:5173/admin',
+        url: 'https://www.rain-server.com/admin',
         type: 'POST',
         data: data,
         contentType: 'application/json',
@@ -824,8 +837,6 @@ const beginAuthProcess = function () {
 };
 
 const requestAuthentication = function (username) {
-    // in debugMode, all processes are skipped
-
     // first, check if the user has been banned
     ReqDataFromRainWeb(1, 'getSuspendedUserByUsername', username)
         .done(function (result) {
@@ -836,13 +847,14 @@ const requestAuthentication = function (username) {
                 console.log('Successfully accessed RainWeb and get data.');
                 const isUserSuspended = result['data'] !== null;
 
+                // in debugMode, all processes are skipped
                 if (debugMode) {
                     const loginSuccess = loginRain($(inputUsername).val(), $(inputPassword).val(), $(inputPassword).val());
 
                     loginSuccess
                         ? // if loginSuccess is true, login polling will be run
                           (loginPollingTimerId = setInterval(startLoginPolling, 1000))
-                        : //if false, error handling will be run with onAuthError
+                        : // if false, error handling will be run with onAuthError
                           onAuthError(msgLogTextOutput('SIGN_EAPP'), 'r');
                 } else {
                     if (isUserSuspended) {
@@ -893,6 +905,7 @@ const requestAuthentication = function (username) {
                             } else {
                                 // user doesn't exist
                                 onAuthError(msgLogTextOutput('noExistingUser'));
+                                registerDialog();
                             }
                         });
                     }
@@ -2081,6 +2094,17 @@ const suspendedUserDialog = function (permanent, date, reasonType) {
                   '</p>',
               [{ label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' }]
           );
+};
+
+// before logging in
+const registerDialog = function () {
+    const lang = getQueryParams('l');
+
+    showDialog(dialogTextOutput('register'), [
+        { label: dialogTextOutput('discordLabel'), cmd: 'openBrowser("discord://discordapp.com/channels/937230168223789066/1001395289233567854/1105105785148686579"); hideDialog();' },
+        { label: dialogTextOutput('websiteLabel'), cmd: 'openBrowser("https://auth.rain-server.com/' + lang + '/register"); hideDialog();' },
+        { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
+    ]);
 };
 
 // error

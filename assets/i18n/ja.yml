@@ -1,0 +1,172 @@
+---
+normTextData:
+    title: モンスターハンター フロンティア オンライン ランチャー
+    movableOlay: ランチャーウィンドウ移動可能<br>（マウス左ボタンをクリック＆ホールド）
+    connectingOlay: 接続中...
+    gameStartOlay: ゲームを開始します
+    launcherTitle: モンスターハンター<br />フロンティア オンライン<br />レインランチャー
+    logoutBtn: ログアウト
+    loggingoutBtn: ログアウト中
+    labelUsername: ユーザー名
+    labelPassword: パスワード
+    labelSrvSel: サーバー選択
+    serverNotSelected: 接続先サーバーを選択
+    loginBtnText: ログイン
+    rememberMeBtn: 自動ログインを有効
+    saveUsernameBtn: ユーザー名を保存
+    forgetCredsBtn: パスワードを忘れたら
+    preferencesBtn: 環境設定
+    authText: 認証中...
+    charAddBtnText: キャラクターを追加する
+    charDelBtnText: キャラクターを削除する
+    startGameBtnText: ゲームスタート
+    timeZone: '<p class="time_zone">タイムゾーン：'
+    readyHunt: 狩人申請可能
+    userIdLabel: 'ユーザーID：'
+    charIdLabel: 'キャラクターID：'
+    lastOnlineLabel: '最終ログイン：'
+    genderLabelMale: 男性
+    genderLabelFemale: 女性
+    newMsg1: <p class="new_msg1">キャラクターを新規作成可能です。</p>
+    normNewMsg2: <p class="new_msg2">「ゲームスタート」ボタンを押下して、キャラクターを作成しましょう。</p>
+    autoLoginNewMsg2: <p class="new_msg2">今すぐキャラクターを作成しましょう。</p>
+    maintenanceText: <p>現在、メンテナンス実施中のため、<span class="maint_server_name"></span>はご利用いただけません。</p><p>メンテナンス終了まで、お待ちくださいますようお願いいたします。</p>
+    gettingInfo: <p class="info_getting">インフォメーションデータ取得中...</p>
+    failedGetBnr: <p class="failed_get_bnr">バナーデータ取得に失敗</p>
+    failedGetInfo: <p class="failed_get_info">インフォメーションデータ取得に失敗</p>
+    important: 重要なお知らせ
+    defects: 不具合・トラブル情報
+    management: 運営・サービス情報
+    event: ゲーム内イベント情報
+    update: アップデート・メンテナンス情報
+    noInfoFound: <p class="no_info_found">お知らせはありません。</p>
+    disclaimer: ※レインサーバーは株式会社カプコンおよびその子会社とは一切関係ありません。
+
+asideMenuData:
+    register:
+        name: 会員登録
+        url: https://auth.rain-server.com/ja/register/
+        iconName: app_registration
+    member:
+        name: メンバーサイト
+        url:
+        iconName: home
+    manual:
+        name: マニュアル
+        url:
+        iconName: book_3
+    mypage:
+        name: マイページ
+        url:
+        iconName: badge
+    discord:
+        name: ディスコード
+        url: https://discord.gg/TcpkpUpeGw
+        iconName: diversity_1
+
+updateTextData:
+    progressState:
+        - アップデート中...
+        - アップデートが完了しました！
+        - ランチャーを再起動します
+        - エラーが発生しました
+    nextActions:
+        - しばらくお待ちください。
+        - 間もなくゲームを開始します。
+        - 再度サーバーへログインしてください。
+        - ランチャーを終了します。
+
+msgLogTextData:
+    needsUpdateClient: アップデートが必要
+    initMsg1: ユーザー名、パスワードを入力した後、<br>サーバーを選択して「ログイン」ボタンを押下してください。
+    initMsg2: 「ゲームスタート」ボタンを押下して、使用するキャラクターを選択してください。
+    initMsg3: ※サーバーの変更、キャラクターの追加および削除は、自動ログインモードでは行えません。
+    autoLoginEx: '自動ログイン有効期限：'
+    authSuccess: 認証正常終了。<br>キャラクター選択画面へ移行します...
+    settingAutoLogin: 自動ログインモードへ設定中...
+    noSrvSelected: 接続先サーバーが選択されていません。選択リストより、サーバーを選択してください。
+    noUsernamePass: 初めに、ユーザー名とパスワードを入力してください。
+    noExistingUser: 入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。<br>まだ会員登録がお済みでない方は、初めに新規会員登録を行ってください。
+    noCharacters: ユーザーアカウント内にキャラクターが存在しません。
+    noLinkedAcc: このアカウントは、ディスコードアカウントとの連携が完了していません。<br>ディスコード連携を行ってから、再度お試しください。
+    permSuspendedAcc: このアカウントは永久凍結されています。<br>この措置が撤回されることはありません。
+    suspendedAcc: このアカウントは一時的に凍結されています。<br>措置の解除後、アカウントへのアクセスが許可されます。
+    failedAccessApi: レインAPIサーバーにアクセスできません。
+    unexpected: 予期せぬエラーが発生しました。
+    noLauncherSysData: ランチャーのシステムデータが見つかりません。
+    noBannerData: バナーデータが見つかりません。
+    noInformationData: インフォメーションデータが見つかりません。
+    noAutoLoginData: 認証ユーザーの自動ログインデータが見つかりません。
+    noUserKey: ユーザーキーが存在しません。
+    paramsUndefined: パラメータが未定義です。
+    noRequiredData: 必要なデータが存在しません。
+    suspendedNotice: このアカウントは凍結されています。詳しくは通常ログイン時のダイアログを確認してください。
+    invalidReqType: 無効なリクエストタイプです。
+    SIGN_EFAILED: 認証サーバーとの通信に失敗しました。
+    SIGN_EILLEGAL: 不正な入力により認証が中止されました。
+    SIGN_EALERT: 認証サーバーの処理にエラーが発生しました。
+    SIGN_EABORT: 認証サーバー内部処理が異常終了しました。
+    SIGN_ERESPONSE: 認証レスポンスの異常により処理が終了しました。
+    SIGN_EDATABASE: データベースへのアクセスに失敗しました。
+    SIGN_EOTHER: IDの認証に失敗しました。
+    SIGN_EPASS: パスワードが正しくありません。
+    SIGN_EAPP: アプリ内の想定していないエラーで認証に失敗しました。
+    SIGN_EUNK: 不明なエラーが発生しました。
+
+dialogTextData:
+    yesLabel: はい
+    noLabel: いいえ
+    closeLabel: 閉じる
+    addLabel: 追加する
+    restartLabel: 再起動する
+    delCharLabel: 削除する
+    discordLabel: ディスコード
+    websiteLabel: ウェブサイト
+    updateLabel: アップデート
+    laterLabel: 後で
+    changeLabel: 変更する
+    register: <p class="caution">入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。</p><p>まだ会員登録がお済みでない方は、下記「ディスコード」もしくは「ウェブサイト」を押下して新規会員登録を行ってください。</p>
+    linkDiscord: <p class="caution">このアカウントは、ディスコードアカウントとの連携が完了していません。</p><p>下記「ディスコード」もしくは「ウェブサイト」を押下してディスコード連携を行ってください。</p>
+    noUserKey: <p class="warning">自動ログイン認証に必要なユーザーキーが存在しません。</p><p>5秒後、ランチャーが再起動します。</p>
+    clientUpdate: <p class="dialog_title">アップデートのお知らせ</p><p>クライアントの最新アップデートがあります。下記「アップデート」ボタンよりファイルをダウンロードしてください。</p>
+    updateMandatory: <p class="dialog_note">※このアップデートは必須です。</p>
+    langSelect: <p class="dialog_title">表示言語を変更</p>
+    langSelectNote: <p class="dialog_note">※ゲーム内の表示言語は変更できません。</p>
+    startGame: <p class="caution">以下のキャラクターでゲームを開始してよろしいですか？</p>
+    cantAddChar: <p>これ以上キャラクターを追加することはできません。</p><p class="caution">キャラクターの保有可能数は、３体が上限です。</p>
+    addChar: <p>新規キャラクターをアカウントへ追加します。<br>下記の「追加する」を押下してください。</p>
+    addCharWait: <p>キャラクターを追加しています。</p><p>しばらくお待ちください。</p>
+    addCharDone: <p>新規キャラクターの追加が完了しました。<br>下記の「再起動する」を押下して、ランチャーを再起動してください。</p>
+    addCharErrNorm: <p class="warning">キャラクターの追加に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>
+    charIdPart: '」<span class="cid">[キャラクターID：'
+    cantDeleteChar1: <p>新規キャラクターは削除できません。</p>
+    cantDeleteChar2: <p>最後のキャラクターは削除できません。</p><p class="caution">アカウント内には、最低１体のキャラクターが必要です。</p>
+    delCharPrefix: 本当にキャラクター「
+    delCharConfirm: を削除しますか？</p><p class="warning">一度削除したキャラクターデータは復元できません。</p>
+    delCharIdCheck: <p>削除するキャラクターのIDを入力して、下記「削除する」を押下してください。</p>
+    delCharIdInputElm: <input class='del_cid' type='text' name='del_cid' placeholder='キャラクターIDを入力してください。' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>
+    delCharWait: を削除しています。</p><p>しばらくお待ちください。</p>
+    delCharDone: <p>キャラクターの削除が完了しました。</p><p>下記の「再起動」を押下して、ランチャーを再起動してください。</p>
+    delCharErrPrefix: <p class="warning">キャラクター「
+    delCharErrNorm: <p class="warning">キャラクターの削除に失敗しました。</p><p>しばらく時間をおいてから、再度お試しください。</p>
+    delCharErrMatch: の削除に失敗しました。</p><p>入力されたIDと削除するキャラクターのIDが一致しませんでした。</p>
+    permSuspendedAcc: <p class="warning">このアカウントは永久凍結されています。</p><p class="caution">この措置が撤回されることはありません。</p>
+    suspendedAcc: <p class="warning">このアカウントは一時的に凍結されています。</p><p class="caution">措置の解除後、アカウントへのアクセスが許可されます。</p>
+    untilAt: '凍結終了時間：'
+    indefinite: 無期限
+    suspendedReason: '凍結理由：'
+    reason:
+        '1': 不正行為
+        '2': ゲームプレイの悪用
+        '3': 有害な言動
+        '4': サーバー利用規約違反
+    serverMaint: <p class="caution">サーバーメンテナンスのためログインできません。</p><p>メンテナンス終了まで今しばらくお待ちください。</p>
+
+languageList:
+    currentLang: 日本語
+    ja:
+        mainName: 日本語
+        subName: 日本語
+    en:
+        mainName: English
+        subName: 英語

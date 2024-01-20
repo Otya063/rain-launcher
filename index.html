@@ -8,9 +8,9 @@
         <meta http-equiv="content-script-type" content="text/javascript" />
         <meta name="robots" content="none" />
         <meta http-equiv="cache-control" content="max-age=604800, stale-while-revalidate=604800" />
+        <link rel="icon" href="/assets/favicon.ico" />
         <title></title>
         <!-- css -->
-        <link rel="stylesheet" href="/assets/css/style.css?t=1696473240" />
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css"
@@ -39,10 +39,13 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+        <link rel="stylesheet" href="/assets/css/style.css?t=1696473240" />
         <!-- font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="true" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
         <!-- ja -->
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;500;700&display=swap" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;500;700&display=swap" />
@@ -77,19 +80,27 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
+        <!-- <script type="text/javascript" src="/assets/js/yaml.min.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/yamljs@0.3.0/dist/yaml.min.js"></script>
+        <script type="text/javascript" src="/assets/js/moment.min.js"></script>
+        <script type="text/javascript" src="/assets/js/moment-timezone-with-data-1970-2030.js"></script>
         <script type="text/javascript" src="/assets/js/main.js?t=1696473240"></script>
     </head>
 
     <body>
         <div class="wrapper">
+            <!-- Start Up Overlay -->
+            <div class="startup_overlay">
+                <img class="startup_overlay_img" src="/assets/img/logo/rain_server_logo.png" alt="rain_server_logo" />
+                <div class="loading">
+                    <p class="loading_text">Launcher Initializing...</p>
+                    <div class="loading_bar"></div>
+                </div>
+            </div>
+
             <!-- Launcher Movable Overlay -->
             <div class="movable_overlay">
                 <p class="movable_overlay_text"></p>
-            </div>
-
-            <!-- Connecting Overlay -->
-            <div class="connecting_overlay start_and_connect_overlay">
-                <p class="start_and_connect_overlay_text"></p>
             </div>
 
             <!-- Start the Game Overlay -->
@@ -98,26 +109,7 @@
             </div>
 
             <!-- Window Controls -->
-            <div class="win_ctrls">
-                <button class="sound_handle" onclick="toggleSound();">
-                    <span class="material-symbols-outlined">volume_up</span>
-                </button>
-
-                <!-- Moving Button -->
-                <button class="move">
-                    <span class="material-symbols-outlined">drag_pan</span>
-                </button>
-
-                <!-- Minimize Button -->
-                <button class="minimize sound_on" onclick="minimizeWindow();">
-                    <span class="material-symbols-outlined">remove</span>
-                </button>
-
-                <!-- Close Button -->
-                <button class="close sound_on" onclick="closeWindow();">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
+            <div class="win_ctrls"></div>
 
             <!-- Launcher Header -->
             <header class="launcher_header">
@@ -131,96 +123,15 @@
                 <!-- Username / Server Name Label -->
                 <p class="name_srv_label"></p>
 
-                <!-- Log Out Button -->
-                <button class="btn_logout sound_on" onclick="backToBeforeLogin();" style="display: none"></button>
-
                 <!-- login user id -->
                 <p class="uid_label"></p>
             </div>
 
             <!-- Log In Area -->
-            <main class="launcher_login_panel">
-                <form class="auth_section">
-                    <!-- Username -->
-                    <div class="auth_group">
-                        <label for="username"></label>
-                        <div class="auth_username">
-                            <span class="user_icon material-symbols-outlined">person</span>
-                            <input
-                                class="username_input"
-                                type="text"
-                                id="username"
-                                placeholder="Username"
-                                autocomplete="off"
-                                autocapitalize="off"
-                                aria-label="Username"
-                                aria-invalid="false"
-                                onkeydown="playSound('IDR_WAV_SEL')"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="auth_group">
-                        <label for="password"></label>
-                        <div class="auth_password">
-                            <span class="password_icon material-symbols-outlined">key</span>
-                            <input
-                                class="password_input"
-                                type="password"
-                                id="password"
-                                placeholder="Password"
-                                autocomplete="off"
-                                autocapitalize="off"
-                                aria-label="Password"
-                                aria-invalid="false"
-                                onkeydown="playSound('IDR_WAV_SEL')"
-                            />
-                            <span id="eye_btn" class="hide_password material-symbols-outlined sound_on" onclick="toggleHidePass();">visibility</span>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Server Group -->
-                <ul class="server_selector_group">
-                    <label for="server_sel"></label>
-                    <li class="server_sel_group">
-                        <span class="server_icon material-symbols-outlined">rss_feed</span>
-                        <button class="srv_sel_btn sound_on" id="server_sel"></button>
-                        <span class="srv_sel_arrow_bg">
-                            <!-- <span class="srv_sel_arrow"></span> -->
-                            <span class="srv_sel_arrow material-symbols-outlined">expand_more</span>
-                        </span>
-                        <ul class="srv_sel_box"></ul>
-                    </li>
-                </ul>
-
-                <!-- Log In Button -->
-                <button class="btn_login sound_on"></button>
-
-                <!-- Log In Alternative -->
-                <div class="auth_alternative">
-                    <!-- Remember Checkbox -->
-                    <label class="checkbox sound_on" for="remember_me">
-                        <input type="checkbox" class="remember_me_check" id="remember_me" />
-                        <span class="indicator"></span>
-                        <span class="remember_me"></span>
-                    </label>
-                    <!-- Reset Credentials Link -->
-                    <a class="forgot_creds sound_on" href="https://auth.rain-server.com/ja/login/?type=reset-password"></a>
-                </div>
-
-                <!-- Message Logs -->
-                <div class="msg_logs_area">
-                    <div class="msg_contents"></div>
-                </div>
-
-                <!-- Preferences Button -->
-                <button class="btn_preferences sound_on" onclick="openPreferences();"></button>
-            </main>
+            <main class="launcher_login_panel"></main>
 
             <!-- Authenticating -->
-            <div class="authenticating" style="display: none">
+            <div class="authenticating">
                 <div class="authenticating_loader">
                     <div class="authenticating_loader_core"></div>
                 </div>
@@ -228,45 +139,13 @@
             </div>
 
             <!-- Character Selection -->
-            <section class="character_selection">
-                <div class="character_units">
-                    <div class="scroll scroll_up sound_on"></div>
-                    <div class="char_unit_wrapper">
-                        <div class="swiper-wrapper"></div>
-                    </div>
-                    <div class="scroll scroll_down sound_on"></div>
-                </div>
-                <ul class="character_misc">
-                    <li class="char_add sound_on"></li>
-                    <li class="char_del sound_on"></li>
-                </ul>
-                <button class="btn_start sound_on" onclick="prepareStartGame();"></button>
-            </section>
+            <section class="character_selection"></section>
 
             <!-- Maintenance -->
-            <ul class="maintenance">
-                <li class="maint_text"></li>
-                <li class="maint_img"><img src="/assets/img/common/cat.png" alt="maint_cat" /></li>
-            </ul>
+            <ul class="maintenance"></ul>
 
             <!-- Update -->
-            <ul class="launcher_update_process">
-                <li class="anim f0"></li>
-                <li class="progress_area">
-                    <div class="bar_area">
-                        <div class="file_progress"></div>
-                        <div class="total_progress"></div>
-                    </div>
-                    <div class="pct_area">
-                        <p>File:<span class="file_pct">0</span>%</p>
-                        <p>Total:<span class="total_pct">0</span>%</p>
-                    </div>
-                </li>
-                <li class="update_msg">
-                    <p class="progress_state"></p>
-                    <p class="next_action"></p>
-                </li>
-            </ul>
+            <ul class="launcher_update_process"></ul>
 
             <!-- Side Contents Section -->
             <section class="side_contents">

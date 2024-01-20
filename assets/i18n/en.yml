@@ -1,0 +1,173 @@
+---
+normTextData:
+    title: Monster Hunter Frontier Online Launcher
+    movableOlay: Launcher Window Movable<br>(By Grabbing)
+    connectingOlay: Connecting...
+    gameStartOlay: Start the Game
+    launcherTitle: Monster Hunter<br />　Frontier Online<br />　　Rain Launcher
+    logoutBtn: Log Out
+    loggingoutBtn: Logging Out
+    labelUsername: Username
+    labelPassword: Password
+    labelSrvSel: Server Selection
+    serverNotSelected: Select Your Server
+    loginBtnText: LOG IN
+    rememberMeBtn: Enable auto-login
+    saveUsernameBtn: Save username
+    forgetCredsBtn: Forgot your credentials?
+    preferencesBtn: Preferences
+    authText: Authenticating...
+    charAddBtnText: Add New Character
+    charDelBtnText: Delete Character
+    startGameBtnText: START GAME
+    timeZone: '<p class="time_zone">Time Zone: '
+    readyHunt: Ready to Hunt
+    userIdLabel: 'User ID: '
+    charIdLabel: 'Character ID: '
+    lastOnlineLabel: 'Last Online: '
+    genderLabelMale: Male
+    genderLabelFemale: Female
+    newMsg1: <p class="new_msg1">You can create a new character.</p>
+    normNewMsg2: <p class="new_msg2">Press "Start Game" to create your character.</p>
+    autoLoginNewMsg2: <p class="new_msg2">Create your character now.</p>
+    maintenanceText: <p><span class="maint_server_name"></span> is temporarily down due to maintenance.</p><p>Please wait for a while until the maintenance is completed.</p>
+    gettingInfo: <p class="info_getting">Getting Information Data...</p>
+    failedGetBnr: <p class="failed_get_bnr">Failed to Get Banner Data</p>
+    failedGetInfo: <p class="failed_get_info">Failed to Get Information Data</p>
+    important: Important
+    defects: Defects and Troubles
+    management: Management and Service
+    event: In-Game Events
+    update: Updates and Maintenance
+    noInfoFound: <p class="no_info_found">No Information Found</p>
+    disclaimer: "* Rain Server isn't affiliated with Capcom Co., Ltd. or any of its subsidiaries."
+
+asideMenuData:
+    # iconName doesn't translate.
+    register:
+        name: Register
+        url: https://auth.rain-server.com/en/register/
+        iconName: app_registration
+    member:
+        name: Member Site
+        url:
+        iconName: home
+    manual:
+        name: Manual
+        url:
+        iconName: book_3
+    mypage:
+        name: My Page
+        url:
+        iconName: badge
+    discord:
+        name: Discord
+        url: https://discord.gg/TcpkpUpeGw
+        iconName: diversity_1
+
+updateTextData:
+    progressState:
+        - Updating...
+        - Update Completed!
+        - Restart the Launcher
+        - Error Occurred
+    nextActions:
+        - Please wait a moment.
+        - The game will start soon.
+        - Please log in to the server again.
+        - Quit the launcher.
+
+msgLogTextData:
+    needsUpdateClient: Needs an Update
+    initMsg1: After entering your username and password,<br>please select a server and press "Log In" button.
+    initMsg2: Press "Start Game" button to select your character.
+    initMsg3: "* Changing servers, adding or deleting characters can't be performed in auto-login mode."
+    autoLoginEx: 'Auto-Login Expiration: '
+    authSuccess: Authenticated successfully.<br>Switching to character selection...
+    settingAutoLogin: Setting to auto-login mode...
+    noSrvSelected: Your server isn't selected. Please select a server from the server list.
+    noUsernamePass: First, please enter your username and password.
+    noExistingUser: The account with the entered username doesn't exist. Please check again that the username is correct.<br>If you're not a registered member, please register as a new member first.
+    noCharacters: Character doesn't exist in the account.
+    noLinkedAcc: This account hasn't been linked to a discord account.<br>Please try again after your account has been linked.
+    permSuspendedAcc: This account has been permanently suspended.<br>This action won't be reversed.
+    suspendedAcc: This account has been temporarily suspended.<br>Access to your account will be allowed after the account to be unsuspended.
+    failedAccessApi: Failed to access Rain API Server.
+    unexpected: An unexpected error has occurred.
+    noLauncherSysData: Launcher system data doesn't exist.
+    noBannerData: Banner data doesn't exist.
+    noInformationData: Information data doesn't exist.
+    noAutoLoginData: Auto-login data for authenticated user doesn't exist.
+    noUserKey: The user key doesn't exist.
+    paramsUndefined: Parameters are undefined.
+    noRequiredData: The required data doesn't exist.
+    suspendedNotice: This account has been suspended. Please check the normal login dialog for details.
+    invalidReqType: Invalid request type.
+    SIGN_EFAILED: Failed to connect to authentication server.
+    SIGN_EILLEGAL: Authentication aborted due to invalid input.
+    SIGN_EALERT: An error occurred in processing the authentication server.
+    SIGN_EABORT: Internal process at the authentication server has crashed.
+    SIGN_ERESPONSE: Process terminated due to abnormal authentication response.
+    SIGN_EDATABASE: Failed to access database.
+    SIGN_EOTHER: ID authentication failed.
+    SIGN_EPASS: Password is incorrect.
+    SIGN_EAPP: Authentication failed due to an unexpected error in the application.
+    SIGN_EUNK: Unknown error occurred.
+
+dialogTextData:
+    yesLabel: 'Yes'
+    noLabel: 'No'
+    closeLabel: Close
+    addLabel: Add
+    restartLabel: Restart
+    delCharLabel: Delete
+    discordLabel: Discord
+    websiteLabel: Website
+    updateLabel: Update
+    laterLabel: Later
+    changeLabel: Change
+    register: <p class="caution">The account with the entered username doesn't exist. Please check again that the username is correct.</p><p>If you're not a registered member, press "Discord" or "Website" button below to register as a new member.</p>
+    linkDiscord: <p class="caution">This account hasn't been linked to a discord account.</p><p>Press "Discord" or "Website" button below to link your account.</p>
+    noUserKey: <p class="warning">The user key required for auto-login authentication doesn't exist.</p><p>After 5 seconds, the launcher will be restarted.</p>
+    clientUpdate: <p class="dialog_title">Update Notification</p><p>The latest client update is available. Press "Update" button below to download the files.</p>
+    updateMandatory: <p class="dialog_note">* This update is mandatory.</p>
+    langSelect: <p class="dialog_title">Change Display Language</p>
+    langSelectNote: <p class="dialog_note">* The in-game display language can't be changed.</p>
+    startGame: <p class="caution">Start the game with the following characters?</p>
+    cantAddChar: <p>No more characters can be added.</p><p class="caution">The maximum number of characters which you can own is 3.</p>
+    addChar: <p>Add a new character to your account.<br>Press "Add" below.</p>
+    addCharWait: <p>A new character is being added.</p><p>Please wait for a while.</p>
+    addCharDone: <p>A new character has been added.<br>Press "Restart" below to restart the launcher.</p>
+    addCharErrNorm: <p class="warning">Failed to add a character.</p><p>Please wait for a while and try again.</p>
+    charIdPart: '"<span class="cid"> [Character ID: '
+    cantDeleteChar1: <p>A new character can't be deleted.</p>
+    cantDeleteChar2: <p>The last character can't be deleted.</p><p class="caution">There must be at least 1 character in your account.</p>
+    delCharPrefix: Do you really want to delete character "
+    delCharConfirm: '?</p><p class="warning">Once deleted, your character data can''t be restored.</p>'
+    delCharIdCheck: <p>Enter the ID of the character you want to delete and press "Delete" below.</p>
+    delCharIdInputElm: <input class='del_cid' type='text' name='del_cid' placeholder='Enter your character ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>
+    delCharWait: is being deleted.</p><p>Please wait for a while.</p>
+    delCharDone: <p>Your character has been deleted.</p><p>Press "Restart" below to restart the launcher.</p>
+    delCharErrPrefix: <p class="warning">Failed to delete the character "
+    delCharErrNorm: <p class="warning">Failed to delete the character.</p><p>Please wait for a while and try again.</p>
+    delCharErrMatch: .</p><p>The ID entered didn't match the ID of the character to be deleted.</p>
+    permSuspendedAcc: <p class="warning">This account has been permanently suspended.</p><p class="caution">This action won't be reversed.</p>
+    suspendedAcc: <p class="warning">This account has been temporarily suspended.</p><p class="caution">Access to your account will be allowed after the account to be unsuspended.</p>
+    untilAt: 'Suspention Period (Until): '
+    indefinite: 'Indefinite'
+    suspendedReason: 'Reason: '
+    reason:
+        '1': Cheating
+        '2': Gameplay Exploit
+        '3': Toxic and Abusive Behavior
+        '4': Violation of Server Terms of Service
+    serverMaint: <p class="caution">Unable to log in due to server maintenance.</p><p>Please wait for a while until the end of maintenance.</p>
+
+languageList:
+    currentLang: English # write the name of your language in that language
+    ja:
+        mainName: 日本語 # don't translate
+        subName: Japanese
+    en:
+        mainName: English # don't translate
+        subName: English

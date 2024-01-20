@@ -640,11 +640,11 @@ const setUpLauncherData = function () {
     soundMode = localStorage.getItem('SoundMode') === 'true' || localStorage.getItem('SoundMode') === null;
 
     // check server list
-    getServerList();
+    /* getServerList();
     if (!SrvList) {
         failedStartUpLauncher(msgLogTextOutput('failedAccessApi'));
         return false;
-    }
+    } */
 
     // hide unnecessary elms
     $(charSelBox).hide();

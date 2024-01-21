@@ -640,11 +640,11 @@ const setUpLauncherData = function () {
     soundMode = localStorage.getItem('SoundMode') === 'true' || localStorage.getItem('SoundMode') === null;
 
     // check server list
-    /* getServerList();
+    getServerList();
     if (!SrvList) {
         failedStartUpLauncher(msgLogTextOutput('failedAccessApi'));
         return false;
-    } */
+    }
 
     // hide unnecessary elms
     $(charSelBox).hide();
@@ -1446,9 +1446,6 @@ const isAutoLoginChecked = function (serverName) {
 };
 
 const afterLoginSuccess = function (serverName) {
-    enableElement('.win_ctrls button', 1);
-    enableElement('.bnr', 1);
-    $('.wrapper').css('pointer-events', '');
     hideAuthenticating();
 
     maintenanceData[serverName] ? (showMaintenanceDialog(), $(loginPanel).hide(), $(userSrvNameLabel).text($(inputUsername).val() + '@' + $(serverSelBtn).text())) : createCharacters();
@@ -1475,8 +1472,11 @@ const showAuthenticating = function (text) {
 };
 
 const hideAuthenticating = function () {
-    // enabled login button
+    // enable elements
+    enableElement('.win_ctrls button', 1);
+    enableElement('.bnr', 1);
     enableElement(loginBtn, 1);
+    $('.wrapper').css('pointer-events', '');
 
     // hide auth progress display
     $(authenticateBox).fadeOut(200);

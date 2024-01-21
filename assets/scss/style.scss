@@ -2063,135 +2063,127 @@ h1 {
     top: 0;
     display: none;
     z-index: 9998;
-    background: rgb(0 0 0 / 40%);
+    background: rgba(0, 0, 0, 0.4) url(/assets/img/common/dialog_bg.png) no-repeat center center;
+    display: none;
 
-    // dialog body
-    .dialog_contents {
-        position: absolute;
-        left: 282px;
-        top: 140px;
-        width: 560px;
-        height: 320px;
-        background: url(#{$img}/common/dialog_bg.png) no-repeat 0px 0px;
+    // dialog text contents
+    .dialog_text_contents {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding: 160px 283px 225px;
+        width: 558px;
+        height: 215px;
+        color: #e6e6e6;
+        text-align: center;
 
-        // dialog text contents
-        .dialog_text_contents {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: nowrap;
-            padding-top: 30px;
-            width: 100%;
-            height: 200px;
-            color: #e6e6e6;
-            text-align: center;
+        // dialog text default setting
+        p {
+            width: 90%;
+            font-size: 1.8rem;
 
-            // dialog text default setting
-            p {
-                width: 90%;
-                font-size: 1.8rem;
-
-                // margin for first paragraph
-                &:first-child {
-                    margin-top: 2%;
-                }
-
-                // margin for last paragraph
-                &:last-child {
-                    margin-bottom: 2%;
-                }
-
-                // caution text
-                &.caution {
-                    color: #f4de22;
-                }
-
-                // warning text
-                &.warning {
-                    color: #eb3535;
-                }
-
-                // dialog note
-                &.dialog_note {
-                    @extend .warning;
-                    font-size: 1.4rem;
-                }
-
-                // title text
-                &.dialog_title {
-                    font-weight: 700;
-                    font-size: 2.2rem;
-                }
+            // margin for first paragraph
+            &:first-child {
+                margin-top: 2%;
             }
 
-            // character id
-            .cid {
+            // margin for last paragraph
+            &:last-child {
+                margin-bottom: 2%;
+            }
+
+            // caution text
+            &.caution {
+                color: #f4de22;
+            }
+
+            // warning text
+            &.warning {
+                color: #eb3535;
+            }
+
+            // dialog note
+            &.dialog_note {
+                @extend .warning;
                 font-size: 1.4rem;
             }
 
-            // input for checking hid of deleting character
-            .del_cid {
-                width: 150px;
-                height: 20px;
-                color: black;
-                background: rgb(240, 240, 240);
-                padding-left: 1%;
-                font-size: 1.4rem;
-                border: 2px rgba(0, 0, 0, 0.5) solid;
-                margin: 2% 0 3% 0;
-
-                // input placeholder
-                &:-ms-input-placeholder {
-                    color: #7f8095;
-                }
-
-                // disable clear button on IE
-                &::-ms-clear {
-                    display: none;
-                }
+            // title text
+            &.dialog_title {
+                font-weight: 700;
+                font-size: 2.2rem;
             }
         }
 
-        // dialog buttons
-        .dialog_btnBox {
-            width: 100%;
-            position: absolute;
-            bottom: 10%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
+        // character id
+        .cid {
+            font-size: 1.4rem;
+        }
 
-            // each button default setting
-            .md_btn {
-                display: block;
-                width: 24%;
-                padding: 2.5% 0;
-                font-weight: 700;
-                font-size: 1.5rem;
-                color: #27acd9;
-                @include dialog_btn_bg;
-                border-radius: 25px;
-                cursor: pointer;
-                outline: none;
-                border: none;
+        // input for checking hid of deleting character
+        .del_cid {
+            width: 150px;
+            height: 20px;
+            color: black;
+            background: rgb(240, 240, 240);
+            padding-left: 1%;
+            font-size: 1.4rem;
+            border: 2px rgba(0, 0, 0, 0.5) solid;
+            margin: 2% 0 3% 0;
 
-                // margin for left side button
-                &:first-child {
-                    margin-left: 7%;
-                }
+            // input placeholder
+            &:-ms-input-placeholder {
+                color: #7f8095;
+            }
 
-                //margin for right side button
-                &:last-child {
-                    margin-right: 7%;
-                }
+            // disable clear button on IE
+            &::-ms-clear {
+                display: none;
+            }
+        }
+    }
 
-                // when hovering
-                &:hover {
-                    background-position: 0px -73.8px;
-                    color: #2bcaff;
-                }
+    // dialog buttons
+    .dialog_btnBox {
+        width: 50%;
+        position: absolute;
+        bottom: 29%;
+        left: 25%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        // each button default setting
+        .md_btn {
+            display: block;
+            width: 24%;
+            padding: 2.5% 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #27acd9;
+            @include dialog_btn_bg;
+            border-radius: 25px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+
+            // margin for left side button
+            &:first-child {
+                margin-left: 7%;
+            }
+
+            //margin for right side button
+            &:last-child {
+                margin-right: 7%;
+            }
+
+            // when hovering
+            &:hover {
+                background-position: 0px -73.8px;
+                color: #2bcaff;
             }
         }
     }

@@ -2232,14 +2232,15 @@ const clearAnimSq = function () {
 /*=========================================================
 　　　　　Dialog Functions
 =======================================================*/
-const dialogTexts = '.dialog_text_contents',
+const dialogBox = '.launcher_dialog',
+    dialogTexts = '.dialog_text_contents',
     dialogButtons = '.dialog_btnBox',
     dialogEachBtn = '.md_btn',
     dialogStandbyBtn = '.md_btn.standby';
 
 const showDialog = function (text, options, standbyTime) {
     // show the modal dialog
-    $('.launcher_dialog').show();
+    $(dialogBox).show();
 
     // initialize child elmemts
     $(dialogTexts).empty();
@@ -2290,7 +2291,7 @@ const hideDialog = function () {
     soundMode && playSound('IDR_WAV_OK');
 
     // hide dialog body
-    $('.launcher_dialog').hide();
+    $(dialogBox).hide();
 
     // reset dialog texts
     $(dialogTexts).empty();

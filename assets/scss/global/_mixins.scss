@@ -31,7 +31,7 @@
 
 // Dialog Button Background
 @mixin dialog_btn_bg {
-    background: url(#{$img}/common/dialog/dialog_button_bg.png) no-repeat;
+    background: url(#{$img}/dialog/dialog_button_bg.png) no-repeat;
     text-shadow: 3px 0 3px #003900, 0 3px 3px #003900, -3px 0 3px #003900, 0 -3px 3px #003900;
 }
 

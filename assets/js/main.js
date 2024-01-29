@@ -2031,8 +2031,6 @@ const checkUpdateMode = function (hid) {
     $(fileProgressBar).width(0);
     $(totalProgressBar).width(0);
 
-    //$('.connecting_overlay').fadeIn(200);
-
     const update = updateEnabled ? window.external.startUpdate() : false;
     update
         ? // if update is needed, start update process
@@ -2041,10 +2039,12 @@ const checkUpdateMode = function (hid) {
           $(userSrvNameLabel).text(''),
           $(logoutBtn).hide(),
           $('.uid_label').hide(),
-          $(progressStateMessage).text(updateTextOutput('progressState', 0)),
-          $(nextActionMessage).text(updateTextOutput('nextActions', 0)),
           $(updateBox).append(
-              '<li class="anim f0"></li><li class="progress_area"><div class="bar_area"><div class="file_progress"></div><div class="total_progress"></div></div><div class="pct_area"><p>File:<span class="file_pct">0</span>%</p><p>Total:<span class="total_pct">0</span>%</p></div></li><li class="update_msg"><p class="progress_state"></p><p class="next_action"></p></li>'
+              '<li class="anim f0"></li><li class="progress_area"><div class="bar_area"><div class="file_progress"></div><div class="total_progress"></div></div><div class="pct_area"><p>File:<span class="file_pct">0</span>%</p><p>Total:<span class="total_pct">0</span>%</p></div></li><li class="update_msg"><p class="progress_state">' +
+                  updateTextOutput('progressState', 0) +
+                  '</p><p class="next_action">' +
+                  updateTextOutput('nextActions', 0) +
+                  '</p></li>'
           ),
           $(updateBox).show(),
           beginUpdateProcess(hid),

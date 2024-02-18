@@ -43,7 +43,7 @@ normTextData:
     disclaimer: "* Rain Server isn't affiliated with Capcom Co., Ltd. or any of its subsidiaries."
 
 asideMenuData:
-    # iconName doesn't translate.
+    # don't translate iconName
     register:
         name: Register
         url: https://auth.rain-server.com/en/register/

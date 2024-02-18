@@ -377,6 +377,7 @@ const apiUsersAction = function (actionType, obj) {
         })
         .fail(function (xhr) {
             const res = JSON.parse(xhr.responseText);
+            alert(res.message);
 
             switch (res.message) {
                 case 'PARAMS_UNDEFINED': {
@@ -1647,7 +1648,6 @@ const createCharacters = function () {
         mousewheel: true,
         direction: 'vertical',
         speed: 500,
-        centeredSlides: true,
         navigation: {
             nextEl: '.scroll_down',
             prevEl: '.scroll_up',
@@ -1845,7 +1845,6 @@ const onClickAutoLoginStartGame = function () {
         mousewheel: true,
         direction: 'horizontal',
         speed: 500,
-        centeredSlides: true,
         navigation: {
             nextEl: '.scroll_down',
             prevEl: '.scroll_up',

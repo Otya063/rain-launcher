@@ -142,7 +142,7 @@ dialogTextData:
     cantDeleteChar1: <p>新規キャラクターは削除できません。</p>
     cantDeleteChar2: <p>最後のキャラクターは削除できません。</p><p class="caution">アカウント内には、最低１体のキャラクターが必要です。</p>
     delCharPrefix: 本当にキャラクター「
-    delCharConfirm: を削除しますか？</p><p class="warning">一度削除したキャラクターデータは復元できません。</p>
+    delCharConfirm: を削除しますか？</p><p class="warning">一度削除したキャラクターデータは復元できません。<br>また、このキャラクターがディスコードアカウントと連携している場合、その連携は解除されます。</p>
     delCharIdCheck: <p>削除するキャラクターのIDを入力して、下記「削除する」を押下してください。</p>
     delCharIdInputElm: <input class='del_cid' type='text' name='del_cid' placeholder='キャラクターIDを入力してください。' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>
     delCharWait: を削除しています。</p><p>しばらくお待ちください。</p>

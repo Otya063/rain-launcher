@@ -143,7 +143,7 @@ dialogTextData:
     cantDeleteChar1: <p>A new character can't be deleted.</p>
     cantDeleteChar2: <p>The last character can't be deleted.</p><p class="caution">There must be at least 1 character in your account.</p>
     delCharPrefix: Do you really want to delete character "
-    delCharConfirm: '?</p><p class="warning">Once deleted, your character data can''t be restored.</p>'
+    delCharConfirm: '?</p><p class="warning">Once deleted, your character data can''t be restored.<br>Also, if this character is linked to your discord account, the account linkage will be purged.</p>'
     delCharIdCheck: <p>Enter the ID of the character you want to delete and press "Delete" below.</p>
     delCharIdInputElm: <input class='del_cid' type='text' name='del_cid' placeholder='Enter your character ID here.' autocomplete='off' autocapitalize='off' aria-label='ID' aria-invalid='false'>
     delCharWait: is being deleted.</p><p>Please wait for a while.</p>

@@ -377,7 +377,6 @@ const apiUsersAction = function (actionType, obj) {
         })
         .fail(function (xhr) {
             const res = JSON.parse(xhr.responseText);
-            alert(res.message);
 
             switch (res.message) {
                 case 'PARAMS_UNDEFINED': {

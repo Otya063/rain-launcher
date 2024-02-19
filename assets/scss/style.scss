@@ -1462,12 +1462,8 @@ h1 {
                     .wpn_type {
                         width: 165px;
                         top: 60px;
-                        left: 30px;
+                        left: 25px;
                         text-align: left;
-
-                        &:lang(ja) {
-                            width: 150px;
-                        }
                     }
 
                     .wpn_name {

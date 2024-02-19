@@ -26,7 +26,7 @@
 
 // Character Weapon Icon
 @mixin char_wpn_icon($weapon_name) {
-    background: url(#{$img}/character_selection/char_wpn_icon/#{$weapon_name}.png);
+    background: url(#{$img}/character_selection/char_wpn_icon/#{$weapon_name}.png) no-repeat;
 }
 
 // Dialog Button Background

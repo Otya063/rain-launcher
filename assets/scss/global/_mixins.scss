@@ -16,7 +16,7 @@
 
 // Character Selector Background
 @mixin char_sel_unit($weapon_name) {
-    background: url(#{$img}/character_selection/background/#{$weapon_name}.png);
+    background: url(#{$img}/character_selection/background/#{$weapon_name}.png) no-repeat;
 }
 
 // Character Index Number

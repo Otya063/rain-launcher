@@ -82,7 +82,7 @@ const getServerList = function () {
     try {
         return window.external.getServerList();
     } catch (err) {
-        SrvList = false;
+        srvList = false;
         return "<?xml version='1.0' encoding='UTF-8'><server_groups><group idx='1' nam='Rain1'/><group idx='2' nam='Rain2'/><group idx='3' nam='Rain3'/></server_groups>";
     }
 };
@@ -280,9 +280,10 @@ const initAsideMenu = function () {
     Object.keys(menuData).forEach(function (className) {
         const menuItem = menuData[className];
         const anchor = $('<a>', {
+            id: className,
             class: 'menu_contents_anchor sound_on ' + className,
             href: menuItem.url || '#',
-            style: menuItem.url ? '' : 'cursor: not-allowed',
+            style: menuItem.url ? '' : className !== 'link' && 'cursor: not-allowed',
         });
 
         if (className === 'discord') {
@@ -298,12 +299,16 @@ const initAsideMenu = function () {
 
         $('.launcher_menu').append(anchor);
     });
+
+    $('#link').on('click', function () {
+        showAccountLinkageDialog();
+    });
 };
 
 const initSoundMode = function () {
     !soundMode &&
         ($(
-            '.minimize, .close, .lang_sel, .auto_login, .save_username, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+            '.minimize, .close, .lang_sel, .auto_login, .save_username, .link_discord, .switch_character, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
                 ', ' +
                 forgotPassword +
@@ -376,6 +381,7 @@ const apiUsersAction = function (actionType, obj) {
             }
         })
         .fail(function (xhr) {
+            alert(JSON.stringify(xhr));
             const res = JSON.parse(xhr.responseText);
 
             switch (res.message) {
@@ -478,7 +484,7 @@ const toggleSound = function () {
         localStorage.setItem('SoundMode', 'false');
 
         $(
-            '.minimize, .close, .lang_sel, .auto_login, .save_username, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+            '.minimize, .close, .lang_sel, .auto_login, .save_username, .link_discord, .switch_character, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
                 ', ' +
                 forgotPassword +
@@ -502,7 +508,7 @@ const toggleSound = function () {
         localStorage.setItem('SoundMode', 'true');
 
         $(
-            '.minimize, .close, .lang_sel, .auto_login, .save_username, .btn_preferences, .scroll, .menu_contents_anchor, ' +
+            '.minimize, .close, .lang_sel, .auto_login, .save_username, .link_discord, .switch_character, .btn_preferences, .scroll, .menu_contents_anchor, ' +
                 serverSelBtn +
                 ', ' +
                 forgotPassword +
@@ -553,9 +559,11 @@ const toggleHidePass = function () {
 =======================================================*/
 const infoList = '.info_list',
     launcherBanner = '.launcher_bnr',
-    availableLanguages = ['ja', 'en'];
+    availableLanguages = ['ja', 'en'],
+    wrapper =
+        '<div class="wrapper"><div class="movable_overlay"><p class="movable_overlay_text"></p></div><div class="game_start_overlay start_and_connect_overlay"><p class="start_and_connect_overlay_text"></p></div><div class="win_ctrls"></div><header class="launcher_header"><h1 class="launcher_title"></h1><img class="game_logo" alt="zz_logo" /></header><div class="logout_container"><p class="name_srv_label"></p><p class="uid_label"></p></div><main class="launcher_login_panel"></main><div class="authenticating"><div class="authenticating_loader"><div class="authenticating_loader_core"></div></div><p class="authenticating_text"></p></div><section class="character_selection"></section><ul class="maintenance"></ul><ul class="launcher_update_process"></ul><section class="side_contents"><ul class="launcher_bnr"></ul><ul class="info_list"></ul><aside class="launcher_menu"></aside></section><div class="launcher_footer"><p class="disclaimer"></p></div></div>';
 
-let SrvList = true,
+let srvList = true,
     userTimeZone,
     debugMode = false,
     emergMode = false,
@@ -641,12 +649,13 @@ const setUpLauncherData = function () {
 
     // check server list
     getServerList();
-    if (!SrvList) {
+    if (!srvList) {
         failedStartUpLauncher(msgLogTextOutput('failedAccessApi'));
         return false;
     }
 
-    // hide unnecessary elms
+    // set elms
+    $('body').append(wrapper);
     $(charSelBox).hide();
     $(maintenanceBox).hide();
     $(updateBox).hide();
@@ -1223,7 +1232,7 @@ const loginPanel = '.launcher_login_panel',
     maintenanceBox = '.maintenance',
     authenticateBox = '.authenticating',
     normalLoginPanel =
-        '<form class="auth_section"><div class="auth_group"><label for="username"></label><div class="auth_username"><span class="user_icon material-symbols-outlined">person</span><input class="username_input" type="text" id="username" autocomplete="off" autocapitalize="off" aria-label="Username" aria-invalid="false" /></div></div><div class="auth_group"><label for="password"></label><div class="auth_password"><span class="password_icon material-symbols-outlined">key</span><input class="password_input" type="password" id="password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" /><span id="eye_btn" class="hide_password material-symbols-outlined sound_on" onclick="toggleHidePass();">visibility_off</span></div></div></form><ul class="server_selector_group"><label for="server_sel"></label><li class="server_sel_group"><span class="server_icon material-symbols-outlined">rss_feed</span><button class="srv_sel_btn sound_on" id="server_sel"></button><span class="srv_sel_arrow_bg"><span class="srv_sel_arrow material-symbols-outlined">expand_more</span></span></li><ul class="srv_sel_box"></ul></ul><button class="btn_login sound_on" onclick="onClickLoginBtn();"></button><div class="auth_alternative"><input style="display: none" id="auto_login" name="auto_login" type="checkbox" /><label class="auto_login sound_on" for="auto_login"></label><input style="display: none" id="save_username" name="save_username" type="checkbox" /><label class="save_username sound_on" for="save_username"></label><a class="forgot_password sound_on"></a></div><div class="msg_logs_area"><div class="msg_contents"></div></div><button class="btn_preferences sound_on" onclick="openPreferences();"></button>',
+        '<form class="auth_section"><div class="auth_group"><label for="username"></label><div class="auth_username"><span class="user_icon material-symbols-outlined">person</span><input class="username_input" type="text" id="username" autocomplete="off" autocapitalize="off" aria-label="Username" aria-invalid="false" /></div></div><div class="auth_group"><label for="password"></label><div class="auth_password"><span class="password_icon material-symbols-outlined">key</span><input class="password_input" type="password" id="password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" /><span id="eye_btn" class="hide_password material-symbols-outlined sound_on" onclick="toggleHidePass();">visibility_off</span></div></div></form><ul class="server_selector_group"><label for="server_sel"></label><li class="server_sel_group"><span class="server_icon material-symbols-outlined">rss_feed</span><button class="srv_sel_btn sound_on" id="server_sel"></button><span class="srv_sel_arrow_bg"><span class="srv_sel_arrow material-symbols-outlined">expand_more</span></span></li><ul class="srv_sel_box"></ul></ul><button class="btn_login sound_on" onclick="onClickLoginBtn();"></button><div class="auth_alternative"><input id="auto_login" name="auto_login" type="checkbox" /><label class="auto_login sound_on" for="auto_login"></label><input id="save_username" name="save_username" type="checkbox" /><label class="save_username sound_on" for="save_username"></label><a class="forgot_password sound_on"></a></div><div class="msg_logs_area"><div class="msg_contents"></div></div><button class="btn_preferences sound_on" onclick="openPreferences();"></button>',
     autoLoginPanel =
         '<img class="auto_login_emb" src="/assets/img/logo/emblem.png" alt="emblem"><ul class="server_selector_group"><label for="server_sel"></label><li class="server_sel_group auto_login_mode"><span class="server_icon material-symbols-outlined">rss_feed</span><button class="srv_sel_btn sound_on" id="server_sel"></button><span class="srv_sel_arrow_bg"><span class="srv_sel_arrow material-symbols-outlined">expand_more</span></span></li><ul class="srv_sel_box"></ul></ul><button class="btn_start sound_on" onclick="onClickAutoLoginStartGame();"></button><div class="msg_logs_area"><div class="msg_contents"></div></div><button class="btn_preferences sound_on" onclick="openPreferences();"></button>';
 
@@ -1446,8 +1455,6 @@ const isAutoLoginChecked = function (serverName) {
 };
 
 const afterLoginSuccess = function (serverName) {
-    hideAuthenticating();
-
     maintenanceData[serverName] ? (showMaintenanceDialog(), $(loginPanel).hide(), $(userSrvNameLabel).text($(inputUsername).val() + '@' + $(serverSelBtn).text())) : createCharacters();
 
     $(saveUsernameCheck).is(':checked')
@@ -1559,7 +1566,7 @@ const returnLoginPanelToNorm = function () {
         '<form class="auth_section"><div class="auth_group"><label for="username"></label><div class="auth_username"><span class="user_icon material-symbols-outlined">person</span><input class="username_input" type="text" id="username" autocomplete="off" autocapitalize="off" aria-label="Username" aria-invalid="false" /></div></div><div class="auth_group"><label for="password"></label><div class="auth_password"><span class="password_icon material-symbols-outlined">key</span><input class="password_input" type="password" id="password" autocomplete="off" autocapitalize="off" aria-label="Password" aria-invalid="false" /><span id="eye_btn" class="hide_password material-symbols-outlined sound_on" onclick="toggleHidePass();">visibility_off</span></div></div></form>'
     );
     $('.server_selector_group').after(
-        '<button class="btn_login sound_on" onclick="onClickLoginBtn();"></button><div class="auth_alternative"><input style="display: none" id="auto_login" name="auto_login" type="checkbox" /><label class="auto_login sound_on" for="auto_login"></label><input style="display: none" id="save_username" name="save_username" type="checkbox" /><label class="save_username sound_on" for="save_username"></label><a class="forgot_password sound_on"></a>'
+        '<button class="btn_login sound_on" onclick="onClickLoginBtn();"></button><div class="auth_alternative"><input id="auto_login" name="auto_login" type="checkbox" /><label class="auto_login sound_on" for="auto_login"></label><input id="save_username" name="save_username" type="checkbox" /><label class="save_username sound_on" for="save_username"></label><a class="forgot_password sound_on"></a>'
     );
 
     // set forgot password link
@@ -1783,9 +1790,7 @@ const createCharUnit = function (name, hunterId, userId, characterId, hr, gr, we
 };
 
 const showCharSelection = function (uid) {
-    // setup character select display
-    $(loginPanel).hide();
-    $(charSelBox).show();
+    // append elms
     $(logoutCont).append('<button class="btn_logout' + (soundMode ? ' sound_on' : '') + '" onclick="onClickLogOutBtn();">' + normTextOutput('logoutBtn') + '</button>');
     $(charSelBox).append('<button class="btn_start' + (soundMode ? ' sound_on' : '') + '" data-btn="' + normTextOutput('startGameBtnText') + '" onclick="onClickNormStartGame();"></button>');
 
@@ -1808,6 +1813,10 @@ const showCharSelection = function (uid) {
             enableElement(charDelButton, 1), enableElement(startGameBtn, 1);
         }
     }
+
+    hideAuthenticating();
+    $(loginPanel).hide();
+    $(charSelBox).show();
 };
 
 const checkDelID = function (name, cid) {
@@ -2237,9 +2246,6 @@ const dialogBox = '.launcher_dialog',
     dialogStandbyBtn = '.md_btn.standby';
 
 const showDialog = function (text, options, standbyTime) {
-    // show the modal dialog
-    $(dialogBox).show();
-
     // initialize child elmemts
     $(dialogTexts).empty();
     $(dialogButtons).empty();
@@ -2283,6 +2289,9 @@ const showDialog = function (text, options, standbyTime) {
         setTimeout(function () {
             enableElement(dialogStandbyBtn, 200);
         }, standbyTime);
+
+    // show the modal dialog
+    $(dialogBox).show();
 };
 
 const hideDialog = function () {
@@ -2298,6 +2307,33 @@ const hideDialog = function () {
     $(dialogButtons).empty();
 };
 
+/* Account Linkage
+====================================================*/
+const showAccountLinkageDialog = function () {
+    showDialog(
+        dialogTextOutput('link') +
+            '<p class="page_list"><input id="link_discord" type="radio" name="link_page" value="https://auth.rain-server.com/en/login/?type=link-discord" checked><label class="page_item ' +
+            (soundMode ? 'sound_on' : '') +
+            ' link_discord" for="link_discord">' +
+            dialogTextOutput('linkSite1') +
+            '</label><input id="switch_character" type="radio" name="link_page" value="https://auth.rain-server.com/en/login/?type=switch-character"><label class="page_item ' +
+            (soundMode ? 'sound_on' : '') +
+            ' switch_character" for="switch_character">' +
+            dialogTextOutput('linkSite2') +
+            '</label></p>',
+        [
+            { label: dialogTextOutput('redirect'), cmd: 'redirectAccountLinkageSite(); hideDialog();' },
+            { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
+        ]
+    );
+};
+
+const redirectAccountLinkageSite = function () {
+    const url = $('input[name="link_page"]:checked').val();
+    openBrowser(url);
+    hideDialog();
+};
+
 /* API Response
 ====================================================*/
 const showNoUserKeyDialog = function () {
@@ -2309,7 +2345,6 @@ const showNoUserKeyDialog = function () {
 
 const showRegisterDialog = function () {
     showDialog(dialogTextOutput('register'), [
-        { label: dialogTextOutput('discordLabel'), cmd: 'openBrowser("discord://discordapp.com/channels/937230168223789066/1001395289233567854/1105105785148686579"); hideDialog();' },
         { label: dialogTextOutput('websiteLabel'), cmd: 'openBrowser("https://auth.rain-server.com/' + (launcherLanguage === 'ja' ? 'ja' : 'en') + '/register"); hideDialog();' },
         { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
     ]);
@@ -2317,7 +2352,6 @@ const showRegisterDialog = function () {
 
 const showLinkDiscordDialog = function () {
     showDialog(dialogTextOutput('linkDiscord'), [
-        { label: dialogTextOutput('discordLabel'), cmd: 'openBrowser("discord://discordapp.com/channels/937230168223789066/1001395289233567854/1105105785148686579"); hideDialog();' },
         { label: dialogTextOutput('websiteLabel'), cmd: 'openBrowser("https://auth.rain-server.com/' + (launcherLanguage === 'ja' ? 'ja' : 'en') + '/login/?type=link-discord"); hideDialog();' },
         { label: dialogTextOutput('closeLabel'), cmd: 'hideDialog();' },
     ]);

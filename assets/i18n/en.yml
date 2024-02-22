@@ -48,6 +48,10 @@ asideMenuData:
         name: Register
         url: https://auth.rain-server.com/en/register/
         iconName: app_registration
+    link:
+        name: Integration
+        url:
+        iconName: link
     member:
         name: Member Site
         url:
@@ -126,7 +130,11 @@ dialogTextData:
     updateLabel: Update
     laterLabel: Later
     changeLabel: Change
+    redirect: Redirect
     register: <p class="caution">The account with the entered username doesn't exist. Please check again that the username is correct.</p><p>If you're not a registered member, press "Discord" or "Website" button below to register as a new member.</p>
+    link: <p>You'll be redirected to the following account linkage page.<br>Are you sure you want to proceed?</p>
+    linkSite1: Account Linkage (Re-link your account that have been purged by the administrator.)
+    linkSite2: Change Linked Character (Transfer the linked data from the currently linked character to another owned character.)
     linkDiscord: <p class="caution">This account hasn't been linked to a discord account.</p><p>Press "Discord" or "Website" button below to link your account.</p>
     noUserKey: <p class="warning">The user key required for auto-login authentication doesn't exist.</p><p>After 5 seconds, the launcher will be restarted.</p>
     clientUpdate: <p class="dialog_title">Update Notification</p><p>The latest client update is available. Press "Update" button below to download the files.</p>

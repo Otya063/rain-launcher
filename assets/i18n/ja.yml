@@ -47,8 +47,12 @@ asideMenuData:
         name: 会員登録
         url: https://auth.rain-server.com/ja/register/
         iconName: app_registration
+    link:
+        name: データ連携
+        url:
+        iconName: link
     member:
-        name: メンバーサイト
+        name: 公式サイト
         url:
         iconName: home
     manual:
@@ -125,7 +129,11 @@ dialogTextData:
     updateLabel: アップデート
     laterLabel: 後で
     changeLabel: 変更する
+    redirect: リダイレクト
     register: <p class="caution">入力されたユーザー名のアカウントが存在しません。ユーザー名が正しいかもう一度確認してください。</p><p>まだ会員登録がお済みでない方は、下記「ディスコード」もしくは「ウェブサイト」を押下して新規会員登録を行ってください。</p>
+    link: <p>以下のアカウント連携サイトへリダイレクトします。よろしいですか？</p>
+    linkSite1: アカウント再連携（管理者によって連携解除されたアカウントを、新たに再連携します。）
+    linkSite2: 連携済みキャラクター変更（現在連携しているキャラクターから別の保有キャラクターへ連携データを移行します。）
     linkDiscord: <p class="caution">このアカウントは、ディスコードアカウントとの連携が完了していません。</p><p>下記「ディスコード」もしくは「ウェブサイト」を押下してディスコード連携を行ってください。</p>
     noUserKey: <p class="warning">自動ログイン認証に必要なユーザーキーが存在しません。</p><p>5秒後、ランチャーが再起動します。</p>
     clientUpdate: <p class="dialog_title">アップデートのお知らせ</p><p>クライアントの最新アップデートがあります。下記「アップデート」ボタンよりファイルをダウンロードしてください。</p>

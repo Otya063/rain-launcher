@@ -75,6 +75,11 @@ h1 {
     }
 }
 
+input[type='checkbox'],
+input[type='radio'] {
+    display: none;
+}
+
 // centering icons
 .material-symbols-outlined {
     display: flex !important;
@@ -134,11 +139,12 @@ h1 {
 /* Start Up Overlay
 ====================================================*/
 .startup_overlay {
-    position: relative;
+    position: fixed;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 1124px;
+    height: 600px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1967,9 +1973,11 @@ h1 {
     /* Menu
 ====================================================*/
     .launcher_menu {
+        position: relative;
+        width: 110%;
+        left: -3%;
         display: flex;
         justify-content: space-around;
-        width: 100%;
 
         .menu_contents_anchor {
             position: relative;
@@ -2076,6 +2084,46 @@ h1 {
         height: 215px;
         color: #e6e6e6;
         text-align: center;
+
+        .page_list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 1.5rem;
+
+            // selected radio button icon
+            #link_discord:checked {
+                + .link_discord {
+                    &::before {
+                        content: '\e837';
+                    }
+                }
+            }
+            #switch_character:checked {
+                + .switch_character {
+                    &::before {
+                        content: '\e837';
+                    }
+                }
+            }
+
+            .page_item {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                text-align: left;
+                cursor: pointer;
+
+                // radio button icon
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e836';
+                    font-size: 2.1rem;
+                    padding: 0 10px 2px 0;
+                }
+            }
+        }
 
         // dialog text default setting
         p {

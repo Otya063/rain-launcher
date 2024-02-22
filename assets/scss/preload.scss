@@ -1,0 +1,20 @@
+@use './global/' as *;
+
+html {
+    &::after {
+        content: '';
+        background-image: url(#{$img}/character_selection/background/new.png), url(#{$img}/character_selection/background/swordAndShield.png),
+            url(#{$img}/character_selection/background/dualSwords.png), url(#{$img}/character_selection/background/greatSword.png), url(#{$img}/character_selection/background/longSword.png),
+            url(#{$img}/character_selection/background/huntingHorn.png), url(#{$img}/character_selection/background/hammer.png), url(#{$img}/character_selection/background/lance.png),
+            url(#{$img}/character_selection/background/gunlance.png), url(#{$img}/character_selection/background/tonfa.png), url(#{$img}/character_selection/background/switchAxeF.png),
+            url(#{$img}/character_selection/background/magnetSpike.png), url(#{$img}/character_selection/background/lightBowgun.png), url(#{$img}/character_selection/background/heavyBowgun.png),
+            url(#{$img}/character_selection/background/bow.png), url(#{$img}/character_selection/char_wpn_icon/swordAndShield.png), url(#{$img}/character_selection/char_wpn_icon/dualSwords.png),
+            url(#{$img}/character_selection/char_wpn_icon/greatSword.png), url(#{$img}/character_selection/char_wpn_icon/longSword.png), url(#{$img}/character_selection/char_wpn_icon/huntingHorn.png),
+            url(#{$img}/character_selection/char_wpn_icon/hammer.png), url(#{$img}/character_selection/char_wpn_icon/lance.png), url(#{$img}/character_selection/backgrchar_wpn_iconund/gunlance.png),
+            url(#{$img}/character_selection/char_wpn_icon/tonfa.png), url(#{$img}/character_selection/char_wpn_icon/switchAxeF.png), url(#{$img}/character_selection/char_wpn_icon/magnetSpike.png),
+            url(#{$img}/character_selection/char_wpn_icon/lightBowgun.png), url(#{$img}/character_selection/char_wpn_icon/heavyBowgun.png), url(#{$img}/character_selection/char_wpn_icon/bow.png),
+            url(#{$img}/dialog/dialog_button_bg.png), url(#{$img}/common/main_btn_bg.png), url(#{$img}/common/startup_overlay_bg.png), url(#{$img}/common/launcher_body_bg.png),
+            url(#{$img}/character_selection/char_sel_scroll.png), url(#{$img}/character_selection/character_misc_btn_bg.png), url(#{$img}/update/animation_frame.png), url(#{$img}/update/bar_area.png),
+            url(#{$img}/update/bar_body.png), url(#{$img}/common/normal_info_icon.png), url(#{$img}/common/important_info_icon.png), url(#{$img}/dialog/dialog_body.png);
+    }
+}

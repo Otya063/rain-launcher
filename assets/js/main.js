@@ -1790,6 +1790,10 @@ const createCharUnit = function (name, hunterId, userId, characterId, hr, gr, we
 };
 
 const showCharSelection = function (uid) {
+    hideAuthenticating();
+    $(loginPanel).hide();
+    $(charSelBox).show();
+
     // append elms
     $(logoutCont).append('<button class="btn_logout' + (soundMode ? ' sound_on' : '') + '" onclick="onClickLogOutBtn();">' + normTextOutput('logoutBtn') + '</button>');
     $(charSelBox).append('<button class="btn_start' + (soundMode ? ' sound_on' : '') + '" data-btn="' + normTextOutput('startGameBtnText') + '" onclick="onClickNormStartGame();"></button>');
@@ -1813,10 +1817,6 @@ const showCharSelection = function (uid) {
             enableElement(charDelButton, 1), enableElement(startGameBtn, 1);
         }
     }
-
-    hideAuthenticating();
-    $(loginPanel).hide();
-    $(charSelBox).show();
 };
 
 const checkDelID = function (name, cid) {
@@ -2246,6 +2246,9 @@ const dialogBox = '.launcher_dialog',
     dialogStandbyBtn = '.md_btn.standby';
 
 const showDialog = function (text, options, standbyTime) {
+    // show the modal dialog
+    $(dialogBox).show();
+
     // initialize child elmemts
     $(dialogTexts).empty();
     $(dialogButtons).empty();
@@ -2289,9 +2292,6 @@ const showDialog = function (text, options, standbyTime) {
         setTimeout(function () {
             enableElement(dialogStandbyBtn, 200);
         }, standbyTime);
-
-    // show the modal dialog
-    $(dialogBox).show();
 };
 
 const hideDialog = function () {

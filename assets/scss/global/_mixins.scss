@@ -19,11 +19,6 @@
     background: url(#{$img}/character_selection/background/#{$weapon_name}.png) no-repeat;
 }
 
-// Character Index Number
-@mixin char_index_num($num) {
-    background: url(#{$img}/character_selection/char_index_num/#{$num}.png);
-}
-
 // Character Weapon Icon
 @mixin char_wpn_icon($weapon_name) {
     background: url(#{$img}/character_selection/char_wpn_icon/#{$weapon_name}.png) no-repeat;

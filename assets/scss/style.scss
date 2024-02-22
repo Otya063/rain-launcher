@@ -1443,7 +1443,7 @@ input[type='radio'] {
                 height: 130px;
 
                 .unit {
-                    background: url(/assets/img/character_selection/background/new.png) no-repeat 0px 0px / 100%;
+                    background: url(#{$img}/character_selection/background/new.png) no-repeat 0px 0px / 100%;
 
                     .icon {
                         width: 42px;

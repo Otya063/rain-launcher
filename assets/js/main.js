@@ -381,7 +381,6 @@ const apiUsersAction = function (actionType, obj) {
             }
         })
         .fail(function (xhr) {
-            alert(JSON.stringify(xhr));
             const res = JSON.parse(xhr.responseText);
 
             switch (res.message) {

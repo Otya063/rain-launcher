@@ -139,16 +139,12 @@ input[type='radio'] {
 /* Start Up Overlay
 ====================================================*/
 .startup_overlay {
-    position: fixed;
+    position: relative;
     left: 0;
     top: 0;
     width: 1124px;
     height: 600px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
     text-align: center;
     background: url(#{$img}/common/startup_overlay_bg.png) center center / 1124px 600px no-repeat;
     z-index: 9997;
@@ -161,9 +157,11 @@ input[type='radio'] {
 
     // loading bar box
     .loading {
-        position: relative;
+        position: absolute;
+        right: 50%;
+        transform: translateX(50%);
+        top: 500px;
         width: 500px;
-        margin: 0 auto;
         border-radius: 10px;
         border: 4px solid rgba(0, 0, 0, 0);
         padding: 2px;
